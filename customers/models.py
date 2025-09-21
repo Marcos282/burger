@@ -3,6 +3,7 @@ from tenants.models import Tenant
 
 
 class Cliente(models.Model):
+    # Cada cliente pertence a um tenant específico
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     ENUM_GENERO = [
         ('M', 'Masculino'),
@@ -20,7 +21,8 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.nome + " (" + str(self.id) + ")"
-
+    
+    # Propriedade para retornar o adjetivo correto com base no gênero
     @property
     def adjetivo(self):
         return 'o' if self.genero == 'M' else 'a'
@@ -28,8 +30,10 @@ class Cliente(models.Model):
 
 class EnderecoEntrega(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    # Pega o cliente e a ordem como strings para evitar importações circulares
     cliente = models.ForeignKey("customers.Cliente", on_delete=models.SET_NULL, null=True)
     ordem = models.ForeignKey("orders.Ordem", on_delete=models.SET_NULL, null=True)
+    
     endereco = models.CharField(max_length=200, null=False)
     referencia = models.CharField(max_length=200, null=False)
     cidade = models.CharField(max_length=200, null=False)

@@ -1,0 +1,39 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+myenv/
+env/
+venv/
+
+# Django migrations
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Database files
+*.sqlite3
+
+# Media / uploads
+media/
+uploads/
+
+# Static files (opcional, se você fizer collectstatic)
+staticfiles/
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
