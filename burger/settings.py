@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-o8gaf2h7g*z2wnnc$m=cc6vdiz#6#t(j%@1p@t16_a6!t(8w*#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'andre.localhost', 'teste.localhost', 'outro.localhost']
 
 
 # Application definition
@@ -50,7 +51,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'tenants.middleware.TenantDBMiddleware',
+    'tenants.middleware.TenantMiddleware',
+    #tenants.middleware.TenantDBMiddleware', # Se você estiver usando banco de dados por tenant
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -73,6 +75,23 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'tenants.middleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 WSGI_APPLICATION = 'burger.wsgi.application'
 
