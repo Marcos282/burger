@@ -98,7 +98,7 @@
                                  <div>
                                     <div class="shop-bag">
                                        <i class="lni lni-cart"></i>
-                                       <span class="counter">0</span>
+                                       <span class="counter">{{ cart_count }}</span>
                                     </div>
                                  </div>
                               </a>
@@ -393,12 +393,31 @@
                                           </div>
                                        </div>
                                     </div>
+
+                                    <div class="line botoes subtotal-adicionar" data-produto-id="{{ produto.id }}">
+                                    <div class="row">
+                                       <div class="col-md-6">
+                                          <div class="subtotal">
+                                             <strong>Valor:</strong>
+                                             <span>{{ produto.price}}</span>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                          <!-- Botão que vai adicionar ao carrinho -->
+                                          <span class="sacola-adicionar botao-acao pull-right">
+                                             <i class="lni lni-cart"></i> <span>Adicionar a sacola</span>
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                    <!--
                                     <div class="line botoes subtotal-adicionar">
                                        <div class="row">
                                           <div class="col-md-6">
                                              <div class="subtotal">
                                                 <strong>Valor:</strong>
-                                                <span>R$ 18,90</span>
+                                                <span>R$ {{ produto.price|floatformat:2 }}</span>
                                              </div>
                                           </div>
                                           <div class="col-md-6">
@@ -406,6 +425,7 @@
                                           </div>
                                        </div>
                                     </div>
+                                    -->
                                  </div>
                               </form>
                            </div>
@@ -502,6 +522,7 @@
             </div>
          </div>
       </div>
+     <!--<script src="{% static '_core/_cdn/car/js/carItens.js' %}"></script>-->
       <script src="{% static '_core/_cdn/bootstrap/js/bootstrap.min.js' %}"></script>
       <script src="{% static '_core/_cdn/sidr/js/jquery.sidr.min.js' %}"></script>
       <script src="{% static '_core/_cdn/maskMoney/js/maskmoney.min.js' %}"></script>
@@ -537,54 +558,45 @@
       
    </script>
    -->
+      <script>
+   $(".sacola-adicionar").click(function() {
+    // Pega ID do produto e quantidade do form
+    var produto_id = $("input[name='produto_id']").val() || "{{ produto.id }}";
+    var quantidade = $("#quantidade").val();
+
+    // Mostra loading no modal
+    $("#modalcarrinho .modal-body").html('<div class="adicionado"><i class="loadingicon lni lni-reload rotating"></i></div>');
+
+    // POST pro Django
+    $.post("{% url 'add_to_cart' %}", { produto_id: produto_id, quantidade: quantidade, csrfmiddlewaretoken: '{{ csrf_token }}' })
+        .done(function(data) {
+            if(data.status === "ok"){
+                // Atualiza modal
+                $("#modalcarrinho .modal-body").html(
+                    `<p>${data.produto.nome} adicionado!!!</p>
+                     <p>Quantidade: ${data.produto.quantidade}</p>
+                     <p>Subtotal: R$ ${data.produto.subtotal}</p>
+                     <a href="{% url 'sacola' %}">
+                      <button class="botao-acao"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></button>
+                     </a>`
+                );
+
+                // Atualiza contador da sacola
+                $(".shop-bag .counter").text(data.cart_count);
+            } else {
+                $("#modalcarrinho .modal-body").html('<p>Erro ao adicionar ao carrinho</p>');
+            }
+        })
+        .fail(function(){
+            $("#modalcarrinho .modal-body").html('<p>Erro ao adicionar ao carrinho</p>');
+        });
+
+    // Abre modal
+    $("#modalcarrinho").modal("show");
+});
+      </script>
+
 </html>
-<script>
-   $(document).on('change','#the_form',function(e){
-   
-   	
-   	var total = parseFloat( "18.90" );
-   
-   	var vezes = parseFloat( $("#quantidade").val() );
-   	total = total * vezes;
-   	total = parseFloat( total ).toFixed(2);
-   
-   	$('.subtotal').html('<strong>Total:</strong> R$ ' + total );
-   
-   });
-   
-   $("#the_form").trigger("change");
-   
-   
-   $( ".sacola-adicionar" ).click(function() {
-   
-   	if( $('label.error:visible').length ){
-   
-   		alert("Existem campos obrigatórios a serem preenchidos!");
-   
-   		$('html, body').animate({
-   	        scrollTop: $("label.error:visible").offset().top-150
-   	    }, 500);
-   
-   	}
-   
-   	
-   		var eid = "68";
-   		var former = "#the_form";
-   		var token = "e7529f3f0fcb81301a386ca7b97770d1";
-   		var produto = "196962";
-   		var modo = "adicionar";
-   		var data = $("#the_form").serialize();
-   
-   		$("#modalcarrinho .modal-body").html('<div class="adicionado"><i class="loadingicon lni lni-reload rotating"></i><div>');
-   		$.post( "../app/estabelecimento/_ajax/sacola.html", { token: token, produto: produto, modo: modo, data: data })
-   		.done(function( data ) {
-   			$( "#modalcarrinho .modal-body" ).html( data );
-   		});
-   		$("#modalcarrinho").modal("show");
-   		sacola_count(eid,token);
-   
-   	
-   });
-   
-</script>
+
 <div class="releaseclick"></div>
+ 

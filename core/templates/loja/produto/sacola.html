@@ -122,7 +122,7 @@
                               <a href="sacola.html" title="Minha sacola">
                                  <div class="shop-bag">
                                     <i class="lni lni-cart"></i>
-                                    <span class="counter"> {{cart_count}} </span>
+                                    <span class="counter">0</span>
                                  </div>
                               </a>
                            </div>
@@ -145,9 +145,9 @@
                                  </a>
                                  <ul class="dropdown-menu">
                                     <li><a href="{% url 'loja' %}">Todas</a></li>
-                                    {% for categoria in categorias %}
+									{% for categoria in categorias %}
                                     <li><a href="{% url 'loja'%}?categoria_id={{ categoria.id }}">{{ categoria.name }}</a></li>
-                                    {% endfor %}
+									{% endfor %}
                                  </ul>
                               </li>
                               <li><a href="categoriab4a6.html?filtro=4">Ofertas</a></li>
@@ -216,7 +216,7 @@
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
-                              <span><a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="740701041b06001134181b1e150e15045a171b19">[email&#160;protected]</a></span>
+                              <span><a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="99eaece9f6ebedfcd9f5f6f3f8e3f8e9b7faf6f4">[email&#160;protected]</a></span>
                            </div>
                         </div>
                         <div class="social">
@@ -268,7 +268,7 @@
                      <div class="row rowtitle">
                         <div class="col-md-12">
                            <div class="title-icon">
-                              <span>Fechar Pedido</span>
+                              <span>Fechar Pedidos</span>
                            </div>
                            <div class="bread-box">
                               <div class="bread">
@@ -283,114 +283,74 @@
                         </div>
                      </div>
                      <div class="sacola">
-                     <form id="the_form" method="POST" action="{% url 'finalizar_pedido' %}">
-                     {% csrf_token %}
-                           <div class="row">
-                              <div class="col-md-12">
-                                 <table class="listing-table sacola-table">
-                                    <thead>
-                                       <th></th>
-                                       <th>Nome</th>
-                                       <th>Qntd</th>
-                                       <th>Valor</th>
-                                       <th>Detalhes</th>
-                                       <th></th>
-                                    </thead>
-                                    <tbody>
-                                        {% if produtos %}
-                                        {% for item in produtos %}
-                                       <tr class="sacola-alterar sacola-6839" sacola-eid="68" sacola-pid="6839" valor="0.01" valor-adicional="0" valor-somado="">
-                                          <td class="td-foto">
-                                             
-                                             <div class="imagem">
+                        <form id="the_form" method="POST" action="{% url 'finalizar_pedido' %}">
+   {% csrf_token %}
+   <div class="row">
+      <div class="col-md-12">
+         <table class="listing-table sacola-table">
+            <thead>
+               <tr>
+                  <th></th>
+                  <th>Nomes</th>
+                  <th>Qntd</th>
+                  <th>Valor</th>
+                  <th>Subtotal</th>
+                  <th></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% if produtos %}
+                  {% for item in produtos %}
+                     <tr>
+                        <!-- imagem se tiver -->
+                        <td>
+                           {% if item.produto.imagem %}
+                              <img src="{{ item.produto.imagem.url }}" width="50">
+                           {% else %}
+                              <span>-</span>
+                           {% endif %}
+                        </td>
+                        <td>{{ item.produto.nome }}</td>
+                        <td>{{ item.quantidade }}</td>
+                        <td>R$ {{ item.produto.price|floatformat:2 }}</td>
+                        <td>R$ {{ item.subtotal|floatformat:2 }}</td>
+                        <td>
+                           <a href="{% url 'remover_do_carrinho' item.produto.id %}" class="btn btn-danger btn-sm">
+                              Remover
+                           </a>
+                        </td>
+                     </tr>
+                  {% endfor %}
+               {% else %}
+                  <tr class="sacola-null">
+                     <td colspan="6">
+                        <span class="nulled">
+                           Sua sacola de compras está vazia, adicione produtos para poder fazer o seu pedido!
+                        </span>
+                     </td>
+                  </tr>
+               {% endif %}
+            </tbody>
+         </table>
+      </div>
+   </div>
 
-                                              {% if item.produto.imagem %}
-                                                <img src="{{ item.produto.imagem.url }}" width="50">
-                                             {% else %}
-                                                
-                                                   <img src="https://demo6.lojazap.com/_core/_uploads/68/2023/11/09582411232ga0bj59df.webp"/>
-                                                
-                                             {% endif %}
-                                                 
-                                             </div>
+   <div class="linha-subtotal">
+      <div class="row">
+         <div class="col-md-12 text-end">
+            <h4>Total: R$ {{ total|floatformat:2 }}</h4>
+         </div>
+      </div>
+   </div>
 
-                                             
-
-
-                                          </td>
-                                          <td class="td-nome">
-                                             <a href="https://demo6.lojazap.com/produto/196964">
-                                             <span class="nome">{{ item.produto.nome }}</span>
-                                             </a>
-                                          </td>
-                                          <td class="td-detalhes visible-xs visible-sm">
-                                             <div class="line detalhes">
-                                             </div>
-                                          </td>
-                                          <td class="td-quantidade">
-                                             <div class="clear"></div>
-                                             <div class="holder-acao">
-                                                <div class="item-acao visible-xs visible-sm">
-                                                   <a class="sacola-change" href="https://demo6.lojazap.com/produto/196964">
-                                                   <i class="lni lni-pencil"></i> 
-                                                   </a>
-                                                </div>
-                                                <div class="item-acao">
-                                                   <div class="line quantidade">
-                                                      <div class="clear"></div>
-                                                      <div class="campo-numero">
-                                                         <i class="decrementar lni lni-minus" onclick="decrementar('#quantidade');"></i>
-                                                         <input id="quantidade" type="number" name="quantidade" value="{{ item.quantidade }}"/>
-                                                         <i class="incrementar lni lni-plus" onclick="incrementar('#quantidade');"></i>
-                                                      </div>
-                                                      <div class="clear"></div>
-                                                   </div>
-                                                </div>
-                                                <div class="item-acao visible-xs visible-sm">
-                                                   <a class="sacola-remover" href="#" sacola-eid="68" sacola-pid="6839">
-                                                   <i class="lni lni-trash"></i> 
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </td>
-                                          <td class="td-valor">
-                                             <span>Valor:</span>
-                                             <div class="line valor">
-                                                <span> R$ {{ item.produto.price|floatformat:2 }}</span>
-                                             </div>
-                                          </td>
-                                          <td class="td-detalhes hidden-xs hidden-sm">
-                                             <div class="line detalhes">
-                                                {{ intem.produto.description}}
-                                             </div>
-                                          </td>
-                                          <td class="td-acoes hidden-xs hidden-sm">
-                                             <div class="holder">
-                                                <a class="sacola-remover" href="#" sacola-eid="68" sacola-pid="6839">
-                                                <i class="lni lni-trash"></i> 
-                                                <span class="visible-xs">Excluir</span>
-                                                </a>
-                                             </div>
-                                             <div class="clear visible-xs visible-sm"></div>
-                                          </td>
-                                           {% endfor %}
-                                       {% else %}
-                                       </tr>
-                                       <tr class="sacola-null">
-                                          <td colspan="5"><span class="nulled">Sua sacola de compras está vazia, adicione produtos para poder fazer o seu pedido!</span></td>
-                                       </tr>
-                                       {% endif %}
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                           <div class="linha-subtotal">
-                              <div class="row error-pedido-minimo error-pedido-minimo-sacola">
-                                 <div class="col-md-12">
-                                    <input class="fake-hidden" name="pedido_minimo" value=""/>
-                                 </div>
-                              </div>
-                        </form>
+   {% if produtos %}
+      <div class="text-end mt-3">
+         <button type="submit" class="btn btn-success">
+            Finalizar Pedido
+         </button>
+      </div>
+   {% endif %}
+</form>
                         <div class="row">
                         <div class="col-md-4">
                         <div class="subtotal"><strong>Subtotal:</strong> <span>R$ 0,00</span></div>
@@ -423,7 +383,6 @@
                </div>
             </div>
          </div>
-         <!-- INICIO FOOTER -->
          <div class="footer">
             <div class="footer-info">
                <div class="container">
@@ -446,52 +405,161 @@
                   <div class="row">
                      <div class="col-md-12">
                         <a class="watermark" href="https://conheca.lojazap.com/" target="_blank">
-                        <img src="{% static '_core/_cdn/img/logo.png' %}"/>
+                        <img src="_core/_cdn/img/logo.png"/>
                         </a>
                      </div>
                   </div>
                </div>
             </div>
          </div>
-         <!-- FIM FOOTER -->
       </div>
-      <!--	<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script> -->
-      <script src="{% static '_core/_cdn/bootstrap/js/bootstrap.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/sidr/js/jquery.sidr.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/maskMoney/js/maskmoney.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/maskedInput/js/jquery.maskedinput.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/validate/js/jquery.validate.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/sticky/js/jquery.sticky.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/app/js/template.js' %}"></script>
+      <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="_core/_cdn/bootstrap/js/bootstrap.min.js"></script>
+      <script src="_core/_cdn/sidr/js/jquery.sidr.min.js"></script>
+      <script src="_core/_cdn/maskMoney/js/maskmoney.min.js"></script>
+      <script src="_core/_cdn/maskedInput/js/jquery.maskedinput.min.js"></script>
+      <script src="_core/_cdn/validate/js/jquery.validate.min.js"></script>
+      <script src="_core/_cdn/sticky/js/jquery.sticky.min.js"></script>
+      <script src="_core/_cdn/app/js/template.js"></script>
       <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"f8178609612d4a0fa8656f39eac0fd7b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
    </body>
-   <!--
-      # PWA - Progressive Web App
-      # https://developer.mozilla.org/pt-BR/docs/Web/Progressive_web_apps
-      <script>
+   <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+                 .register('serviceworker.js')
+                 .then(function() { console.log('Service Worker Registered'); });
+      }
       
-      	if('serviceWorker' in navigator) {
-      	  navigator.serviceWorker
-      	           .register('serviceworker.js')
-      	           .then(function() { console.log('Service Worker Registered'); });
-      	}
+      let deferredPrompt;
       
-      	let deferredPrompt;
-      
-      	window.addEventListener('beforeinstallprompt', (e) => {
-      		deferredPrompt = e;
-      		addBtn.style.display = 'block';
-      		deferredPrompt.prompt();
-      		deferredPrompt.userChoice.then((choiceResult) => {
-      			if (choiceResult.outcome === 'accepted') {
-      				console.log('User accepted the A2HS prompt');
-      			} else {
-      				console.log('User dismissed the A2HS prompt');
-      			}
-      			deferredPrompt = null;
-      		});
+      window.addEventListener('beforeinstallprompt', (e) => {
+      	deferredPrompt = e;
+      	addBtn.style.display = 'block';
+      	deferredPrompt.prompt();
+      	deferredPrompt.userChoice.then((choiceResult) => {
+      		if (choiceResult.outcome === 'accepted') {
+      			console.log('User accepted the A2HS prompt');
+      		} else {
+      			console.log('User dismissed the A2HS prompt');
+      		}
+      		deferredPrompt = null;
       	});
+      });
       
-      </script>
-      -->
+   </script>
+   <!-- Mirrored from demo6.lojazap.com/sacola by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Sep 2025 23:29:21 GMT -->
 </html>
+<script>
+   $(document).ready( function() {
+             
+     var form = $("#the_form");
+     form.validate({
+         focusInvalid: true,
+         invalidHandler: function() {
+         },
+         errorPlacement: function errorPlacement(error, element) { element.after(error); },
+         rules:{
+           pedido_minimo: {
+           	required: true
+           }
+         },
+         messages:{
+           pedido_minimo: {
+               required: "Você deve ter no minimo R$ R$ 0,01 na sacola para poder efetuar a compra"
+           },
+         }
+     });
+   
+   });
+   
+</script>
+<script>
+   function decimaltoreal( valor ){
+   	valor = valor + '';
+   	valor = parseInt(valor.replace(/[\D]+/g,''));
+   	valor = valor + '';
+   	valor = valor.replace(/([0-9]{2})$/g, ",$1");
+   
+   	if (valor.length > 6) {
+   	valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+   	}
+   
+   	return valor;
+   }
+   
+   var token = "e7529f3f0fcb81301a386ca7b97770d1";
+   
+   $( ".sacola-alterar" ).change(function() {
+   
+   	var eid = $(this).attr('sacola-eid');
+   	var produto = $(this).attr('sacola-pid');
+   	var modo = "alterar";
+   	var quantidade = $(this).find("input[name='quantidade']").val();
+   	var data = "quantidade="+quantidade;
+   
+   	$.post( "app/estabelecimento/_ajax/sacola.html", { token: token, eid: eid,produto: produto, modo: modo, data: data })
+   	.done(function( data ) {
+   	});
+   	$("#the_form").trigger("change");
+   
+   });
+   
+   $( ".sacola-remover" ).click(function() {
+   
+   	var eid = $(this).attr('sacola-eid');
+   	var produto = $(this).attr('sacola-pid');
+   	var modo = "remover";
+   
+   	if( confirm('Deseja remover o produto da sua sacola?') ) {
+   
+   		$.post( "app/estabelecimento/_ajax/sacola.html", { token: token, eid: eid,produto: produto, modo: modo })
+   		.done(function( data ) {
+   			console.log("removeu produto da sacola");
+   			$(".sacola-"+produto).fadeOut("800", function() {
+   		        $(this).remove();
+   				$("#the_form").trigger("change");
+   				sacola_count(eid,token);
+   		    });
+   		});
+   
+   	}
+   
+   });
+   
+   $(document).on('change','#the_form',function(e){
+   
+   
+   	$( ".sacola-alterar" ).each(function() {
+   		var total = 0;
+   		var valor = parseFloat( $( this ).attr("valor") );
+   		var adiciona = parseFloat( $( this ).attr("valor-adicional") );
+   		total = valor + adiciona;
+   		var vezes = parseFloat( $(this).find("#quantidade").val() );
+   		total = total * vezes;
+   		total = parseFloat( total ).toFixed(2);
+   		var totalbr = decimaltoreal(total);
+   		// total = total.replace('.', ',');
+   		$(this).attr("valor-somado",total);
+   		$(this).find(".valor span").html("R$ "+totalbr);
+   	});
+   
+   	var total = 0;
+   
+   	$( ".sacola-alterar" ).each(function() {
+   		total = total + parseFloat( $( this ).attr("valor-somado") );
+   	});
+   	total = parseFloat( total ).toFixed(2);
+   	var totalbr = decimaltoreal(total);
+   	total = total;
+   	$(this).find(".subtotal").html("<strong>Subtotal:</strong> R$ "+totalbr);
+   
+   	if( total >= 0.01 ) {
+   		$("input[name='pedido_minimo']").val(1);
+   	} else {
+   		$("input[name='pedido_minimo']").val("");
+   	}
+   
+   });
+   
+   $("#the_form").trigger("change");
+   
+</script>
