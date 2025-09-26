@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import include
-from core.views import loja
+from core.views import loja, detalhe
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('loja/', loja, name='loja'),
+    path('loja/datail/<int:produto_id>', detalhe, name='detalhe'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
 ]

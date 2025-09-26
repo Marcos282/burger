@@ -5,6 +5,7 @@ from tenants.models import Tenant
 class Category(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+    exibir = models.BooleanField(default=False)
 
     def __str__(self):
         return f' {self.name} ({self.tenant})'
@@ -22,6 +23,18 @@ class Produto(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.FloatField()
     digital = models.BooleanField(default=False, null=True, blank=True)
+    referencia = models.CharField(
+        max_length=50,
+        unique=True,
+        blank=True,
+        null=True
+    )
+
+    def save(self, *args, **kwargs):
+    
+        if not self.referencia:
+            self.referencia = f"REF-{uuid.uuid4().int % 1000000}"
+        super().save(*args, **kwargs)  
 
     # Representação em string do produto
     def __str__(self):
