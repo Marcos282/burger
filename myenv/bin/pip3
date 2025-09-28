@@ -1,4 +1,4 @@
-#!/home/marcos/Documentos/projetos/burger/myenv/bin/python3
+#!/Users/marcosaurelio/Documents/PROJETOS/burger/myenv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys

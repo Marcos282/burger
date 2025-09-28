@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import include
-from core.views import loja, detalhe, add_to_cart, sacola, checkout, remove_from_cart
+from core.views import loja, detalhe, add_to_cart, sacola, checkout, remover_do_carrinho_ajax, atualizar_carrinho_ajax
 
 
 
@@ -29,6 +29,9 @@ urlpatterns = [
     path('add-to-cart/', add_to_cart, name='add_to_cart'),
     path('loja/sacola', sacola, name='sacola'),
     path('loja/checkout', checkout, name='finalizar_pedido'),
-    path('loja/remover_item/<int:produto_id>', remove_from_cart, name='remover_do_carrinho'),
+    path('carrinho/remover-ajax/', remover_do_carrinho_ajax, name='remover_do_carrinho_ajax'),
+    path('atualizar-carrinho/', atualizar_carrinho_ajax, name='atualizar_carrinho_ajax'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
 ]
+
+

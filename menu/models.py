@@ -1,6 +1,7 @@
 #menu/models.py
 from django.db import models
 from tenants.models import Tenant
+import uuid
 
 # Categoria de produto (lanches, bebidas, etc.)
 class Category(models.Model):

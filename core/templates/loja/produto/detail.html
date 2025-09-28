@@ -93,7 +93,7 @@
                               </div>
                            </div>
                            <div class="col-md-3">
-                              <a class="holder-shop-bag pull-right" href="../sacola.html" title="Minha sacola">
+                              <a class="holder-shop-bag pull-right" href="{% url 'sacola' %}" title="Minha sacola">
                                  <span class="cash">Minha sacola</span>
                                  <div>
                                     <div class="shop-bag">
@@ -358,7 +358,7 @@
                                                 <span> Apenas</span>
                                              </div>
                                              <div class="valor">
-                                                <span>{{ produto.price }}</span>
+                                                <span>{{ valor_br }}</span>
                                              </div>
                                           </div>
                                        </div>
@@ -375,9 +375,9 @@
                                           </div>
                                           <div class="col-md-9 col-sm-10 col-xs-10">
                                              <div class="campo-numero pull-right">
-                                                <i class="decrementar lni lni-minus" onclick="decrementar('#quantidade');"></i>
+                                                <i class="decrementar lni lni-minus" ></i>
                                                 <input id="quantidade" type="number" name="quantidade" value="1"/>
-                                                <i class="incrementar lni lni-plus" onclick="incrementar('#quantidade');"></i>
+                                                <i class="incrementar lni lni-plus" ></i>
                                              </div>
                                           </div>
                                        </div>
@@ -398,8 +398,8 @@
                                     <div class="row">
                                        <div class="col-md-6">
                                           <div class="subtotal">
-                                             <strong>Valor:</strong>
-                                             <span>{{ produto.price}}</span>
+                                             <strong >Total:</strong>
+                                             <span id="total">{{ valor_br}}</span>
                                           </div>
                                        </div>
                                        <div class="col-md-6">
@@ -558,7 +558,25 @@
       
    </script>
    -->
-      <script>
+
+<script>
+  $(document).ready(function() {
+    // preço unitário vindo do Django
+    var precoUnitario = parseFloat("{{ produto.price }}");
+
+    // sempre que a quantidade mudar
+    $('#quantidade').on('input change', function() {
+      var qtd = parseInt($(this).val()) || 1;
+      var total = precoUnitario * qtd;
+
+      // atualiza no span (duas casas decimais)
+       $('#total').text('R$' + total.toFixed(2).replace('.', ','));
+    });
+  });
+</script>
+
+   
+   <script>
    $(".sacola-adicionar").click(function() {
     // Pega ID do produto e quantidade do form
     var produto_id = $("input[name='produto_id']").val() || "{{ produto.id }}";
@@ -595,6 +613,8 @@
     $("#modalcarrinho").modal("show");
 });
       </script>
+
+
 
 </html>
 

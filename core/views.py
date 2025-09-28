@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from menu.models import Produto, Category
-from core.utils import formatar_brl 
+from core.utils import formatar_brl, formatar_brl_noS
 from django.http import JsonResponse
 from orders.models import Ordem, OrdemItem
 from tenants.models import Tenant
@@ -11,6 +11,10 @@ import uuid
 def get_cart(request):
     return request.session.get('cart', {})
 
+def get_qdt_prod(request):
+    qtd_prod = get_cart(request)
+    return len(qtd_prod)
+
 def save_cart(request, cart):
     request.session['cart'] = cart
     request.session.modified = True
@@ -19,7 +23,7 @@ def get_categorias(request):
     return  Category.objects.filter(tenant=request.tenant)   
 
 def loja(request):
-
+   qtd_prd = get_qdt_prod(request)
    categoria_id = request.GET.get("categoria_id")
    produtos = Produto.objects.none()
 
@@ -47,20 +51,25 @@ def loja(request):
    # Pega o carrinho da sessão
    cart = request.session.get('cart', {})
    cart_count = sum(cart.values())
+    
+   
    context = {
          'produtos': produtos,
          'categorias': categorias,
-         'cart_count': cart_count,     
+         'cart_count': cart_count,
+         'qtd_prd': len(cart),     
     }
-
+   print(f"Total>>>>> {get_qdt_prod(request)}")
    return render(request, 'loja/index.html', context=context)
 
 
-
+#detalhe =====================================================================
 def detalhe(request,produto_id):
 
    produto = get_object_or_404(Produto, tenant=request.tenant, id=produto_id)
-   produto.price = formatar_brl(produto.price)
+   # formata para R$ 23,44
+   valor_br = formatar_brl(produto.price)
+   valor_br_semS = formatar_brl_noS(produto.price)
 
     # Pega o carrinho da sessão
    cart = get_cart(request)
@@ -72,17 +81,15 @@ def detalhe(request,produto_id):
    categorias = get_categorias(request)
   
    context = {
+      'valor_sem_S' : valor_br_semS,
+      'valor_br' : valor_br,
       'produto' : produto,
       'categorias' : categorias,
       'cart_count': cart_count,
+      'tot_prod_cart' : len(cart),
    }
    
    return render(request, 'loja/produto/detail.html', context)
-
-# Sacola =====================================================================
-
-
-################ CARRINHO #########################
 
 
 
@@ -112,6 +119,7 @@ def add_to_cart(request):
         print("=== DEBUG CARRINHO ===")
         #print(request.session.get('cart', {}))
         print(cart)
+
         for pid, qty in cart.items():
             try:
                 produto = Produto.objects.get(id=pid)
@@ -124,7 +132,7 @@ def add_to_cart(request):
         produto = Produto.objects.get(id=produto_id)
         subtotal = produto.price * cart[produto_id]
 
-         
+        qtd_pedidos = len(cart)         
 
         return JsonResponse({
             'status': 'ok',
@@ -134,21 +142,37 @@ def add_to_cart(request):
                 'quantidade': cart[produto_id],
                 'subtotal': f"{subtotal:.2f}"
             },
-            'cart_count': sum(cart.values())
+            'cart_count': sum(cart.values()),
+            'qtd_pedidos' : qtd_pedidos
         })
     return JsonResponse({'status': 'error'}, status=400)
 
 
 # Remover produto do carrinho ================================================
-def remove_from_cart(request):
-    if request.method == 'POST':
-        produto_id = str(request.POST.get('produto_id'))
-        cart = get_cart(request)
-        if produto_id in cart:
-            del cart[produto_id]
-        save_cart(request, cart)
-        return JsonResponse({'status': 'ok', 'cart': cart})
-    return JsonResponse({'status': 'error'}, status=400)
+
+def remover_do_carrinho_ajax(request):
+    if request.method == "POST":
+        produto_id = request.POST.get("produto_id")
+        carrinho = request.session.get("cart", {})
+
+        if str(produto_id) in carrinho:
+            del carrinho[str(produto_id)]
+            request.session["cart"] = carrinho
+            request.session.modified = True
+
+        # Recalcula total do carrinho
+        total = 0
+        for pid, qtd in carrinho.items():
+            p = get_object_or_404(Produto, id=pid)
+            total += p.price * qtd
+
+        return JsonResponse({
+            "status": "ok",
+            "cart_count": sum(carrinho.values()),
+            "total": total
+        })
+
+    return JsonResponse({"status": "erro", "mensagem": "Requisição inválida."})
 
 # Ver carrinho ================================================================
 def sacola(request):
@@ -169,12 +193,53 @@ def sacola(request):
    categorias = get_categorias(request)
    context = {
       'produtos': produtos,
-      'total': total,
+      'total': formatar_brl(total),
       'categorias':categorias,
       'cart_count':cart_count,
    }
  
    return render(request, 'loja/sacola.html', context)
+
+
+
+
+def atualizar_carrinho_ajax(request):
+    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
+        produto_id = request.POST.get("produto_id")
+        quantidade = request.POST.get("quantidade")
+
+        try:
+            quantidade = int(quantidade)
+            produto = get_object_or_404(Produto, id=produto_id)
+        except (ValueError, Produto.DoesNotExist):
+            return JsonResponse({"status": "erro", "mensagem": "Produto inválido."})
+
+        # Recupera carrinho da sessão
+        carrinho = request.session.get("cart", {})
+
+        if quantidade < 1:
+            # Remove produto do carrinho se quantidade for menor que 1
+            carrinho.pop(str(produto_id), None)
+        else:
+            # Atualiza quantidade
+            carrinho[str(produto_id)] = quantidade
+
+        request.session["cart"] = carrinho
+        request.session.modified = True
+
+        # Calcula subtotal do item e total do carrinho
+        item_subtotal = produto.price * quantidade if quantidade > 0 else 0
+        total = sum(get_object_or_404(Produto, id=pid).price * qtd for pid, qtd in carrinho.items())
+
+        return JsonResponse({
+            "status": "ok",
+            "cart_count": sum(carrinho.values()),
+            "item_subtotal": item_subtotal,
+            "total": total
+        })
+
+    return JsonResponse({"status": "erro", "mensagem": "Requisição inválida."})
+
 
 # Checkout ===================================================================
 def checkout(request):

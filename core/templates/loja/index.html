@@ -71,8 +71,8 @@
                   <div class="row align-middle hidden-sm hidden-xs">
                      <div class="col-md-3">
                         <div class="brand">
-                           <a href="index.html">
-                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="Tiger Burger "/>
+                           <a href="{% url 'loja' %}">
+                           <img src="{% static '_core/_uploads/cadastro/2023/02/generated-image-2.png' %}" alt="Tiger Burger "/>
                            <span>Tiger Burger <strong class="colored">.</strong></span>
                            </a>
                         </div>
@@ -93,7 +93,8 @@
                               </div>
                            </div>
                            <div class="col-md-3">
-                              <a class="holder-shop-bag pull-right" href="sacola.html" title="Minha sacola">
+                              {% if cart_count %}
+                              <a class="holder-shop-bag pull-right" href="{% url 'sacola' %}" title="Minha sacola">
                                  <span class="cash">Minha sacola</span>
                                  <div>
                                     <div class="shop-bag">
@@ -102,6 +103,17 @@
                                     </div>
                                  </div>
                               </a>
+                              {% else %}
+                                 <a class="holder-shop-bag pull-right" href="" title="Minha sacola">
+                                 <span class="cash">Minha sacola</span>
+                                 <div>
+                                    <div class="shop-bag">
+                                       <i class="lni lni-cart"></i>
+                                       <span class="counter">0</span>
+                                    </div>
+                                 </div>
+                              </a>
+                              {% endif %}
                            </div>
                         </div>
                      </div>
@@ -119,10 +131,10 @@
                      <div class="col-md-3 col-sm-3 col-xs-3">
                         <div class="user-info pull-right">
                            <div class="holder-shop-bag pull-right">
-                              <a href="sacola.html" title="Minha sacola">
+                              <a href="{% url 'sacola' %}" title="Minha sacola">
                                  <div class="shop-bag">
                                     <i class="lni lni-cart"></i>
-                                    <span class="counter">0</span>
+                                    <span class="counter">{{ cart_count }}</span>
                                  </div>
                               </a>
                            </div>
@@ -137,7 +149,7 @@
                      <div class="col-md-12">
                         <nav class="navbar pull-left">
                            <ul class="nav navbar-nav">
-                              <li class="active"><a href="index.html">Início</a></li>
+                              <li class="active"><a href="{% url 'loja' %}">Início</a></li>
                               <li class="dropdown">
                                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                  Categorias
@@ -180,10 +192,10 @@
                            <span>Meus Pedidos</span>
                         </div>
                         <div class="content">
-                           <a href="index.html"><i class="lni lni-shift-right"></i> Abertos</a>
+                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Abertos</a>
                         </div>
                         <div class="content">
-                           <a href="index.html"><i class="lni lni-shift-right"></i> Finalizados</a>
+                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Finalizados</a>
                         </div>
                      </div>
                      <div class="sidebar-info">
@@ -212,7 +224,7 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>47997277362</span>
+                              <span>21 990921092</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
@@ -289,7 +301,7 @@
                               <i class="lni lni-money-protection"></i> 
                               <span>
                               Pedido minímo:<br/>
-                              R$ 0,01							</span>
+                              R$ 20,00							</span>
                               <div class="clear"></div>
                            </div>
                            <div class="info-badge">
@@ -315,7 +327,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="search-bar-mobile visible-xs visible-sm">
-                           <form class="align-middle" action="https://demo6.lojazap.com/categoria" method="GET">
+                           <form class="align-middle" action="" method="GET">
                               <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
                               <input type="hidden" name="categoria" value=""/>
                               <button>
