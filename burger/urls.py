@@ -18,8 +18,18 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import include
-from core.views import loja, detalhe, add_to_cart, sacola, checkout, remover_do_carrinho_ajax, atualizar_carrinho_ajax
+from core.views import (
+    loja,
+    detalhe,
+    add_to_cart,
+    sacola,
+    checkout,
+    remover_do_carrinho_ajax,
+    atualizar_carrinho_ajax,
+    checkout_sucesso,
+)
 
+from orders.views import pedido_delivery, cadastro_form
 
 
 urlpatterns = [
@@ -31,6 +41,9 @@ urlpatterns = [
     path('loja/checkout', checkout, name='finalizar_pedido'),
     path('carrinho/remover-ajax/', remover_do_carrinho_ajax, name='remover_do_carrinho_ajax'),
     path('atualizar-carrinho/', atualizar_carrinho_ajax, name='atualizar_carrinho_ajax'),
+    path('pedido_delivery/', pedido_delivery, name='pedido_delivery'),
+    path('cadastro_form',cadastro_form, name='cadastro_form'),
+    path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
 ]
 

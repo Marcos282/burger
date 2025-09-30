@@ -71,7 +71,7 @@
                   <div class="row align-middle hidden-sm hidden-xs">
                      <div class="col-md-3">
                         <div class="brand">
-                           <a href="../index.html">
+                           <a href="{% url 'loja' %}">
                            <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="Tiger Burger "/>
                            <span>Tiger Burger <strong class="colored">.</strong></span>
                            </a>
@@ -119,10 +119,10 @@
                      <div class="col-md-3 col-sm-3 col-xs-3">
                         <div class="user-info pull-right">
                            <div class="holder-shop-bag pull-right">
-                              <a href="../sacola.html" title="Minha sacola">
+                              <a href="{% url 'sacola' %}" title="Minha sacola">
                                  <div class="shop-bag">
                                     <i class="lni lni-cart"></i>
-                                    <span class="counter">0</span>
+                                    <span class="counter">{{ cart_count }}</span>
                                  </div>
                               </a>
                            </div>
@@ -137,7 +137,7 @@
                      <div class="col-md-12">
                         <nav class="navbar pull-left">
                            <ul class="nav navbar-nav">
-                              <li class="active"><a href="../index.html">Início</a></li>
+                              <li class="active"><a href="{% url 'loja' %}">Início</a></li>
                               <li class="dropdown">
                                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                  Categorias
@@ -252,7 +252,7 @@
                <div class="locked-bar visible-xs visible-sm">
                   <div class="avatar">
                      <div class="holder">
-                        <a href="../index.html">
+                        <a href="{% url 'loja' %}">
                         <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
                         </a>
                      </div>
@@ -269,7 +269,7 @@
                         </div>
                         <div class="bread-box">
                            <div class="bread">
-                              <a href="../index.html"><i class="lni lni-home"></i></a>
+                              <a href="{% url 'loja' %}"><i class="lni lni-home"></i></a>
                               <span>/</span>
                               <a href="../categoria/65699.html">Categorias</a>
                               <span>/</span>

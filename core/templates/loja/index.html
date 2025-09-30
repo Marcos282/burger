@@ -5,10 +5,10 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>Tiger Burger  - lojazap</title>
+      <title>{{ config.nome_loja }}</title>
       <meta name="description" content="O melhor hambúrguer de Itajaí ">
       <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="Tiger Burger  - lojazap">
+      <meta property="og:title" content="{{ config.nome_loja }}">
       <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
       <link rel="shortcut icon" href="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
@@ -50,7 +50,7 @@
                            </div>
                            <div class="info-badge">
                               <i class="lni lni-user"></i> 
-                              <span>Olá </span>
+                              <span>Olá {{nome_cliente}}</span>
                               <div class="clear"></div>
                            </div>
                         </div>
@@ -192,7 +192,7 @@
                            <span>Meus Pedidos</span>
                         </div>
                         <div class="content">
-                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Abertos</a>
+                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Abertos [{{ ordens_pendentes }}]</a>
                         </div>
                         <div class="content">
                            <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Finalizados</a>
@@ -268,7 +268,7 @@
                <div class="grudado">
                   <div class="avatar">
                      <div class="holder">
-                        <a href="index.html">
+                        <a href="{% url 'loja' %}">
                         <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="Tiger Burger " title="Tiger Burger "/>
                         </a>
                      </div>
@@ -289,7 +289,7 @@
                      <div class="col-md-12">
                         <div align="center">
                            <span>
-                           <button class="btn btn-success btn-sm"><i class="lni lni-restaurant" style="color:#FFFFFF"></i> Aberto para Pedidos</button>
+                           <button class="btn btn-success btn-sm"><i class="lni lni-restaurant" style="color:#FFFFFF"></i> {% if aberto %} Aberto para Pedidos {% else %} Fechado para Pedidos {% endif %}  </button>
                            </span>
                         </div>
                      </div>

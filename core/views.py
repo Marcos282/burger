@@ -1,9 +1,11 @@
+from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from menu.models import Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS
 from django.http import JsonResponse
 from orders.models import Ordem, OrdemItem
-from tenants.models import Tenant
+from customers.models import Cliente
+from tenants.models import Tenant, TenantSettings
 import uuid
 
 
@@ -52,12 +54,37 @@ def loja(request):
    cart = request.session.get('cart', {})
    cart_count = sum(cart.values())
     
-   
+   telefone_cookie = request.COOKIES.get('telefone_cliente', '')
+   nome_cliente = ''
+   ordens_pendentes = 0
+
+   if telefone_cookie:
+        try:
+            cliente = Cliente.objects.get(telefone=telefone_cookie)
+            nome_cliente = cliente.nome
+            ordens_pendentes = cliente.ordem_set.filter(completo=False).count()
+        except Cliente.DoesNotExist:
+            nome_cliente = ''
+            ordens_pendentes = 0
+
+    # Carrega configurações do tenant atual
+   config = TenantSettings.load(tenant=request.tenant)
+
+   if config.is_open_now():
+    aberto = True
+   else:
+    aberto = False
+
    context = {
-         'produtos': produtos,
-         'categorias': categorias,
-         'cart_count': cart_count,
-         'qtd_prd': len(cart),     
+       'produtos': produtos,
+       'categorias': categorias,
+       'cart_count': cart_count,
+       'qtd_prd': len(cart),
+       'telefone_cookie': telefone_cookie,
+       'nome_cliente': nome_cliente,
+       'ordens_pendentes': ordens_pendentes,
+       'config': config,
+       'aberto': aberto,
     }
    print(f"Total>>>>> {get_qdt_prod(request)}")
    return render(request, 'loja/index.html', context=context)
@@ -273,3 +300,39 @@ def checkout(request):
     
     # Se for GET, mostrar formulário de checkout (nome, email, endereço)
     return render(request, 'loja/checkout.html')
+
+# Pedido Delivery ##########################################################
+
+
+
+from django.utils.html import escape
+import urllib.parse
+
+def checkout_sucesso(request):
+    # Recupera dados do último pedido salvo na sessão (ou personalize conforme sua lógica)
+    pedido_info = request.session.get('last_pedido_info')
+    if not pedido_info:
+        return HttpResponse("<h1>Pedido finalizado</h1><p>Não foi possível montar o link do WhatsApp.</p>")
+
+    # Monta mensagem para o WhatsApp
+    mensagem = f"*{pedido_info.get('loja', 'DUCK BURGER')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
+    for item in pedido_info.get('produtos', []):
+        mensagem += f"*{item['quantidade']} x* #{item['referencia']} {item['nome']}\n*Valor:* R$ {item['valor']:.2f}\n------\n"
+    mensagem += f"*Subtotal:* R$ {pedido_info.get('subtotal',0):.2f}\n*Entrega:* {pedido_info.get('entrega','')}\n------\n*Forma de pagamento:*\n{pedido_info.get('pagamento','')}\n*Total:* R$ {pedido_info.get('total',0):.2f}\n------\nhttps://site.cliente.com"
+
+    mensagem_url = urllib.parse.quote(mensagem)
+    telefone = pedido_info.get('telefone_loja','')
+
+    link_whatsapp = f"https://api.whatsapp.com/send/?phone={telefone}&text={mensagem_url}&type=phone_number&app_absent=0"
+
+    html = f"""
+    <html><head>
+    <meta http-equiv='refresh' content='5;url={link_whatsapp}' />
+    <style>body{{text-align:center;font-family:sans-serif;}}</style>
+    </head><body>
+    <h1>Pedido finalizado com sucesso!</h1>
+    <p>Você será redirecionado para o WhatsApp em 5 segundos...</p>
+    <a href='{link_whatsapp}' target='_blank'>Clique aqui se não for redirecionado automaticamente</a>
+    </body></html>
+    """
+    return HttpResponse(html)

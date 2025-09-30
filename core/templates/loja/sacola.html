@@ -390,8 +390,10 @@
                         <div class="subtotal"><strong>Subtotal:</strong> <span>{{ total }}</span></div>
                         </div>
                         <div class="clear visible-xs visible-sm"><br/></div>
+                        
                         <div class="col-md-4">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_delivery">
+                        <form id="the_form" method="POST" action="{% url 'cadastro_form' %}">
+                        {% csrf_token %}
                         <input class="fake-hidden" name="pedido_minimo" value=""/>
                         <button class="botao-acao"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></button>
                         </form>

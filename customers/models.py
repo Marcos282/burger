@@ -1,6 +1,7 @@
 #customers/models.py
 from django.db import models
 from tenants.models import Tenant
+from django.core.validators import RegexValidator
 
 
 class Cliente(models.Model):
@@ -39,6 +40,15 @@ class EnderecoEntrega(models.Model):
     referencia = models.CharField(max_length=200, null=False)
     cidade = models.CharField(max_length=200, null=False)
     dataHora = models.DateTimeField(auto_now_add=True)
+    cep = models.CharField(
+    max_length=10,
+    default="00000000",
+    validators=[RegexValidator(regex='^[0-9-]+$', message='Apenas números e hífen são permitidos.')]
+    )
+    endereco_bairro = models.CharField(max_length=100, null=True, blank=True)
+    endereco_numero = models.CharField(max_length=20, null=True, blank=True)
+    endereco_complemento = models.CharField(max_length=100, null=True, blank=True)
+
 
     def __str__(self):
         return self.endereco

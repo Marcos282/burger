@@ -12,6 +12,7 @@ class Ordem(models.Model):
     dataHora = models.DateTimeField(auto_now_add=True)
     completo = models.BooleanField(default=False)
     transacao_id = models.CharField(max_length=100, null=True)
+    formade_pagamento = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return str(self.id)
@@ -33,6 +34,7 @@ class OrdemItem(models.Model):
     ordem = models.ForeignKey(Ordem, on_delete=models.SET_NULL, null=True)
     quantidade = models.IntegerField(default=0, null=True, blank=True)
     dataHora = models.DateTimeField(auto_now_add=True)
+    observacao = models.CharField(max_length=200, null=True, blank=True)
 
     @property
     def get_total(self):
