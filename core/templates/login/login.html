@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>lojazap - Login</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+	    <meta property="og:title" content="Login - lojazap">
+	    <meta property="og:description" content="">
+	    <meta property="og:image" content="https://lojazap.com/_core/_cdn/img/favicon.png">
+		<link rel="shortcut icon" href="https://lojazap.com/_core/_cdn/img/favicon.png"/>
+		<link rel="manifest" href="https://lojazap.com/login/manifest.json" />
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/class.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/forms.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/typography.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/template.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/theme.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/default.css">
+		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/lineicons/css/LineIcons.css">
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+		<!-- <link rel="stylesheet" href="https://lojazap.com/_core/_cdn/fonts/style.min.css"> -->
+			</head>
+	<body>
+	    
+	    <script>
+// This is the service worker with the Cache-first network
+// Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
+// Check compatibility for the browser we're running this in
+if ("serviceWorker" in navigator) {
+ if (navigator.serviceWorker.controller) {
+ console.log("[PWA Builder] active service worker found, no need to register");
+ } else {
+ // Register the service worker
+ navigator.serviceWorker
+ .register("https://lojazap.com/login/pwabuilder-sw.js", {
+ scope: "./"
+ })
+ .then(function (reg) {
+ console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+ });
+ }
+}
+</script>
+
+		
+		<div class="bg-gray fullfit">
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-md-12">
+
+						<div class="login">
+
+							<form method="POST" action="https://lojazap.com/login/index.php?redirect=">
+
+								<div class="container">
+
+									<div class="row align-center">
+
+										<!-- Login Box -->
+
+											<div class="login-box box-white">
+
+												<div class="row">
+
+													<div class="col-md-12">
+
+														<div class="brand brand-login text-center">
+															<img src="https://lojazap.com/login/img/258x258.png"/>
+														</div>
+
+													</div>
+
+												</div>
+
+												
+												
+												<div class="row">
+
+													<div class="col-md-12">
+
+														<div class="form-field form-field-icon form-field-text">
+
+															<i class="form-icon lni lni-user"></i>
+															<input type="text" name="email" placeholder="E-mail" value=""/>
+
+														</div>
+
+													</div>
+
+												</div>
+
+												<div class="row">
+
+													<div class="col-md-12">
+
+														<div class="form-field form-field-icon form-field-password">
+
+															<i class="form-icon lni lni-lock"></i>
+															<input type="password" name="pass" placeholder="Senha"/>
+
+														</div>
+
+													</div>
+
+												</div>
+
+												<div class="row">
+
+													<div class="col-md-8">
+
+														<div class="form-field form-field-icon form-field-checkbox">
+
+															<input type="checkbox" name="keepalive" value="1" checked>
+															<span>Mantenha-me conectado</span>
+
+														</div>
+
+													</div>
+
+													<div class="col-md-4">
+
+														<div class="form-field form-field-icon form-field-submit">
+															<button>
+																<span>Entrar</span>
+																<i class="lni lni-chevron-right"></i>
+															</button>
+
+														</div>
+
+													</div>
+
+												</div>
+
+												<div class="row">
+
+													<div class="col-md-12">
+
+														<div class="forgetpass">
+
+															<a href="https://lojazap.com/esqueci" class="text-center"><i class="lni lni-question-circle"></i> Esqueci minha senha?</a>
+
+															<a href="https://lojazap.com" class="text-center"><i class="lni lni-cart"></i> Voltar</a>
+
+															<!-- <a href="https://lojazap.com/comece" class="text-center"><i class="lni lni-rocket"></i> Quero vender</a> -->
+
+														</div>
+
+													</div>
+
+												</div>
+
+
+											</div>
+
+										<!-- / Login Box -->
+
+									</div>
+
+								</div>
+
+							</form>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+		
+	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"f8178609612d4a0fa8656f39eac0fd7b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+<script src="https://lojazap.com/_core/_cdn/jquery/js/jquery.min.js"></script>
+<script src="https://lojazap.com/_core/_cdn/panel/js/template.js"></script>
+
+
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Entrar</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Entrar</button>
+</form>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+<p>Não tem conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
+{% endblock %}
+
+
+

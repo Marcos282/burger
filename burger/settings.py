@@ -1,3 +1,5 @@
+# Custom user model
+AUTH_USER_MODEL = 'customers.User'
 """
 Django settings for burger project.
 

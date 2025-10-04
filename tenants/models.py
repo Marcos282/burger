@@ -27,8 +27,7 @@ class SingletonModel(models.Model):
 
 class Tenant(models.Model):
     name = models.CharField(max_length=100)
-    subdomain = models.CharField(max_length=50, unique=True)
-    whatsapp = models.CharField(max_length=20)
+    subdomain = models.CharField(max_length=50, unique=True)    
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -36,6 +35,7 @@ class Tenant(models.Model):
 
 # Configurações específicas do Tenant, como tema, cores, etc. É um Singleton por Tenant.
 class TenantSettings(models.Model):
+    
     
     # Horários de funcionamento (exemplo: 08:00 às 18:00)
     horario_abre = models.TimeField(default="08:00")
@@ -53,6 +53,14 @@ class TenantSettings(models.Model):
     support_email = models.EmailField(blank=True, null=True)
     nome_loja = models.CharField(max_length=100, default='Minha Loja')
     descricao_loja = models.TextField(blank=True, null=True)
+    whatsapp = models.CharField(max_length=20, default='21976857525')
+    taxa_entrega = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    endereco = models.CharField(max_length=200, blank=True, null=True)
+    numero_endereco = models.CharField(max_length=20, blank=True, null=True)
+    bairro = models.CharField(max_length=100, blank=True, null=True)
+    cidade = models.CharField(max_length=100, blank=True, null=True)
+    estado = models.CharField(max_length=100, blank=True, null=True)
+    cep = models.CharField(max_length=20, blank=True, null=True)    
 
     # método para verificar se a loja está aberta em um dado momento
     def is_open_now(self, dt=None):
@@ -74,6 +82,32 @@ class TenantSettings(models.Model):
         # Considera funcionamento virando a meia-noite (ex: 22:00 às 06:00)
         else:
             return hora_atual >= self.horario_abre or hora_atual < self.horario_fecha
+
+    def get_hora_fechamento_hoje(self, dt=None):
+        """
+        Retorna um objeto datetime.datetime representando até que horas a loja estará aberta HOJE.
+        Se a loja fecha depois da meia-noite, retorna o horário de fechamento no dia seguinte.
+        Se hoje não é dia de funcionamento, retorna None.
+        """
+        from datetime import datetime, timedelta
+        if dt is None:
+            dt = datetime.now()
+        dia_semana = dt.weekday()  # 0=segunda, 6=domingo
+        dias = [int(x) for x in self.dias_funcionamento.split(',') if x.strip().isdigit()]
+        if dia_semana not in dias:
+            return 'Não abre hoje'
+        data_base = dt.date()
+        # funcionamento normal (abre < fecha)
+        if self.horario_abre < self.horario_fecha:
+            return datetime.combine(data_base, self.horario_fecha)
+        # funcionamento atravessa a meia-noite (ex: 22:00 às 06:00)
+        else:
+            # Se já passou da meia-noite, o fechamento é amanhã
+            if dt.time() < self.horario_fecha:
+                data_base = data_base
+            else:
+                data_base = data_base + timedelta(days=1)
+            return datetime.combine(data_base, self.horario_fecha)
 
     @classmethod
     def load(cls, tenant):

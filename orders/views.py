@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
-
+from django.utils import timezone
 from customers.models import Cliente, EnderecoEntrega
 from orders.models import Ordem, OrdemItem
 from menu.models import Produto
-from tenants.models import Tenant
+from tenants.models import Tenant, TenantSettings
 
 def cadastro_form(request):
     # Recupera o tenant (ajuste conforme sua lógica de multi-tenancy)
@@ -34,21 +34,19 @@ def cadastro_form(request):
             except Produto.DoesNotExist:
                 continue
 
-    # Exemplo de taxa de entrega fixa (ajuste conforme sua regra)
-    taxa_entrega = 0.0
-    total = subtotal + taxa_entrega
+    config = TenantSettings.load(tenant=request.tenant)
+    taxa_entrega = config.taxa_entrega if config and config.taxa_entrega else 0.0
 
-    telefone_cookie = request.COOKIES.get('telefone_cliente', '')
+    total = float(subtotal) + float(taxa_entrega)
+
     context = {
         'produtos_carrinho': produtos_carrinho,
         'subtotal': subtotal,
         'taxa_entrega': taxa_entrega,
         'total': total,
         'total_itens': total_itens,
-        'telefone_cliente': telefone_cookie,
     }
     return render(request, 'loja/pedidodelivery.html', context)
-
 
 
 @csrf_exempt  # Desabilita a verificação CSRF (não é o ideal em produção, melhor manter o {% csrf_token %})
@@ -136,14 +134,20 @@ def pedido_delivery(request):
                 'valor': valor,
             })
             subtotal += valor
-        
-        # Obtém o telefone da loja
-        telefone_loja = get_object_or_404(Tenant, subdomain=tenant).whatsapp
 
+
+        # Obtém as configurações do tenant
+        config = TenantSettings.load(tenant=request.tenant)
+        telefone_loja = config.whatsapp
+
+        taxa_entrega = config.taxa_entrega if config and config.taxa_entrega else 0.0
+        total = float(subtotal) + float(taxa_entrega)
+        
+        datahora_local = timezone.localtime(ordem.dataHora)
         pedido_info = {
-            'loja': 'DUCK BURGER',
+            'loja': config.nome_loja,
             'pedido_id': ordem.id,
-            'datahora': ordem.dataHora.strftime('%d/%m/%Y às %H:%M'),
+            'datahora': datahora_local.strftime('%d/%m/%Y às %H:%M'),
             'nome': cliente.nome,
             'whatsapp': cliente.telefone,
             'cep': endereco_obj.cep,
@@ -155,9 +159,8 @@ def pedido_delivery(request):
             'subtotal': subtotal,
             'entrega': endereco_obj.cidade,
             'pagamento': request.POST.get('forma_pagamento',''),
-            'total': subtotal,  # ajuste se tiver taxa de entrega
+            'total': total,  # ajuste se tiver taxa de entrega
             'telefone_loja': telefone_loja,
-        
         }
         request.session['last_pedido_info'] = pedido_info
 

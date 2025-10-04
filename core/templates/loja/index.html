@@ -50,7 +50,7 @@
                            </div>
                            <div class="info-badge">
                               <i class="lni lni-user"></i> 
-                              <span>Olá {{nome_cliente}}</span>
+                              <span>Olá {{ dados_cliente.nome}}</span>
                               <div class="clear"></div>
                            </div>
                         </div>
@@ -204,7 +204,7 @@
                            <span>Funcionamento</span>
                         </div>
                         <div class="content">
-                           Aberto 24H					
+                           {{ hora_fechamento }}					
                         </div>
                      </div>
                      <div class="sidebar-info">
@@ -213,7 +213,7 @@
                            <span>Endereço</span>
                         </div>
                         <div class="content">
-                           1250, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/>					
+                           {{ config.endereco }} <br/>Bairro: {{ config.bairro }}, CEP: {{ config.cep }}, {{ config.cidade }}/{{ config.estado }}<br/>
                         </div>
                      </div>
                      <div class="sidebar-info">
@@ -224,15 +224,15 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>21 990921092</span>
+                              <span>{{ config.whatsapp }}</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
-                              <span><a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="740701041b06001134181b1e150e15045a171b19">[email&#160;protected]</a></span>
+                          <span><a href="mailto:{{ config.support_email }}">{{ config.support_email }}</a></span>
                            </div>
                         </div>
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
                         </div>
                      </div>
                   </div>

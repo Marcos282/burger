@@ -58,22 +58,40 @@ def loja(request):
    nome_cliente = ''
    ordens_pendentes = 0
 
+    # Verifica se o cookie existe e tenta pegar o cliente
    if telefone_cookie:
-        try:
-            cliente = Cliente.objects.get(telefone=telefone_cookie)
-            nome_cliente = cliente.nome
-            ordens_pendentes = cliente.ordem_set.filter(completo=False).count()
-        except Cliente.DoesNotExist:
-            nome_cliente = ''
-            ordens_pendentes = 0
+       try:
+           if Cliente.objects.filter(telefone=telefone_cookie).exists():
+               cliente = Cliente.objects.get(telefone=telefone_cookie)
+               ordens_pendentes = cliente.ordem_set.filter(completo=False).count()
+           else:                
+               ordens_pendentes = 0
+               cliente = None
+       except Cliente.DoesNotExist:            
+           ordens_pendentes = 0
+           cliente = None
+   else:            
+       ordens_pendentes = 0
+       cliente = None
 
-    # Carrega configurações do tenant atual
-   config = TenantSettings.load(tenant=request.tenant)
-
-   if config.is_open_now():
-    aberto = True
+   # Verifica se existe TenantSettings para o tenant
+   if TenantSettings.objects.filter(tenant=request.tenant).exists():
+       config = TenantSettings.load(tenant=request.tenant)
+       if config.is_open_now():
+           aberto = True
+       else:
+           aberto = False
+       # Pega o horário de fechamento para hoje
+       hora_fechamento = config.get_hora_fechamento_hoje()
+       if hora_fechamento:
+           hora_fechamento = hora_fechamento.strftime('%H:%M')
+           hora_fechamento = f"Fecha hoje às {hora_fechamento}h"
+       else:
+           hora_fechamento = 'Não abre hoje'
    else:
-    aberto = False
+       config = None
+       aberto = False
+       hora_fechamento = 'Configuração pendende'
 
    context = {
        'produtos': produtos,
@@ -81,10 +99,11 @@ def loja(request):
        'cart_count': cart_count,
        'qtd_prd': len(cart),
        'telefone_cookie': telefone_cookie,
-       'nome_cliente': nome_cliente,
+       'dados_cliente': cliente,
        'ordens_pendentes': ordens_pendentes,
        'config': config,
        'aberto': aberto,
+       'hora_fechamento': hora_fechamento,
     }
    print(f"Total>>>>> {get_qdt_prod(request)}")
    return render(request, 'loja/index.html', context=context)
@@ -314,8 +333,10 @@ def checkout_sucesso(request):
     if not pedido_info:
         return HttpResponse("<h1>Pedido finalizado</h1><p>Não foi possível montar o link do WhatsApp.</p>")
 
+    config = TenantSettings.load(tenant=request.tenant)
+
     # Monta mensagem para o WhatsApp
-    mensagem = f"*{pedido_info.get('loja', 'DUCK BURGER')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
+    mensagem = f"*{pedido_info.get('loja', '')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
     for item in pedido_info.get('produtos', []):
         mensagem += f"*{item['quantidade']} x* #{item['referencia']} {item['nome']}\n*Valor:* R$ {item['valor']:.2f}\n------\n"
     mensagem += f"*Subtotal:* R$ {pedido_info.get('subtotal',0):.2f}\n*Entrega:* {pedido_info.get('entrega','')}\n------\n*Forma de pagamento:*\n{pedido_info.get('pagamento','')}\n*Total:* R$ {pedido_info.get('total',0):.2f}\n------\nhttps://site.cliente.com"

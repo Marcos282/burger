@@ -1,3 +1,56 @@
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from tenants.models import Tenant
+
+# --- User customizado para multi-tenant ---
+class UserManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('O campo username é obrigatório')
+        # Cria ou recupera o Tenant com subdomain igual ao username
+        tenant, _ = Tenant.objects.get_or_create(subdomain=username, defaults={'name': username})
+        user = self.model(username=username, tenant=tenant, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(username, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+        db_table = 'customers_user'
+    username = models.CharField(max_length=150, unique=True)
+    tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
+    email = models.EmailField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
+
+    def save(self, *args, **kwargs):
+        # Garante que o Tenant existe e está sincronizado
+        if not self.tenant_id:
+            tenant, _ = Tenant.objects.get_or_create(subdomain=self.username, defaults={'name': self.username})
+            self.tenant = tenant
+        else:
+            # Atualiza o subdomain do tenant se username mudar 
+            if self.tenant.subdomain != self.username:
+                self.tenant.subdomain = self.username
+                self.tenant.name = self.username
+                self.tenant.save()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.username} ({self.tenant.subdomain})'
 #customers/models.py
 from django.db import models
 from tenants.models import Tenant
