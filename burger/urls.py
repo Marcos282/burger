@@ -1,4 +1,4 @@
-from customers.views_auth import login_view, register_view, painel_view, logout_view
+from customers.views_auth import login_view, register_view, painel_view, logout_view, painel_home
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
@@ -30,7 +30,8 @@ urlpatterns = [
     path('cadastro_form',cadastro_form, name='cadastro_form'),
     path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('login/', login_view, name='login'),
-    path('painel/', painel_view, name='painel'),
+    path('painel/pedidos', painel_view, name='painel_pedidos'),
+    path('painel/home/', painel_home, name='painel_home'),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz

@@ -1,0 +1,76 @@
+{% load static %}
+<div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
+   <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+      <!--begin::Details-->
+      <div class="d-flex align-items-center flex-wrap mr-2">
+         <!--begin::Title-->
+         <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
+            <a href="{% url 'painel_home' %}">
+            <span class="svg-icon svg-icon-primary svg-icon-2x align-middle" style="vertical-align: middle;">
+               <!--begin::Svg Icon | path:assets/media/svg/icons/Home/House.svg-->
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3L2 12h3v7a1 1 0 001 1h4a1 1 0 001-1v-4h2v4a1 1 0 001 1h4a1 1 0 001-1v-7h3L12 3z" fill="#3699ff"/>
+               </svg>
+               <!--end::Svg Icon-->
+            </span>
+            </a>
+            <!--begin::separador-->
+            <div class="subheader-separator subheader-separator-ver bg-gray-200" style="display: inline-block; vertical-align: middle; margin: 0 2px 0 0; height: 24px;"></div>
+            <span class="align-middle">{{ localizacao }}</span>
+         </h5>
+         <!--end::Title-->
+         <!--begin::Search Form-->
+         <!--end::Search Form-->
+         <!--begin::Group Actions-->
+         <div class="d-flex- align-items-center flex-wrap mr-2 d-none" id="kt_subheader_group_actions">
+            <div class="text-dark-50 font-weight-bold">
+               <span id="kt_subheader_group_selected_rows">23</span> Selected:
+            </div>
+            <div class="d-flex ml-6">
+               <div class="dropdown mr-2" id="kt_subheader_group_actions_status_change">
+                  <button type="button" class="btn btn-light-primary font-weight-bolder btn-sm dropdown-toggle" data-toggle="dropdown">
+                  Update Status
+                  </button>
+                  <div class="dropdown-menu p-0 m-0 dropdown-menu-sm">
+                     <ul class="navi navi-hover pt-3 pb-4">
+                        <li class="navi-header font-weight-bolder text-uppercase text-primary font-size-lg pb-0">
+                           Change status to:
+                        </li>
+                        <li class="navi-item">
+                           <a href="#" class="navi-link" data-toggle="status-change" data-status="1">
+                           <span class="navi-text"><span class="label label-light-success label-inline font-weight-bold">Approved</span></span>
+                           </a>
+                        </li>
+                        <li class="navi-item">
+                           <a href="#" class="navi-link" data-toggle="status-change" data-status="2">
+                           <span class="navi-text"><span class="label label-light-danger label-inline font-weight-bold">Rejected</span></span>
+                           </a>
+                        </li>
+                        <li class="navi-item">
+                           <a href="#" class="navi-link" data-toggle="status-change" data-status="3">
+                           <span class="navi-text"><span class="label label-light-warning label-inline font-weight-bold">Pending</span></span>
+                           </a>
+                        </li>
+                        <li class="navi-item">
+                           <a href="#" class="navi-link" data-toggle="status-change" data-status="4">
+                           <span class="navi-text"><span class="label label-light-info label-inline font-weight-bold">On Hold</span></span>
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+               <button class="btn btn-light-success font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_fetch" data-toggle="modal" data-target="#kt_datatable_records_fetch_modal">
+               Fetch Selected
+               </button>
+               <button class="btn btn-light-danger font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_delete_all">
+               Delete All
+               </button>
+            </div>
+         </div>
+         <!--end::Group Actions-->
+      </div>
+      <!--end::Details-->
+      <!--begin::Toolbar-->
+      <!--end::Toolbar-->
+   </div>
+</div>

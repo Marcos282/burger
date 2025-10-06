@@ -68,30 +68,28 @@ def pedido_delivery(request):
         # Aqui estou pegando o primeiro tenant só para exemplo.
         # Depois você pode trocar para buscar pelo subdomínio ou usuário logado.
         tenant = request.tenant
-        
+        # Obtém as configurações do tenant
+        config = TenantSettings.load(tenant=request.tenant)
         # 🔹 2. Pegar os dados do cliente vindos do form
         nome = request.POST.get("nome") or "Cliente sem nome"  # <- valor default
         whatsapp = request.POST.get("whatsapp") or "0000000000" # <- sempre precisa de algo único
         
-        # 🔹 3. Criar ou recuperar cliente existente
-        # - Usa `telefone` como identificador único
-        # - Se já existe, retorna o objeto existente
-        # - Se não existe, cria com defaults
-        cliente, created = Cliente.objects.get_or_create(
+        # 🔹 3. Sempre criar um novo cliente, mesmo se o telefone já existir
+        cliente = Cliente.objects.create(
             tenant=tenant,
             telefone=whatsapp,
-            defaults={
-                "nome": nome,
-                "email": f"{whatsapp}@fake.com",     # Gera um email fake só pra preencher
-                "senha": get_random_string(12),      # Gera senha aleatória
-            },
+            nome=nome,
+            email=f"{whatsapp}@fake.com",
+            senha=get_random_string(12),
         )
 
         # 🔹 4. Criar ordem (pedido principal)
         ordem = Ordem.objects.create(
             tenant=tenant,
             cliente=cliente,
-            completo=False  # ainda não finalizado/pago
+            completo=False,  # ainda não finalizado/pago
+            tx_entrega=config.taxa_entrega if config and config.taxa_entrega else 0.00,
+            valor_total=0.00
         )
 
         # 🔹 5. Recuperar carrinho da session
@@ -105,8 +103,15 @@ def pedido_delivery(request):
                 tenant=tenant,
                 ordem=ordem,
                 produto=produto,
-                quantidade=qtd
+                quantidade=qtd,
+                preco_unitario=produto.price # salva o preço atual do produto
             )
+
+        # Após criar os itens, calcule o valor_total histórico
+        itens = ordem.ordemitem_set.all()
+        valor_total = sum([item.preco_unitario * item.quantidade for item in itens])
+        ordem.valor_total = valor_total
+        ordem.save()
 
         # 🔹 6. Criar endereço de entrega
         endereco_obj = EnderecoEntrega.objects.create(
@@ -135,9 +140,7 @@ def pedido_delivery(request):
             })
             subtotal += valor
 
-
-        # Obtém as configurações do tenant
-        config = TenantSettings.load(tenant=request.tenant)
+        
         telefone_loja = config.whatsapp
 
         taxa_entrega = config.taxa_entrega if config and config.taxa_entrega else 0.0

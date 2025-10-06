@@ -62,7 +62,7 @@ def loja(request):
    if telefone_cookie:
        try:
            if Cliente.objects.filter(telefone=telefone_cookie).exists():
-               cliente = Cliente.objects.get(telefone=telefone_cookie)
+               cliente = Cliente.objects.filter(telefone=telefone_cookie).first()
                ordens_pendentes = cliente.ordem_set.filter(completo=False).count()
            else:                
                ordens_pendentes = 0
@@ -106,6 +106,7 @@ def loja(request):
        'hora_fechamento': hora_fechamento,
     }
    print(f"Total>>>>> {get_qdt_prod(request)}")
+   print(f"Cliente>>>>> {telefone_cookie}")
    return render(request, 'loja/index.html', context=context)
 
 
