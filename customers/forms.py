@@ -1,5 +1,7 @@
+#customers/forms.py
 from django import forms
 from customers.models import User
+from menu.models import Category    
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
@@ -26,3 +28,15 @@ class UserCreationForm(forms.ModelForm):
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class CategoryModelForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'exibir', 'status', 'ordem']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da Categoria'}),
+            'exibir': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'ordem': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ordem de Exibição'}),
+        }

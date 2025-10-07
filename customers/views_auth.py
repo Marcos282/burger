@@ -1,10 +1,16 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+from django.views.decorators.http import require_POST
 from itertools import count
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, HttpResponse
-from .forms import UserLoginForm, UserCreationForm
+from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
+from menu.models import Category, Produto, ProdutoImagem
 from core.utils import formatar_brl
+from django.contrib import messages
 
 # Função para contar itens do cliente
 def qt_items_cliente(request):
@@ -38,7 +44,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('painel_pedidos')  
+            return redirect('painel_home')  
         else:
             error = 'Desculpe, parece que há alguns erros detectados, por favor tente novamente.'
     #return render(request, 'login/login.html', {'form': form, 'error': error})
@@ -119,7 +125,8 @@ def painel_view(request):
         return render(request, 'painel/index.html', context)
     else:
         return redirect('login')
-    
+
+
 def painel_home(request):
     if request.user.is_authenticated:
         print('Sessão do usuário:', dict(request.session))
@@ -137,6 +144,196 @@ def painel_home(request):
     else:
         return redirect('login')
 
+
+def painel_categorias(request): 
+    if request.user.is_authenticated:
+        print('Sessão do usuário:', dict(request.session))
+        user = request.user
+        print('Dados do usuário logado:', dict(username=user.username, password=user.password, email=user.email, id=user.id))                        
+        localizacao = "Categorias"
+        
+        categoria = Category.objects.select_related('tenant').filter(tenant=user.tenant).order_by('ordem')
+        qt_categoria = Category.objects.filter(tenant=user.tenant).count()
+
+        context = {
+            'localizacao': localizacao,
+            'user': user,
+            'qt_items_cliente': qt_items_cliente(request),
+            'categoria': categoria,
+            'qt_categoria': qt_categoria
+        }
+        return render(request, 'painel/categorias.html', context)
+    else:
+        return redirect('login')
+
+
+def painel_categorias_add(request): 
+    if request.user.is_authenticated:
+        print('Sessão do usuário:', dict(request.session))
+        user = request.user
+        print('Dados do usuário logado:', dict(username=user.username, password=user.password, email=user.email, id=user.id))                        
+        localizacao = "Adicionar Categoria"
+        
+        show_success_modal = False
+        if str(request.method) == 'POST':
+            form = CategoryModelForm(request.POST)
+            if form.is_valid():
+                nova_categoria = form.save(commit=False)
+                nova_categoria.tenant = user.tenant
+                nova_categoria.save()
+                print(f"Teste do POST>>>> {nova_categoria.ordem}")
+                show_success_modal = True
+            else:
+                show_success_modal = True
+        else:
+            form = CategoryModelForm()
+
+        context = {
+            'localizacao': localizacao,
+            'form': form,
+            'user': user,
+            'qt_items_cliente': qt_items_cliente(request),
+            'show_success_modal': show_success_modal,
+        }
+        return render(request, 'painel/categorias_add.html', context)    
+    else:
+        return redirect('login')
+
+
+def painel_categoria_delete(request, categoria_id):
+    if request.user.is_authenticated:
+        user = request.user
+        categoria = Category.objects.filter(id=categoria_id, tenant=user.tenant).first()
+        show_delete_modal = False
+        if categoria:
+            categoria.delete()
+            show_delete_modal = True
+        categoria_list = Category.objects.filter(tenant=user.tenant).order_by('name')
+        qt_categoria = categoria_list.count()
+        context = {
+            'categoria': categoria_list,
+            'qt_categoria': qt_categoria,
+            'show_delete_modal': show_delete_modal,
+            'user': user,
+            'localizacao': 'Categorias',
+            'qt_items_cliente': qt_items_cliente(request),
+        }
+        return render(request, 'painel/categorias.html', context)
+    else:
+        return redirect('login')
+
+
+def painel_categorias_edit(request, categoria_id): 
+    if request.user.is_authenticated:
+        user = request.user
+        categoria = Category.objects.filter(id=categoria_id, tenant=user.tenant).first()
+        if not categoria:
+            messages.error(request, 'Categoria não encontrada ou você não tem permissão para editá-la.')
+            return redirect('painel_categorias')
+        
+        show_edit_success_modal = False
+        if request.method == 'POST':
+            form = CategoryModelForm(request.POST, instance=categoria)
+            if form.is_valid():
+                form.save()
+                show_edit_success_modal = True
+            # Não faz redirect, renderiza template com modal
+        else:
+            form = CategoryModelForm(instance=categoria)
+
+        context = {
+            'form': form,
+            'user': user,
+            'categoria': categoria,
+            'localizacao': 'Editar Categoria',
+            'qt_items_cliente': qt_items_cliente(request),
+            'show_edit_success_modal': show_edit_success_modal,
+        }
+        return render(request, 'painel/categorias_edit.html', context)    
+    else:
+        return redirect('login')
+
+def painel_produtos(request):
+    if request.user.is_authenticated:
+        user = request.user
+        produtos = Produto.objects.filter(tenant=user.tenant)
+
+        localizacao = "Produtos"
+        context = {
+            'localizacao': localizacao,
+            'produtos': produtos
+        }
+
+        return render(request, 'painel/produtos.html', context)
+    else:
+        return redirect('login')
+
+
+
+def painel_produtos_add(request):
+    user = request.user
+    if request.method == 'POST':
+        # Dados principais
+        nome = request.POST.get('nome')
+        categoria_id = request.POST.get('categoria')
+        preco = request.POST.get('preco')
+        ordem = request.POST.get('ordem')
+        exibir = request.POST.get('exibir') == 'True'
+        status = request.POST.get('status') == 'True'
+        descricao = request.POST.get('descricao', '')
+        tenant = getattr(request, 'tenant', None) or getattr(user, 'tenant', None)
+
+        categoria = Category.objects.get(id=categoria_id)
+
+        # Proteção contra múltiplos POSTs (ex: Dropzone autoProcessQueue)
+        if not Produto.objects.filter(nome=nome, tenant=tenant, category=categoria, price=preco).exists():
+            produto = Produto.objects.create(
+                tenant=tenant,
+                nome=nome,
+                category=categoria,
+                price=preco,
+                exibir=exibir,
+                status=status,
+                description=descricao
+            )
+        else:
+            produto = Produto.objects.filter(nome=nome, tenant=tenant, category=categoria, price=preco).latest('id')
+
+        # Imagem extra :: Imagem Principal
+        imagem_extra = request.FILES.get('imagem_extra')
+        if imagem_extra:
+            produto.imagem_extra = imagem_extra
+            produto.save()
+
+        # Múltiplas imagens
+        imagens = request.FILES.getlist('imagens')
+        for idx, img in enumerate(imagens):
+            ProdutoImagem.objects.create(produto=produto, imagem=img, ordem=idx)
+
+        return redirect('painel_produtos')
+    else:
+        categorias = Category.objects.filter(tenant=user.tenant)
+        localizacao = 'Adicionar Produto'
+        context = {
+            'categorias': categorias,
+            'localizacao': localizacao,
+        }
+        return render(request, 'painel/produtos_add.html', context)
+            
+		
+@csrf_exempt
+def painel_produto_delete(request, produto_id):
+    if request.method == 'POST':
+        user = request.user
+        from menu.models import Produto
+        produto = Produto.objects.filter(id=produto_id, tenant=getattr(user, 'tenant', None)).first()
+        if produto:
+            produto.delete()
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'error': 'Produto não encontrado.'}, status=404)
+    return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
+
+
 def logout_view(request):
     logout(request)
-    return redirect('loja') 
+    return redirect('loja')

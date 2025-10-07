@@ -1,0 +1,183 @@
+{% load static %}
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+<style>
+.dropzone {
+    border: 2px dashed #3699ff !important;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+</style>
+<div class="card card-custom">
+<!-- Modal de sucesso -->
+<div class="modal fade" id="modalSucesso" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSucessoLabel">Produto cadastrado</h5>
+            </div>
+            <div class="modal-body">
+                Produto cadastrado com sucesso!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnModalOk">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <form id="produtoForm" class="form" method="post" action="{% url 'painel_produtos_add' %}" enctype="multipart/form-data">
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="nome_produto">Nome do produto</label>
+                <input type="text" class="form-control form-control-solid" id="nome_produto" name="nome" placeholder="Ex: Burger Especial" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria_produto">Categoria</label>
+                <select class="form-control form-control-solid" id="categoria_produto" name="categoria" required>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.name }}</option>
+                    {% empty %}
+                        <option disabled>Nenhuma categoria disponível</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="preco_produto">Preço</label>
+                <input type="number" step="0.01" class="form-control form-control-solid" id="preco_produto" name="preco" placeholder="Ex: 19.90" required>
+            </div>
+            <div class="form-group">
+                <label for="ordem_produto">Ordem de exibição</label>
+                <input type="number" class="form-control form-control-solid" id="ordem_produto" name="ordem" placeholder="Ex: 1" required>
+            </div>
+            <div class="form-group">
+                <label>Visível?</label>
+                <div class="radio-inline">
+                    <label class="radio radio-square">
+                        <input type="radio" name="exibir" value="True" checked> <span></span> Sim
+                    </label>
+                    <label class="radio radio-square">
+                        <input type="radio" name="exibir" value="False"> <span></span> Não
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ativo?</label>
+                <div class="radio-inline">
+                    <label class="radio radio-square">
+                        <input type="radio" name="status" value="True" checked> <span></span> Sim
+                    </label>
+                    <label class="radio radio-square">
+                        <input type="radio" name="status" value="False"> <span></span> Não
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Imagem principal (Somente 1 arquivo)</label>
+                 <div id="dropzoneImagemExtra" class="dropzone" style="max-width:200px; min-height:120px; margin:auto;"></div>
+                 <div id="imagemExtraErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
+<style>
+/* Mensagem de erro lateral para Dropzone extra */
+#dropzoneImagemExtra .dz-max-files-reached {
+    position: absolute;
+    right: -220px;
+    top: 10px;
+    width: 200px;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.95em;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+</style>
+            </div>
+            <div class="form-group">
+                <label>Imagens para a galeria (max 5)</label>
+                <div id="dropzoneImagem" class="dropzone"></div>
+            </div>
+            
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" onclick="window.history.back();">Voltar</button>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</div>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+<script>
+Dropzone.autoDiscover = false;
+var imagemDropzone = new Dropzone("#dropzoneImagem", {
+    url: "{% url 'painel_produtos_add' %}",
+    paramName: "imagens", // nome do campo no backend
+    maxFiles: 5, // múltiplas imagens
+    maxFilesize: 5, // MB
+    acceptedFiles: ".png,.jpg,.jpeg",
+    addRemoveLinks: true,
+    autoProcessQueue: false,
+    uploadMultiple: true,
+    parallelUploads: 5,
+    dictRemoveFile: "Remover arquivo",
+    dictDefaultMessage: "Arraste arquivos aqui para enviar <br> ou clique para selecionar",
+    dictMaxFilesExceeded: "Você não pode enviar mais arquivos.",
+});
+var imagemExtraDropzone = new Dropzone("#dropzoneImagemExtra", {
+    url: "{% url 'painel_produtos_add' %}",
+    paramName: "imagem_extra", // nome do campo no backend
+    maxFiles: 1,
+    maxFilesize: 5, // MB
+    acceptedFiles: ".png,.jpg,.jpeg",
+    addRemoveLinks: true,
+    autoProcessQueue: false,
+    dictRemoveFile: "Remover arquivo",
+    dictDefaultMessage: "Arraste arquivos aqui para enviar <br> ou clique para selecionar",
+    dictMaxFilesExceeded: "",
+});
+// Exibe mensagem de erro abaixo do campo Dropzone
+imagemExtraDropzone.on('maxfilesexceeded', function(file) {
+    imagemExtraDropzone.removeFile(file);
+    var erroDiv = document.getElementById('imagemExtraErro');
+    erroDiv.textContent = 'Você não pode enviar mais de um arquivo aqui.';
+    erroDiv.style.display = 'block';
+    setTimeout(function(){ erroDiv.style.display = 'none'; }, 3500);
+});
+// Envia o form junto com as imagens em um único POST
+var form = document.getElementById('produtoForm');
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var hasImage = imagemDropzone.getQueuedFiles().length > 0;
+    var hasExtra = imagemExtraDropzone.getQueuedFiles().length > 0;
+    if (hasImage || hasExtra) {
+        imagemDropzone.processQueue(); // processa tudo em um único POST
+    } else {
+        form.submit();
+    }
+});
+imagemDropzone.on('sending', function(file, xhr, formData) {
+    var inputs = form.querySelectorAll('input, select');
+    inputs.forEach(function(input) {
+        if (input.type !== 'file') {
+            formData.append(input.name, input.value);
+        }
+    });
+    // Adiciona imagem extra (se houver) ao mesmo POST
+    var extraFiles = imagemExtraDropzone.getQueuedFiles();
+    if (extraFiles.length > 0) {
+        formData.append('imagem_extra', extraFiles[0]);
+    }
+});
+// Remove o envio separado da imagem extra
+imagemDropzone.on('success', function(file, response) {
+    // Exibe modal de sucesso ao cadastrar produto
+    $('#modalSucesso').modal('show');
+    document.getElementById('btnModalOk').onclick = function() {
+        window.location.href = '/painel/produtos/';
+    };
+});
+imagemExtraDropzone.on('success', function(file, response) {
+    window.location.reload();
+});
+</script>

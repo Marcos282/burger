@@ -1,8 +1,24 @@
-from customers.views_auth import login_view, register_view, painel_view, logout_view, painel_home
+from customers.views_auth import (
+    login_view,
+    register_view,
+    painel_view,
+    logout_view,
+    painel_home,
+    painel_categorias,
+    painel_categorias_add,
+    painel_categoria_delete,
+    painel_categorias_edit,
+    painel_produtos,
+    painel_produtos_add,
+    painel_produto_delete,
+)
+ 
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 from core.views import (
     loja,
     detalhe,
@@ -32,9 +48,16 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('painel/pedidos', painel_view, name='painel_pedidos'),
     path('painel/home/', painel_home, name='painel_home'),
-    path('logout/', logout_view, name='logout'),
+    path('painel/categorias/', painel_categorias, name='painel_categorias'),
+    path('painel/categorias/adicionar/', painel_categorias_add, name='painel_categorias_add'),
+    path('painel/categorias/deletar/<int:categoria_id>/', painel_categoria_delete, name='painel_categoria_delete'),
+    path('painel/categorias/editar/<int:categoria_id>/', painel_categorias_edit, name='painel_categorias_edit'),
+    path('painel/produtos/', painel_produtos, name='painel_produtos'),
+    path('painel/produtos/adicionar/', painel_produtos_add, name='painel_produtos_add'),
+    path('painel/produtos/deletar/<int:produto_id>/', painel_produto_delete, name='painel_produto_delete'),
+    path('logout/', logout_view, name='logout'), 
     path('register/', register_view, name='register'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
