@@ -1,0 +1,171 @@
+{% load static %}
+<div class="card card-custom">
+   <form id="produtoEditForm" class="form" method="post" action="{% url 'painel_produtos_edit' produto.id %}" enctype="multipart/form-data">
+      <div class="card-body">
+         {% csrf_token %}
+         <div class="form-group">
+            <label for="nome_produto">Nome do produto</label>
+            <input type="text" class="form-control form-control-solid" id="nome_produto" name="nome" value="{{ produto.nome }}" required>
+         </div>
+         <div class="form-group">
+            <label for="categoria_produto">Categoria</label>
+            <select class="form-control form-control-solid" id="categoria_produto" name="categoria" required>
+               {% for categoria in categorias %}
+               <option value="{{ categoria.id }}" {% if produto.category.id == categoria.id %}selected{% endif %}>{{ categoria.name }}</option>
+               {% empty %}
+               <option disabled>Nenhuma categoria disponível</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
+            <label for="preco_produto">Preço</label>
+            <input type="text" class="form-control form-control-solid maskmoney valid" id="preco_produto" name="preco" value="{{ produto.price }}" required>
+         </div>
+         <div class="form-group">
+            <label for="ordem_produto">Ordem de exibição</label>
+            <input type="number" class="form-control form-control-solid" id="ordem_produto" name="ordem" value="{{ produto.ordem }}" required>
+         </div>
+         <div class="form-group">
+            <label>Visível?</label>
+            <div class="radio-inline">
+               <label class="radio radio-square">
+               <input type="radio" name="exibir" value="True" {% if produto.exibir %}checked{% endif %}> <span></span> Sim
+               </label>
+               <label class="radio radio-square">
+               <input type="radio" name="exibir" value="False" {% if not produto.exibir %}checked{% endif %}> <span></span> Não
+               </label>
+            </div>
+         </div>
+         <div class="form-group">
+            <label>Ativo?</label>
+            <div class="radio-inline">
+               <label class="radio radio-square">
+               <input type="radio" name="status" value="True" {% if produto.status %}checked{% endif %}> <span></span> Sim
+               </label>
+               <label class="radio radio-square">
+               <input type="radio" name="status" value="False" {% if not produto.status %}checked{% endif %}> <span></span> Não
+               </label>
+            </div>
+         </div>
+         <div class="form-group">
+            <label>Imagem principal (Somente 1 arquivo)</label>
+            
+            <div id="dropzoneImagemExtra" class="dropzone" style="max-width:300px; min-height:200px; margin:auto;"></div>
+            <style>
+               #dropzoneImagemExtra .dz-preview .dz-image img {
+               width: 220px !important;
+               height: 220px !important;
+               object-fit: cover;
+               border-radius: 10px;
+               border: 1px solid #eee;
+               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+               }
+               #dropzoneImagemExtra .dz-preview .dz-image {
+               width: 220px !important;
+               height: 220px !important;
+               }
+            </style>
+            <div id="imagemExtraErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
+         </div>
+         <div class="form-group">
+         <label>Imagens para a galeria (max 5)</label>
+         <div id="dropzoneImagem" class="dropzone"></div>
+         <style>
+            #dropzoneImagem .dz-preview .dz-image img {
+               width: 120px !important;
+               height: 120px !important;
+               object-fit: contain !important;
+               border-radius: 8px;
+               border: 1px solid #eee;
+               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            #dropzoneImagem .dz-preview .dz-image {
+               width: 120px !important;
+               height: 120px !important;
+            }
+         </style>
+       </div>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+         <button type="button" class="btn btn-secondary" onclick="window.history.back();">Voltar</button>
+         <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+   </form>
+</div>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   Dropzone.autoDiscover = false;
+   var imagemDropzone = new Dropzone("#dropzoneImagem", {
+       url: "{% url 'painel_produtos_edit' produto.id %}",
+       paramName: "imagens",
+       maxFiles: 5,
+       maxFilesize: 5,
+       acceptedFiles: ".png,.jpg,.jpeg",
+       addRemoveLinks: true,
+       autoProcessQueue: false,
+       uploadMultiple: true,
+       parallelUploads: 5,
+       dictRemoveFile: "Remover arquivo",
+       dictDefaultMessage: "Arraste arquivos aqui para enviar <br> ou clique para selecionar",
+       dictMaxFilesExceeded: "Você não pode enviar mais arquivos.",
+   });
+   // Adiciona imagens já salvas ao Dropzone da galeria
+   {% for img in galeria %}
+   var mockFile = { name: "{{ img.imagem.name }}", size: 12345, url: "{{ img.imagem.url }}" };
+   imagemDropzone.emit("addedfile", mockFile);
+   imagemDropzone.emit("thumbnail", mockFile, mockFile.url);
+   imagemDropzone.emit("complete", mockFile);
+   imagemDropzone.files.push(mockFile);
+   {% endfor %}
+
+   var imagemExtraDropzone = new Dropzone("#dropzoneImagemExtra", {
+       url: "{% url 'painel_produtos_edit' produto.id %}",
+       paramName: "imagem_extra",
+       maxFiles: 1,
+       maxFilesize: 5,
+       acceptedFiles: ".png,.jpg,.jpeg",
+       addRemoveLinks: true,
+       autoProcessQueue: false,
+       dictRemoveFile: "Remover arquivo",
+       dictDefaultMessage: "Arraste arquivos aqui para enviar <br> ou clique para selecionar",
+       dictMaxFilesExceeded: "",
+   });
+
+   // Adiciona imagem_extra já salva ao Dropzone
+   {% if produto.imagem_extra %}
+   var mockFileExtra = { name: "{{ produto.imagem_extra.name }}", size: 12345, url: "{{ produto.imagem_extra.url }}" };
+   imagemExtraDropzone.emit("addedfile", mockFileExtra);
+   imagemExtraDropzone.emit("thumbnail", mockFileExtra, mockFileExtra.url);
+   imagemExtraDropzone.emit("complete", mockFileExtra);
+   imagemExtraDropzone.files.push(mockFileExtra);
+   {% endif %}
+
+
+
+   
+   // Envia o form junto com as imagens em um único POST
+   var form = document.getElementById('produtoEditForm');
+   form.addEventListener('submit', function(e) {
+       e.preventDefault();
+       var hasImage = imagemDropzone.getQueuedFiles().length > 0;
+       var hasExtra = imagemExtraDropzone.getQueuedFiles().length > 0;
+       if (hasImage || hasExtra) {
+           imagemDropzone.processQueue();
+       } else {
+           form.submit();
+       }
+   });
+   imagemDropzone.on('sending', function(file, xhr, formData) {
+       var inputs = form.querySelectorAll('input, select');
+       inputs.forEach(function(input) {
+           if (input.type !== 'file') {
+               formData.append(input.name, input.value);
+           }
+       });
+       var extraFiles = imagemExtraDropzone.getQueuedFiles();
+       if (extraFiles.length > 0) {
+           formData.append('imagem_extra', extraFiles[0]);
+       }
+   });
+</script>

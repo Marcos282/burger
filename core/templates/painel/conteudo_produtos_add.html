@@ -43,13 +43,16 @@
             </div>
             <div class="form-group">
                 <label for="preco_produto">Preço</label>
-                <input type="number" step="0.01" class="form-control form-control-solid" id="preco_produto" name="preco" placeholder="Ex: 19.90" required>
+                <input type="text" class="form-control form-control-solid maskmoney" id="preco_produto" name="preco"  required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="ordem_produto">Ordem de exibição</label>
                 <input type="number" class="form-control form-control-solid" id="ordem_produto" name="ordem" placeholder="Ex: 1" required>
-            </div>
+            </div> -->
             <div class="form-group">
+                 <!-- <h6>Visivel ?</h6> -->
+                <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Marque para aparecer em todo o site, caso contrário, irá aparecer apenas para quem você compartilhar o link.</p>
+         
                 <label>Visível?</label>
                 <div class="radio-inline">
                     <label class="radio radio-square">
@@ -61,6 +64,8 @@
                 </div>
             </div>
             <div class="form-group">
+            <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Marque não caso queira desabilitar o produto sem a necessidade de exclui-lo.</p>
+
                 <label>Ativo?</label>
                 <div class="radio-inline">
                     <label class="radio radio-square">
@@ -71,7 +76,19 @@
                     </label>
                 </div>
             </div>
-            
+            <div class="form-group">
+            <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Se habilitado o produto irá aparecer nas sacolinhas do instagram / facebook.</p>
+
+                <label>Produto integrado?</label>
+                <div class="radio-inline">
+                    <label class="radio radio-square">
+                        <input type="radio" name="integrado" value="True" checked> <span></span> Sim
+                    </label>
+                    <label class="radio radio-square">
+                        <input type="radio" name="integrado" value="False"> <span></span> Não
+                    </label>
+                </div>
+            </div>
             <div class="form-group">
                 <label>Imagem principal (Somente 1 arquivo)</label>
                  <div id="dropzoneImagemExtra" class="dropzone" style="max-width:200px; min-height:120px; margin:auto;"></div>
@@ -99,7 +116,15 @@
                 <div id="dropzoneImagem" class="dropzone"></div>
             </div>
             
+   <div class="form-group">
+				<label for="exampleTextarea">Descrição do produto</label>
+				<textarea name="description" class="form-control form-control-solid" rows="3"></textarea>
+			</div>
+
         </div>
+
+     
+
         <div class="card-footer d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" onclick="window.history.back();">Voltar</button>
             <button type="submit" class="btn btn-primary">Cadastrar</button>
@@ -156,10 +181,29 @@ form.addEventListener('submit', function(e) {
         form.submit();
     }
 });
+// imagemDropzone.on('sending', function(file, xhr, formData) {
+//     var inputs = form.querySelectorAll('input, select, textarea, radio');
+//     inputs.forEach(function(input) {
+//         if (input.type !== 'file') {
+//             formData.append(input.name, input.value);
+//         }
+//     });
+//     // Adiciona imagem extra (se houver) ao mesmo POST
+//     var extraFiles = imagemExtraDropzone.getQueuedFiles();
+//     if (extraFiles.length > 0) {
+//         formData.append('imagem_extra', extraFiles[0]);
+//     }
+// });
+
+// Modificado para considerar inputs do tipo radio
 imagemDropzone.on('sending', function(file, xhr, formData) {
-    var inputs = form.querySelectorAll('input, select');
+    var inputs = form.querySelectorAll('input, select, textarea');
     inputs.forEach(function(input) {
-        if (input.type !== 'file') {
+        if (input.type === 'radio') {
+            if (input.checked) {
+                formData.append(input.name, input.value);
+            }
+        } else if (input.type !== 'file') {
             formData.append(input.name, input.value);
         }
     });
@@ -169,6 +213,11 @@ imagemDropzone.on('sending', function(file, xhr, formData) {
         formData.append('imagem_extra', extraFiles[0]);
     }
 });
+
+
+
+
+
 // Remove o envio separado da imagem extra
 imagemDropzone.on('success', function(file, response) {
     // Exibe modal de sucesso ao cadastrar produto
@@ -181,3 +230,4 @@ imagemExtraDropzone.on('success', function(file, response) {
     window.location.reload();
 });
 </script>
+

@@ -54,17 +54,68 @@
                                     
                                  </span>
                               </a>
-                              <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" data-toggle="modal">
-                                 <span class="svg-icon svg-icon-md svg-icon-primary">
-                                    
-                                     <img src="{% static 'assets/imagens/svg/icons/Communication/Write.svg' %}"/>
-                                 </span>
-                              </a>
+                       <a href="{% url 'painel_produtos_edit' produto.id %}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+                         <span class="svg-icon svg-icon-md svg-icon-primary">
+                            <img src="{% static 'assets/imagens/svg/icons/Communication/Write.svg' %}"/>
+                         </span>
+                       </a>
                         </td>
                      </tr>
-                  {% empty %}
-                     <tr><td colspan="5" class="text-center">Nenhum produto encontrado.</td></tr>
-                  {% endfor %}
+
+
+
+                     
+              {% empty %}
+                <tr><td colspan="5" class="text-center">Nenhum produto encontrado.</td></tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            <!-- Bloco de paginação -->
+            <div class="pagination" style="margin: 24px 0; text-align: center;">
+               <nav aria-label="Navegação de páginas">
+                  <ul class="pagination justify-content-center">
+                     {% if produtos.has_previous %}
+                        <li class="page-item">
+                           <a class="page-link" href="{% url 'painel_produtos' %}?page={{ produtos.previous_page_number }}">Anterior</a>
+                        </li>
+                     {% else %}
+                        <li class="page-item disabled">
+                           <span class="page-link">Anterior</span>
+                        </li>
+                     {% endif %}
+
+                     {% for num in produtos.paginator.page_range %}
+                        {% if num == produtos.number %}
+                           <li class="page-item active">
+                              <span class="page-link">{{ num }}</span>
+                           </li>
+                        {% elif num >= produtos.number|add:'-2' and num <= produtos.number|add:'2' %}
+                           <li class="page-item">
+                              <a class="page-link" href="{% url 'painel_produtos' %}?page={{ num }}">{{ num }}</a>
+                           </li>
+                        {% elif num == 1 or num == produtos.paginator.num_pages %}
+                           <li class="page-item">
+                              <a class="page-link" href="{% url 'painel_produtos' %}?page={{ num }}">{{ num }}</a>
+                           </li>
+                        {% elif num == produtos.number|add:'-3' or num == produtos.number|add:'3' %}
+                           <li class="page-item disabled">
+                              <span class="page-link">...</span>
+                           </li>
+                        {% endif %}
+                     {% endfor %}
+
+                     {% if produtos.has_next %}
+                        <li class="page-item">
+                           <a class="page-link" href="{% url 'painel_produtos' %}?page={{ produtos.next_page_number }}">Próxima</a>
+                        </li>
+                     {% else %}
+                        <li class="page-item disabled">
+                           <span class="page-link">Próxima</span>
+                        </li>
+                     {% endif %}
+                  </ul>
+               </nav>
+            </div>
 <!-- Modal de confirmação de remoção -->
 <div class="modal fade" id="modalRemoverProduto" tabindex="-1" role="dialog" aria-labelledby="modalRemoverProdutoLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document">

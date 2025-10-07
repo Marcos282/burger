@@ -1,6 +1,6 @@
+from menu.models import Produto, ProdutoImagem, Category
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
 from django.views.decorators.http import require_POST
 from itertools import count
 from django.contrib.auth import authenticate, login, logout
@@ -9,8 +9,9 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import formatar_brl
+from core.utils import formatar_brl, formatar_brl_to_float
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Função para contar itens do cliente
 def qt_items_cliente(request):
@@ -255,8 +256,12 @@ def painel_categorias_edit(request, categoria_id):
 
 def painel_produtos(request):
     if request.user.is_authenticated:
+        from django.core.paginator import Paginator
         user = request.user
-        produtos = Produto.objects.filter(tenant=user.tenant)
+        produtos_list = Produto.objects.filter(tenant=user.tenant).order_by('-id')
+        paginator = Paginator(produtos_list, 10)  # 10 produtos por página
+        page_number = request.GET.get('page')
+        produtos = paginator.get_page(page_number)
 
         localizacao = "Produtos"
         context = {
@@ -274,13 +279,17 @@ def painel_produtos_add(request):
     user = request.user
     if request.method == 'POST':
         # Dados principais
+        
         nome = request.POST.get('nome')
         categoria_id = request.POST.get('categoria')
-        preco = request.POST.get('preco')
+
+        # Remove prefixo e formata para float
+        preco = formatar_brl_to_float(request.POST.get('preco', ''))
         ordem = request.POST.get('ordem')
         exibir = request.POST.get('exibir') == 'True'
         status = request.POST.get('status') == 'True'
-        descricao = request.POST.get('descricao', '')
+        descricao = request.POST.get('description', '')
+        integrado = request.POST.get('integrado') == 'True'        
         tenant = getattr(request, 'tenant', None) or getattr(user, 'tenant', None)
 
         categoria = Category.objects.get(id=categoria_id)
@@ -294,6 +303,7 @@ def painel_produtos_add(request):
                 price=preco,
                 exibir=exibir,
                 status=status,
+                integrado=integrado,
                 description=descricao
             )
         else:
@@ -304,9 +314,10 @@ def painel_produtos_add(request):
         if imagem_extra:
             produto.imagem_extra = imagem_extra
             produto.save()
-
+        print("FILES:", request.FILES)
         # Múltiplas imagens
-        imagens = request.FILES.getlist('imagens')
+        # Pega todos os arquivos que começam com 'imagens['
+        imagens = [file for key, file in request.FILES.items() if key.startswith('imagens[')]
         for idx, img in enumerate(imagens):
             ProdutoImagem.objects.create(produto=produto, imagem=img, ordem=idx)
 
@@ -333,6 +344,23 @@ def painel_produto_delete(request, produto_id):
         return JsonResponse({'success': False, 'error': 'Produto não encontrado.'}, status=404)
     return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
 
+
+def painel_produtos_edit(request, produto_id):
+    user = request.user
+    produto = Produto.objects.filter(id=produto_id, tenant=getattr(user, 'tenant', None)).first()
+
+    galeria = ProdutoImagem.objects.filter(produto=produto).order_by('ordem')
+    categorias = Category.objects.filter(tenant=user.tenant)
+    produto.price = formatar_brl(produto.price)
+
+    context = {
+        'produto': produto,
+        'localizacao': 'Editar Produto',
+        'galeria': galeria,
+        'categorias': categorias
+    }
+
+    return render(request, 'painel/produto_edit.html', context)
 
 def logout_view(request):
     logout(request)

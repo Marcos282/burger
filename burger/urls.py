@@ -11,6 +11,7 @@ from customers.views_auth import (
     painel_produtos,
     painel_produtos_add,
     painel_produto_delete,
+    painel_produtos_edit,
 )
  
 from django.contrib import admin
@@ -55,6 +56,7 @@ urlpatterns = [
     path('painel/produtos/', painel_produtos, name='painel_produtos'),
     path('painel/produtos/adicionar/', painel_produtos_add, name='painel_produtos_add'),
     path('painel/produtos/deletar/<int:produto_id>/', painel_produto_delete, name='painel_produto_delete'),
+    path('painel/produtos/editar/<int:produto_id>/', painel_produtos_edit, name='painel_produtos_edit'),
     path('logout/', logout_view, name='logout'), 
     path('register/', register_view, name='register'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz

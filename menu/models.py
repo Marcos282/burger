@@ -30,6 +30,8 @@ class Produto(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.FloatField()
     digital = models.BooleanField(default=False, null=True, blank=True)
+    integrado = models.BooleanField(default=False, null=True, blank=True)
+    ordem_exibicao = models.IntegerField(default=0) # Ordem de exibição no menu (permite numero negativo)
     referencia = models.CharField(
         max_length=50,
         unique=True,

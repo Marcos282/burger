@@ -35,7 +35,7 @@
                         
             {% block content4 %} 
                <!--begin::Aside ==> Coluna da esquerda com os menus-->   
-                                             
+
                <!--begin::Aside -->
             {% endblock %}
 
@@ -219,14 +219,30 @@
     <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle.js' %}"></script>
     <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+    <script src="{% static '_core/_cdn/maskMoney/js/maskmoney.min.js' %}"></script>
     <!--end::Global Theme Bundle-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="{% static 'assets/js/pages/custom/contacts/list-datatable.js' %}"></script>
-    <!--end::Page Scripts-->
-    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
-        <defs id="SvgjsDefs1002"></defs>
-        <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
-        <path id="SvgjsPath1004" d="M0 0 "></path>
-    </svg>
+        <!--begin::Page Scripts(used by this page)-->
+        <script src="{% static 'assets/js/pages/custom/contacts/list-datatable.js' %}"></script>
+        <!--end::Page Scripts-->
+        <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+                <defs id="SvgjsDefs1002"></defs>
+                <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+                <path id="SvgjsPath1004" d="M0 0 "></path>
+        </svg>
+        
+        <script>
+            $(function() {
+                if ($.fn.maskMoney) {
+                    $(".maskmoney").maskMoney({
+                        prefix: "R$ ",
+                        decimal: ",",
+                        thousands: "."
+                    });
+                } else {
+                    console.error('maskMoney plugin não está disponível!');
+                }
+            });
+        </script>
+
 </body>
 <!--end::Body-->
