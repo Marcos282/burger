@@ -3,10 +3,14 @@ from django.shortcuts import render, HttpResponse, get_object_or_404
 from menu.models import Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from orders.models import Ordem, OrdemItem
 from customers.models import Cliente
 from tenants.models import Tenant, TenantSettings
+from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 import uuid
+import os
 
 
 # Funções utilitárias de sessão
@@ -358,3 +362,104 @@ def checkout_sucesso(request):
     </body></html>
     """
     return HttpResponse(html)
+
+
+def manifest_json(request):
+    """
+    Serve o arquivo manifest.json para PWA
+    """
+    import json
+    from django.http import JsonResponse
+    
+    # Pega informações do tenant se existir
+    nome_loja = "Burger App"
+    if hasattr(request, 'tenant') and request.tenant:
+        try:
+            config = TenantSettings.objects.get(tenant=request.tenant)
+            nome_loja = config.nome_loja
+        except TenantSettings.DoesNotExist:
+            pass
+    
+    manifest = {
+        "background_color": "#ff5900",
+        "description": f"{nome_loja} - Delivery de Hambúrgueres",
+        "display": "standalone",
+        "icons": [
+            {
+                "src": "/static/_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg",
+                "sizes": "192x192",
+                "type": "image/jpeg"
+            },
+            {
+                "src": "/static/_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg",
+                "sizes": "512x512",
+                "type": "image/jpeg"
+            }
+        ],
+        "name": nome_loja,
+        "short_name": nome_loja,
+        "start_url": "/",
+        "theme_color": "#ff5900",
+        "scope": "/"
+    }
+    
+    return JsonResponse(manifest, content_type='application/manifest+json')
+
+
+@csrf_exempt
+def cloudflare_dummy(request, path=""):
+    """
+    Retorna resposta vazia para requests do Cloudflare que não existem localmente
+    """
+    if 'email-decode' in request.path:
+        # Retorna um script vazio para email-decode.min.js
+        return HttpResponse("// Email protection script not needed in development", content_type='application/javascript')
+    elif 'rum' in request.path:
+        # Para RUM (Real User Monitoring), retorna sucesso para POST/GET
+        if request.method == 'POST':
+            # Retorna JSON vazio para simular resposta do RUM
+            return JsonResponse({'status': 'ok'}, status=200)
+        else:
+            # Retorna script vazio para GET
+            return HttpResponse("// RUM script not needed in development", content_type='application/javascript')
+    else:
+        # Para outras requisições CDN, retorna 204 No Content
+        return HttpResponse(status=204)
+
+
+def image_placeholder(request):
+    """
+    Gera um placeholder de imagem dinâmico quando a imagem não existe
+    """
+    # Cria uma imagem 40x40 cinza
+    width, height = 40, 40
+    background_color = (240, 240, 240)  # Cinza claro
+    text_color = (150, 150, 150)  # Cinza escuro
+    
+    # Cria a imagem
+    img = Image.new('RGB', (width, height), background_color)
+    draw = ImageDraw.Draw(img)
+    
+    # Adiciona um ícone simples (quadrado com "?")
+    draw.rectangle([8, 8, 32, 32], outline=text_color, width=2)
+    try:
+        # Tenta usar uma fonte do sistema
+        font = ImageFont.truetype("/usr/share/fonts/TTF/DejaVuSans.ttf", 14)
+    except:
+        # Usa fonte padrão se não encontrar
+        font = ImageFont.load_default()
+    
+    # Adiciona o texto "?" no centro
+    bbox = draw.textbbox((0, 0), "?", font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+    x = (width - text_width) // 2
+    y = (height - text_height) // 2
+    draw.text((x, y), "?", fill=text_color, font=font)
+    
+    # Converte para bytes
+    buffer = BytesIO()
+    img.save(buffer, format='PNG')
+    buffer.seek(0)
+    
+    return HttpResponse(buffer.getvalue(), content_type='image/png')

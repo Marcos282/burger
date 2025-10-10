@@ -30,10 +30,14 @@
                      <tr>
                         <td class="pl-0 py-8">
                      <div style="display: flex; align-items: center;">
-                        {% if produto.imagem_extra %}
-                           <img src="{{ produto.imagem_extra.url }}" alt="thumb" style="width:40px; height:40px; object-fit:cover; border-radius:6px; margin-right:8px; border:1px solid #eee;" />
+                        {% if produto.imagem_extra and produto.imagem_extra.url %}
+                           <img src="{{ produto.imagem_extra.url }}" alt="thumb" style="width:40px; height:40px; object-fit:cover; border-radius:6px; margin-right:8px; border:1px solid #eee;" 
+                                onerror="this.src='{% url 'image_placeholder' %}'; this.onerror=null;" />
+                        {% elif produto.image and produto.image.url %}
+                           <img src="{{ produto.image.url }}" alt="thumb" style="width:40px; height:40px; object-fit:cover; border-radius:6px; margin-right:8px; border:1px solid #eee;" 
+                                onerror="this.src='{% url 'image_placeholder' %}'; this.onerror=null;" />
                         {% else %}
-                           <img src="{% static 'assets/imagens/thumb-placeholder.png' %}" alt="thumb" style="width:40px; height:40px; object-fit:cover; border-radius:6px; margin-right:8px; border:1px solid #eee;" />
+                           <img src="{% url 'image_placeholder' %}" alt="thumb" style="width:40px; height:40px; object-fit:cover; border-radius:6px; margin-right:8px; border:1px solid #eee;" />
                         {% endif %}
                         <span class="text-dark-75 d-block font-size-xl">{{ produto.nome }}</span>
                      </div>

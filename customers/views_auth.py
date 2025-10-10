@@ -150,7 +150,10 @@ def painel_categorias(request):
        
         user = request.user
                         
-        localizacao = "Categorias"
+        localizacao = [
+            {"n1": "Categorias", "url": "painel_categorias"},
+           
+        ]
         
         categoria = Category.objects.select_related('tenant').filter(tenant=user.tenant).order_by('ordem')
         qt_categoria = Category.objects.filter(tenant=user.tenant).count()
@@ -171,8 +174,13 @@ def painel_categorias_add(request):
     if request.user.is_authenticated:
        
         user = request.user
-                           
-        localizacao = "Adicionar Categoria"
+
+        localizacao = [
+            {"n1": "Categorias", "url": "painel_categorias"},
+            {"n2": "Adicionar Categoria", "url": "painel_categorias_add"}
+        ]
+
+        
         
         show_success_modal = False
         if str(request.method) == 'POST':
@@ -241,11 +249,17 @@ def painel_categorias_edit(request, categoria_id):
         else:
             form = CategoryModelForm(instance=categoria)
 
+        localizacao = [
+            {"n1": "Categorias", "url": "painel_categorias"},
+            {"n2": "Editar Categoria", "url": "painel_categorias_edit", "id": categoria.id}
+            
+        ]
+
         context = {
             'form': form,
             'user': user,
             'categoria': categoria,
-            'localizacao': 'Editar Categoria',
+            'localizacao': localizacao,
             'qt_items_cliente': qt_items_cliente(request),
             'show_edit_success_modal': show_edit_success_modal,
         }
@@ -262,7 +276,10 @@ def painel_produtos(request):
         page_number = request.GET.get('page')
         produtos = paginator.get_page(page_number)
 
-        localizacao = "Produtos"
+        localizacao = [
+            {"n1": "Produtos", "url": "painel_produtos"},
+            
+        ]
         context = {
             'localizacao': localizacao,
             'produtos': produtos
@@ -323,7 +340,10 @@ def painel_produtos_add(request):
         return redirect('painel_produtos')
     else:
         categorias = Category.objects.filter(tenant=user.tenant)
-        localizacao = 'Adicionar Produto'
+        localizacao = [
+            {"n1": "Produtos", "url": "painel_produtos"},
+            {"n2": "Adicionar Produto", "url": "painel_produtos_add"}
+        ]
         context = {
             'categorias': categorias,
             'localizacao': localizacao,
@@ -352,9 +372,13 @@ def painel_produtos_edit(request, produto_id):
     categorias = Category.objects.filter(tenant=user.tenant)
     produto.price = formatar_brl(produto.price)
 
+    localizacao = [
+            {"n1": "Produtos", "url": "painel_produtos"},
+            {"n2": "Editar Produto", "url": "painel_produtos_edit", "id": produto.id}
+        ]
     context = {
         'produto': produto,
-        'localizacao': 'Editar Produto',
+        'localizacao': localizacao,
         'galeria': galeria,
         'categorias': categorias
     }

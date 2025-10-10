@@ -28,6 +28,9 @@ from core.views import (
     checkout,
     remover_do_carrinho_ajax,
     atualizar_carrinho_ajax,
+    manifest_json,
+    cloudflare_dummy,
+    image_placeholder,
     checkout_sucesso,
 )
 
@@ -59,6 +62,12 @@ urlpatterns = [
     path('painel/produtos/editar/<int:produto_id>/', painel_produtos_edit, name='painel_produtos_edit'),
     path('logout/', logout_view, name='logout'), 
     path('register/', register_view, name='register'),
+    path('manifest.json', manifest_json, name='manifest'),
+    path('loja/manifest.json', manifest_json, name='loja_manifest'),  # Para rotas dentro de /loja/
+    # Rotas para lidar com Cloudflare CDN em desenvolvimento
+    path('cdn-cgi/<path:path>', cloudflare_dummy, name='cloudflare_dummy'),
+    path('loja/cdn-cgi/<path:path>', cloudflare_dummy, name='loja_cloudflare_dummy'),
+    path('placeholder.png', image_placeholder, name='image_placeholder'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
