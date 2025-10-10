@@ -3,7 +3,6 @@
 from django.http import Http404, HttpResponseForbidden
 from django.urls import resolve
 from tenants.models import Tenant
-from datetime import datetime
 
 class TenantMiddleware:
     def __init__(self, get_response):
@@ -40,39 +39,25 @@ class TenantMiddleware:
         else:
             request.tenant = tenant  # Adiciona tenant ao request
 
-        # Processa a requisição primeiro
-        response = self.get_response(request)
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        ip_address = request.META.get('REMOTE_ADDR', 'N/A')
-        # Faz log do acesso ao painel (após processar a requisição)
+        # Faz log do acesso ao painel
         if request.path.startswith('/painel/'):
+            from datetime import datetime
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            ip_address = request.META.get('REMOTE_ADDR', 'N/A')
+            user_info = f"{request.user.username}" if hasattr(request, 'user') and request.user.is_authenticated else "Anônimo"
             
-            
-            
-            # Verifica se o user está disponível
-            user_info = "Anônimo"
-            if hasattr(request, 'user'):
-                if request.user.is_authenticated:
-                    user_info = f"{request.user.username} ({request.user.email})"
-                else:
-                    user_info = "Não autenticado"
+            # Informações do tenant (se existir)
+            tenant_info = "Painel Principal (sem tenant)"
+            if hasattr(request, 'tenant') and request.tenant:
+                tenant_info = f"{request.tenant.name} ({request.tenant.subdomain})"
             
             # Log formatado e elegante
             print("\n" + "🟦" * 50)
             print(f"🏢 PAINEL ADMINISTRATIVO | {timestamp}")
             print("🟦" * 50)
+            print(f"🏪 Contexto: {tenant_info}")
             print(f"📍 IP: {ip_address} | 👤 Usuário: {user_info}")
             print(f"🔗 Rota: {request.method} {request.path}")
-            print(f"📊 Status Response: {response.status_code}")
             print("🟦" * 50 + "\n")
-        else:
-            # Log formatado e elegante
-            user_info = "Não autenticado"
-            print("\n" + "🟦" * 50)
-            print(f"🏢 LOG MARKETPLACE | {timestamp}")
-            print("🟦" * 50)
-            print(f"📍 IP: {ip_address} | 👤 Usuário: {user_info}")
-            print(f"🔗 Rota: {request.method} {request.path}")
-            print(f"📊 Status Response: {response.status_code}")
-            print("🟦" * 50 + "\n")            
-        return response
+                
+        return self.get_response(request)

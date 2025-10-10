@@ -61,10 +61,9 @@ def register_view(request):
 
 def painel_view(request):
     if request.user.is_authenticated:
-        print('Sessão do usuário:', dict(request.session))
+        
         user = request.user
-        print('Dados do usuário:', dict(username=user.username, email=user.email, id=user.id))
-
+      
         localizacao = "Ultimos pedidos"
 
         # Buscar todas as ordens do tenant atual
@@ -130,9 +129,9 @@ def painel_view(request):
 
 def painel_home(request):
     if request.user.is_authenticated:
-        print('Sessão do usuário:', dict(request.session))
+       
         user = request.user
-        print('Dados do usuário logado:', dict(username=user.username, password=user.password, email=user.email, id=user.id))
+        
                         
 
         localizacao = "Home"
@@ -148,9 +147,9 @@ def painel_home(request):
 
 def painel_categorias(request): 
     if request.user.is_authenticated:
-        print('Sessão do usuário:', dict(request.session))
+       
         user = request.user
-        print('Dados do usuário logado:', dict(username=user.username, password=user.password, email=user.email, id=user.id))                        
+                        
         localizacao = "Categorias"
         
         categoria = Category.objects.select_related('tenant').filter(tenant=user.tenant).order_by('ordem')
@@ -170,9 +169,9 @@ def painel_categorias(request):
 
 def painel_categorias_add(request): 
     if request.user.is_authenticated:
-        print('Sessão do usuário:', dict(request.session))
+       
         user = request.user
-        print('Dados do usuário logado:', dict(username=user.username, password=user.password, email=user.email, id=user.id))                        
+                           
         localizacao = "Adicionar Categoria"
         
         show_success_modal = False
