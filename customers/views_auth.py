@@ -9,7 +9,7 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import formatar_brl, formatar_brl_to_float
+from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user
 from django.contrib import messages
 from django.core.paginator import Paginator
 
@@ -61,10 +61,13 @@ def register_view(request):
 
 def painel_view(request):
     if request.user.is_authenticated:
-        
+                
         user = request.user
-      
-        localizacao = "Ultimos pedidos"
+
+        localizacao = [
+            {"n1": "Pedidos", "url": "painel_pedidos"},
+            
+        ]
 
         # Buscar todas as ordens do tenant atual
         ordens = Ordem.objects.filter(tenant=user.tenant).select_related('cliente')
@@ -116,10 +119,10 @@ def painel_view(request):
             })
 
         
-        
         context = {
             'localizacao': localizacao,
-            'ordens_info': ordens_info,            
+            'ordens_info': ordens_info,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
             
         }
         return render(request, 'painel/index.html', context)
@@ -131,14 +134,18 @@ def painel_home(request):
     if request.user.is_authenticated:
        
         user = request.user
-        
-                        
 
-        localizacao = "Home"
+        localizacao = [
+            {"n1": "Home", "url": "painel_home"}
+        ]
+
+        
+
         context = {
             'localizacao': localizacao,
             'user': user,
-            'qt_items_cliente': qt_items_cliente(request)
+            'qt_items_cliente': qt_items_cliente(request),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/home.html', context)
     else:
@@ -158,12 +165,17 @@ def painel_categorias(request):
         categoria = Category.objects.select_related('tenant').filter(tenant=user.tenant).order_by('ordem')
         qt_categoria = Category.objects.filter(tenant=user.tenant).count()
 
+        
+        url = get_tenant_url(request, '/loja/')
+        print (f"URL do marketplace: {url}")
+
         context = {
             'localizacao': localizacao,
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'categoria': categoria,
-            'qt_categoria': qt_categoria
+            'qt_categoria': qt_categoria,
+            'marketplace_url': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/categorias.html', context)
     else:
@@ -202,6 +214,7 @@ def painel_categorias_add(request):
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'show_success_modal': show_success_modal,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/categorias_add.html', context)    
     else:
@@ -262,6 +275,7 @@ def painel_categorias_edit(request, categoria_id):
             'localizacao': localizacao,
             'qt_items_cliente': qt_items_cliente(request),
             'show_edit_success_modal': show_edit_success_modal,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/categorias_edit.html', context)    
     else:
@@ -347,6 +361,7 @@ def painel_produtos_add(request):
         context = {
             'categorias': categorias,
             'localizacao': localizacao,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/produtos_add.html', context)
             
@@ -380,11 +395,12 @@ def painel_produtos_edit(request, produto_id):
         'produto': produto,
         'localizacao': localizacao,
         'galeria': galeria,
-        'categorias': categorias
+        'categorias': categorias,
+        'url_marketplace': get_tenant_url(request, '/loja/'),
     }
 
     return render(request, 'painel/produto_edit.html', context)
 
 def logout_view(request):
     logout(request)
-    return redirect('loja')
+    return redirect('login')

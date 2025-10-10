@@ -40,6 +40,8 @@ class TenantMiddleware:
             '/painel/',
             '/media/',
             '/static/',
+            '/logout/',
+            '/login/',
             '/cdn-cgi/',
             '/favicon.ico',
             '/robots.txt',
@@ -68,6 +70,7 @@ class TenantMiddleware:
             '/cdn-cgi/',
             '/favicon.ico',
             '/robots.txt',
+            '/logout/',
             'rum?',  # Cloudflare RUM requests
             '.css',
             '.js',

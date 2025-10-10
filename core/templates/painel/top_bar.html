@@ -568,9 +568,27 @@
                             <div class="dropdown">
                                 <!--begin::Toggle   Botao Equilizer-->
                                 <div class="topbar-item"   data-offset="10px,0px">
+
+ <!--begin::User-->
+                            <div class="topbar-item">
+                                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Olá, </span>
+                                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ user.username|title }} &nbsp;</span>
+                                    <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+                                    <!-- <span class="symbol-label font-size-h5 font-weight-bold">S</span> -->
+                                    </span>
+                                </div>
+                            </div>
+                            <!--end::User-->
+
                                 <!-- <div class="topbar-item"  data-toggle="dropdown" data-offset="10px,0px"></div> -->
-                                    <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
-                                        <a href="/logout/" class="btn btn-danger btn-sm font-weight-bold" style="border-radius: 20px; padding: 6px 18px;">Sair</a>
+                                    <div class="btn btn-icon btn-clean  btn-lg mr-1">
+                                        <!-- <a href="/logout/" class="btn btn-danger btn-sm font-weight-bold" style="border-radius: 20px; padding: 6px 18px;">Sair</a> -->
+                                        <!-- <img src="{% static 'assets/imagens/svg/icons/Electric/Shutdown.svg' %}"/> -->
+                                        <a href="{% url 'logout' %}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">
+                                            <!-- <img src="{% static 'assets/imagens/svg/icons/Electric/Shutdown.svg' %}"/> -->
+                                             Sair
+                                        </a>
                                         <!--  Botao Equilizer
                                         <span class="svg-icon svg-icon-xl svg-icon-primary">
                                             
@@ -762,15 +780,5 @@
                                 <!--end::Dropdown-->
                             </div>
                             <!--end::Languages-->
-                            <!--begin::User-->
-                            <div class="topbar-item">
-                                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Ola, </span>
-                                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ user.username|title }}</span>
-                                    <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-                                    <span class="symbol-label font-size-h5 font-weight-bold">S</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <!--end::User-->
+                           
                         </div>
