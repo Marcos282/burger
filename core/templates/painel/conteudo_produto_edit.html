@@ -230,7 +230,7 @@
            console.log('Galeria arquivo ' + index + ':', file.name, 'Status:', file.status);
        });
        
-       if (hasNewImages || hasNewExtra || hasRemovedImages) {
+       if (hasNewImages || hasNewExtra) {
            // Se há arquivos novos, processa via Dropzone
            console.log('Processando via Dropzone...');
            if (hasNewImages) {
@@ -239,18 +239,39 @@
            }
            if (hasNewExtra) {
                console.log('Processando imagem extra...');
-               console.log('Processando imagem extra...');
                imagemExtraDropzone.processQueue();
            }
-       } else {
-           // Se não há arquivos novos mas há remoções, submete o formulário normalmente
-           console.log('Submetendo via fetch (sem novos arquivos, mas com possíveis remoções)...');
+       } else if (hasRemovedImages) {
+           // Se há apenas remoções (sem novos arquivos), submete via fetch
+           console.log('Submetendo via fetch (apenas remoções)...');
            var formData = new FormData(form);
            
            // Adiciona flag se a imagem principal foi removida
            if (imagemPrincipalRemovida) {
                formData.append('remover_imagem_extra', 'true');
            }
+           
+           // Submete via AJAX para manter consistência
+           fetch(form.action, {
+               method: 'POST',
+               body: formData,
+               headers: {
+                   'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+               }
+           })
+           .then(response => response.text())
+           .then(data => {
+               console.log('Formulário submetido com sucesso (apenas remoções)');
+               // Recarrega a página para mostrar as mudanças
+               window.location.reload();
+           })
+           .catch(error => {
+               console.error('Erro ao submeter formulário:', error);
+           });
+       } else {
+           // Se não há nenhuma alteração, apenas submete normalmente
+           console.log('Submetendo via fetch (sem alterações)...');
+           var formData = new FormData(form);
            
            // Submete via AJAX para manter consistência
            fetch(form.action, {
