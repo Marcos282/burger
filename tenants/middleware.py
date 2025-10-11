@@ -122,7 +122,12 @@ class TenantMiddleware:
             print("🟦" * 50)
             print(f"📍 IP: {ip_address} | 👤 Usuário: {user_info}{tenant_info}")
             print(f"🔗 Rota: {request.method} {request.path}")
-            print(f"📊 Status: {response.status_code}")
+            
+            # Pega apenas o telefone do cliente do cookie
+            telefone_cliente = request.COOKIES.get('telefone_cliente', 'Não informado')
+            print(f"📞 Telefone Cliente (cookie): {telefone_cliente}")
+            
+            print(f"📊 Status: {response.status_code}")            
             print("🟦" * 50 + "\n")
             
         return response

@@ -98,6 +98,7 @@ def painel_view(request):
                     'preco_unitario': preco_unitario,
                     'quantidade': quantidade,
                     'amount': amount,
+                    
                 })
                 total_geral = amount + total_geral
 
@@ -116,6 +117,7 @@ def painel_view(request):
                 'dados_cliente': dados_cliente,                                
                 'endereco_entrega': endereco_entrega,
                 'total_geral':  formatar_brl(total_geral),
+                'data_hora': ordem.dataHora.strftime('%d/%m/%Y %H:%M'),
             })
 
         
@@ -296,7 +298,8 @@ def painel_produtos(request):
         ]
         context = {
             'localizacao': localizacao,
-            'produtos': produtos
+            'produtos': produtos,
+            'messages': messages.get_messages(request),
         }
 
         return render(request, 'painel/produtos.html', context)
@@ -380,26 +383,147 @@ def painel_produto_delete(request, produto_id):
 
 
 def painel_produtos_edit(request, produto_id):
-    user = request.user
-    produto = Produto.objects.filter(id=produto_id, tenant=getattr(user, 'tenant', None)).first()
+    if request.user.is_authenticated:
+        user = request.user
+        produto = Produto.objects.filter(id=produto_id, tenant=getattr(user, 'tenant', None)).first()
+        
+        if not produto:
+            messages.error(request, 'Produto não encontrado ou você não tem permissão para editá-lo.')
+            return redirect('painel_produtos')
 
-    galeria = ProdutoImagem.objects.filter(produto=produto).order_by('ordem')
-    categorias = Category.objects.filter(tenant=user.tenant)
-    produto.price = formatar_brl(produto.price)
+        galeria = ProdutoImagem.objects.filter(produto=produto).order_by('ordem')
+        categorias = Category.objects.filter(tenant=user.tenant)
+        
+        show_edit_success_modal = False
+        
+        if request.method == 'POST':
+            # Processa dados do formulário
+            nome = request.POST.get('nome')
+            categoria_id = request.POST.get('categoria')
+            preco = formatar_brl_to_float(request.POST.get('preco', ''))
+            ordem_exibicao = request.POST.get('ordem_exibicao')
+            exibir = request.POST.get('exibir') == 'True'
+            status = request.POST.get('status') == 'True'
+            descricao = request.POST.get('description', '')
+            integrado = request.POST.get('integrado') == 'True'
+            
+            # Validação básica
+            if nome and categoria_id:
+                try:
+                    categoria = Category.objects.get(id=categoria_id, tenant=user.tenant)
+                    
+                    # Atualiza o produto
+                    produto.nome = nome
+                    produto.category = categoria
+                    produto.price = preco
+                    produto.ordem_exibicao = ordem_exibicao if ordem_exibicao else produto.ordem_exibicao
+                    produto.exibir = exibir
+                    produto.status = status
+                    produto.description = descricao
+                    produto.integrado = integrado
+                    
+                    # Verifica se deve remover a imagem principal
+                    if request.POST.get('remover_imagem_extra') == 'true':
+                        produto.imagem_extra = None
+                    
+                    produto.save()
+                    
+                    # Imagem principal (se uma nova foi enviada)
+                    imagem_extra = request.FILES.get('imagem_extra')
+                    if imagem_extra:
+                        produto.imagem_extra = imagem_extra
+                        produto.save()
+                    
+                    # Processa remoção de imagens selecionadas da galeria (checkboxes)
+                    imagens_para_remover = request.POST.getlist('remover_galeria')
+                    if imagens_para_remover:
+                        print(f"Removendo {len(imagens_para_remover)} imagens da galeria (via checkbox)")
+                        for img_id in imagens_para_remover:
+                            try:
+                                img_obj = ProdutoImagem.objects.get(id=img_id, produto=produto)
+                                print(f"Removendo imagem: {img_obj.id} - {img_obj.imagem.name}")
+                                img_obj.delete()
+                            except ProdutoImagem.DoesNotExist:
+                                print(f"Imagem com ID {img_id} não encontrada")
+                        messages.success(request, f'{len(imagens_para_remover)} imagem(ns) removida(s) da galeria')
+                    
+                    # Processa remoção de imagens do Dropzone
+                    imagens_removidas_dropzone = request.POST.get('imagens_removidas_dropzone', '')
+                    if imagens_removidas_dropzone:
+                        ids_removidos = [id.strip() for id in imagens_removidas_dropzone.split(',') if id.strip()]
+                        print(f"Removendo {len(ids_removidos)} imagens da galeria (via Dropzone)")
+                        for img_id in ids_removidos:
+                            try:
+                                img_obj = ProdutoImagem.objects.get(id=img_id, produto=produto)
+                                print(f"Removendo imagem do Dropzone: {img_obj.id} - {img_obj.imagem.name}")
+                                img_obj.delete()
+                            except ProdutoImagem.DoesNotExist:
+                                print(f"Imagem com ID {img_id} não encontrada")
+                        messages.success(request, f'{len(ids_removidos)} imagem(ns) removida(s) do Dropzone')
+                    
+                    # Múltiplas imagens da galeria (se enviadas)
+                    print("=== DEBUG GALERIA ===")
+                    print(f"request.FILES completo: {dict(request.FILES)}")
+                    print(f"request.FILES.keys(): {list(request.FILES.keys())}")
+                    
+                    # Busca todos os arquivos que começam com 'imagens'
+                    imagens_galeria = []
+                    for key, file_list in request.FILES.items():
+                        if key.startswith('imagens'):
+                            # Se é uma lista (como vem do MultiValueDict), pega o primeiro arquivo
+                            if isinstance(file_list, list):
+                                imagens_galeria.extend(file_list)
+                            else:
+                                imagens_galeria.append(file_list)
+                    
+                    print(f"Imagens da galeria encontradas: {len(imagens_galeria)} arquivos")
+                    
+                    # Processa apenas NOVAS imagens (com upload real de arquivo)
+                    if imagens_galeria:
+                        print(f"PROCESSANDO {len(imagens_galeria)} NOVAS imagens da galeria")
+                        # Conta imagens existentes para continuar a ordem
+                        existing_count = ProdutoImagem.objects.filter(produto=produto).count()
+                        print(f"Existem {existing_count} imagens na galeria. Adicionando novas...")
+                        
+                        # Processa cada nova imagem (mantém as existentes)
+                        for idx, img in enumerate(imagens_galeria):
+                            # A ordem continua a partir das imagens existentes
+                            nova_ordem = existing_count + idx
+                            nova_img = ProdutoImagem.objects.create(produto=produto, imagem=img, ordem=nova_ordem)
+                            print(f"Criada NOVA imagem da galeria {nova_ordem + 1}: {nova_img.id} - {img.name}")
+                        
+                        total_imagens = existing_count + len(imagens_galeria)
+                        messages.success(request, f'{len(imagens_galeria)} nova(s) imagem(ns) adicionada(s)! Total na galeria: {total_imagens}')
+                    else:
+                        print("NENHUMA nova imagem da galeria recebida")
+                    
+                    show_edit_success_modal = True
+                    messages.success(request, 'Produto atualizado com sucesso!')
+                    
+                except Category.DoesNotExist:
+                    messages.error(request, 'Categoria não encontrada.')
+            else:
+                messages.error(request, 'Nome e categoria são obrigatórios.')
+        
+        # Formata preço para exibição
+        produto.price = formatar_brl(produto.price)
 
-    localizacao = [
-            {"n1": "Produtos", "url": "painel_produtos"},
-            {"n2": "Editar Produto", "url": "painel_produtos_edit", "id": produto.id}
-        ]
-    context = {
-        'produto': produto,
-        'localizacao': localizacao,
-        'galeria': galeria,
-        'categorias': categorias,
-        'url_marketplace': get_tenant_url(request, '/loja/'),
-    }
+        localizacao = [
+                {"n1": "Produtos", "url": "painel_produtos"},
+                {"n2": "Editar Produto", "url": "painel_produtos_edit", "id": produto.id}
+            ]
+        context = {
+            'produto': produto,
+            'localizacao': localizacao,
+            'galeria': galeria,
+            'categorias': categorias,
+            'show_edit_success_modal': show_edit_success_modal,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
 
-    return render(request, 'painel/produto_edit.html', context)
+        return render(request, 'painel/produto_edit.html', context)
+    else:
+        return redirect('login')
 
 def logout_view(request):
     logout(request)
