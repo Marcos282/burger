@@ -22,25 +22,37 @@ var KTWizard3 = function () {
 			_wizard.stop();
 
 			// Validate form
-			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
-			validator.validate().then(function (status) {
-				if (status == 'Valid') {
+			var currentStep = wizard.getStep();
+			var validatorIndex = currentStep - 1;
+			var validator = _validations[validatorIndex];
+			
+			if (validator && typeof validator.validate === 'function') {
+				validator.validate().then(function (status) {
+					if (status == 'Valid') {
+						_wizard.goNext();
+						KTUtil.scrollTop();
+					} else {
+						Swal.fire({
+							text: "Parece que alguns campos obrigatórios não foram preenchidos, por favor verifique.",
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "Ok, entendi!",
+							customClass: {
+								confirmButton: "btn font-weight-bold btn-light"
+							}
+						}).then(function () {
+							KTUtil.scrollTop();
+						});
+					}
+				}).catch(function(error) {
+					// Se houver erro na validação, permite ir para o próximo step
 					_wizard.goNext();
 					KTUtil.scrollTop();
-				} else {
-					Swal.fire({
-						text: "Sorry, looks like there are some errors detected, please try again.",
-						icon: "error",
-						buttonsStyling: false,
-						confirmButtonText: "Ok, got it!",
-						customClass: {
-							confirmButton: "btn font-weight-bold btn-light"
-						}
-					}).then(function () {
-						KTUtil.scrollTop();
-					});
-				}
-			});
+				});
+			} else {
+				_wizard.goNext();
+				KTUtil.scrollTop();
+			}
 		});
 
 		// Change event
@@ -56,41 +68,48 @@ var KTWizard3 = function () {
 			_formEl,
 			{
 				fields: {
-					address1: {
+					name: {
 						validators: {
 							notEmpty: {
-								message: 'Address is required'
+								message: 'Campo nome é obrigatório'
 							}
 						}
 					},
-					postcode: {
+					descricao_loja: {
 						validators: {
 							notEmpty: {
-								message: 'Postcode is required'
+								message: 'Campo descrição da loja é obrigatório'
 							}
 						}
 					},
-					city: {
+					// cidade: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Campo cidade é obrigatório'
+					// 		}
+					// 	}
+					// },
+					estado: {
 						validators: {
 							notEmpty: {
-								message: 'City is required'
+								message: 'Campo estado é obrigatório'
 							}
 						}
 					},
-					state: {
+					rua: {
 						validators: {
 							notEmpty: {
-								message: 'State is required'
+								message: 'Campo rua é obrigatório'
 							}
 						}
 					},
-					country: {
+					numero_endereco: {
 						validators: {
 							notEmpty: {
-								message: 'Country is required'
+								message: 'Campo número é obrigatório'
 							}
 						}
-					}
+					},							
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -111,46 +130,7 @@ var KTWizard3 = function () {
 							}
 						}
 					},
-					weight: {
-						validators: {
-							notEmpty: {
-								message: 'Package weight is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					},
-					width: {
-						validators: {
-							notEmpty: {
-								message: 'Package width is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					},
-					height: {
-						validators: {
-							notEmpty: {
-								message: 'Package height is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					},
-					packagelength: {
-						validators: {
-							notEmpty: {
-								message: 'Package length is required'
-							},
-							digits: {
-								message: 'The value added is not valid'
-							}
-						}
-					}
+					
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -232,6 +212,38 @@ var KTWizard3 = function () {
 								message: 'Country is required'
 							}
 						}
+					}
+				},
+				plugins: {
+					trigger: new FormValidation.plugins.Trigger(),
+					bootstrap: new FormValidation.plugins.Bootstrap()
+				}
+			}
+		));
+
+		// Step 5 - Notificações
+		_validations.push(FormValidation.formValidation(
+			_formEl,
+			{
+				fields: {
+					dummy_field_step5: {
+						validators: {}
+					}
+				},
+				plugins: {
+					trigger: new FormValidation.plugins.Trigger(),
+					bootstrap: new FormValidation.plugins.Bootstrap()
+				}
+			}
+		));
+
+		// Step 6 - Contato/Review
+		_validations.push(FormValidation.formValidation(
+			_formEl,
+			{
+				fields: {
+					dummy_field_step6: {
+						validators: {}
 					}
 				},
 				plugins: {

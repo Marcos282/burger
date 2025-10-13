@@ -60,8 +60,15 @@ class TenantSettings(models.Model):
     bairro = models.CharField(max_length=100, blank=True, null=True)
     cidade = models.CharField(max_length=100, blank=True, null=True)
     estado = models.CharField(max_length=100, blank=True, null=True)
-    cep = models.CharField(max_length=20, blank=True, null=True)    
-
+    cep = models.CharField(max_length=20, blank=True, null=True)
+    complemento = models.CharField(max_length=100, blank=True, null=True)
+    referencia = models.CharField(max_length=200, blank=True, null=True)
+    foto_perfil = models.ImageField(upload_to='fotoperfil/', blank=True, null=True)
+    foto_capa = models.ImageField(upload_to='fotocapa/', blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+    
+   
     # método para verificar se a loja está aberta em um dado momento
     def is_open_now(self, dt=None):
         """

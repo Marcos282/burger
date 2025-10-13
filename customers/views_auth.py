@@ -525,6 +525,118 @@ def painel_produtos_edit(request, produto_id):
     else:
         return redirect('login')
 
+def painel_configuracao(request):
+    if request.user.is_authenticated:
+        user = request.user
+        
+        # Obter configurações do tenant
+        from tenants.models import TenantSettings
+        tenant = user.tenant
+        settings = TenantSettings.load(tenant)
+        
+        if request.method == 'POST':
+            # Processar dados do formulário
+            if 'foto_perfil' in request.FILES:
+                settings.foto_perfil = request.FILES['foto_perfil']
+            
+            if 'foto_capa' in request.FILES:
+                settings.foto_capa = request.FILES['foto_capa']
+                
+            if 'facebook' in request.POST:
+                settings.facebook = request.POST['facebook']
+                
+            if 'instagram' in request.POST:
+                settings.instagram = request.POST['instagram']
+            
+            settings.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Configurações salvas com sucesso!'
+            })
+
+        localizacao = [
+            {"n1": "Configuração", "url": "painel_configuracao"}
+        ]
+
+        context = {
+            'localizacao': localizacao,
+            'user': user,
+            'settings': settings,
+            'qt_items_cliente': qt_items_cliente(request),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
+        return render(request, 'painel/configuracao.html', context)
+    else:
+        return redirect('login')
+
+def upload_foto_perfil(request):
+    """View específica para upload da foto de perfil via Dropzone"""
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'Usuário não autenticado'})
+    
+    if request.method == 'POST' and 'foto_perfil' in request.FILES:
+        try:
+            from tenants.models import TenantSettings
+            
+            tenant = request.user.tenant
+            settings = TenantSettings.load(tenant)
+            settings.foto_perfil = request.FILES['foto_perfil']
+            settings.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Foto de perfil atualizada com sucesso!',
+                'url': settings.foto_perfil.url
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Erro ao salvar foto: {str(e)}'
+            })
+    
+    return JsonResponse({'success': False, 'message': 'Nenhum arquivo enviado'})
+
+def upload_foto_capa(request):
+    """View específica para upload da foto de capa via Dropzone"""
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'Usuário não autenticado'})
+    
+    # Debug: listar arquivos recebidos
+    print("=== DEBUG UPLOAD FOTO CAPA ===")
+    print(f"Method: {request.method}")
+    print(f"FILES: {list(request.FILES.keys())}")
+    print(f"POST: {list(request.POST.keys())}")
+    
+    if request.method == 'POST':
+        if 'foto_capa' in request.FILES:
+            try:
+                from tenants.models import TenantSettings
+                
+                tenant = request.user.tenant
+                settings = TenantSettings.load(tenant)
+                settings.foto_capa = request.FILES['foto_capa']
+                settings.save()
+                
+                print(f"Foto de capa salva com sucesso: {settings.foto_capa.url}")
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Foto de capa atualizada com sucesso!',
+                    'url': settings.foto_capa.url
+                })
+            except Exception as e:
+                print(f"Erro ao salvar foto de capa: {str(e)}")
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Erro ao salvar foto: {str(e)}'
+                })
+        else:
+            print("Campo 'foto_capa' não encontrado nos arquivos")
+            return JsonResponse({'success': False, 'message': 'Campo foto_capa não encontrado'})
+    
+    return JsonResponse({'success': False, 'message': 'Método não permitido'})
+
 def logout_view(request):
     logout(request)
     return redirect('login')

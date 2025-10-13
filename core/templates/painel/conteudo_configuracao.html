@@ -1,0 +1,891 @@
+{% load static %}
+<div class="card card-custom">
+   <div class="card-body p-0">
+      <!--begin: Wizard-->
+      <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="first" data-wizard-clickable="true">
+         <!--begin: Wizard Nav-->
+         <div class="wizard-nav">
+            <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+               <!--begin::Wizard Step 1 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>1.</span> Geral
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 1 Nav-->
+               <!--begin::Wizard Step 2 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>2.</span> Aparência
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 2 Nav-->
+               <!--begin::Wizard Step 3 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>3.</span> Pagamento
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 3 Nav-->
+               <!--begin::Wizard Step 4 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>4.</span> Entrega
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 4 Nav-->
+               <!--begin::Wizard Step 5 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>5.</span> Notificações
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 5 Nav-->
+               <!--begin::Wizard Step 6 Nav-->
+               <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                  <div class="wizard-label">
+                     <h3 class="wizard-title">
+                        <span>6.</span> Contato
+                     </h3>
+                     <div class="wizard-bar"></div>
+                  </div>
+               </div>
+               <!--end::Wizard Step 6 Nav-->
+            </div>
+         </div>
+         <!--end: Wizard Nav-->
+         <!--begin: Wizard Body-->
+         <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+            <div class="col-xl-12 col-xxl-7">
+               <!--begin: Wizard Form-->
+               <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!--begin: Wizard Step 1-->
+                  <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                     <h4 class="mb-10 font-weight-bold text-dark">Informe seus dados de localização</h4>
+                     <!--begin::Input-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Nome</label>
+                        <input type="text" class="form-control" name="name" placeholder="Informe seu nome" value="Nome">
+                        <span class="form-text text-muted">Por favor, insira seu nome.</span>
+                        <div class="fv-plugins-message-container"></div>
+                     </div>
+                     <!--end::Input-->
+                     <!--begin::Input-->
+                     <div class="form-group">
+                        <label>Descrição da Loja</label>
+                        <input type="text" class="form-control" name="descricao_loja" placeholder="Descrição" >
+                        <span class="form-text text-muted">Por favor, insira a descrição da loja.</span>
+                     </div>
+                     <!--end::Input-->
+                     <div class="row">
+                        <div class="col-xl-6">
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <!-- <label>Postcode</label>
+                                 <input type="text" class="form-control" name="postcode" placeholder="Postcode" value="3000">
+                                 <span class="form-text text-muted">Please enter your Postcode.</span>
+                                 <div class="fv-plugins-message-container"></div> -->
+                              <h6>URL da loja</h6>
+                              <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">A URL que seus clientes usarão para acessar a loja, não serão permitidos acentos, cedilha, pontos e caracteres especiais.</p>
+                              <div class="form-group"></div>
+                              <div class="input-group">
+                                 <input type="text" class="form-control" placeholder="subdomain" name="subdomain" aria-describedby="basic-addon2">
+                                 <div class="input-group-append"><span class="input-group-text">.example.com</span></div>
+                              </div>
+                           </div>
+                           <!--end::Input-->
+                        </div>
+                        <div class="col-xl-6">
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>CEP</label>
+                              <input type="text" class="form-control" name="CEP" id="cep" placeholder="00000-000" value="" maxlength="9">
+                              <span class="form-text text-muted">Digite o CEP no formato 00000-000.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                        </div>
+                        <div class="col-xl-6">
+                          
+                        </div>
+                        <div class="col-xl-6">
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Bairro</label>
+                              <input type="text" class="form-control" name="bairro" placeholder="Bairro" value="">
+                              <span class="form-text text-muted">Informe seu bairro.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Rua</label>
+                              <input type="text" class="form-control" name="endereco" placeholder="Rua" value="">
+                              <span class="form-text text-muted">Informe sua rua.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Número</label>
+                              <input type="text" class="form-control" name="numero_endereco" placeholder="Número" value="">
+                              <span class="form-text text-muted">Informe o número do endereço.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Complemento</label>
+                              <input type="text" class="form-control" name="complemento" placeholder="Complemento (opcional)" value="">
+                              <span class="form-text text-muted">Ex: Apto 101, Bloco A, etc.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                           <!--begin::Input-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Ponto de Referência</label>
+                              <input type="text" class="form-control" name="referencia" placeholder="Ponto de referência (opcional)" value="">
+                              <span class="form-text text-muted">Ex: Próximo ao mercado, em frente à escola, etc.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Input-->
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-xl-6">
+                           <!--begin::Select-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Estado</label>
+                              <select name="estado" id="estado" class="form-control">
+                                 <option value="">Selecione o estado</option>
+                                 <option value="AC">Acre</option>
+                                 <option value="AL">Alagoas</option>
+                                 <option value="AP">Amapá</option>
+                                 <option value="AM">Amazonas</option>
+                                 <option value="BA">Bahia</option>
+                                 <option value="CE">Ceará</option>
+                                 <option value="DF">Distrito Federal</option>
+                                 <option value="ES">Espírito Santo</option>
+                                 <option value="GO">Goiás</option>
+                                 <option value="MA">Maranhão</option>
+                                 <option value="MT">Mato Grosso</option>
+                                 <option value="MS">Mato Grosso do Sul</option>
+                                 <option value="MG">Minas Gerais</option>
+                                 <option value="PA">Pará</option>
+                                 <option value="PB">Paraíba</option>
+                                 <option value="PR">Paraná</option>
+                                 <option value="PE">Pernambuco</option>
+                                 <option value="PI">Piauí</option>
+                                 <option value="RJ">Rio de Janeiro</option>
+                                 <option value="RN">Rio Grande do Norte</option>
+                                 <option value="RS">Rio Grande do Sul</option>
+                                 <option value="RO">Rondônia</option>
+                                 <option value="RR">Roraima</option>
+                                 <option value="SC">Santa Catarina</option>
+                                 <option value="SP">São Paulo</option>
+                                 <option value="SE">Sergipe</option>
+                                 <option value="TO">Tocantins</option>
+                              </select>
+                              <span class="form-text text-muted">Selecione seu estado.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Select-->
+                        </div>
+                        <div class="col-xl-6">
+                           <!--begin::Select-->
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Cidade</label>
+                              <select name="cidade" id="cidade" class="form-control" disabled>
+                                 <option value="">Selecione primeiro o estado</option>
+                              </select>
+                              <span class="form-text text-muted">Selecione sua cidade.</span>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Select-->
+                        </div>
+                        <!--begin::Select-->
+                        <div class="col-xl-6">
+                           <div class="form-group fv-plugins-icon-container">
+                              <label>Segmento</label>
+                              <select name="segmento" class="form-control">
+                                 <option  value="18">Academia e esportes</option>
+                                 <option  value="1">Alimentação e Bebidas</option>
+                                 <option  value="22">Artes e cultura</option>
+                                 <option  value="14">Automotivo</option>
+                                 <option  value="8">Beleza, estética e cuidados</option>
+                                 <option  value="25">Calçados</option>
+                                 <option SELECTED value="7">Comércio em Geral</option>
+                                 <option  value="19">Constução civil</option>
+                                 <option  value="24">Educação </option>
+                                 <option  value="9">Eletrônicos e importados</option>
+                                 <option  value="10">Farmácia</option>
+                                 <option  value="11">Imobiliário</option>
+                                 <option  value="27">Infantil</option>
+                                 <option  value="12">Móveis, decorações e utilidades</option>
+                                 <option  value="13">Outros</option>
+                                 <option  value="28">Pet shop</option>
+                                 <option  value="23">Publicidade e marketing</option>
+                                 <option  value="20">Saúde</option>
+                                 <option  value="21">Serviços</option>
+                                 <option  value="16">Sexshop</option>
+                                 <option  value="26">Supermercados</option>
+                                 <option  value="29">Transportadora</option>
+                                 <option  value="17">Turismo e hotelaria</option>
+                                 <option  value="15">Vestuário</option>
+                              </select>
+                              <div class="fv-plugins-message-container"></div>
+                           </div>
+                           <!--end::Select-->
+                        </div>
+                     </div>
+                  </div>
+                  <!--end: Wizard Step 1-->
+
+
+                  <!--begin: Wizard Step 2-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <h4 class="mb-10 font-weight-bold text-dark">Aparência</h4>
+                     
+                     <!--begin::Foto de Perfil-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Imagem de perfil </label>
+                        <div id="dropzoneImagemPerfil" class="dropzone" style="max-width:300px; min-height:200px; margin:auto; border: 2px dashed #ccc; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease;"></div>
+                        <style>
+                           #dropzoneImagemPerfil {
+                               background-color: #f8f9fa;
+                               display: flex;
+                               align-items: center;
+                               justify-content: center;
+                               position: relative;
+                           }
+                           
+                           #dropzoneImagemPerfil:hover {
+                               border-color: #007bff;
+                               background-color: #e7f3ff;
+                           }
+                           
+                           #dropzoneImagemPerfil .dz-message {
+                               color: #6c757d;
+                               font-size: 14px;
+                               text-align: center;
+                           }
+                           
+                           #dropzoneImagemPerfil .dz-preview .dz-image img {
+                               width: 220px !important;
+                               height: 220px !important;
+                               object-fit: cover;
+                               border-radius: 10px;
+                               border: 1px solid #eee;
+                               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                           }
+                           
+                           #dropzoneImagemPerfil .dz-preview .dz-image {
+                               width: 220px !important;
+                               height: 220px !important;
+                           }
+                           
+                           #dropzoneImagemPerfil .dz-preview {
+                               margin: 0 auto;
+                           }
+                        </style>
+                        <div id="imagemPerfilErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
+                     </div>
+                     <!--end::Foto de Perfil-->
+                     
+                     <!--begin::Foto de Capa-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Foto de Capa</label>
+                        <div id="dropzoneFotoCapa" class="dropzone" style="max-width:100%; min-height:150px; margin:auto; border: 2px dashed #ccc; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease;"></div>
+                        <style>
+                           #dropzoneFotoCapa {
+                               background-color: #f8f9fa;
+                               display: flex;
+                               align-items: center;
+                               justify-content: center;
+                               position: relative;
+                           }
+                           
+                           #dropzoneFotoCapa:hover {
+                               border-color: #007bff;
+                               background-color: #e7f3ff;
+                           }
+                           
+                           #dropzoneFotoCapa .dz-message {
+                               color: #6c757d;
+                               font-size: 14px;
+                               text-align: center;
+                           }
+                           
+                           #dropzoneFotoCapa .dz-preview .dz-image img {
+                               width: 100% !important;
+                               max-width: 400px !important;
+                               height: 200px !important;
+                               object-fit: cover;
+                               border-radius: 10px;
+                               border: 1px solid #eee;
+                               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                           }
+                           
+                           #dropzoneFotoCapa .dz-preview .dz-image {
+                               width: 100% !important;
+                               max-width: 400px !important;
+                               height: 200px !important;
+                           }
+                           
+                           #dropzoneFotoCapa .dz-preview {
+                               margin: 0 auto;
+                               width: 100%;
+                           }
+                        </style>
+                        <span class="form-text text-muted">Upload de imagem para foto de capa (formatos: JPG, PNG, GIF)</span>
+                        <div id="fotoCapaErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
+                     </div>
+                     <!--end::Foto de Capa-->
+                     
+                     <!--begin::Redes Sociais-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Facebook</label>
+                        <input type="url" class="form-control" name="facebook" placeholder="https://facebook.com/sua-pagina" value="{{ settings.facebook|default:'' }}">
+                        <span class="form-text text-muted">URL da sua página no Facebook</span>
+                     </div>
+                     
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Instagram</label>
+                        <input type="url" class="form-control" name="instagram" placeholder="https://instagram.com/seu-perfil" value="{{ settings.instagram|default:'' }}">
+                        <span class="form-text text-muted">URL do seu perfil no Instagram</span>
+                     </div>
+                     <!--end::Redes Sociais-->
+                     
+                  </div>
+                  <!--end: Wizard Step 2-->
+                  <!--begin: Wizard Step 3-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <h4 class="mb-10 font-weight-bold text-dark">Select your Services</h4>
+                     <!--begin::Select-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Delivery Type</label>
+                        <select name="delivery" class="form-control">
+                           <option value="">Select a Service Type Option</option>
+                           <option value="overnight" selected="">Overnight Delivery (within 48 hours)</option>
+                           <option value="express">Express Delivery (within 5 working days)</option>
+                           <option value="basic">Basic Delivery (within 5 - 10 working days)</option>
+                        </select>
+                        <div class="fv-plugins-message-container"></div>
+                     </div>
+                     <!--end::Select-->
+                     <!--begin::Select-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Packaging Type</label>
+                        <select name="packaging" class="form-control">
+                           <option value="">Select a Packaging Type Option</option>
+                           <option value="regular" selected="">Regular Packaging</option>
+                           <option value="oversized">Oversized Packaging</option>
+                           <option value="fragile">Fragile Packaging</option>
+                           <option value="frozen">Frozen Packaging</option>
+                        </select>
+                        <div class="fv-plugins-message-container"></div>
+                     </div>
+                     <!--end::Select-->
+                     <!--begin::Select-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Preferred Delivery Window</label>
+                        <select name="preferreddelivery" class="form-control">
+                           <option value="">Select a Preferred Delivery Option</option>
+                           <option value="morning" selected="">Morning Delivery (8:00AM - 11:00AM)</option>
+                           <option value="afternoon">Afternoon Delivery (11:00AM - 3:00PM)</option>
+                           <option value="evening">Evening Delivery (3:00PM - 7:00PM)</option>
+                        </select>
+                        <div class="fv-plugins-message-container"></div>
+                     </div>
+                     <!--end::Select-->
+                  </div>
+                  <!--end: Wizard Step 3-->
+                  <!--begin: Wizard Step 4-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <h4 class="mb-10 font-weight-bold text-dark">Setup Your Delivery Location</h4>
+                     <div class="my-5">
+                        <!--begin::Input-->
+                        <div class="form-group fv-plugins-icon-container">
+                           <label>Address Line 1</label>
+                           <input type="text" class="form-control" name="locaddress1" placeholder="Address Line 1" value="Address Line 1">
+                           <span class="form-text text-muted">Please enter your Address.</span>
+                           <div class="fv-plugins-message-container"></div>
+                        </div>
+                        <!--end::Input-->
+                        <!--begin::Input-->
+                        <div class="form-group">
+                           <label>Address Line 2</label>
+                           <input type="text" class="form-control" name="locaddress2" placeholder="Address Line 2" value="Address Line 2">
+                           <span class="form-text text-muted">Please enter your Address.</span>
+                        </div>
+                        <!--end::Input-->
+                        <div class="row">
+                           <div class="col-xl-6">
+                              <!--begin::Input-->
+                              <div class="form-group fv-plugins-icon-container">
+                                 <label>Postcode</label>
+                                 <input type="text" class="form-control" name="locpostcode" placeholder="Postcode" value="3072">
+                                 <span class="form-text text-muted">Please enter your Postcode.</span>
+                                 <div class="fv-plugins-message-container"></div>
+                              </div>
+                              <!--end::Input-->
+                           </div>
+                           <div class="col-xl-6">
+                              <!--begin::Input-->
+                              <div class="form-group fv-plugins-icon-container">
+                                 <label>City</label>
+                                 <input type="text" class="form-control" name="loccity" placeholder="City" value="Preston">
+                                 <span class="form-text text-muted">Please enter your City.</span>
+                                 <div class="fv-plugins-message-container"></div>
+                              </div>
+                              <!--end::Input-->
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-xl-6">
+                              <!--begin::Input-->
+                              <div class="form-group fv-plugins-icon-container">
+                                 <label>State</label>
+                                 <input type="text" class="form-control" name="locstate" placeholder="State" value="VIC">
+                                 <span class="form-text text-muted">Please enter your State.</span>
+                                 <div class="fv-plugins-message-container"></div>
+                              </div>
+                              <!--end::Input-->
+                           </div>
+                           <div class="col-xl-6">
+                              <!--begin::Select-->
+                              <div class="form-group fv-plugins-icon-container">
+                                 <label>Country</label>
+                                 <select name="loccountry" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="AF">Afghanistan</option>
+                                    <option value="AX">Åland Islands</option>
+                                    <option value="AL">Albania</option>
+                                    <option value="DZ">Algeria</option>
+                                    <option value="AS">American Samoa</option>
+                                    <option value="AD">Andorra</option>
+                                    <option value="AO">Angola</option>
+                                    <option value="AI">Anguilla</option>
+                                    <option value="AQ">Antarctica</option>
+                                    <option value="AG">Antigua and Barbuda</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="AM">Armenia</option>
+                                    <option value="AW">Aruba</option>
+                                    <option value="AU" selected="">Australia</option>
+                                    <option value="AT">Austria</option>
+                                    <option value="AZ">Azerbaijan</option>
+                                    <option value="BS">Bahamas</option>
+                                    <option value="BH">Bahrain</option>
+                                    <option value="BD">Bangladesh</option>
+                                    <option value="BB">Barbados</option>
+                                    <option value="BY">Belarus</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="BZ">Belize</option>
+                                    <option value="BJ">Benin</option>
+                                    <option value="BM">Bermuda</option>
+                                    <option value="BT">Bhutan</option>
+                                    <option value="BO">Bolivia, Plurinational State of</option>
+                                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                    <option value="BA">Bosnia and Herzegovina</option>
+                                    <option value="BW">Botswana</option>
+                                    <option value="BV">Bouvet Island</option>
+                                    <option value="BR">Brazil</option>
+                                    <option value="IO">British Indian Ocean Territory</option>
+                                    <option value="BN">Brunei Darussalam</option>
+                                    <option value="BG">Bulgaria</option>
+                                    <option value="BF">Burkina Faso</option>
+                                    <option value="BI">Burundi</option>
+                                    <option value="KH">Cambodia</option>
+                                    <option value="CM">Cameroon</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="CV">Cape Verde</option>
+                                    <option value="KY">Cayman Islands</option>
+                                    <option value="CF">Central African Republic</option>
+                                    <option value="TD">Chad</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="CN">China</option>
+                                    <option value="CX">Christmas Island</option>
+                                    <option value="CC">Cocos (Keeling) Islands</option>
+                                    <option value="CO">Colombia</option>
+                                    <option value="KM">Comoros</option>
+                                    <option value="CG">Congo</option>
+                                    <option value="CD">Congo, the Democratic Republic of the</option>
+                                    <option value="CK">Cook Islands</option>
+                                    <option value="CR">Costa Rica</option>
+                                    <option value="CI">Côte d'Ivoire</option>
+                                    <option value="HR">Croatia</option>
+                                    <option value="CU">Cuba</option>
+                                    <option value="CW">Curaçao</option>
+                                    <option value="CY">Cyprus</option>
+                                    <option value="CZ">Czech Republic</option>
+                                    <option value="DK">Denmark</option>
+                                    <option value="DJ">Djibouti</option>
+                                    <option value="DM">Dominica</option>
+                                    <option value="DO">Dominican Republic</option>
+                                    <option value="EC">Ecuador</option>
+                                    <option value="EG">Egypt</option>
+                                    <option value="SV">El Salvador</option>
+                                    <option value="GQ">Equatorial Guinea</option>
+                                    <option value="ER">Eritrea</option>
+                                    <option value="EE">Estonia</option>
+                                    <option value="ET">Ethiopia</option>
+                                    <option value="FK">Falkland Islands (Malvinas)</option>
+                                    <option value="FO">Faroe Islands</option>
+                                    <option value="FJ">Fiji</option>
+                                    <option value="FI">Finland</option>
+                                    <option value="FR">France</option>
+                                    <option value="GF">French Guiana</option>
+                                    <option value="PF">French Polynesia</option>
+                                    <option value="TF">French Southern Territories</option>
+                                    <option value="GA">Gabon</option>
+                                    <option value="GM">Gambia</option>
+                                    <option value="GE">Georgia</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="GH">Ghana</option>
+                                    <option value="GI">Gibraltar</option>
+                                    <option value="GR">Greece</option>
+                                    <option value="GL">Greenland</option>
+                                    <option value="GD">Grenada</option>
+                                    <option value="GP">Guadeloupe</option>
+                                    <option value="GU">Guam</option>
+                                    <option value="GT">Guatemala</option>
+                                    <option value="GG">Guernsey</option>
+                                    <option value="GN">Guinea</option>
+                                    <option value="GW">Guinea-Bissau</option>
+                                    <option value="GY">Guyana</option>
+                                    <option value="HT">Haiti</option>
+                                    <option value="HM">Heard Island and McDonald Islands</option>
+                                    <option value="VA">Holy See (Vatican City State)</option>
+                                    <option value="HN">Honduras</option>
+                                    <option value="HK">Hong Kong</option>
+                                    <option value="HU">Hungary</option>
+                                    <option value="IS">Iceland</option>
+                                    <option value="IN">India</option>
+                                    <option value="ID">Indonesia</option>
+                                    <option value="IR">Iran, Islamic Republic of</option>
+                                    <option value="IQ">Iraq</option>
+                                    <option value="IE">Ireland</option>
+                                    <option value="IM">Isle of Man</option>
+                                    <option value="IL">Israel</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="JM">Jamaica</option>
+                                    <option value="JP">Japan</option>
+                                    <option value="JE">Jersey</option>
+                                    <option value="JO">Jordan</option>
+                                    <option value="KZ">Kazakhstan</option>
+                                    <option value="KE">Kenya</option>
+                                    <option value="KI">Kiribati</option>
+                                    <option value="KP">Korea, Democratic People's Republic of</option>
+                                    <option value="KR">Korea, Republic of</option>
+                                    <option value="KW">Kuwait</option>
+                                    <option value="KG">Kyrgyzstan</option>
+                                    <option value="LA">Lao People's Democratic Republic</option>
+                                    <option value="LV">Latvia</option>
+                                    <option value="LB">Lebanon</option>
+                                    <option value="LS">Lesotho</option>
+                                    <option value="LR">Liberia</option>
+                                    <option value="LY">Libya</option>
+                                    <option value="LI">Liechtenstein</option>
+                                    <option value="LT">Lithuania</option>
+                                    <option value="LU">Luxembourg</option>
+                                    <option value="MO">Macao</option>
+                                    <option value="MK">Macedonia, the former Yugoslav Republic of</option>
+                                    <option value="MG">Madagascar</option>
+                                    <option value="MW">Malawi</option>
+                                    <option value="MY">Malaysia</option>
+                                    <option value="MV">Maldives</option>
+                                    <option value="ML">Mali</option>
+                                    <option value="MT">Malta</option>
+                                    <option value="MH">Marshall Islands</option>
+                                    <option value="MQ">Martinique</option>
+                                    <option value="MR">Mauritania</option>
+                                    <option value="MU">Mauritius</option>
+                                    <option value="YT">Mayotte</option>
+                                    <option value="MX">Mexico</option>
+                                    <option value="FM">Micronesia, Federated States of</option>
+                                    <option value="MD">Moldova, Republic of</option>
+                                    <option value="MC">Monaco</option>
+                                    <option value="MN">Mongolia</option>
+                                    <option value="ME">Montenegro</option>
+                                    <option value="MS">Montserrat</option>
+                                    <option value="MA">Morocco</option>
+                                    <option value="MZ">Mozambique</option>
+                                    <option value="MM">Myanmar</option>
+                                    <option value="NA">Namibia</option>
+                                    <option value="NR">Nauru</option>
+                                    <option value="NP">Nepal</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="NC">New Caledonia</option>
+                                    <option value="NZ">New Zealand</option>
+                                    <option value="NI">Nicaragua</option>
+                                    <option value="NE">Niger</option>
+                                    <option value="NG">Nigeria</option>
+                                    <option value="NU">Niue</option>
+                                    <option value="NF">Norfolk Island</option>
+                                    <option value="MP">Northern Mariana Islands</option>
+                                    <option value="NO">Norway</option>
+                                    <option value="OM">Oman</option>
+                                    <option value="PK">Pakistan</option>
+                                    <option value="PW">Palau</option>
+                                    <option value="PS">Palestinian Territory, Occupied</option>
+                                    <option value="PA">Panama</option>
+                                    <option value="PG">Papua New Guinea</option>
+                                    <option value="PY">Paraguay</option>
+                                    <option value="PE">Peru</option>
+                                    <option value="PH">Philippines</option>
+                                    <option value="PN">Pitcairn</option>
+                                    <option value="PL">Poland</option>
+                                    <option value="PT">Portugal</option>
+                                    <option value="PR">Puerto Rico</option>
+                                    <option value="QA">Qatar</option>
+                                    <option value="RE">Réunion</option>
+                                    <option value="RO">Romania</option>
+                                    <option value="RU">Russian Federation</option>
+                                    <option value="RW">Rwanda</option>
+                                    <option value="BL">Saint Barthélemy</option>
+                                    <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+                                    <option value="KN">Saint Kitts and Nevis</option>
+                                    <option value="LC">Saint Lucia</option>
+                                    <option value="MF">Saint Martin (French part)</option>
+                                    <option value="PM">Saint Pierre and Miquelon</option>
+                                    <option value="VC">Saint Vincent and the Grenadines</option>
+                                    <option value="WS">Samoa</option>
+                                    <option value="SM">San Marino</option>
+                                    <option value="ST">Sao Tome and Principe</option>
+                                    <option value="SA">Saudi Arabia</option>
+                                    <option value="SN">Senegal</option>
+                                    <option value="RS">Serbia</option>
+                                    <option value="SC">Seychelles</option>
+                                    <option value="SL">Sierra Leone</option>
+                                    <option value="SG">Singapore</option>
+                                    <option value="SX">Sint Maarten (Dutch part)</option>
+                                    <option value="SK">Slovakia</option>
+                                    <option value="SI">Slovenia</option>
+                                    <option value="SB">Solomon Islands</option>
+                                    <option value="SO">Somalia</option>
+                                    <option value="ZA">South Africa</option>
+                                    <option value="GS">South Georgia and the South Sandwich Islands</option>
+                                    <option value="SS">South Sudan</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="LK">Sri Lanka</option>
+                                    <option value="SD">Sudan</option>
+                                    <option value="SR">Suriname</option>
+                                    <option value="SJ">Svalbard and Jan Mayen</option>
+                                    <option value="SZ">Swaziland</option>
+                                    <option value="SE">Sweden</option>
+                                    <option value="CH">Switzerland</option>
+                                    <option value="SY">Syrian Arab Republic</option>
+                                    <option value="TW">Taiwan, Province of China</option>
+                                    <option value="TJ">Tajikistan</option>
+                                    <option value="TZ">Tanzania, United Republic of</option>
+                                    <option value="TH">Thailand</option>
+                                    <option value="TL">Timor-Leste</option>
+                                    <option value="TG">Togo</option>
+                                    <option value="TK">Tokelau</option>
+                                    <option value="TO">Tonga</option>
+                                    <option value="TT">Trinidad and Tobago</option>
+                                    <option value="TN">Tunisia</option>
+                                    <option value="TR">Turkey</option>
+                                    <option value="TM">Turkmenistan</option>
+                                    <option value="TC">Turks and Caicos Islands</option>
+                                    <option value="TV">Tuvalu</option>
+                                    <option value="UG">Uganda</option>
+                                    <option value="UA">Ukraine</option>
+                                    <option value="AE">United Arab Emirates</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="US">United States</option>
+                                    <option value="UM">United States Minor Outlying Islands</option>
+                                    <option value="UY">Uruguay</option>
+                                    <option value="UZ">Uzbekistan</option>
+                                    <option value="VU">Vanuatu</option>
+                                    <option value="VE">Venezuela, Bolivarian Republic of</option>
+                                    <option value="VN">Viet Nam</option>
+                                    <option value="VG">Virgin Islands, British</option>
+                                    <option value="VI">Virgin Islands, U.S.</option>
+                                    <option value="WF">Wallis and Futuna</option>
+                                    <option value="EH">Western Sahara</option>
+                                    <option value="YE">Yemen</option>
+                                    <option value="ZM">Zambia</option>
+                                    <option value="ZW">Zimbabwe</option>
+                                 </select>
+                                 <div class="fv-plugins-message-container"></div>
+                              </div>
+                              <!--end::Select-->
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!--end: Wizard Step 4-->
+                  <!--begin: Wizard Step 5-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <input type="hidden" name="dummy_field_step5" value="valid">
+                     <h4 class="mb-10 font-weight-bold text-dark">Configurações de Notificações</h4>
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Notificações por Email:
+                     </h6>
+                     <div class="form-group">
+                        <div class="checkbox-list">
+                           <label class="checkbox">
+                           <input type="checkbox" name="email_novos_pedidos" checked>
+                           <span></span>
+                           Novos pedidos recebidos
+                           </label>
+                           <label class="checkbox">
+                           <input type="checkbox" name="email_pagamentos" checked>
+                           <span></span>
+                           Confirmação de pagamentos
+                           </label>
+                           <label class="checkbox">
+                           <input type="checkbox" name="email_cancelamentos">
+                           <span></span>
+                           Cancelamentos de pedidos
+                           </label>
+                           <label class="checkbox">
+                           <input type="checkbox" name="email_avaliacoes">
+                           <span></span>
+                           Novas avaliações de clientes
+                           </label>
+                        </div>
+                     </div>
+                     <div class="separator separator-dashed my-5"></div>
+                     <!--end::Section-->
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Notificações Push:
+                     </h6>
+                     <div class="form-group">
+                        <div class="checkbox-list">
+                           <label class="checkbox">
+                           <input type="checkbox" name="push_pedidos_urgentes" checked>
+                           <span></span>
+                           Pedidos urgentes
+                           </label>
+                           <label class="checkbox">
+                           <input type="checkbox" name="push_estoque_baixo" checked>
+                           <span></span>
+                           Estoque baixo de produtos
+                           </label>
+                           <label class="checkbox">
+                           <input type="checkbox" name="push_promocoes">
+                           <span></span>
+                           Lembretes de promoções
+                           </label>
+                        </div>
+                     </div>
+                     <div class="separator separator-dashed my-5"></div>
+                     <!--end::Section-->
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Configurações Avançadas:
+                     </h6>
+                     <div class="form-group">
+                        <label>Horário de recebimento de notificações:</label>
+                        <div class="row">
+                           <div class="col-md-6">
+                              <input type="time" class="form-control" name="horario_inicio" value="08:00">
+                              <span class="form-text text-muted">Início</span>
+                           </div>
+                           <div class="col-md-6">
+                              <input type="time" class="form-control" name="horario_fim" value="22:00">
+                              <span class="form-text text-muted">Fim</span>
+                           </div>
+                        </div>
+                     </div>
+                     <!--end::Section-->
+                  </div>
+                  <!--end: Wizard Step 5-->
+                  <!--begin: Wizard Step 6-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <input type="hidden" name="dummy_field_step6" value="valid">
+                     <!--begin::Section-->
+                     <h4 class="mb-10 font-weight-bold text-dark">Review your Details and Submit</h4>
+                     <h6 class="font-weight-bolder mb-3">
+                        Current Address:
+                     </h6>
+                     <div class="text-dark-50 line-height-lg">
+                        <div>Address Line 1</div>
+                        <div>Address Line 2</div>
+                        <div>Melbourne 3000, VIC, Australia</div>
+                     </div>
+                     <div class="separator separator-dashed my-5"></div>
+                     <!--end::Section-->
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Delivery Details:
+                     </h6>
+                     <div class="text-dark-50 line-height-lg">
+                        <div>Package: Complete Workstation (Monitor, Computer, Keyboard &amp; Mouse)</div>
+                        <div>Weight: 25kg</div>
+                        <div>Dimensions: 110cm (w) x 90cm (h) x 150cm (L)</div>
+                     </div>
+                     <div class="separator separator-dashed my-5"></div>
+                     <!--end::Section-->
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Delivery Service Type:
+                     </h6>
+                     <div class="text-dark-50 line-height-lg">
+                        <div>Overnight Delivery with Regular Packaging</div>
+                        <div>Preferred Morning (8:00AM - 11:00AM) Delivery</div>
+                     </div>
+                     <div class="separator separator-dashed my-5"></div>
+                     <!--end::Section-->
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Delivery Address:
+                     </h6>
+                     <div class="text-dark-50 line-height-lg">
+                        <div>Address Line 1</div>
+                        <div>Address Line 2</div>
+                        <div>Preston 3072, VIC, Australia</div>
+                     </div>
+                     <!--end::Section-->
+                  </div>
+                  <!--end: Wizard Step 6-->
+                  <!--begin: Wizard Actions-->
+                  <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                     <div class="mr-2">
+                        <button type="button" class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
+                        Anterior
+                        </button>
+                     </div>
+                     <div>
+                        <button type="button" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+                        Salvar
+                        </button>
+                        <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+                        Próximo
+                        </button>
+                     </div>
+                  </div>
+                  <!--end: Wizard Actions-->
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+               </form>
+               <!--end: Wizard Form-->
+            </div>
+         </div>
+         <!--end: Wizard Body-->
+      </div>
+      <!--end: Wizard-->
+   </div>
+</div>

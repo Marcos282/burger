@@ -12,6 +12,9 @@ from customers.views_auth import (
     painel_produtos_add,
     painel_produto_delete,
     painel_produtos_edit,
+    painel_configuracao,
+    upload_foto_perfil,
+    upload_foto_capa,
 )
  
 from django.contrib import admin
@@ -60,6 +63,9 @@ urlpatterns = [
     path('painel/produtos/adicionar/', painel_produtos_add, name='painel_produtos_add'),
     path('painel/produtos/deletar/<int:produto_id>/', painel_produto_delete, name='painel_produto_delete'),
     path('painel/produtos/editar/<int:produto_id>/', painel_produtos_edit, name='painel_produtos_edit'),
+    path('painel/configuracao/', painel_configuracao, name='painel_configuracao'),  # Ajuste conforme necessário
+    path('painel/upload-foto-perfil/', upload_foto_perfil, name='upload_foto_perfil'),
+    path('painel/upload-foto-capa/', upload_foto_capa, name='upload_foto_capa'),
     path('logout/', logout_view, name='logout'), 
     path('register/', register_view, name='register'),
     path('manifest.json', manifest_json, name='manifest'),

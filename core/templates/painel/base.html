@@ -23,6 +23,9 @@
     <link rel="shortcut icon" href="{% static 'assets/imagens/logos/favicon.ico' %}">
     <link href="{% static 'app/painel/apexcharts-custom.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'app/painel/painel-footer-fix.css' %}" rel="stylesheet" type="text/css">
+    {% block extra_head %}
+    <!-- CSS para configuração -->
+    {% endblock %}
        
 </head>
 <!--end::Head-->
@@ -244,6 +247,9 @@
                 }
             });
         </script>
+        
+        {% block extra_scripts %}
+        {% endblock %}
 
 </body>
 <!--end::Body-->
