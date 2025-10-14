@@ -530,30 +530,218 @@ def painel_configuracao(request):
         user = request.user
         
         # Obter configurações do tenant
-        from tenants.models import TenantSettings
+        from tenants.models import TenantSettings, HorarioFuncionamento
+        from datetime import time
+        import json
+        
         tenant = user.tenant
         settings = TenantSettings.load(tenant)
         
         if request.method == 'POST':
-            # Processar dados do formulário
-            if 'foto_perfil' in request.FILES:
-                settings.foto_perfil = request.FILES['foto_perfil']
-            
-            if 'foto_capa' in request.FILES:
-                settings.foto_capa = request.FILES['foto_capa']
+            try:
+                print(f"POST data received: {dict(request.POST)}")  # Debug
                 
-            if 'facebook' in request.POST:
-                settings.facebook = request.POST['facebook']
+                # ==== STEP 1: DADOS GERAIS ====
+                if 'name' in request.POST:
+                    settings.nome_loja = request.POST['name']
+                if 'descricao_loja' in request.POST:
+                    settings.descricao_loja = request.POST['descricao_loja']
+                if 'subdomain' in request.POST:
+                    settings.subdomain = request.POST['subdomain']
+                if 'CEP' in request.POST:
+                    settings.cep = request.POST['CEP']
+                if 'bairro' in request.POST:
+                    settings.bairro = request.POST['bairro']
+                if 'endereco' in request.POST:
+                    settings.endereco = request.POST['endereco']
+                if 'numero_endereco' in request.POST:
+                    settings.numero_endereco = request.POST['numero_endereco']
+                if 'complemento' in request.POST:
+                    settings.complemento = request.POST['complemento']
+                if 'referencia' in request.POST:
+                    settings.referencia = request.POST['referencia']
+                if 'estado' in request.POST:
+                    settings.estado = request.POST['estado']
+                if 'cidade' in request.POST:
+                    settings.cidade = request.POST['cidade']
+                if 'segmento' in request.POST:
+                    settings.segmento = request.POST['segmento']
                 
-            if 'instagram' in request.POST:
-                settings.instagram = request.POST['instagram']
-            
-            settings.save()
-            
-            return JsonResponse({
-                'success': True,
-                'message': 'Configurações salvas com sucesso!'
-            })
+                # ==== STEP 2: APARÊNCIA ====
+                if 'foto_perfil' in request.FILES:
+                    settings.foto_perfil = request.FILES['foto_perfil']
+                if 'foto_capa' in request.FILES:
+                    settings.foto_capa = request.FILES['foto_capa']
+                if 'color_theme' in request.POST:
+                    settings.color_theme = request.POST['color_theme']
+                if 'delivery' in request.POST:
+                    settings.exibicao_produtos = request.POST['delivery']
+                
+                # ==== STEP 3: PAGAMENTO ====
+                if 'pagamento_minimo' in request.POST:
+                    pagamento_minimo_value = request.POST['pagamento_minimo'].strip()
+                    print(f"pagamento_minimo raw value: '{request.POST['pagamento_minimo']}'")  # Debug
+                    print(f"pagamento_minimo stripped: '{pagamento_minimo_value}'")  # Debug
+                    if pagamento_minimo_value:
+                        try:
+                            # Remove caracteres não numéricos exceto vírgula e ponto
+                            pagamento_minimo_value = pagamento_minimo_value.replace('R$', '').replace('.', '').replace(',', '.')
+                            settings.pagamento_minimo = float(pagamento_minimo_value)
+                            print(f"pagamento_minimo converted: {settings.pagamento_minimo}")  # Debug
+                        except (ValueError, TypeError) as e:
+                            print(f"Error converting pagamento_minimo: {e}")  # Debug
+                            settings.pagamento_minimo = 0.0
+                    else:
+                        settings.pagamento_minimo = 0.0
+                        print(f"pagamento_minimo empty, set to 0.0")  # Debug
+                else:
+                    print(f"pagamento_minimo not in POST data")  # Debug
+                if 'dinheiro' in request.POST:
+                    settings.dinheiro = request.POST['dinheiro'] == 'True'
+                if 'debito' in request.POST:
+                    settings.debito = request.POST['debito'] == 'True'
+                if 'bandeiras_cartao_debito' in request.POST:
+                    settings.bandeiras_cartao_debito = request.POST['bandeiras_cartao_debito']
+                if 'credito' in request.POST:
+                    settings.credito = request.POST['credito'] == 'True'
+                if 'bandeiras_cartao_credito' in request.POST:
+                    settings.bandeiras_cartao_credito = request.POST['bandeiras_cartao_credito']
+                if 'pix' in request.POST:
+                    settings.pix = request.POST['pix'] == 'True'
+                if 'chave_pix' in request.POST:
+                    settings.chave_pix = request.POST['chave_pix']
+                if 'nome_pix' in request.POST:
+                    settings.nome_pix = request.POST['nome_pix']
+                
+                # ==== STEP 4: HORÁRIOS DE FUNCIONAMENTO ====
+                for dia in range(7):  # 0 = domingo, 1 = segunda, ..., 6 = sábado
+                    fechado_key = f'fechado_{dia}'
+                    abertura_key = f'horario_abertura_{dia}'
+                    fechamento_key = f'horario_fechamento_{dia}'
+                    
+                    fechado = fechado_key in request.POST
+                    horario_abertura = request.POST.get(abertura_key, '').strip()
+                    horario_fechamento = request.POST.get(fechamento_key, '').strip()
+                    
+                    if not fechado and horario_abertura and horario_fechamento:
+                        # Buscar ou criar horário para este dia
+                        horario, created = HorarioFuncionamento.objects.get_or_create(
+                            tenant=tenant,
+                            dia_semana=dia,
+                            data_especifica=None,
+                            defaults={
+                                'horario_abre': time.fromisoformat(horario_abertura),
+                                'horario_fecha': time.fromisoformat(horario_fechamento),
+                                'ativo': True,
+                            }
+                        )
+                        
+                        if not created:
+                            # Atualizar horário existente
+                            horario.horario_abre = time.fromisoformat(horario_abertura)
+                            horario.horario_fecha = time.fromisoformat(horario_fechamento)
+                            horario.ativo = True
+                            horario.save()
+                    else:
+                        # Se marcado como fechado ou não tem horários, desativar ou remover
+                        HorarioFuncionamento.objects.filter(
+                            tenant=tenant,
+                            dia_semana=dia, 
+                            data_especifica=None
+                        ).delete()
+                
+                # Delivery config from step 4
+                if 'delivery' in request.POST:
+                    settings.delivery = request.POST['delivery'] == 'True'
+                
+                # ==== STEP 5: CONTATOS ====
+                if 'whatsapp' in request.POST:
+                    settings.whatsapp = request.POST['whatsapp']
+                if 'facebook' in request.POST:
+                    settings.facebook = request.POST['facebook']
+                if 'instagram' in request.POST:
+                    settings.instagram = request.POST['instagram']
+                if 'googleanalytics' in request.POST:
+                    settings.googleanalytics = request.POST['googleanalytics']
+                if 'facebook_pixel' in request.POST:
+                    settings.facebook_pixel = request.POST['facebook_pixel']
+                if 'instagram_pixel' in request.POST:
+                    settings.instagram_pixel = request.POST['instagram_pixel']
+                
+                # ==== STEP 6: RESPONSÁVEL E AUTENTICAÇÃO ====
+                if 'nome_responsavel' in request.POST:
+                    settings.nome_responsavel = request.POST['nome_responsavel']
+                if 'dt_nascimento' in request.POST:
+                    settings.dt_nascimento = request.POST['dt_nascimento']
+                if 'cpf_ou_cnpj' in request.POST:
+                    settings.cpf_ou_cnpj = request.POST['cpf_ou_cnpj']
+                if 'documento' in request.POST:
+                    settings.documento = request.POST['documento']
+                if 'email' in request.POST:
+                    settings.email = request.POST['email']
+                if 'password' in request.POST and request.POST['password']:
+                    # Só atualiza senha se foi fornecida
+                    confirm_password = request.POST.get('confirm_password', '')
+                    if request.POST['password'] == confirm_password:
+                        settings.password = request.POST['password']
+                    else:
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'As senhas não coincidem!'
+                        })
+                
+                print(f"Attempting to save settings...")  # Debug
+                settings.save()
+                print(f"Settings saved successfully!")  # Debug
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Configurações salvas com sucesso!'
+                })
+                
+            except Exception as e:
+                import traceback
+                print(f"Error saving settings: {str(e)}")  # Debug
+                print(f"Traceback: {traceback.format_exc()}")  # Debug
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Erro ao salvar configurações: {str(e)}'
+                })
+
+        # Obter horários existentes para pré-carregar no formulário
+        horarios_existentes = {}
+        horarios = HorarioFuncionamento.objects.filter(tenant=tenant, data_especifica=None, ativo=True)
+        for horario in horarios:
+            horarios_existentes[horario.dia_semana] = {
+                'fechado': False,
+                'abertura': horario.horario_abre.strftime('%H:%M') if horario.horario_abre else '',
+                'fechamento': horario.horario_fecha.strftime('%H:%M') if horario.horario_fecha else '',
+            }
+        
+        # Para dias sem horário definido, marcar como fechado
+        for dia in range(7):
+            if dia not in horarios_existentes:
+                horarios_existentes[dia] = {
+                    'fechado': True,
+                    'abertura': '',
+                    'fechamento': '',
+                }
+
+        # Preparar dados do settings para JavaScript (pre-selecionar campos)
+        settings_data = {
+            'estado': settings.estado or '',
+            'cidade': settings.cidade or '',
+            'segmento': settings.segmento or '7',  # Padrão: Comércio em Geral
+            'exibicao_produtos': settings.exibicao_produtos or '1',
+            'dinheiro': settings.dinheiro if settings.dinheiro is not None else True,
+            'debito': settings.debito if settings.debito is not None else True,
+            'credito': settings.credito if settings.credito is not None else True,
+            'pix': settings.pix if settings.pix is not None else True,
+            'nome_pix': settings.nome_pix or 'CPF',
+            'delivery': settings.delivery if settings.delivery is not None else True,
+            'cpf_ou_cnpj': settings.cpf_ou_cnpj or 'CPF',
+            'color_theme': settings.color_theme or '#ff0000',
+        }
 
         localizacao = [
             {"n1": "Configuração", "url": "painel_configuracao"}
@@ -563,6 +751,8 @@ def painel_configuracao(request):
             'localizacao': localizacao,
             'user': user,
             'settings': settings,
+            'settings_data': json.dumps(settings_data),
+            'horarios_existentes': json.dumps(horarios_existentes),
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': get_tenant_url(request, '/loja/'),
         }

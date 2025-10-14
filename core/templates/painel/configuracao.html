@@ -4,6 +4,7 @@
 {% block extra_head %}
     <link href="{% static 'assets/css/pages/wizard/wizard-3.css' %}" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 {% endblock %}
 
 {% block content4 %} 
@@ -403,6 +404,133 @@ $(document).ready(function() {
 });
 
       
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const colorPicker = document.getElementById('color');
+    const colorHex = document.getElementById('colorHex');
+    const preview = document.getElementById('preview');
+    
+    // Função para atualizar o preview
+    function updatePreview(color) {
+        if (preview) {
+            preview.style.backgroundColor = color;
+        }
+    }
+    
+    // Função para validar se é uma cor hex válida
+    function isValidHex(hex) {
+        return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
+    }
+    
+    // Inicializa o preview com a cor atual
+    updatePreview(colorPicker.value);
+    
+    // Quando o color picker muda
+    colorPicker.addEventListener('input', function() {
+        const color = this.value;
+        colorHex.value = color;
+        updatePreview(color);
+    });
+    
+    // Quando o campo hex muda
+    colorHex.addEventListener('input', function() {
+        const hex = this.value;
+        if (isValidHex(hex)) {
+            colorPicker.value = hex;
+            updatePreview(hex);
+            this.style.borderColor = ''; // Remove estilo de erro
+        } else {
+            this.style.borderColor = '#dc3545'; // Borda vermelha para erro
+        }
+    });
+    
+    // Quando o campo hex perde o foco, força correção se necessário
+    colorHex.addEventListener('blur', function() {
+        const hex = this.value;
+        if (!isValidHex(hex)) {
+            // Se não for válido, volta para o valor do color picker
+            this.value = colorPicker.value;
+            this.style.borderColor = '';
+            updatePreview(colorPicker.value);
+        }
+    });
+    
+    // Máscara para celular (apenas 11 dígitos)
+    $('.maskcel').each(function() {
+        const input = this;
+        
+        $(this).on('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            
+            // Limitar a exatamente 11 dígitos
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            // Aplicar formatação progressiva apenas para celular
+            if (value.length === 11) {
+                // Celular completo: (99) 99999-9999
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                this.style.borderColor = '#28a745'; // Verde quando completo
+                this.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+            } else if (value.length >= 7) {
+                // Formatação parcial: (99) 99999-
+                value = value.replace(/(\d{2})(\d{5})(\d*)/, '($1) $2-$3');
+                this.style.borderColor = '#ffc107'; // Amarelo quando incompleto
+                this.style.boxShadow = '0 0 0 0.2rem rgba(255, 193, 7, 0.25)';
+            } else if (value.length >= 3) {
+                // Formatação parcial: (99) 999
+                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                this.style.borderColor = '#ffc107'; // Amarelo quando incompleto
+                this.style.boxShadow = '0 0 0 0.2rem rgba(255, 193, 7, 0.25)';
+            } else if (value.length >= 1) {
+                // Formatação parcial: (9
+                if (value.length === 2) {
+                    value = value.replace(/(\d{2})/, '($1) ');
+                }
+                this.style.borderColor = '#dc3545'; // Vermelho quando muito incompleto
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+            } else {
+                // Limpar estilos quando vazio
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
+            }
+            
+            this.value = value;
+        });
+        
+        // Validação ao sair do campo
+        $(this).on('blur', function() {
+            const value = this.value.replace(/\D/g, '');
+            if (value.length > 0 && value.length < 11) {
+                this.style.borderColor = '#dc3545';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                
+                // Mostrar mensagem de erro
+                let errorMsg = $(this).siblings('.phone-error');
+                if (errorMsg.length === 0) {
+                    $(this).after('<small class="text-danger phone-error">Celular deve ter 11 dígitos (99) 99999-9999</small>');
+                }
+            } else {
+                // Remover mensagem de erro
+                $(this).siblings('.phone-error').remove();
+                if (value.length === 11) {
+                    this.style.borderColor = '#28a745';
+                    this.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+                }
+            }
+        });
+        
+        // Prevenir entrada quando já tiver 15 caracteres (formato completo)
+        $(this).on('keypress', function(e) {
+            if (this.value.length >= 15 && e.which !== 8 && e.which !== 46) {
+                e.preventDefault();
+            }
+        });
+    });
+});
 </script>
 {% endblock %}
 

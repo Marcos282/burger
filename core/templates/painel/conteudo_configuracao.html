@@ -40,7 +40,7 @@
                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
                   <div class="wizard-label">
                      <h3 class="wizard-title">
-                        <span>4.</span> Entrega
+                        <span>4.</span> Horários
                      </h3>
                      <div class="wizard-bar"></div>
                   </div>
@@ -50,7 +50,7 @@
                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
                   <div class="wizard-label">
                      <h3 class="wizard-title">
-                        <span>5.</span> Notificações
+                        <span>5.</span> Contato
                      </h3>
                      <div class="wizard-bar"></div>
                   </div>
@@ -60,7 +60,7 @@
                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
                   <div class="wizard-label">
                      <h3 class="wizard-title">
-                        <span>6.</span> Contato
+                        <span>6.</span> Usuário
                      </h3>
                      <div class="wizard-bar"></div>
                   </div>
@@ -73,7 +73,7 @@
          <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
             <div class="col-xl-12 col-xxl-7">
                <!--begin: Wizard Form-->
-               <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_form" enctype="multipart/form-data">
+               <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_form" method="post" action="{% url 'painel_configuracao' %}"  enctype="multipart/form-data">
                   {% csrf_token %}
                   <!--begin: Wizard Step 1-->
                   <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
@@ -81,15 +81,15 @@
                      <!--begin::Input-->
                      <div class="form-group fv-plugins-icon-container">
                         <label>Nome</label>
-                        <input type="text" class="form-control" name="name" placeholder="Informe seu nome" value="Nome">
-                        <span class="form-text text-muted">Por favor, insira seu nome.</span>
+                        <input type="text" class="form-control" name="name" placeholder="Informe o nome da loja" value="{{ settings.nome_loja }}">
+                        <span class="form-text text-muted">Por favor, insira o nome da loja.</span>
                         <div class="fv-plugins-message-container"></div>
                      </div>
                      <!--end::Input-->
                      <!--begin::Input-->
                      <div class="form-group">
                         <label>Descrição da Loja</label>
-                        <input type="text" class="form-control" name="descricao_loja" placeholder="Descrição" >
+                        <input type="text" class="form-control" name="descricao_loja" placeholder="Descrição" value="{{ settings.descricao_loja }}">
                         <span class="form-text text-muted">Por favor, insira a descrição da loja.</span>
                      </div>
                      <!--end::Input-->
@@ -115,20 +115,19 @@
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>CEP</label>
-                              <input type="text" class="form-control" name="CEP" id="cep" placeholder="00000-000" value="" maxlength="9">
+                              <input type="text" class="form-control" name="CEP" id="cep" placeholder="00000-000" value="{{ settings.cep|default:'' }}" maxlength="9">
                               <span class="form-text text-muted">Digite o CEP no formato 00000-000.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
                            <!--end::Input-->
                         </div>
                         <div class="col-xl-6">
-                          
                         </div>
                         <div class="col-xl-6">
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Bairro</label>
-                              <input type="text" class="form-control" name="bairro" placeholder="Bairro" value="">
+                              <input type="text" class="form-control" name="bairro" placeholder="Bairro" value="{{ settings.bairro|default:'' }}">
                               <span class="form-text text-muted">Informe seu bairro.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
@@ -136,7 +135,7 @@
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Rua</label>
-                              <input type="text" class="form-control" name="endereco" placeholder="Rua" value="">
+                              <input type="text" class="form-control" name="endereco" placeholder="Rua" value="{{ settings.endereco|default:'' }}">
                               <span class="form-text text-muted">Informe sua rua.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
@@ -144,7 +143,7 @@
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Número</label>
-                              <input type="text" class="form-control" name="numero_endereco" placeholder="Número" value="">
+                              <input type="text" class="form-control" name="numero_endereco" placeholder="Número" value="{{ settings.numero_endereco|default:'' }}">
                               <span class="form-text text-muted">Informe o número do endereço.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
@@ -152,7 +151,7 @@
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Complemento</label>
-                              <input type="text" class="form-control" name="complemento" placeholder="Complemento (opcional)" value="">
+                              <input type="text" class="form-control" name="complemento" placeholder="Complemento (opcional)" value="{{ settings.complemento|default:'' }}">
                               <span class="form-text text-muted">Ex: Apto 101, Bloco A, etc.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
@@ -160,7 +159,7 @@
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Ponto de Referência</label>
-                              <input type="text" class="form-control" name="referencia" placeholder="Ponto de referência (opcional)" value="">
+                              <input type="text" class="form-control" name="referencia" placeholder="Ponto de referência (opcional)" value="{{ settings.referencia|default:'' }}">
                               <span class="form-text text-muted">Ex: Próximo ao mercado, em frente à escola, etc.</span>
                               <div class="fv-plugins-message-container"></div>
                            </div>
@@ -256,491 +255,510 @@
                      </div>
                   </div>
                   <!--end: Wizard Step 1-->
-
-
                   <!--begin: Wizard Step 2-->
                   <div class="pb-5" data-wizard-type="step-content">
                      <h4 class="mb-10 font-weight-bold text-dark">Aparência</h4>
-                     
                      <!--begin::Foto de Perfil-->
                      <div class="form-group fv-plugins-icon-container">
                         <label>Imagem de perfil </label>
                         <div id="dropzoneImagemPerfil" class="dropzone" style="max-width:300px; min-height:200px; margin:auto; border: 2px dashed #ccc; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease;"></div>
                         <style>
                            #dropzoneImagemPerfil {
-                               background-color: #f8f9fa;
-                               display: flex;
-                               align-items: center;
-                               justify-content: center;
-                               position: relative;
+                           background-color: #f8f9fa;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           position: relative;
                            }
-                           
                            #dropzoneImagemPerfil:hover {
-                               border-color: #007bff;
-                               background-color: #e7f3ff;
+                           border-color: #007bff;
+                           background-color: #e7f3ff;
                            }
-                           
                            #dropzoneImagemPerfil .dz-message {
-                               color: #6c757d;
-                               font-size: 14px;
-                               text-align: center;
+                           color: #6c757d;
+                           font-size: 14px;
+                           text-align: center;
                            }
-                           
                            #dropzoneImagemPerfil .dz-preview .dz-image img {
-                               width: 220px !important;
-                               height: 220px !important;
-                               object-fit: cover;
-                               border-radius: 10px;
-                               border: 1px solid #eee;
-                               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                           width: 220px !important;
+                           height: 220px !important;
+                           object-fit: cover;
+                           border-radius: 10px;
+                           border: 1px solid #eee;
+                           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                            }
-                           
                            #dropzoneImagemPerfil .dz-preview .dz-image {
-                               width: 220px !important;
-                               height: 220px !important;
+                           width: 220px !important;
+                           height: 220px !important;
                            }
-                           
                            #dropzoneImagemPerfil .dz-preview {
-                               margin: 0 auto;
+                           margin: 0 auto;
                            }
                         </style>
                         <div id="imagemPerfilErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
                      </div>
                      <!--end::Foto de Perfil-->
-                     
                      <!--begin::Foto de Capa-->
                      <div class="form-group fv-plugins-icon-container">
                         <label>Foto de Capa</label>
                         <div id="dropzoneFotoCapa" class="dropzone" style="max-width:100%; min-height:150px; margin:auto; border: 2px dashed #ccc; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease;"></div>
                         <style>
                            #dropzoneFotoCapa {
-                               background-color: #f8f9fa;
-                               display: flex;
-                               align-items: center;
-                               justify-content: center;
-                               position: relative;
+                           background-color: #f8f9fa;
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           position: relative;
                            }
-                           
                            #dropzoneFotoCapa:hover {
-                               border-color: #007bff;
-                               background-color: #e7f3ff;
+                           border-color: #007bff;
+                           background-color: #e7f3ff;
                            }
-                           
                            #dropzoneFotoCapa .dz-message {
-                               color: #6c757d;
-                               font-size: 14px;
-                               text-align: center;
+                           color: #6c757d;
+                           font-size: 14px;
+                           text-align: center;
                            }
-                           
                            #dropzoneFotoCapa .dz-preview .dz-image img {
-                               width: 100% !important;
-                               max-width: 400px !important;
-                               height: 200px !important;
-                               object-fit: cover;
-                               border-radius: 10px;
-                               border: 1px solid #eee;
-                               box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                           width: 100% !important;
+                           max-width: 400px !important;
+                           height: 200px !important;
+                           object-fit: cover;
+                           border-radius: 10px;
+                           border: 1px solid #eee;
+                           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                            }
-                           
                            #dropzoneFotoCapa .dz-preview .dz-image {
-                               width: 100% !important;
-                               max-width: 400px !important;
-                               height: 200px !important;
+                           width: 100% !important;
+                           max-width: 400px !important;
+                           height: 200px !important;
                            }
-                           
                            #dropzoneFotoCapa .dz-preview {
-                               margin: 0 auto;
-                               width: 100%;
+                           margin: 0 auto;
+                           width: 100%;
                            }
                         </style>
                         <span class="form-text text-muted">Upload de imagem para foto de capa (formatos: JPG, PNG, GIF)</span>
                         <div id="fotoCapaErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
                      </div>
                      <!--end::Foto de Capa-->
+  
+                     <div class="form-group row">
+                        <div class="col-lg-6">
+                           <label>Cor do tema:</label>
+                           <div class="input-group">
+                              <!-- picker -->
+                              <input id="color" type="color" class="form-control form-control-color" value="#ff0000" title="Escolha a cor" style="width: 60px; height: 38px;">
+                              <!-- mostra o hex ao lado -->
+                              <input id="colorHex" type="text" class="form-control" value="#ff0000" name="color_theme" aria-label="Cor hex" style="cursor:default;">
+                              <!-- preview pequeno -->
+                              <span id="preview" class="input-group-text" style="width:36px"></span>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <label>Exibição de produtos por:</label>
+                           <select name="exibicao_produtos" class="form-control">
+                              <option value="1" aria>Lista (Catálogo)</option>
+                              <option value="2">Grade (Catálogo)</option>
+                           </select>
+                        </div>
+                     </div>
+                  </div>
+                  <!--end: Wizard Step 2-->
+                  <!--begin: Wizard Step 3-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <h4 class="mb-10 font-weight-bold text-dark">Informações de pagamento</h4>
+                     <!--begin::pagamento minimo-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Pagamento Mínimo</label>
+                        <input type="text" class="form-control maskmoney valid" name="pagamento_minimo"  value="{{ settings.pagamento_minimo|default:'' }}">
+                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
+                     </div>
+                     <!--end::pagamento minimo-->
+                     <div class="form-group">
+                        <!-- <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Marque para aparecer em todo o site, caso contrário, irá aparecer apenas para quem você compartilhar o link.</p> -->
+                        <label>Loja aceita dinheiro?</label>
+                        <div class="radio-inline">
+                           <label class="radio radio-square">
+                           <input type="radio" name="dinheiro" value="True" checked> <span></span> Sim
+                           </label>
+                           <label class="radio radio-square">
+                           <input type="radio" name="dinheiro" value="False"> <span></span> Não
+                           </label>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <!-- <h6>Visivel ?</h6> -->
+                        
+                        <label>A loja aceita cartao de débito</label>
+                        <div class="radio-inline">
+                           <label class="radio radio-square">
+                           <input type="radio" name="debito" value="True" checked> <span></span> Sim
+                           </label>
+                           <label class="radio radio-square">
+                           <input type="radio" name="debito" value="False"> <span></span> Não
+                           </label>
+                        </div>
+                     </div>
+                     <!--begin::pagamento minimo-->
                      
-                     <!--begin::Redes Sociais-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Quais bandeiras de cartao de débito aceitas ?</label>
+                        <input type="text" class="form-control" name="bandeiras_cartao_debito" placeholder="Ex: Visa, MasterCard" value="{{ settings.bandeiras_cartao_debito|default:'' }}">
+                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                     <label>A loja aceita cartão de crédito?</label>
+                     <div class="radio-inline">
+                        <label class="radio radio-square">
+                        <input type="radio" name="credito" value="True" checked> <span></span> Sim
+                        </label>
+                        <label class="radio radio-square">
+                        <input type="radio" name="credito" value="False"> <span></span> Não
+                        </label>
+                     </div>
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Quais bandeiras de cartão de crédito aceitas ?</label>
+                        <input type="text" class="form-control" name="bandeiras_cartao_credito" placeholder="Ex: Visa, MasterCard" value="{{ settings.bandeiras_cartao_credito|default:'' }}">
+                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                     
+                      <label>A loja aceita PIX?</label>
+                     <div class="radio-inline">
+                        <label class="radio radio-square">
+                        <input type="radio" name="pix" value="True" checked> <span></span> Sim
+                        </label>
+                        <label class="radio radio-square">
+                        <input type="radio" name="pix" value="False"> <span></span> Não
+                        </label>
+                     </div>
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Celular, E-mail, CPF/CNPJ ou Chave Alatória.</p>
+                        <label>Chave pix:</label>
+                        <input type="text" class="form-control" name="chave_pix" placeholder="Ex: chave@pix.com" value="{{ settings.chave_pix|default:'' }}">
+                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
+                     </div>
+                     
+                           <label>Tipo de chave:</label>
+                           <select name="nome_pix" class="form-control">
+                              <option value="CPF" selected="">CPF</option>
+                              <option value="CNPJ">CNPJ</option>
+                              <option value="CELULAR">CELULAR</option>
+                              <option value="E-MAIL">E-MAIL</option>
+                              <option value="ALEATORIA">CHAVE ALEATORIA</option>
+                           </select>
+                          
+                     
+                  </div>
+                  <!--end: Wizard Step 3-->
+                  <!--begin: Wizard Step 4-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <h4 class="mb-10 font-weight-bold text-dark">Horários de Funcionamento</h4>
+                     <div class="my-5">
+                        <div class="alert alert-info">
+                           <i class="bi bi-info-circle me-2"></i>
+                           Configure os horários de funcionamento para cada dia da semana. Deixe em branco ou marque "Fechado" para dias sem funcionamento.
+                        </div>
+                        
+                        <!--begin::Horários por dia da semana-->
+                        <div class="row">
+                           <div class="col-12">
+                              <div class="card card-custom">
+                                 <div class="card-header">
+                                    <h3 class="card-title">Configurar Horários</h3>
+                                 </div>
+                                 <div class="card-body">
+                                    <div id="horarios-container">
+                                       <!-- Segunda-feira -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="1">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Segunda-feira</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_1" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_1" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_1" id="fechado_1">
+                                                <label class="form-check-label" for="fechado_1">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Terça-feira -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="2">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Terça-feira</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_2" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_2" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_2" id="fechado_2">
+                                                <label class="form-check-label" for="fechado_2">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Quarta-feira -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="3">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Quarta-feira</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_3" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_3" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_3" id="fechado_3">
+                                                <label class="form-check-label" for="fechado_3">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Quinta-feira -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="4">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Quinta-feira</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_4" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_4" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_4" id="fechado_4">
+                                                <label class="form-check-label" for="fechado_4">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Sexta-feira -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="5">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Sexta-feira</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_5" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_5" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_5" id="fechado_5">
+                                                <label class="form-check-label" for="fechado_5">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Sábado -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="6">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Sábado</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_6" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_6" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_6" id="fechado_6">
+                                                <label class="form-check-label" for="fechado_6">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+
+                                       <!-- Domingo -->
+                                       <div class="row align-items-center mb-4 horario-dia" data-dia="0">
+                                          <div class="col-md-2">
+                                             <label class="form-label fw-bold">Domingo</label>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunrise"></i></span>
+                                                <input type="time" class="form-control horario-abertura" name="horario_abertura_0" placeholder="Abertura">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-3">
+                                             <div class="input-group">
+                                                <span class="input-group-text"><i class="bi bi-sunset"></i></span>
+                                                <input type="time" class="form-control horario-fechamento" name="horario_fechamento_0" placeholder="Fechamento">
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <div class="form-check">
+                                                <input class="form-check-input fechado-check" type="checkbox" name="fechado_0" id="fechado_0">
+                                                <label class="form-check-label" for="fechado_0">Fechado</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-2">
+                                             <button type="button" class="btn btn-sm btn-light-success btn-copy-horario" title="Copiar para todos os dias">
+                                                <i class="bi bi-copy"></i> Copiar
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!--end::Horários por dia da semana-->
+
+                        <!--begin::Delivery config-->
+                        <div class="form-group mt-8 fv-plugins-icon-container">
+                           <label class="form-label fw-bold">A loja faz delivery?</label>
+                           <div class="radio-inline">
+                              <label class="radio radio-square">
+                                 <input type="radio" name="delivery" value="True" checked> 
+                                 <span></span> Sim
+                              </label>
+                              <label class="radio radio-square">
+                                 <input type="radio" name="delivery" value="False"> 
+                                 <span></span> Não
+                              </label>
+                           </div>
+                        </div>
+                        <!--end::Delivery config-->
+                     </div>
+                  </div>
+                  
+                  <!--end: Wizard Step 4-->
+                  <!--begin: Wizard Step 5-->
+                  <div class="pb-5" data-wizard-type="step-content">
+                     <input type="hidden" name="dummy_field_step5" value="valid">
+                     <h4 class="mb-10 font-weight-bold text-dark">Contatos</h4>
+                      <div class="form-group fv-plugins-icon-container">
+                        <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Será o número no qual você receberá os pedidos.</p>
+                        <label>WhatsAPP:</label>
+                        <input type="text" class="form-control maskcel" name="whatsapp" value="{{ settings.whatsapp|default:'' }}">
+                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
+                     </div>                     
+                     <!--begin::Section-->
+                     <h6 class="font-weight-bolder mb-3">
+                        Redes sociais:
+                     </h6>
+                    <!--begin::Redes Sociais-->
                      <div class="form-group fv-plugins-icon-container">
                         <label>Facebook</label>
                         <input type="url" class="form-control" name="facebook" placeholder="https://facebook.com/sua-pagina" value="{{ settings.facebook|default:'' }}">
                         <span class="form-text text-muted">URL da sua página no Facebook</span>
                      </div>
-                     
                      <div class="form-group fv-plugins-icon-container">
                         <label>Instagram</label>
                         <input type="url" class="form-control" name="instagram" placeholder="https://instagram.com/seu-perfil" value="{{ settings.instagram|default:'' }}">
                         <span class="form-text text-muted">URL do seu perfil no Instagram</span>
                      </div>
                      <!--end::Redes Sociais-->
-                     
-                  </div>
-                  <!--end: Wizard Step 2-->
-                  <!--begin: Wizard Step 3-->
-                  <div class="pb-5" data-wizard-type="step-content">
-                     <h4 class="mb-10 font-weight-bold text-dark">Select your Services</h4>
-                     <!--begin::Select-->
-                     <div class="form-group fv-plugins-icon-container">
-                        <label>Delivery Type</label>
-                        <select name="delivery" class="form-control">
-                           <option value="">Select a Service Type Option</option>
-                           <option value="overnight" selected="">Overnight Delivery (within 48 hours)</option>
-                           <option value="express">Express Delivery (within 5 working days)</option>
-                           <option value="basic">Basic Delivery (within 5 - 10 working days)</option>
-                        </select>
-                        <div class="fv-plugins-message-container"></div>
-                     </div>
-                     <!--end::Select-->
-                     <!--begin::Select-->
-                     <div class="form-group fv-plugins-icon-container">
-                        <label>Packaging Type</label>
-                        <select name="packaging" class="form-control">
-                           <option value="">Select a Packaging Type Option</option>
-                           <option value="regular" selected="">Regular Packaging</option>
-                           <option value="oversized">Oversized Packaging</option>
-                           <option value="fragile">Fragile Packaging</option>
-                           <option value="frozen">Frozen Packaging</option>
-                        </select>
-                        <div class="fv-plugins-message-container"></div>
-                     </div>
-                     <!--end::Select-->
-                     <!--begin::Select-->
-                     <div class="form-group fv-plugins-icon-container">
-                        <label>Preferred Delivery Window</label>
-                        <select name="preferreddelivery" class="form-control">
-                           <option value="">Select a Preferred Delivery Option</option>
-                           <option value="morning" selected="">Morning Delivery (8:00AM - 11:00AM)</option>
-                           <option value="afternoon">Afternoon Delivery (11:00AM - 3:00PM)</option>
-                           <option value="evening">Evening Delivery (3:00PM - 7:00PM)</option>
-                        </select>
-                        <div class="fv-plugins-message-container"></div>
-                     </div>
-                     <!--end::Select-->
-                  </div>
-                  <!--end: Wizard Step 3-->
-                  <!--begin: Wizard Step 4-->
-                  <div class="pb-5" data-wizard-type="step-content">
-                     <h4 class="mb-10 font-weight-bold text-dark">Setup Your Delivery Location</h4>
-                     <div class="my-5">
-                        <!--begin::Input-->
-                        <div class="form-group fv-plugins-icon-container">
-                           <label>Address Line 1</label>
-                           <input type="text" class="form-control" name="locaddress1" placeholder="Address Line 1" value="Address Line 1">
-                           <span class="form-text text-muted">Please enter your Address.</span>
-                           <div class="fv-plugins-message-container"></div>
-                        </div>
-                        <!--end::Input-->
-                        <!--begin::Input-->
-                        <div class="form-group">
-                           <label>Address Line 2</label>
-                           <input type="text" class="form-control" name="locaddress2" placeholder="Address Line 2" value="Address Line 2">
-                           <span class="form-text text-muted">Please enter your Address.</span>
-                        </div>
-                        <!--end::Input-->
-                        <div class="row">
-                           <div class="col-xl-6">
-                              <!--begin::Input-->
-                              <div class="form-group fv-plugins-icon-container">
-                                 <label>Postcode</label>
-                                 <input type="text" class="form-control" name="locpostcode" placeholder="Postcode" value="3072">
-                                 <span class="form-text text-muted">Please enter your Postcode.</span>
-                                 <div class="fv-plugins-message-container"></div>
-                              </div>
-                              <!--end::Input-->
-                           </div>
-                           <div class="col-xl-6">
-                              <!--begin::Input-->
-                              <div class="form-group fv-plugins-icon-container">
-                                 <label>City</label>
-                                 <input type="text" class="form-control" name="loccity" placeholder="City" value="Preston">
-                                 <span class="form-text text-muted">Please enter your City.</span>
-                                 <div class="fv-plugins-message-container"></div>
-                              </div>
-                              <!--end::Input-->
-                           </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-xl-6">
-                              <!--begin::Input-->
-                              <div class="form-group fv-plugins-icon-container">
-                                 <label>State</label>
-                                 <input type="text" class="form-control" name="locstate" placeholder="State" value="VIC">
-                                 <span class="form-text text-muted">Please enter your State.</span>
-                                 <div class="fv-plugins-message-container"></div>
-                              </div>
-                              <!--end::Input-->
-                           </div>
-                           <div class="col-xl-6">
-                              <!--begin::Select-->
-                              <div class="form-group fv-plugins-icon-container">
-                                 <label>Country</label>
-                                 <select name="loccountry" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="AF">Afghanistan</option>
-                                    <option value="AX">Åland Islands</option>
-                                    <option value="AL">Albania</option>
-                                    <option value="DZ">Algeria</option>
-                                    <option value="AS">American Samoa</option>
-                                    <option value="AD">Andorra</option>
-                                    <option value="AO">Angola</option>
-                                    <option value="AI">Anguilla</option>
-                                    <option value="AQ">Antarctica</option>
-                                    <option value="AG">Antigua and Barbuda</option>
-                                    <option value="AR">Argentina</option>
-                                    <option value="AM">Armenia</option>
-                                    <option value="AW">Aruba</option>
-                                    <option value="AU" selected="">Australia</option>
-                                    <option value="AT">Austria</option>
-                                    <option value="AZ">Azerbaijan</option>
-                                    <option value="BS">Bahamas</option>
-                                    <option value="BH">Bahrain</option>
-                                    <option value="BD">Bangladesh</option>
-                                    <option value="BB">Barbados</option>
-                                    <option value="BY">Belarus</option>
-                                    <option value="BE">Belgium</option>
-                                    <option value="BZ">Belize</option>
-                                    <option value="BJ">Benin</option>
-                                    <option value="BM">Bermuda</option>
-                                    <option value="BT">Bhutan</option>
-                                    <option value="BO">Bolivia, Plurinational State of</option>
-                                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
-                                    <option value="BA">Bosnia and Herzegovina</option>
-                                    <option value="BW">Botswana</option>
-                                    <option value="BV">Bouvet Island</option>
-                                    <option value="BR">Brazil</option>
-                                    <option value="IO">British Indian Ocean Territory</option>
-                                    <option value="BN">Brunei Darussalam</option>
-                                    <option value="BG">Bulgaria</option>
-                                    <option value="BF">Burkina Faso</option>
-                                    <option value="BI">Burundi</option>
-                                    <option value="KH">Cambodia</option>
-                                    <option value="CM">Cameroon</option>
-                                    <option value="CA">Canada</option>
-                                    <option value="CV">Cape Verde</option>
-                                    <option value="KY">Cayman Islands</option>
-                                    <option value="CF">Central African Republic</option>
-                                    <option value="TD">Chad</option>
-                                    <option value="CL">Chile</option>
-                                    <option value="CN">China</option>
-                                    <option value="CX">Christmas Island</option>
-                                    <option value="CC">Cocos (Keeling) Islands</option>
-                                    <option value="CO">Colombia</option>
-                                    <option value="KM">Comoros</option>
-                                    <option value="CG">Congo</option>
-                                    <option value="CD">Congo, the Democratic Republic of the</option>
-                                    <option value="CK">Cook Islands</option>
-                                    <option value="CR">Costa Rica</option>
-                                    <option value="CI">Côte d'Ivoire</option>
-                                    <option value="HR">Croatia</option>
-                                    <option value="CU">Cuba</option>
-                                    <option value="CW">Curaçao</option>
-                                    <option value="CY">Cyprus</option>
-                                    <option value="CZ">Czech Republic</option>
-                                    <option value="DK">Denmark</option>
-                                    <option value="DJ">Djibouti</option>
-                                    <option value="DM">Dominica</option>
-                                    <option value="DO">Dominican Republic</option>
-                                    <option value="EC">Ecuador</option>
-                                    <option value="EG">Egypt</option>
-                                    <option value="SV">El Salvador</option>
-                                    <option value="GQ">Equatorial Guinea</option>
-                                    <option value="ER">Eritrea</option>
-                                    <option value="EE">Estonia</option>
-                                    <option value="ET">Ethiopia</option>
-                                    <option value="FK">Falkland Islands (Malvinas)</option>
-                                    <option value="FO">Faroe Islands</option>
-                                    <option value="FJ">Fiji</option>
-                                    <option value="FI">Finland</option>
-                                    <option value="FR">France</option>
-                                    <option value="GF">French Guiana</option>
-                                    <option value="PF">French Polynesia</option>
-                                    <option value="TF">French Southern Territories</option>
-                                    <option value="GA">Gabon</option>
-                                    <option value="GM">Gambia</option>
-                                    <option value="GE">Georgia</option>
-                                    <option value="DE">Germany</option>
-                                    <option value="GH">Ghana</option>
-                                    <option value="GI">Gibraltar</option>
-                                    <option value="GR">Greece</option>
-                                    <option value="GL">Greenland</option>
-                                    <option value="GD">Grenada</option>
-                                    <option value="GP">Guadeloupe</option>
-                                    <option value="GU">Guam</option>
-                                    <option value="GT">Guatemala</option>
-                                    <option value="GG">Guernsey</option>
-                                    <option value="GN">Guinea</option>
-                                    <option value="GW">Guinea-Bissau</option>
-                                    <option value="GY">Guyana</option>
-                                    <option value="HT">Haiti</option>
-                                    <option value="HM">Heard Island and McDonald Islands</option>
-                                    <option value="VA">Holy See (Vatican City State)</option>
-                                    <option value="HN">Honduras</option>
-                                    <option value="HK">Hong Kong</option>
-                                    <option value="HU">Hungary</option>
-                                    <option value="IS">Iceland</option>
-                                    <option value="IN">India</option>
-                                    <option value="ID">Indonesia</option>
-                                    <option value="IR">Iran, Islamic Republic of</option>
-                                    <option value="IQ">Iraq</option>
-                                    <option value="IE">Ireland</option>
-                                    <option value="IM">Isle of Man</option>
-                                    <option value="IL">Israel</option>
-                                    <option value="IT">Italy</option>
-                                    <option value="JM">Jamaica</option>
-                                    <option value="JP">Japan</option>
-                                    <option value="JE">Jersey</option>
-                                    <option value="JO">Jordan</option>
-                                    <option value="KZ">Kazakhstan</option>
-                                    <option value="KE">Kenya</option>
-                                    <option value="KI">Kiribati</option>
-                                    <option value="KP">Korea, Democratic People's Republic of</option>
-                                    <option value="KR">Korea, Republic of</option>
-                                    <option value="KW">Kuwait</option>
-                                    <option value="KG">Kyrgyzstan</option>
-                                    <option value="LA">Lao People's Democratic Republic</option>
-                                    <option value="LV">Latvia</option>
-                                    <option value="LB">Lebanon</option>
-                                    <option value="LS">Lesotho</option>
-                                    <option value="LR">Liberia</option>
-                                    <option value="LY">Libya</option>
-                                    <option value="LI">Liechtenstein</option>
-                                    <option value="LT">Lithuania</option>
-                                    <option value="LU">Luxembourg</option>
-                                    <option value="MO">Macao</option>
-                                    <option value="MK">Macedonia, the former Yugoslav Republic of</option>
-                                    <option value="MG">Madagascar</option>
-                                    <option value="MW">Malawi</option>
-                                    <option value="MY">Malaysia</option>
-                                    <option value="MV">Maldives</option>
-                                    <option value="ML">Mali</option>
-                                    <option value="MT">Malta</option>
-                                    <option value="MH">Marshall Islands</option>
-                                    <option value="MQ">Martinique</option>
-                                    <option value="MR">Mauritania</option>
-                                    <option value="MU">Mauritius</option>
-                                    <option value="YT">Mayotte</option>
-                                    <option value="MX">Mexico</option>
-                                    <option value="FM">Micronesia, Federated States of</option>
-                                    <option value="MD">Moldova, Republic of</option>
-                                    <option value="MC">Monaco</option>
-                                    <option value="MN">Mongolia</option>
-                                    <option value="ME">Montenegro</option>
-                                    <option value="MS">Montserrat</option>
-                                    <option value="MA">Morocco</option>
-                                    <option value="MZ">Mozambique</option>
-                                    <option value="MM">Myanmar</option>
-                                    <option value="NA">Namibia</option>
-                                    <option value="NR">Nauru</option>
-                                    <option value="NP">Nepal</option>
-                                    <option value="NL">Netherlands</option>
-                                    <option value="NC">New Caledonia</option>
-                                    <option value="NZ">New Zealand</option>
-                                    <option value="NI">Nicaragua</option>
-                                    <option value="NE">Niger</option>
-                                    <option value="NG">Nigeria</option>
-                                    <option value="NU">Niue</option>
-                                    <option value="NF">Norfolk Island</option>
-                                    <option value="MP">Northern Mariana Islands</option>
-                                    <option value="NO">Norway</option>
-                                    <option value="OM">Oman</option>
-                                    <option value="PK">Pakistan</option>
-                                    <option value="PW">Palau</option>
-                                    <option value="PS">Palestinian Territory, Occupied</option>
-                                    <option value="PA">Panama</option>
-                                    <option value="PG">Papua New Guinea</option>
-                                    <option value="PY">Paraguay</option>
-                                    <option value="PE">Peru</option>
-                                    <option value="PH">Philippines</option>
-                                    <option value="PN">Pitcairn</option>
-                                    <option value="PL">Poland</option>
-                                    <option value="PT">Portugal</option>
-                                    <option value="PR">Puerto Rico</option>
-                                    <option value="QA">Qatar</option>
-                                    <option value="RE">Réunion</option>
-                                    <option value="RO">Romania</option>
-                                    <option value="RU">Russian Federation</option>
-                                    <option value="RW">Rwanda</option>
-                                    <option value="BL">Saint Barthélemy</option>
-                                    <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
-                                    <option value="KN">Saint Kitts and Nevis</option>
-                                    <option value="LC">Saint Lucia</option>
-                                    <option value="MF">Saint Martin (French part)</option>
-                                    <option value="PM">Saint Pierre and Miquelon</option>
-                                    <option value="VC">Saint Vincent and the Grenadines</option>
-                                    <option value="WS">Samoa</option>
-                                    <option value="SM">San Marino</option>
-                                    <option value="ST">Sao Tome and Principe</option>
-                                    <option value="SA">Saudi Arabia</option>
-                                    <option value="SN">Senegal</option>
-                                    <option value="RS">Serbia</option>
-                                    <option value="SC">Seychelles</option>
-                                    <option value="SL">Sierra Leone</option>
-                                    <option value="SG">Singapore</option>
-                                    <option value="SX">Sint Maarten (Dutch part)</option>
-                                    <option value="SK">Slovakia</option>
-                                    <option value="SI">Slovenia</option>
-                                    <option value="SB">Solomon Islands</option>
-                                    <option value="SO">Somalia</option>
-                                    <option value="ZA">South Africa</option>
-                                    <option value="GS">South Georgia and the South Sandwich Islands</option>
-                                    <option value="SS">South Sudan</option>
-                                    <option value="ES">Spain</option>
-                                    <option value="LK">Sri Lanka</option>
-                                    <option value="SD">Sudan</option>
-                                    <option value="SR">Suriname</option>
-                                    <option value="SJ">Svalbard and Jan Mayen</option>
-                                    <option value="SZ">Swaziland</option>
-                                    <option value="SE">Sweden</option>
-                                    <option value="CH">Switzerland</option>
-                                    <option value="SY">Syrian Arab Republic</option>
-                                    <option value="TW">Taiwan, Province of China</option>
-                                    <option value="TJ">Tajikistan</option>
-                                    <option value="TZ">Tanzania, United Republic of</option>
-                                    <option value="TH">Thailand</option>
-                                    <option value="TL">Timor-Leste</option>
-                                    <option value="TG">Togo</option>
-                                    <option value="TK">Tokelau</option>
-                                    <option value="TO">Tonga</option>
-                                    <option value="TT">Trinidad and Tobago</option>
-                                    <option value="TN">Tunisia</option>
-                                    <option value="TR">Turkey</option>
-                                    <option value="TM">Turkmenistan</option>
-                                    <option value="TC">Turks and Caicos Islands</option>
-                                    <option value="TV">Tuvalu</option>
-                                    <option value="UG">Uganda</option>
-                                    <option value="UA">Ukraine</option>
-                                    <option value="AE">United Arab Emirates</option>
-                                    <option value="GB">United Kingdom</option>
-                                    <option value="US">United States</option>
-                                    <option value="UM">United States Minor Outlying Islands</option>
-                                    <option value="UY">Uruguay</option>
-                                    <option value="UZ">Uzbekistan</option>
-                                    <option value="VU">Vanuatu</option>
-                                    <option value="VE">Venezuela, Bolivarian Republic of</option>
-                                    <option value="VN">Viet Nam</option>
-                                    <option value="VG">Virgin Islands, British</option>
-                                    <option value="VI">Virgin Islands, U.S.</option>
-                                    <option value="WF">Wallis and Futuna</option>
-                                    <option value="EH">Western Sahara</option>
-                                    <option value="YE">Yemen</option>
-                                    <option value="ZM">Zambia</option>
-                                    <option value="ZW">Zimbabwe</option>
-                                 </select>
-                                 <div class="fv-plugins-message-container"></div>
-                              </div>
-                              <!--end::Select-->
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!--end: Wizard Step 4-->
-                  <!--begin: Wizard Step 5-->
-                  <div class="pb-5" data-wizard-type="step-content">
-                     <input type="hidden" name="dummy_field_step5" value="valid">
-                     <h4 class="mb-10 font-weight-bold text-dark">Configurações de Notificações</h4>
-                     <!--begin::Section-->
+                    <!-- SEPARADOR -->
+                     <div class="separator separator-dashed my-5"></div>
                      <h6 class="font-weight-bolder mb-3">
-                        Notificações por Email:
+                        Estátisticas e notificações:
                      </h6>
-                     <div class="form-group">
+                       </h6>
+                    <!--begin::Estatisticas-->
+
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Google Analytics</label>
+                        <input type="url" class="form-control" name="googleanalytics"  value="">
+                        <span class="form-text text-muted">ID do Google Analytics</span>
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>ID de acompanhamento (Facebook pixel).</label>
+                        <input type="text" class="form-control" name="facebook_pixel" value="{{ settings.facebook_pixel|default:'' }}">
+                        <span class="form-text text-muted">ID do Facebook Pixel</span>
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>ID de acompanhamento (Instagram pixel).</label>
+                        <input type="text" class="form-control" name="instagram_pixel" value="{{ settings.instagram_pixel|default:'' }}">
+                        <span class="form-text text-muted">ID do Instagram Pixel</span>
+                     </div>
+
+                     <!--end::Estatisticas-->
+                     <!-- <div class="form-group">
                         <div class="checkbox-list">
                            <label class="checkbox">
                            <input type="checkbox" name="email_novos_pedidos" checked>
@@ -763,51 +781,12 @@
                            Novas avaliações de clientes
                            </label>
                         </div>
-                     </div>
-                     <div class="separator separator-dashed my-5"></div>
+                     </div> -->
+                     
                      <!--end::Section-->
                      <!--begin::Section-->
-                     <h6 class="font-weight-bolder mb-3">
-                        Notificações Push:
-                     </h6>
-                     <div class="form-group">
-                        <div class="checkbox-list">
-                           <label class="checkbox">
-                           <input type="checkbox" name="push_pedidos_urgentes" checked>
-                           <span></span>
-                           Pedidos urgentes
-                           </label>
-                           <label class="checkbox">
-                           <input type="checkbox" name="push_estoque_baixo" checked>
-                           <span></span>
-                           Estoque baixo de produtos
-                           </label>
-                           <label class="checkbox">
-                           <input type="checkbox" name="push_promocoes">
-                           <span></span>
-                           Lembretes de promoções
-                           </label>
-                        </div>
-                     </div>
-                     <div class="separator separator-dashed my-5"></div>
-                     <!--end::Section-->
-                     <!--begin::Section-->
-                     <h6 class="font-weight-bolder mb-3">
-                        Configurações Avançadas:
-                     </h6>
-                     <div class="form-group">
-                        <label>Horário de recebimento de notificações:</label>
-                        <div class="row">
-                           <div class="col-md-6">
-                              <input type="time" class="form-control" name="horario_inicio" value="08:00">
-                              <span class="form-text text-muted">Início</span>
-                           </div>
-                           <div class="col-md-6">
-                              <input type="time" class="form-control" name="horario_fim" value="22:00">
-                              <span class="form-text text-muted">Fim</span>
-                           </div>
-                        </div>
-                     </div>
+                     
+                     
                      <!--end::Section-->
                   </div>
                   <!--end: Wizard Step 5-->
@@ -815,48 +794,56 @@
                   <div class="pb-5" data-wizard-type="step-content">
                      <input type="hidden" name="dummy_field_step6" value="valid">
                      <!--begin::Section-->
-                     <h4 class="mb-10 font-weight-bold text-dark">Review your Details and Submit</h4>
+                     <h4 class="mb-10 font-weight-bold text-dark">Responsável e autenticação</h4>
                      <h6 class="font-weight-bolder mb-3">
-                        Current Address:
+                        Dados do responsável:
                      </h6>
-                     <div class="text-dark-50 line-height-lg">
-                        <div>Address Line 1</div>
-                        <div>Address Line 2</div>
-                        <div>Melbourne 3000, VIC, Australia</div>
-                     </div>
+                     <!-- SEPARADOR -->
                      <div class="separator separator-dashed my-5"></div>
-                     <!--end::Section-->
-                     <!--begin::Section-->
-                     <h6 class="font-weight-bolder mb-3">
-                        Delivery Details:
-                     </h6>
-                     <div class="text-dark-50 line-height-lg">
-                        <div>Package: Complete Workstation (Monitor, Computer, Keyboard &amp; Mouse)</div>
-                        <div>Weight: 25kg</div>
-                        <div>Dimensions: 110cm (w) x 90cm (h) x 150cm (L)</div>
+                     <!--begin:: Dados do responsável-->
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Nome do responsável</label>
+                        <input type="text" class="form-control" name="nome_responsavel" placeholder="Nome do responsável" value="{{ settings.nome_responsavel|default:'' }}">
+                        <span class="form-text text-muted">Nome do responsável pela loja</span>
                      </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Data de nascimento</label>
+                        <input type="date" class="form-control" name="dt_nascimento" placeholder="Data de nascimento" value="{{ settings.dt_nascimento}}">
+                        <span class="form-text text-muted">Data de nascimento do responsável pela loja</span>
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Tipo de documento</label>
+                           <select name="cpf_ou_cnpj" class="form-control">
+                              <option value="CPF" selected="">CPF</option>
+                              <option value="CNPJ">CNPJ</option>                             
+                           </select>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Nr. Documento</label>
+                        <input type="text" class="form-control" name="documento" placeholder="Nr. Documento" value="{{ settings.documento|default:'' }}">
+                        <span class="form-text text-muted">Número do documento do responsável pela loja</span>
+                     </div>
+                     <h6 class="font-weight-bolder mb-3">
+                        Login e autenticação:
+                     </h6>
+                     <!-- SEPARADOR -->
                      <div class="separator separator-dashed my-5"></div>
-                     <!--end::Section-->
-                     <!--begin::Section-->
-                     <h6 class="font-weight-bolder mb-3">
-                        Delivery Service Type:
-                     </h6>
-                     <div class="text-dark-50 line-height-lg">
-                        <div>Overnight Delivery with Regular Packaging</div>
-                        <div>Preferred Morning (8:00AM - 11:00AM) Delivery</div>
+                    <div class="form-group fv-plugins-icon-container">
+                        <label>E-mail</label>
+                        <input type="email" class="form-control" name="email"  value="{{ settings.email|default:'' }}">
+                        <!-- <span class="form-text text-muted">E-mail do responsável pela loja</span> -->
                      </div>
-                     <div class="separator separator-dashed my-5"></div>
-                     <!--end::Section-->
-                     <!--begin::Section-->
-                     <h6 class="font-weight-bolder mb-3">
-                        Delivery Address:
-                     </h6>
-                     <div class="text-dark-50 line-height-lg">
-                        <div>Address Line 1</div>
-                        <div>Address Line 2</div>
-                        <div>Preston 3072, VIC, Australia</div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Senha</label>
+                        <input type="password" class="form-control" name="password" >
+                        <!-- <span class="form-text text-muted">Senha do responsável pela loja</span> -->
+                     </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Confirme a senha</label>
+                        <input type="password" class="form-control" name="confirm_password" >
+                        <!-- <span class="form-text text-muted">Senha do responsável pela loja</span> -->
                      </div>
                      <!--end::Section-->
+                  </div>
                   </div>
                   <!--end: Wizard Step 6-->
                   <!--begin: Wizard Actions-->
@@ -867,8 +854,12 @@
                         </button>
                      </div>
                      <div>
-                        <button type="button" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+                        <button type="submit" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit" id="btn-submit-config" style="display: inline-block !important;">
                         Salvar
+                        </button>
+                        <!-- Botão de teste alternativo -->
+                        <button type="submit" class="btn btn-warning font-weight-bold text-uppercase px-9 py-4" id="btn-test-submit" onclick="alert('Testando submit direto!'); this.form.submit();" style="display: inline-block !important; margin-left: 10px;">
+                        TESTE SUBMIT
                         </button>
                         <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
                         Próximo
@@ -889,3 +880,353 @@
       <!--end: Wizard-->
    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM carregado');
+    
+    // Funcionalidade de copiar horários
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-copy-horario') || e.target.closest('.btn-copy-horario')) {
+            e.preventDefault();
+            console.log('Botão copiar clicado');
+            
+            const botao = e.target.classList.contains('btn-copy-horario') ? e.target : e.target.closest('.btn-copy-horario');
+            const diaAtual = botao.closest('.horario-dia');
+            const abertura = diaAtual.querySelector('.horario-abertura').value;
+            const fechamento = diaAtual.querySelector('.horario-fechamento').value;
+            const fechado = diaAtual.querySelector('.fechado-check').checked;
+            
+            console.log('Valores encontrados:', { abertura, fechamento, fechado });
+            
+            if (abertura || fechamento || fechado) {
+                const todosDias = document.querySelectorAll('.horario-dia');
+                todosDias.forEach(function(dia) {
+                    dia.querySelector('.horario-abertura').value = abertura;
+                    dia.querySelector('.horario-fechamento').value = fechamento;
+                    dia.querySelector('.fechado-check').checked = fechado;
+                    
+                    // Trigger change event para desabilitar/habilitar campos
+                    const event = new Event('change');
+                    dia.querySelector('.fechado-check').dispatchEvent(event);
+                });
+                
+                alert('Horários copiados para todos os dias da semana!');
+            } else {
+                alert('Configure primeiro os horários neste dia para poder copiar.');
+            }
+        }
+    });
+    
+    // Desabilitar campos quando marcado como fechado
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('fechado-check')) {
+            const diaContainer = e.target.closest('.horario-dia');
+            const aberturaInput = diaContainer.querySelector('.horario-abertura');
+            const fechamentoInput = diaContainer.querySelector('.horario-fechamento');
+            
+            if (e.target.checked) {
+                aberturaInput.disabled = true;
+                aberturaInput.value = '';
+                fechamentoInput.disabled = true;
+                fechamentoInput.value = '';
+                diaContainer.classList.add('bg-light-warning');
+            } else {
+                aberturaInput.disabled = false;
+                fechamentoInput.disabled = false;
+                diaContainer.classList.remove('bg-light-warning');
+            }
+        }
+    });
+    
+    // Validação de horários
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('horario-abertura') || e.target.classList.contains('horario-fechamento')) {
+            const diaContainer = e.target.closest('.horario-dia');
+            const abertura = diaContainer.querySelector('.horario-abertura').value;
+            const fechamento = diaContainer.querySelector('.horario-fechamento').value;
+            
+            if (abertura && fechamento) {
+                // Converter para minutos para comparação
+                const aberturaMinutos = convertTimeToMinutes(abertura);
+                const fechamentoMinutos = convertTimeToMinutes(fechamento);
+                
+                // Remover warning anterior
+                const warningExistente = diaContainer.querySelector('.overnight-warning');
+                if (warningExistente) {
+                    warningExistente.remove();
+                }
+                
+                // Permitir horários overnight (fechamento no dia seguinte)
+                if (fechamentoMinutos <= aberturaMinutos) {
+                    // Assumir que o fechamento é no dia seguinte
+                    diaContainer.querySelector('.horario-fechamento').classList.add('border-warning');
+                    const warning = document.createElement('small');
+                    warning.className = 'text-warning overnight-warning';
+                    warning.textContent = 'Horário de fechamento no dia seguinte';
+                    diaContainer.appendChild(warning);
+                } else {
+                    diaContainer.querySelector('.horario-fechamento').classList.remove('border-warning');
+                }
+            }
+        }
+    });
+    
+    function convertTimeToMinutes(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+    
+    // Pré-carregar horários existentes se houver
+    {% if horarios_existentes %}
+    const horariosExistentes = {{ horarios_existentes|safe }};
+    if (horariosExistentes && Object.keys(horariosExistentes).length > 0) {
+        Object.keys(horariosExistentes).forEach(function(dia) {
+            const horario = horariosExistentes[dia];
+            const diaContainer = document.querySelector(`.horario-dia[data-dia="${dia}"]`);
+            
+            if (diaContainer) {
+                if (horario.fechado) {
+                    const fechadoCheck = diaContainer.querySelector('.fechado-check');
+                    fechadoCheck.checked = true;
+                    fechadoCheck.dispatchEvent(new Event('change'));
+                } else {
+                    diaContainer.querySelector('.horario-abertura').value = horario.abertura;
+                    diaContainer.querySelector('.horario-fechamento').value = horario.fechamento;
+                }
+            }
+        });
+    }
+    {% endif %}
+    
+    // ========== LÓGICA PARA PRÉ-SELECIONAR CAMPOS DO FORMULÁRIO ==========
+    function preencherCamposFormulario() {
+        console.log('🔄 Preenchendo campos do formulário...');
+        
+        // Obter dados do settings via JSON do servidor
+        {% if settings_data %}
+        const settingsData = {{ settings_data|safe }};
+        console.log('📋 Settings data:', settingsData);
+        
+        // PRÉ-SELECIONAR ESTADO
+        if (settingsData.estado) {
+            const estadoSelect = document.getElementById('estado');
+            if (estadoSelect) {
+                estadoSelect.value = settingsData.estado;
+                console.log('✅ Estado selecionado:', settingsData.estado);
+                
+                // Trigger change event para carregar cidades
+                const changeEvent = new Event('change', { bubbles: true });
+                estadoSelect.dispatchEvent(changeEvent);
+            }
+        }
+        
+        // PRÉ-SELECIONAR CIDADE (após um pequeno delay para aguardar carregamento)
+        if (settingsData.cidade) {
+            setTimeout(function() {
+                const cidadeSelect = document.getElementById('cidade');
+                if (cidadeSelect) {
+                    cidadeSelect.value = settingsData.cidade;
+                    console.log('✅ Cidade selecionada:', settingsData.cidade);
+                }
+            }, 1000);
+        }
+        // PRÉ-SELECIONAR EXIBIÇÃO DE PRODUTOS
+        if (settingsData.exibicao_produtos) {
+            const exibicaoSelect = document.querySelector('select[name="exibicao_produtos"]');
+            if (exibicaoSelect) {
+                exibicaoSelect.value = settingsData.exibicao_produtos;
+                console.log('✅ Exibição produtos selecionada:', settingsData.exibicao_produtos);
+            }
+        }
+         // PRÉ-SELECIONAR SEGMENTO
+        if (settingsData.segmento) {
+            const segmentoSelect = document.querySelector('select[name="segmento"]');
+            if (segmentoSelect) {
+                segmentoSelect.value = settingsData.segmento;
+                console.log('✅ Segmento selecionado:', settingsData.segmento);
+            }
+        }
+        // PRÉ-SELECIONAR SEGMENTO
+        if (settingsData.segmento) {
+            const segmentoSelect = document.querySelector('select[name="segmento"]');
+            if (segmentoSelect) {
+                segmentoSelect.value = settingsData.segmento;
+                console.log('✅ Segmento selecionado:', settingsData.segmento);
+            }
+        }
+        
+        // PRÉ-SELECIONAR EXIBIÇÃO DE PRODUTOS - Step 2
+        if (settingsData.exibicao_produtos) {
+            const exibicaoSelect = document.querySelector('select[name="delivery"]');
+            if (exibicaoSelect) {
+                exibicaoSelect.value = settingsData.exibicao_produtos;
+                console.log('✅ Exibição produtos selecionada:', settingsData.exibicao_produtos);
+            }
+        }
+        
+        // PRÉ-SELECIONAR RADIO BUTTONS - DINHEIRO
+        if (settingsData.dinheiro !== null && settingsData.dinheiro !== undefined) {
+            const dinheiroRadios = document.querySelectorAll('input[name="dinheiro"]');
+            const valorDinheiro = settingsData.dinheiro ? 'True' : 'False';
+            dinheiroRadios.forEach(function(radio) {
+                if (radio.value === valorDinheiro) {
+                    radio.checked = true;
+                    console.log('✅ Dinheiro selecionado:', valorDinheiro);
+                }
+            });
+        }
+        
+        // PRÉ-SELECIONAR RADIO BUTTONS - DÉBITO
+        if (settingsData.debito !== null && settingsData.debito !== undefined) {
+            const debitoRadios = document.querySelectorAll('input[name="debito"]');
+            const valorDebito = settingsData.debito ? 'True' : 'False';
+            debitoRadios.forEach(function(radio) {
+                if (radio.value === valorDebito) {
+                    radio.checked = true;
+                    console.log('✅ Débito selecionado:', valorDebito);
+                }
+            });
+        }
+        
+        // PRÉ-SELECIONAR RADIO BUTTONS - CRÉDITO
+        if (settingsData.credito !== null && settingsData.credito !== undefined) {
+            const creditoRadios = document.querySelectorAll('input[name="credito"]');
+            const valorCredito = settingsData.credito ? 'True' : 'False';
+            creditoRadios.forEach(function(radio) {
+                if (radio.value === valorCredito) {
+                    radio.checked = true;
+                    console.log('✅ Crédito selecionado:', valorCredito);
+                }
+            });
+        }
+        
+        // PRÉ-SELECIONAR RADIO BUTTONS - PIX
+        if (settingsData.pix !== null && settingsData.pix !== undefined) {
+            const pixRadios = document.querySelectorAll('input[name="pix"]');
+            const valorPix = settingsData.pix ? 'True' : 'False';
+            pixRadios.forEach(function(radio) {
+                if (radio.value === valorPix) {
+                    radio.checked = true;
+                    console.log('✅ PIX selecionado:', valorPix);
+                }
+            });
+        }
+        
+        // PRÉ-SELECIONAR TIPO DE PIX
+        if (settingsData.nome_pix) {
+            const nomePix = document.querySelector('select[name="nome_pix"]');
+            if (nomePix) {
+                nomePix.value = settingsData.nome_pix;
+                console.log('✅ Tipo PIX selecionado:', settingsData.nome_pix);
+            }
+        }
+        
+        // PRÉ-SELECIONAR RADIO BUTTONS - DELIVERY (Step 4)
+        if (settingsData.delivery !== null && settingsData.delivery !== undefined) {
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+            const valorDelivery = settingsData.delivery ? 'True' : 'False';
+            deliveryRadios.forEach(function(radio) {
+                if (radio.value === valorDelivery) {
+                    radio.checked = true;
+                    console.log('✅ Delivery selecionado:', valorDelivery);
+                }
+            });
+        }
+        
+        // PRÉ-SELECIONAR TIPO DE DOCUMENTO
+        if (settingsData.cpf_ou_cnpj) {
+            const cpfCnpjSelect = document.querySelector('select[name="cpf_ou_cnpj"]');
+            if (cpfCnpjSelect) {
+                cpfCnpjSelect.value = settingsData.cpf_ou_cnpj;
+                console.log('✅ Tipo documento selecionado:', settingsData.cpf_ou_cnpj);
+            }
+        }
+        
+        // PRÉ-SELECIONAR COR DO TEMA
+        if (settingsData.color_theme) {
+            const colorPicker = document.getElementById('color');
+            const colorHex = document.getElementById('colorHex');
+            const preview = document.getElementById('preview');
+            
+            if (colorPicker && colorHex && preview) {
+                const cor = settingsData.color_theme;
+                colorPicker.value = cor;
+                colorHex.value = cor;
+                preview.style.backgroundColor = cor;
+                console.log('✅ Cor tema selecionada:', cor);
+            }
+        }
+        
+        {% endif %}
+        
+        console.log('✅ Preenchimento de campos concluído!');
+    }
+    
+    // Executar o preenchimento após DOM carregar
+    preencherCamposFormulario();
+    
+    // SOLUÇÃO DEFINITIVA: Force submit no botão
+    console.log('🚀 Iniciando configuração do botão submit...');
+    
+    // Como o botão agora é type="submit", ele vai submeter automaticamente
+    // Vamos apenas garantir que está visível e funcional
+    
+    const form = document.getElementById('kt_form');
+    const submitBtn = document.querySelector('#btn-submit-config');
+    
+    if (form && submitBtn) {
+        console.log('✅ Formulário e botão encontrados');
+        
+        // Garantir visibilidade
+        submitBtn.style.display = 'inline-block';
+        submitBtn.style.visibility = 'visible';
+        
+        // Adicionar confirmação e debug
+        submitBtn.addEventListener('click', function(e) {
+            console.log('🔥 BOTÃO SUBMIT CLICADO!');
+            alert('🚀 TESTE: Botão Submit foi clicado! Enviando formulário...');
+            
+            // Mostrar loading
+            this.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Salvando...';
+            this.disabled = true;
+            
+            // Não prevenir default - deixar o submit natural acontecer
+            console.log('📤 Form será submetido automaticamente...');
+        });
+        
+        // Também funcionar quando clicado via data-wizard-type
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('[data-wizard-type="action-submit"]')) {
+                console.log('🎯 Submit via wizard-type detectado!');
+            }
+        });
+        
+        console.log('✅ Configuração do submit completa!');
+    } else {
+        console.error('❌ Formulário ou botão não encontrados!');
+        console.log('Form:', form);
+        console.log('Submit btn:', submitBtn);
+    }
+    
+    // Tratar mudanças no wizard para habilitar/desabilitar o botão submit
+    const wizard = document.getElementById('kt_wizard_v3');
+    if (wizard) {
+        // Lógica simplificada para mostrar/esconder botão submit
+        function toggleSubmitButton() {
+            const submitBtn = wizard.querySelector('[data-wizard-type="action-submit"]');
+            const nextBtn = wizard.querySelector('[data-wizard-type="action-next"]');
+            
+            // Sempre manter o botão submit visível para teste
+            if (submitBtn) {
+                submitBtn.style.display = 'inline-block';
+                submitBtn.style.visibility = 'visible';
+                console.log('🔘 Botão Submit sempre visível para teste');
+            }
+        }
+        
+        // Executar uma vez no carregamento
+        toggleSubmitButton();
+    }
+});
+</script>
