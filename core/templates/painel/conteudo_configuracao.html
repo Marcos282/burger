@@ -73,8 +73,11 @@
          <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
             <div class="col-xl-12 col-xxl-7">
                <!--begin: Wizard Form-->
-               <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_form" method="post" action="{% url 'painel_configuracao' %}"  enctype="multipart/form-data">
+               <form class="form fv-plugins-bootstrap fv-plugins-framework" id="kt_form" method="post" action="{% url 'painel_configuracao' %}" enctype="multipart/form-data" autocomplete="off">
                   {% csrf_token %}
+                  <!-- Campo fake para confundir o autocomplete do navegador -->
+                  <input type="text" name="fake_username" style="display: none;" tabindex="-1" autocomplete="off">
+                  <input type="password" name="fake_password" style="display: none;" tabindex="-1" autocomplete="off">
                   <!--begin: Wizard Step 1-->
                   <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                      <h4 class="mb-10 font-weight-bold text-dark">Informe seus dados de localização</h4>
@@ -834,12 +837,12 @@
                      </div>
                      <div class="form-group fv-plugins-icon-container">
                         <label>Senha</label>
-                        <input type="password" class="form-control" name="password" >
+                        <input type="password" class="form-control" name="password" autocomplete="off" data-form-type="other">
                         <!-- <span class="form-text text-muted">Senha do responsável pela loja</span> -->
                      </div>
                      <div class="form-group fv-plugins-icon-container">
                         <label>Confirme a senha</label>
-                        <input type="password" class="form-control" name="confirm_password" >
+                        <input type="password" class="form-control" name="confirm_password" aautocomplete="off" data-form-type="other">
                         <!-- <span class="form-text text-muted">Senha do responsável pela loja</span> -->
                      </div>
                      <!--end::Section-->

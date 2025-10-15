@@ -69,3 +69,24 @@ class ProdutoImagem(models.Model):
         except:
             url = ''
         return url
+
+class Banners(models.Model):
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=200)
+    descricao = models.TextField(null=True, blank=True)
+    banner_pc = models.ImageField(upload_to='banners/', null=True, blank=True)
+    banner_mobile = models.ImageField(upload_to='banners/', null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
+    ativo = models.BooleanField(default=True)
+    ordem_exibicao = models.IntegerField(default=0) # Ordem de exibição no menu (permite numero negativo)
+
+    def __str__(self):
+        return self.titulo + " (" + str(self.tenant) + ")"
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url

@@ -1,4 +1,5 @@
 from django import template
+import os
 
 register = template.Library()
 
@@ -8,3 +9,10 @@ def multiply(value, arg):
         return float(value) * float(arg)
     except (ValueError, TypeError):
         return ''
+
+@register.filter
+def basename(value):
+    """Retorna apenas o nome do arquivo (sem o caminho)"""
+    if value:
+        return os.path.basename(str(value))
+    return ''

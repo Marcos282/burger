@@ -32,30 +32,8 @@ var KTWizard3 = function () {
 						_wizard.goNext();
 						KTUtil.scrollTop();
 					} else {
-						// Encontrar e destacar campos com erro
-						var camposComErro = [];
-						var currentStepContent = _wizardEl.querySelector('[data-wizard-state="current"]');
-						var camposInvalidos = currentStepContent.querySelectorAll('.fv-plugins-message-container');
-						
-						camposInvalidos.forEach(function(container) {
-							if (container.innerHTML.trim() !== '') {
-								var campo = container.closest('.form-group');
-								if (campo) {
-									var label = campo.querySelector('label');
-									if (label) {
-										camposComErro.push(label.textContent.trim());
-									}
-								}
-							}
-						});
-						
-						var mensagem = "Parece que alguns campos obrigatórios não foram preenchidos, por favor verifique.";
-						if (camposComErro.length > 0) {
-							mensagem += "\n\nCampos que precisam ser preenchidos:\n• " + camposComErro.join('\n• ');
-						}
-						
 						Swal.fire({
-							text: mensagem,
+							text: "Parece que alguns campos obrigatórios não foram preenchidos, por favor verifique.",
 							icon: "error",
 							buttonsStyling: false,
 							confirmButtonText: "Ok, entendi!",
@@ -140,13 +118,19 @@ var KTWizard3 = function () {
 			}
 		));
 
-		// Step 2 - Aparência (sem validações obrigatórias)
+		// Step 2
 		_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
 				fields: {
-					// Não há campos obrigatórios no step 2 (Aparência)
-					// Todos os campos são opcionais: foto_perfil, foto_capa, color_theme, delivery
+					package: {
+						validators: {
+							notEmpty: {
+								message: 'Package details is required'
+							}
+						}
+					},
+					
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -155,13 +139,32 @@ var KTWizard3 = function () {
 			}
 		));
 
-		// Step 3 - Pagamento (sem validações obrigatórias)
+		// Step 3
 		_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
 				fields: {
-					// Todos os campos de pagamento são opcionais
-					// pagamento_minimo, dinheiro, debito, credito, pix, etc.
+					delivery: {
+						validators: {
+							notEmpty: {
+								message: 'Delivery type is required'
+							}
+						}
+					},
+					packaging: {
+						validators: {
+							notEmpty: {
+								message: 'Packaging type is required'
+							}
+						}
+					},
+					preferreddelivery: {
+						validators: {
+							notEmpty: {
+								message: 'Preferred delivery window is required'
+							}
+						}
+					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -170,13 +173,46 @@ var KTWizard3 = function () {
 			}
 		));
 
-		// Step 4 - Horários de Funcionamento (sem validações obrigatórias)
+		// Step 4
 		_validations.push(FormValidation.formValidation(
 			_formEl,
 			{
 				fields: {
-					// Horários são opcionais, pode funcionar todos os dias ou alguns dias
-					// horario_abertura_*, horario_fechamento_*, fechado_*, delivery
+					locaddress1: {
+						validators: {
+							notEmpty: {
+								message: 'Address is required'
+							}
+						}
+					},
+					locpostcode: {
+						validators: {
+							notEmpty: {
+								message: 'Postcode is required'
+							}
+						}
+					},
+					loccity: {
+						validators: {
+							notEmpty: {
+								message: 'City is required'
+							}
+						}
+					},
+					locstate: {
+						validators: {
+							notEmpty: {
+								message: 'State is required'
+							}
+						}
+					},
+					loccountry: {
+						validators: {
+							notEmpty: {
+								message: 'Country is required'
+							}
+						}
+					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

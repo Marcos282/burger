@@ -15,6 +15,11 @@ from customers.views_auth import (
     painel_configuracao,
     upload_foto_perfil,
     upload_foto_capa,
+    painel_qrcode,
+    painel_banners,
+    painel_banners_add,
+    painel_banners_delete,
+    painel_banners_edit,
 )
  
 from django.contrib import admin
@@ -66,7 +71,12 @@ urlpatterns = [
     path('painel/configuracao/', painel_configuracao, name='painel_configuracao'),  # Ajuste conforme necessário
     path('painel/upload-foto-perfil/', upload_foto_perfil, name='upload_foto_perfil'),
     path('painel/upload-foto-capa/', upload_foto_capa, name='upload_foto_capa'),
-    path('logout/', logout_view, name='logout'), 
+    path('painel/qrcode', painel_qrcode, name='painel_qrcode'),
+    path('painel/banners', painel_banners, name='painel_banners'),
+    path('painel/banners/adicionar/', painel_banners_add, name='painel_banners_add'),
+    path('painel/banners/deletar/<int:banner_id>/', painel_banners_delete, name='painel_banners_delete'),
+    path('painel/banners/editar/<int:banner_id>/', painel_banners_edit, name='painel_banners_edit'),
+    path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
     path('manifest.json', manifest_json, name='manifest'),
     path('loja/manifest.json', manifest_json, name='loja_manifest'),  # Para rotas dentro de /loja/

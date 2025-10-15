@@ -1,4 +1,5 @@
-from menu.models import Produto, ProdutoImagem, Category
+from menu.models import Produto, ProdutoImagem, Category, Banners
+from tenants.models import Tenant
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -826,6 +827,248 @@ def upload_foto_capa(request):
             return JsonResponse({'success': False, 'message': 'Campo foto_capa não encontrado'})
     
     return JsonResponse({'success': False, 'message': 'Método não permitido'})
+
+def painel_qrcode(request):
+    if request.user.is_authenticated:
+        import qrcode
+        from io import BytesIO
+        import base64
+
+        user = request.user
+        tenant = user.tenant
+        settings = tenant.settings
+
+        loja_url = get_tenant_url(request, '/loja/')
+
+        # Gera QR Code
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(loja_url)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        # Converte imagem para base64 para embutir no HTML
+        buffered = BytesIO()
+        img.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+
+        localizacao = [
+            {"n1": "QR Code", "url": "painel_qrcode"}
+        ]
+
+        context = {
+            'localizacao': localizacao,
+            'user': user,
+            'settings': settings,
+            'loja_url': loja_url,
+            'qr_code_base64': img_str,
+            'qt_items_cliente': qt_items_cliente(request),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
+        return render(request, 'painel/qrcode.html', context)
+    else:
+        return redirect('login')
+    
+def painel_banners(request):
+    if request.user.is_authenticated:
+        user = request.user        
+        banners = Banners.objects.filter(tenant=user.tenant).order_by('ordem_exibicao')
+        qt_banners = banners.count()
+        localizacao = [
+            {"n1": "Banners", "url": "painel_banners"}
+        ]
+        
+        show_success_modal = False
+        if request.method == 'POST':
+            titulo = request.POST.get('titulo', '')
+            link = request.POST.get('link', '')
+            ordem_exibicao = request.POST.get('ordem_exibicao', 0)
+            image = request.FILES.get('image', None)
+            
+            if titulo and image:
+                novo_banner = Banners.objects.create(
+                    tenant=user.tenant,
+                    titulo=titulo,
+                    link=link,
+                    ordem_exibicao=ordem_exibicao,
+                    image=image
+                )
+                show_success_modal = True
+        
+        context = {
+            'localizacao': localizacao,
+            'banners': banners,
+            'user': user,
+            'qt_banners': qt_banners,
+            'show_success_modal': show_success_modal,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
+        return render(request, 'painel/banners.html', context)
+    else:
+        return redirect('login')
+
+def painel_banners_add(request):
+    if request.user.is_authenticated:
+        user = request.user        
+        localizacao = [
+            {"n1": "Banners", "url": "painel_banners"},
+            {"n2": "Adicionar Banner", "url": "painel_banners_add"}
+        ]
+        
+        # Processar POST - salvar banner
+        if request.method == 'POST':
+            try:
+                # Capturar dados do formulário
+                titulo = request.POST.get('titulo', '').strip()
+                link = request.POST.get('link', '').strip()
+                ativo = request.POST.get('ativo') == 'on'
+                ordem_exibicao = int(request.POST.get('ordem_exibicao', 1))
+                
+                # Validações básicas
+                if not titulo:
+                    messages.error(request, 'O título é obrigatório.')
+                    return render(request, 'painel/banners_add.html', {
+                        'localizacao': localizacao,
+                        'user': user,
+                        'url_marketplace': get_tenant_url(request, '/loja/'),
+                        'error': 'O título é obrigatório.'
+                    })
+                
+                # Capturar arquivos de imagem
+                banner_pc = request.FILES.get('banner_pc')
+                banner_mobile = request.FILES.get('banner_mobile')
+                
+                # Verificar se pelo menos uma imagem foi enviada
+                if not banner_pc and not banner_mobile:
+                    messages.error(request, 'É necessário enviar pelo menos uma imagem (PC ou Mobile).')
+                    return render(request, 'painel/banners_add.html', {
+                        'localizacao': localizacao,
+                        'user': user,
+                        'url_marketplace': get_tenant_url(request, '/loja/'),
+                        'error': 'É necessário enviar pelo menos uma imagem (PC ou Mobile).'
+                    })
+                
+                # Criar novo banner
+                banner = Banners(
+                    tenant=user.tenant,
+                    titulo=titulo,
+                    link=link if link else None,
+                    ativo=ativo,
+                    ordem_exibicao=ordem_exibicao
+                )
+                
+                # Adicionar imagens se fornecidas
+                if banner_pc:
+                    banner.banner_pc = banner_pc
+                if banner_mobile:
+                    banner.banner_mobile = banner_mobile
+                
+                # Salvar no banco
+                banner.save()
+                
+                # Mensagem de sucesso
+                messages.success(request, f'Banner "{titulo}" criado com sucesso!')
+                
+                # Redirecionar para listagem de banners
+                return redirect('painel_banners')
+                
+            except ValueError as e:
+                messages.error(request, 'Erro nos dados fornecidos. Verifique os campos numéricos.')
+                return render(request, 'painel/banners_add.html', {
+                    'localizacao': localizacao,
+                    'user': user,
+                    'url_marketplace': get_tenant_url(request, '/loja/'),
+                    'error': 'Erro nos dados fornecidos. Verifique os campos numéricos.'
+                })
+            except Exception as e:
+                messages.error(request, f'Erro ao salvar banner: {str(e)}')
+                return render(request, 'painel/banners_add.html', {
+                    'localizacao': localizacao,
+                    'user': user,
+                    'url_marketplace': get_tenant_url(request, '/loja/'),
+                    'error': f'Erro ao salvar banner: {str(e)}'
+                })
+        
+        # GET - exibir formulário
+        context = {
+            'localizacao': localizacao,
+            'user': user,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
+        return render(request, 'painel/banners_add.html', context)
+    else:
+        return redirect('login')
+
+
+def painel_banners_delete(request, banner_id):
+    if request.method == 'POST':
+        user = request.user
+        banner = Banners.objects.filter(id=banner_id, tenant=getattr(user, 'tenant', None)).first()
+        if banner:
+            banner.delete()
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'error': 'Banner não encontrado.'}, status=404)
+    return JsonResponse({'success': False, 'error': 'Método não permitido.'}, status=405)
+
+def painel_banners_edit(request, banner_id):
+    if request.user.is_authenticated:
+        user = request.user
+        banner = Banners.objects.filter(id=banner_id, tenant=getattr(user, 'tenant', None)).first()
+        
+        if not banner:
+            messages.error(request, 'Banner não encontrado ou você não tem permissão para editá-lo.')
+            return redirect('painel_banners')
+        
+        show_success_modal = False
+        
+        if request.method == 'POST':
+            titulo = request.POST.get('titulo', '').strip()
+            link = request.POST.get('link', '').strip()
+            ativo = request.POST.get('ativo') == 'on'
+            ordem_exibicao = int(request.POST.get('ordem_exibicao', 1))
+            
+            if not titulo:
+                messages.error(request, 'O título é obrigatório.')
+                return redirect('painel_banners_edit', banner_id=banner.id)
+            
+            banner.titulo = titulo
+            banner.link = link if link else None
+            banner.ativo = ativo
+            banner.ordem_exibicao = ordem_exibicao
+            
+            # Verifica se novas imagens foram enviadas
+            banner_pc = request.FILES.get('banner_pc')
+            banner_mobile = request.FILES.get('banner_mobile')
+            
+            if banner_pc:
+                banner.banner_pc = banner_pc
+            if banner_mobile:
+                banner.banner_mobile = banner_mobile
+            
+            banner.save()
+            show_success_modal = True
+            messages.success(request, f'Banner "{titulo}" atualizado com sucesso!')
+        
+        localizacao = [
+            {"n1": "Banners", "url": "painel_banners"},
+            {"n2": "Editar Banner", "url": "painel_banners_edit", "id": banner.id}
+        ]
+        
+        context = {
+            'localizacao': localizacao,
+            'banner': banner,
+            'user': user,
+            'show_success_modal': show_success_modal,
+            'url_marketplace': get_tenant_url(request, '/loja/'),
+        }
+        return render(request, 'painel/banners_edit.html', context)
+    else:
+        return redirect('login')
 
 def logout_view(request):
     logout(request)
