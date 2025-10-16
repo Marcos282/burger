@@ -80,7 +80,7 @@
                   <input type="password" name="fake_password" style="display: none;" tabindex="-1" autocomplete="off">
                   <!--begin: Wizard Step 1-->
                   <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                     <h4 class="mb-10 font-weight-bold text-dark">Informe seus dados de localização</h4>
+                     <h4 class="mb-10 font-weight-bold text-dark">Informações gerais</h4>
                      <!--begin::Input-->
                      <div class="form-group fv-plugins-icon-container">
                         <label>Nome</label>
@@ -96,8 +96,7 @@
                         <span class="form-text text-muted">Por favor, insira a descrição da loja.</span>
                      </div>
                      <!--end::Input-->
-                     <div class="row">
-                        <div class="col-xl-6">
+                     
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <!-- <label>Postcode</label>
@@ -113,8 +112,8 @@
                               </div>
                            </div>
                            <!--end::Input-->
-                        </div>
-                        <div class="col-xl-6">
+                        
+                        
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>CEP</label>
@@ -123,10 +122,9 @@
                               <div class="fv-plugins-message-container"></div>
                            </div>
                            <!--end::Input-->
-                        </div>
-                        <div class="col-xl-6">
-                        </div>
-                        <div class="col-xl-6">
+                        
+                       
+                        
                            <!--begin::Input-->
                            <div class="form-group fv-plugins-icon-container">
                               <label>Bairro</label>
@@ -167,8 +165,8 @@
                               <div class="fv-plugins-message-container"></div>
                            </div>
                            <!--end::Input-->
-                        </div>
-                     </div>
+                       
+                     
                      <div class="row">
                         <div class="col-xl-6">
                            <!--begin::Select-->
@@ -222,7 +220,10 @@
                            <!--end::Select-->
                         </div>
                         <!--begin::Select-->
-                        <div class="col-xl-6">
+                        
+                     </div>
+
+                     
                            <div class="form-group fv-plugins-icon-container">
                               <label>Segmento</label>
                               <select name="segmento" class="form-control">
@@ -254,8 +255,8 @@
                               <div class="fv-plugins-message-container"></div>
                            </div>
                            <!--end::Select-->
-                        </div>
-                     </div>
+                        
+
                   </div>
                   <!--end: Wizard Step 1-->
                   <!--begin: Wizard Step 2-->
@@ -298,6 +299,79 @@
                            margin: 0 auto;
                            }
                         </style>
+
+                        <!-- Estilos para o botão SALVAR com efeitos -->
+                        <style>
+                           /* Efeitos para o botão SALVAR */
+                           #btn-submit-config {
+                              transition: all 0.3s ease;
+                              position: relative;
+                              overflow: hidden;
+                           }
+                           
+                           #btn-submit-config:hover {
+                              transform: translateY(-2px);
+                              box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+                           }
+                           
+                           #btn-submit-config:active {
+                              transform: translateY(0);
+                           }
+                           
+                           /* Animação de loading */
+                           #btn-submit-config.loading {
+                              background: linear-gradient(45deg, #28a745, #20c997);
+                              animation: loading-pulse 1.5s infinite;
+                           }
+                           
+                           @keyframes loading-pulse {
+                              0% { opacity: 1; }
+                              50% { opacity: 0.7; }
+                              100% { opacity: 1; }
+                           }
+                           
+                           /* Efeito de sucesso */
+                           #btn-submit-config.success {
+                              background: linear-gradient(45deg, #28a745, #34ce57);
+                              animation: success-bounce 0.6s ease;
+                           }
+                           
+                           @keyframes success-bounce {
+                              0% { transform: scale(1); }
+                              50% { transform: scale(1.1); }
+                              100% { transform: scale(1); }
+                           }
+                           
+                           /* Efeito de erro */
+                           #btn-submit-config.error {
+                              background: linear-gradient(45deg, #dc3545, #e74c3c);
+                              animation: error-shake 0.6s ease;
+                           }
+                           
+                           @keyframes error-shake {
+                              0%, 100% { transform: translateX(0); }
+                              25% { transform: translateX(-5px); }
+                              75% { transform: translateX(5px); }
+                           }
+                           
+                           /* Efeito ripple no clique */
+                           .ripple {
+                              position: absolute;
+                              border-radius: 50%;
+                              background: rgba(255, 255, 255, 0.6);
+                              transform: scale(0);
+                              animation: ripple-animation 0.6s linear;
+                              pointer-events: none;
+                           }
+                           
+                           @keyframes ripple-animation {
+                              to {
+                                 transform: scale(4);
+                                 opacity: 0;
+                              }
+                           }
+                        </style>
+
                         <div id="imagemPerfilErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
                      </div>
                      <!--end::Foto de Perfil-->
@@ -458,7 +532,7 @@
                   </div>
                   <!--end: Wizard Step 3-->
                   <!--begin: Wizard Step 4-->
-                  <div class="pb-5" data-wizard-type="step-content">
+                  <div class="pb-5" data-wizard-type="step-content" id="step4">
                      <h4 class="mb-10 font-weight-bold text-dark">Horários de Funcionamento</h4>
                      <div class="my-5">
                         <div class="alert alert-info">
@@ -811,7 +885,7 @@
                      </div>
                      <div class="form-group fv-plugins-icon-container">
                         <label>Data de nascimento</label>
-                        <input type="date" class="form-control" name="dt_nascimento" placeholder="Data de nascimento" value="{{ settings.dt_nascimento}}">
+                        <input type="date" class="form-control" name="dt_nascimento" placeholder="Data de nascimento" value="{{ settings.dt_nascimento|date:'Y-m-d' }}">
                         <span class="form-text text-muted">Data de nascimento do responsável pela loja</span>
                      </div>
                      <div class="form-group fv-plugins-icon-container">
@@ -1002,6 +1076,70 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     {% endif %}
     
+    // ========== CARREGAR CIDADES QUANDO ESTADO MUDA ==========
+    // Função para carregar cidades
+    function carregarCidades(estadoSigla) {
+        const cidadeSelect = document.getElementById('cidade');
+        
+        console.log('🏛️ Carregando cidades para estado:', estadoSigla);
+        
+        if (!estadoSigla) {
+            cidadeSelect.innerHTML = '<option value="">Selecione primeiro o estado</option>';
+            cidadeSelect.disabled = true;
+            return Promise.resolve([]);
+        }
+        
+        // Mostra loading
+        cidadeSelect.innerHTML = '<option value="">Carregando cidades...</option>';
+        cidadeSelect.disabled = true;
+        
+        console.log('🌐 Buscando cidades na API do IBGE para estado:', estadoSigla);
+        
+        // Busca cidades na API do IBGE
+        return fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSigla}/municipios`)
+            .then(response => response.json())
+            .then(cidades => {
+                console.log(`📊 Recebidas ${cidades.length} cidades da API`);
+                
+                cidadeSelect.innerHTML = '<option value="">Selecione a cidade</option>';
+                
+                // Ordena as cidades alfabeticamente
+                cidades.sort((a, b) => a.nome.localeCompare(b.nome));
+                
+                // Adiciona as opções de cidade
+                cidades.forEach(cidade => {
+                    const option = document.createElement('option');
+                    option.value = cidade.id;
+                    option.text = cidade.nome;
+                    cidadeSelect.appendChild(option);
+                });
+                
+                cidadeSelect.disabled = false;
+                console.log(`✅ ${cidades.length} cidades carregadas para ${estadoSigla}`);
+                
+                // Disparar evento para notificar que as cidades foram carregadas
+                const cidadesCarregadasEvent = new CustomEvent('cidadesCarregadas', {
+                    detail: { estado: estadoSigla, quantidade: cidades.length }
+                });
+                document.dispatchEvent(cidadesCarregadasEvent);
+                
+                return cidades;
+            })
+            .catch(error => {
+                console.error('❌ Erro ao carregar cidades:', error);
+                cidadeSelect.innerHTML = '<option value="">Erro ao carregar cidades</option>';
+                cidadeSelect.disabled = false;
+                return [];
+            });
+    }
+
+    $(document).ready(function() {
+        // Registrar listener para mudanças no estado
+        $('#estado').on('change', function() {
+            carregarCidades(this.value);
+        });
+    });
+
     // ========== LÓGICA PARA PRÉ-SELECIONAR CAMPOS DO FORMULÁRIO ==========
     function preencherCamposFormulario() {
         console.log('🔄 Preenchendo campos do formulário...');
@@ -1018,21 +1156,70 @@ document.addEventListener('DOMContentLoaded', function() {
                 estadoSelect.value = settingsData.estado;
                 console.log('✅ Estado selecionado:', settingsData.estado);
                 
-                // Trigger change event para carregar cidades
-                const changeEvent = new Event('change', { bubbles: true });
-                estadoSelect.dispatchEvent(changeEvent);
+                // Força o carregamento das cidades
+                console.log('🔄 Forçando carregamento de cidades...');
+                carregarCidades(settingsData.estado).then(() => {
+                    console.log('🎯 Cidades carregadas, tentando selecionar cidade...');
+                    
+                    // Tentar selecionar a cidade após carregamento
+                    if (settingsData.cidade) {
+                        setTimeout(() => {
+                            selecionarCidadeSeCarregada(settingsData.cidade);
+                        }, 100);
+                    }
+                });
             }
         }
         
-        // PRÉ-SELECIONAR CIDADE (após um pequeno delay para aguardar carregamento)
+        // PRÉ-SELECIONAR CIDADE (aguardar evento de cidades carregadas)
         if (settingsData.cidade) {
-            setTimeout(function() {
+            console.log('🏙️  Tentando pré-selecionar cidade:', settingsData.cidade);
+            
+            // Função para tentar selecionar a cidade
+            function selecionarCidade() {
                 const cidadeSelect = document.getElementById('cidade');
-                if (cidadeSelect) {
-                    cidadeSelect.value = settingsData.cidade;
-                    console.log('✅ Cidade selecionada:', settingsData.cidade);
+                
+                if (!cidadeSelect) {
+                    console.log('❌ Select de cidade não encontrado');
+                    return false;
                 }
-            }, 1000);
+                
+                console.log(`� Procurando cidade ${settingsData.cidade} entre ${cidadeSelect.options.length} opções`);
+                
+                // Verificar se as cidades já foram carregadas
+                if (cidadeSelect.options.length <= 1) {
+                    console.log('⏳ Cidades ainda não carregadas');
+                    return false;
+                }
+                
+                // Tentar selecionar a cidade
+                cidadeSelect.value = settingsData.cidade;
+                
+                if (cidadeSelect.value === settingsData.cidade) {
+                    console.log('✅ Cidade selecionada com sucesso:', settingsData.cidade);
+                    return true;
+                } else {
+                    console.log('❌ Falha ao selecionar cidade. Valor não encontrado nas opções.');
+                    // Listar algumas opções para debug
+                    Array.from(cidadeSelect.options).slice(0, 5).forEach((option, index) => {
+                        console.log(`   Opção ${index}: value="${option.value}", text="${option.text}"`);
+                    });
+                    return false;
+                }
+            }
+            
+            // Escutar o evento de cidades carregadas
+            document.addEventListener('cidadesCarregadas', function(event) {
+                console.log('🎉 Evento cidadesCarregadas recebido:', event.detail);
+                setTimeout(() => selecionarCidade(), 100);
+            });
+            
+            // Tentar imediatamente caso as cidades já estejam carregadas
+            setTimeout(() => {
+                if (!selecionarCidade()) {
+                    console.log('⚠️ Cidade não selecionada imediatamente, aguardando evento...');
+                }
+            }, 2000);
         }
         // PRÉ-SELECIONAR EXIBIÇÃO DE PRODUTOS
         if (settingsData.exibicao_produtos) {
@@ -1173,63 +1360,220 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Iniciando configuração do botão submit...');
     
     // Como o botão agora é type="submit", ele vai submeter automaticamente
-    // Vamos apenas garantir que está visível e funcional
-    
+    // SOLUÇÃO DEFINITIVA PARA O BOTÃO SALVAR
     const form = document.getElementById('kt_form');
     const submitBtn = document.querySelector('#btn-submit-config');
     
     if (form && submitBtn) {
-        console.log('✅ Formulário e botão encontrados');
+        console.log('✅ Formulário e botão encontrados - configurando submit DEFINITIVO');
         
         // Garantir visibilidade
         submitBtn.style.display = 'inline-block';
         submitBtn.style.visibility = 'visible';
         
-        // Adicionar confirmação e debug
+        // REMOVER ATRIBUTOS DO WIZARD PARA EVITAR INTERFERÊNCIA
+        submitBtn.removeAttribute('data-wizard-type');
+        submitBtn.type = 'button'; // Mudar de submit para button para controle total
+        
+        // ADICIONAR EVENT LISTENER PRÓPRIO - SEM INTERFERÊNCIA DO WIZARD
         submitBtn.addEventListener('click', function(e) {
-            console.log('🔥 BOTÃO SUBMIT CLICADO!');
-            alert('🚀 TESTE: Botão Submit foi clicado! Enviando formulário...');
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Mostrar loading
-            this.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Salvando...';
+            console.log('🔥 BOTÃO SALVAR CLICADO!');
+            
+            // Salvar estado original
+            const originalText = this.innerHTML;
+            const originalClass = this.className;
+            
+            // EFEITO RIPPLE NO CLIQUE
+            const rect = this.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+            
+            // Remover ripple após animação
+            setTimeout(() => ripple.remove(), 600);
+            
+            // FASE 1: LOADING INICIAL
+            this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> Iniciando...';
             this.disabled = true;
+            this.classList.add('loading');
             
-            // Não prevenir default - deixar o submit natural acontecer
-            console.log('📤 Form será submetido automaticamente...');
+            setTimeout(() => {
+                // FASE 2: VALIDANDO
+                this.innerHTML = '<i class="fa fa-check-circle mr-2"></i> Validando...';
+                
+                setTimeout(() => {
+                    // FASE 3: ENVIANDO
+                    this.innerHTML = '<i class="fa fa-upload mr-2"></i> Enviando...';
+                    
+                    // SUBMIT COM FETCH PARA CONTROLAR RESPOSTA
+                    const formData = new FormData(form);
+                    
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // SUCESSO!
+                            this.classList.remove('loading');
+                            this.classList.add('success');
+                            this.innerHTML = '<i class="fa fa-check mr-2"></i> Configurações Salvas!';
+                            
+                            // NOTIFICAÇÃO DE SUCESSO
+                            if (typeof toastr !== 'undefined') {
+                                toastr.success('🎉 Todas as configurações foram salvas com sucesso!', 'Sucesso!', {
+                                    timeOut: 4000,
+                                    progressBar: true,
+                                    positionClass: 'toast-top-right',
+                                    preventDuplicates: true
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Perfeito!',
+                                    text: '🎉 Todas as configurações foram salvas com sucesso!',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                });
+                            }
+                            
+                            // RESTAURAR BOTÃO APÓS DELAY
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.className = originalClass;
+                                this.disabled = false;
+                                this.classList.remove('success');
+                                
+                                // Opcional: Refresh suave
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1500);
+                            }, 3000);
+                            
+                        } else {
+                            throw new Error('Erro HTTP: ' + response.status);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('❌ Erro ao salvar:', error);
+                        
+                        // ERRO!
+                        this.classList.remove('loading');
+                        this.classList.add('error');
+                        this.innerHTML = '<i class="fa fa-times mr-2"></i> Erro ao Salvar!';
+                        
+                        // NOTIFICAÇÃO DE ERRO
+                        if (typeof toastr !== 'undefined') {
+                            toastr.error('❌ Erro ao salvar configurações. Tente novamente.', 'Erro!', {
+                                timeOut: 5000,
+                                progressBar: true,
+                                positionClass: 'toast-top-right'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ops!',
+                                text: '❌ Erro ao salvar configurações. Tente novamente.',
+                                confirmButtonText: 'Tentar Novamente',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                        
+                        // RESTAURAR BOTÃO APÓS DELAY
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.className = originalClass;
+                            this.disabled = false;
+                            this.classList.remove('error');
+                        }, 4000);
+                    });
+                }, 800);
+            }, 600);
         });
         
-        // Também funcionar quando clicado via data-wizard-type
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('[data-wizard-type="action-submit"]')) {
-                console.log('🎯 Submit via wizard-type detectado!');
-            }
-        });
-        
-        console.log('✅ Configuração do submit completa!');
+        console.log('✅ Botão SALVAR configurado com bypass do wizard!');
     } else {
         console.error('❌ Formulário ou botão não encontrados!');
-        console.log('Form:', form);
-        console.log('Submit btn:', submitBtn);
     }
     
-    // Tratar mudanças no wizard para habilitar/desabilitar o botão submit
+    // ========== CONFIGURAÇÃO DO WIZARD (mantido para navegação) ==========
     const wizard = document.getElementById('kt_wizard_v3');
     if (wizard) {
-        // Lógica simplificada para mostrar/esconder botão submit
+        // Apenas manter o botão submit sempre visível
         function toggleSubmitButton() {
-            const submitBtn = wizard.querySelector('[data-wizard-type="action-submit"]');
-            const nextBtn = wizard.querySelector('[data-wizard-type="action-next"]');
-            
-            // Sempre manter o botão submit visível para teste
+            const submitBtn = wizard.querySelector('#btn-submit-config');
             if (submitBtn) {
                 submitBtn.style.display = 'inline-block';
                 submitBtn.style.visibility = 'visible';
-                console.log('🔘 Botão Submit sempre visível para teste');
             }
         }
         
         // Executar uma vez no carregamento
         toggleSubmitButton();
     }
+    
+    // Navegação automática para step4 se a URL contém #step4
+    if (window.location.hash === '#step4') {
+        console.log('🎯 Detectada âncora #step4 - navegando para o passo 4');
+        
+        // Aguarda um pouco para o wizard carregar completamente
+        setTimeout(function() {
+            const wizard = KTWizard.getInstance(document.getElementById('kt_wizard_v3'));
+            if (wizard) {
+                // Navega para o step 4 (índice 3, pois começa em 0)
+                wizard.goTo(4);
+                console.log('✅ Navegado para o step 4');
+                
+                // Scroll suave para o elemento step4
+                const step4Element = document.getElementById('step4');
+                if (step4Element) {
+                    step4Element.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
+            }
+        }, 500); // Aguarda 500ms para garantir que o wizard carregou
+    }
 });
+
+// ========== SOLUÇÃO ADICIONAL PARA CARREGAR CIDADE ==========
+setTimeout(function() {
+    console.log('🚀 Executando solução adicional para cidade...');
+    
+    const estadoSelect = document.getElementById('estado');
+    const cidadeSelect = document.getElementById('cidade');
+    
+    if (estadoSelect && cidadeSelect && estadoSelect.value) {
+        console.log('📍 Estado detectado:', estadoSelect.value);
+        console.log('🏙️ Opções de cidade atuais:', cidadeSelect.options.length);
+        
+        // Se só tem uma opção (placeholder), força carregamento
+        if (cidadeSelect.options.length <= 1) {
+            console.log('⚡ Forçando carregamento de cidades...');
+            
+            if (typeof carregarCidades === 'function') {
+                carregarCidades(estadoSelect.value);
+            } else {
+                // Fallback: dispara evento change manualmente
+                console.log('🔧 Usando fallback - disparando evento change');
+                $(estadoSelect).trigger('change');
+            }
+        }
+    }
+}, 3000); // Aguarda 3 segundos para tentar novamente
 </script>
