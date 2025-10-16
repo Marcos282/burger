@@ -87,7 +87,7 @@ def loja(request):
            aberto = False
        # Pega o horário de fechamento para hoje
        hora_fechamento = config.get_hora_fechamento_hoje()
-       if hora_fechamento:
+       if hora_fechamento and hasattr(hora_fechamento, 'strftime'):
            hora_fechamento = hora_fechamento.strftime('%H:%M')
            hora_fechamento = f"Fecha hoje às {hora_fechamento}h"
        else:
@@ -115,6 +115,7 @@ def loja(request):
        'config': config,
        'aberto': aberto,
        'hora_fechamento': hora_fechamento,
+       'color_theme': config.color_theme if config else '#ff5900',  # Cor do tema ou padrão laranja
     }
    print(f"Total>>>>> {get_qdt_prod(request)}")
    print(f"Cliente>>>>> {telefone_cookie}")
