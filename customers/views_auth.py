@@ -10,7 +10,7 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user
+from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from django.contrib import messages
 from django.core.paginator import Paginator
 
@@ -135,7 +135,10 @@ def painel_view(request):
 
 def painel_home(request):
     if request.user.is_authenticated:
-       
+        
+        status_loja = verificar_loja_aberta(request)
+        print(f"Status da loja: {status_loja['status_texto']} - Aberta: {status_loja['aberta']}")
+
         user = request.user
 
         localizacao = [
@@ -149,6 +152,7 @@ def painel_home(request):
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': get_tenant_url(request, '/loja/'),
+            'status_loja': status_loja,
         }
         return render(request, 'painel/home.html', context)
     else:

@@ -106,3 +106,100 @@ def build_tenant_url_for_user(user, path='', protocol='http', domain='localhost:
         path = path[1:]
     
     return f"{protocol}://{host}/{path}"
+
+
+def verificar_loja_aberta(request, user=None):
+    """
+    Função utilitária para verificar se a loja está aberta.
+    
+    Args:
+        request: HttpRequest object
+        user: User object (opcional, se não fornecido usa request.user)
+    
+    Returns:
+        dict: {
+            'aberta': bool,
+            'status_texto': str,
+            'proximo_evento': dict ou None,
+            'horarios_hoje': QuerySet
+        }
+    """
+    from datetime import datetime, timedelta
+    
+    # Determina qual tenant usar - prioriza request.tenant (multi-tenant) sobre user.tenant
+    tenant = None
+    if hasattr(request, 'tenant') and request.tenant:
+        tenant = request.tenant
+    else:
+        target_user = user if user else getattr(request, 'user', None)
+        if target_user and hasattr(target_user, 'tenant') and target_user.tenant:
+            tenant = target_user.tenant
+    
+    if not tenant:
+        return {
+            'aberta': False,
+            'status_texto': 'Loja não configurada',
+            'proximo_evento': None,
+            'horarios_hoje': None
+        }
+    
+    agora = datetime.now()
+    
+    # DEBUG: Adicionar logs detalhados
+    print(f"=== DEBUG VERIFICAR_LOJA_ABERTA ===")
+    print(f"Tenant: {tenant.name}")
+    print(f"Data/Hora atual: {agora}")
+    print(f"Dia da semana: {agora.weekday()} (0=segunda, 6=domingo)")
+    print(f"Hora atual: {agora.time()}")
+    
+    # Verificar horários cadastrados
+    from tenants.models import HorarioFuncionamento
+    todos_horarios = HorarioFuncionamento.objects.filter(tenant=tenant)
+    print(f"Total de horários cadastrados: {todos_horarios.count()}")
+    
+    for h in todos_horarios:
+        print(f"  - Dia {h.dia_semana} ({h.get_dia_semana_display()}): {h.horario_abre}-{h.horario_fecha}, Ativo: {h.ativo}, Data específica: {h.data_especifica}")
+    
+    # Verificar horários para hoje
+    horarios_hoje = tenant.get_horarios_hoje(agora)
+    print(f"Horários para hoje: {horarios_hoje.count()}")
+    for h in horarios_hoje:
+        print(f"  - {h.horario_abre}-{h.horario_fecha}, Ativo: {h.ativo}")
+    
+    esta_aberta = tenant.esta_aberto_agora(agora)
+    print(f"Resultado esta_aberto_agora: {esta_aberta}")
+    
+    proximo_evento = tenant.get_proximo_horario(agora)
+    print(f"Próximo evento: {proximo_evento}")
+    
+    if esta_aberta:
+        is_open = True
+        status_texto = "🟢 ABERTA"
+        if proximo_evento and proximo_evento['acao'] == 'fecha':
+            horario_str = proximo_evento['horario'].strftime('%H:%M')
+            if proximo_evento['data'] == agora.date():
+                status_texto += f" - Fecha às {horario_str}"
+            else:
+                status_texto += f" - Fecha amanhã às {horario_str}"
+    else:
+        is_open = False
+        status_texto = "🔴 FECHADA"
+        if proximo_evento and proximo_evento['acao'] == 'abre':
+            horario_str = proximo_evento['horario'].strftime('%H:%M')
+            if proximo_evento['data'] == agora.date():
+                status_texto += f" - Abre às {horario_str}"
+            elif proximo_evento['data'] == agora.date() + timedelta(days=1):
+                status_texto += f" - Abre amanhã às {horario_str}"
+            else:
+                dia_nome = [
+                    'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'
+                ][proximo_evento['data'].weekday()]
+                status_texto += f" - Abre {dia_nome} às {horario_str}"
+    
+    return {
+        'aberta': esta_aberta,
+        'status_texto': status_texto,
+        'proximo_evento': proximo_evento,
+        'horarios_hoje': horarios_hoje,
+        'is_open': is_open,
+    }

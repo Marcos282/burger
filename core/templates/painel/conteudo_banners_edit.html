@@ -18,12 +18,15 @@
         <!-- Mensagens de feedback -->
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %} alert-dismissible fade show" role="alert">
-           {{ message }}
-           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-           </button>
-        </div>
+         {% if message.tags == 'error' %}
+         <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+            <!-- <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %} alert-dismissible fade show" role="alert"></div> -->
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         {% endif %}
         {% endfor %}
         {% endif %}
         

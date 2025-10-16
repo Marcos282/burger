@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from menu.models import Produto, Category
-from core.utils import formatar_brl, formatar_brl_noS
+from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from orders.models import Ordem, OrdemItem
@@ -96,6 +96,13 @@ def loja(request):
        config = None
        aberto = False
        hora_fechamento = 'Configuração pendende'
+
+   funcionamento = verificar_loja_aberta(request)
+   print(f"🟢 DEBUG LOJA VIEW: {funcionamento['status_texto']}")
+   print(f"🟢 DEBUG LOJA ABERTA ?: {funcionamento['is_open']}")
+
+   aberto = funcionamento['is_open']
+
 
    context = {
        'produtos': produtos,

@@ -43,9 +43,24 @@ class Tenant(models.Model):
         if dt is None:
             dt = datetime.now()
         
-        dia_semana = dt.weekday()  # 0=segunda, 6=domingo
+        # Converter dia da semana do Django para o sistema do HorarioFuncionamento
+        # Django: 0=segunda, 1=terça, 2=quarta, 3=quinta, 4=sexta, 5=sábado, 6=domingo
+        # HorarioFuncionamento: 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+        django_weekday = dt.weekday()  # 0=segunda, 6=domingo
+        if django_weekday == 6:  # Se é domingo no Django
+            dia_semana = 0  # Domingo no HorarioFuncionamento
+        else:
+            dia_semana = django_weekday + 1  # Converte: segunda(0)->1, terça(1)->2, etc.
+        
         hora_atual = dt.time()
         data_atual = dt.date()
+        
+        print(f"=== DEBUG ESTA_ABERTO_AGORA ===")
+        print(f"Data/Hora: {dt}")
+        print(f"Django weekday(): {django_weekday} (0=segunda, 6=domingo)")
+        print(f"Dia convertido para HorarioFuncionamento: {dia_semana} (0=domingo, 1=segunda, etc.)")
+        print(f"Hora atual: {hora_atual}")
+        print(f"Data atual: {data_atual}")
         
         # Primeiro verifica se há horário especial para hoje
         horarios_especiais = self.horarios.filter(
@@ -53,8 +68,14 @@ class Tenant(models.Model):
             ativo=True
         )
         
+        print(f"Horários especiais para hoje: {horarios_especiais.count()}")
+        for h in horarios_especiais:
+            print(f"  - Especial: {h.horario_abre}-{h.horario_fecha}, Ativo: {h.ativo}")
+        
         if horarios_especiais.exists():
-            return any(h.esta_no_horario(hora_atual) for h in horarios_especiais)
+            resultado = any(h.esta_no_horario(hora_atual) for h in horarios_especiais)
+            print(f"Resultado horários especiais: {resultado}")
+            return resultado
         
         # Se não há horário especial, verifica horário normal
         horarios_normais = self.horarios.filter(
@@ -63,7 +84,15 @@ class Tenant(models.Model):
             ativo=True
         )
         
-        return any(h.esta_no_horario(hora_atual) for h in horarios_normais)
+        print(f"Horários normais para dia {dia_semana}: {horarios_normais.count()}")
+        for h in horarios_normais:
+            dentro_horario = h.esta_no_horario(hora_atual)
+            print(f"  - Normal: {h.horario_abre}-{h.horario_fecha}, Ativo: {h.ativo}, Dentro do horário: {dentro_horario}")
+        
+        resultado = any(h.esta_no_horario(hora_atual) for h in horarios_normais)
+        print(f"Resultado horários normais: {resultado}")
+        
+        return resultado
     
     def get_horarios_hoje(self, dt=None):
         """Retorna os horários de funcionamento para hoje"""
@@ -71,7 +100,13 @@ class Tenant(models.Model):
         if dt is None:
             dt = datetime.now()
         
-        dia_semana = dt.weekday()
+        # Converter dia da semana do Django para o sistema do HorarioFuncionamento
+        django_weekday = dt.weekday()
+        if django_weekday == 6:  # Se é domingo no Django
+            dia_semana = 0  # Domingo no HorarioFuncionamento
+        else:
+            dia_semana = django_weekday + 1  # Converte: segunda(0)->1, terça(1)->2, etc.
+            
         data_atual = dt.date()
         
         # Primeiro verifica horários especiais
@@ -133,7 +168,13 @@ class Tenant(models.Model):
         # Se não abre mais hoje, procura nos próximos 7 dias
         for i in range(1, 8):
             data_futura = dt.date() + timedelta(days=i)
-            dia_semana_futuro = (dt.weekday() + i) % 7
+            django_weekday_futuro = (dt.weekday() + i) % 7
+            
+            # Converter dia da semana do Django para o sistema do HorarioFuncionamento
+            if django_weekday_futuro == 6:  # Se é domingo no Django
+                dia_semana_futuro = 0  # Domingo no HorarioFuncionamento
+            else:
+                dia_semana_futuro = django_weekday_futuro + 1  # Converte
             
             horarios_futuros = self.horarios.filter(
                 dia_semana=dia_semana_futuro,
@@ -153,16 +194,17 @@ class Tenant(models.Model):
 # Configurações específicas do Tenant, como tema, cores, etc. É um Singleton por Tenant.
 class TenantSettings(models.Model):
     
-    
-    # Horários de funcionamento (exemplo: 08:00 às 18:00)
-    horario_abre = models.TimeField(default="08:00")
-    horario_fecha = models.TimeField(default="18:00")
+    # OBSOLETO: Horários de funcionamento agora são gerenciados pela tabela HorarioFuncionamento
+    # TODO: Remover esses campos em uma migração futura
+    horario_abre = models.TimeField(default="08:00", help_text="OBSOLETO: Use HorarioFuncionamento")
+    horario_fecha = models.TimeField(default="18:00", help_text="OBSOLETO: Use HorarioFuncionamento")
 
-    # Dias da semana em que a loja está aberta (0=segunda, 6=domingo)
+    # OBSOLETO: Dias da semana agora são gerenciados pela tabela HorarioFuncionamento
+    # TODO: Remover esse campo em uma migração futura
     dias_funcionamento = models.CharField(
         max_length=20,
         default="0,1,2,3,4,5,6",  # todos os dias por padrão
-        help_text="Dias da semana abertos, separados por vírgula. 0=Segunda, 6=Domingo"
+        help_text="OBSOLETO: Use HorarioFuncionamento. Dias da semana abertos, separados por vírgula. 0=Segunda, 6=Domingo"
     )
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE, related_name='settings')
     theme_color = models.CharField(max_length=7, default='#FFFFFF')  # Hex color code
@@ -214,52 +256,57 @@ class TenantSettings(models.Model):
     email = models.EmailField(blank=True, null=True)
     password = models.CharField(max_length=128, blank=True, null=True)
     
-    # método para verificar se a loja está aberta em um dado momento
     def is_open_now(self, dt=None):
         """
         Retorna True se a loja está aberta no momento (ou no datetime dt).
+        Utiliza a tabela HorarioFuncionamento atualizada.
         """
-        from datetime import datetime, time
-        if dt is None:
-            dt = datetime.now()
-        dia_semana = dt.weekday()  # 0=segunda, 6=domingo
-        dias = [int(x) for x in self.dias_funcionamento.split(',') if x.strip().isdigit()]
-        
-        if dia_semana not in dias:
-            return False
-        hora_atual = dt.time()
-        # Considera funcionamento normal (abre < fecha)
-        if self.horario_abre < self.horario_fecha:
-            return self.horario_abre <= hora_atual < self.horario_fecha
-        # Considera funcionamento virando a meia-noite (ex: 22:00 às 06:00)
-        else:
-            return hora_atual >= self.horario_abre or hora_atual < self.horario_fecha
+        # Delega para o método atualizado do Tenant
+        return self.tenant.esta_aberto_agora(dt)
 
     def get_hora_fechamento_hoje(self, dt=None):
         """
-        Retorna um objeto datetime.datetime representando até que horas a loja estará aberta HOJE.
-        Se a loja fecha depois da meia-noite, retorna o horário de fechamento no dia seguinte.
-        Se hoje não é dia de funcionamento, retorna None.
+        Retorna informações sobre quando a loja fecha hoje.
+        Utiliza a tabela HorarioFuncionamento atualizada.
         """
-        from datetime import datetime, timedelta
+        from datetime import datetime
         if dt is None:
             dt = datetime.now()
-        dia_semana = dt.weekday()  # 0=segunda, 6=domingo
-        dias = [int(x) for x in self.dias_funcionamento.split(',') if x.strip().isdigit()]
-        if dia_semana not in dias:
+            
+        horarios_hoje = self.tenant.get_horarios_hoje(dt)
+        hora_atual = dt.time()
+        
+        if not horarios_hoje.exists():
             return 'Não abre hoje'
-        data_base = dt.date()
-        # funcionamento normal (abre < fecha)
-        if self.horario_abre < self.horario_fecha:
-            return datetime.combine(data_base, self.horario_fecha)
-        # funcionamento atravessa a meia-noite (ex: 22:00 às 06:00)
-        else:
-            # Se já passou da meia-noite, o fechamento é amanhã
-            if dt.time() < self.horario_fecha:
-                data_base = data_base
-            else:
-                data_base = data_base + timedelta(days=1)
-            return datetime.combine(data_base, self.horario_fecha)
+            
+        # Procura o horário atual em que a loja está funcionando
+        for horario in horarios_hoje:
+            if horario.esta_no_horario(hora_atual):
+                if horario.is_overnight():
+                    # Se é overnight, fecha no dia seguinte
+                    from datetime import timedelta
+                    return datetime.combine(dt.date() + timedelta(days=1), horario.horario_fecha)
+                else:
+                    return datetime.combine(dt.date(), horario.horario_fecha)
+        
+        # Se não está em horário de funcionamento, retorna o próximo horário de fechamento
+        proximo = self.tenant.get_proximo_horario(dt)
+        if proximo and proximo['acao'] == 'abre':
+            # Se vai abrir, simula quando fechará
+            horario_abertura = None
+            for h in horarios_hoje:
+                if h.horario_abre == proximo['horario']:
+                    horario_abertura = h
+                    break
+            
+            if horario_abertura:
+                if horario_abertura.is_overnight():
+                    from datetime import timedelta
+                    return datetime.combine(proximo['data'] + timedelta(days=1), horario_abertura.horario_fecha)
+                else:
+                    return datetime.combine(proximo['data'], horario_abertura.horario_fecha)
+        
+        return 'Não abre hoje'
 
     @classmethod
     def load(cls, tenant):
