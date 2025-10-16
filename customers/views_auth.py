@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from itertools import count
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
@@ -41,14 +41,20 @@ def login_view(request):
     form = UserLoginForm(request.POST or None)
     error = None
     if request.method == 'POST' and form.is_valid():
-        username = form.cleaned_data['username']
+        email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user = authenticate(request, username=username, password=password)
+        
+        print(f"🔐 Tentativa de login: {email}")
+        
+        # Autenticar usando email (que agora é o USERNAME_FIELD)
+        user = authenticate(request, username=email, password=password)
         if user is not None:
+            print(f"✅ Login bem-sucedido para: {user.email}")
             login(request, user)
             return redirect('painel_home')  
         else:
-            error = 'Desculpe, parece que há alguns erros detectados, por favor tente novamente.'
+            print(f"❌ Falha no login para: {email}")
+            error = 'Email ou senha incorretos. Tente novamente.'
     #return render(request, 'login/login.html', {'form': form, 'error': error})
     return render(request, 'login/demo1/dist/custom/pages/login/login-2.html', {'form': form, 'error': error})
     #return HttpResponse('Login page is under maintenance.')
@@ -682,19 +688,60 @@ def painel_configuracao(request):
                     settings.cpf_ou_cnpj = request.POST['cpf_ou_cnpj']
                 if 'documento' in request.POST:
                     settings.documento = request.POST['documento']
-                if 'email' in request.POST:
-                    settings.email = request.POST['email']
+                
+                # ATUALIZAR EMAIL DO USUÁRIO (não do tenant settings)
+                if 'email' in request.POST and request.POST['email']:
+                    user.email = request.POST['email']
+                    user.save()
+                    print(f"🔄 Email do usuário atualizado para: {user.email}")
+                
+                # ATUALIZAR SENHA DO USUÁRIO (CRIPTOGRAFADA)
                 if 'password' in request.POST and request.POST['password']:
-                    # Só atualiza senha se foi fornecida
+                    password = request.POST['password']
                     confirm_password = request.POST.get('confirm_password', '')
-                    if request.POST['password'] == confirm_password:
-                        settings.password = request.POST['password']
-                    else:
+                    
+                    print(f"🔐 Processando atualização de senha...")
+                    print(f"    Senha fornecida: {'*' * len(password)} (tamanho: {len(password)})")
+                    print(f"    Confirmação: {'*' * len(confirm_password)} (tamanho: {len(confirm_password)})")
+                    
+                    # Validação das senhas (redundante com frontend, mas importante para segurança)
+                    if password != confirm_password:
+                        print(f"❌ Erro: Senhas não coincidem")
                         return JsonResponse({
                             'success': False,
                             'message': 'As senhas não coincidem!'
                         })
+                    
+                    # Validação de força mínima da senha
+                    if len(password) < 6:
+                        print(f"⚠️ Aviso: Senha muito fraca (menos de 6 caracteres)")
+                        # Permitir, mas avisar (pode ser mudado para bloquear se necessário)
+                    
+                    # Obter hash da senha antes da atualização (para comparação)
+                    old_password_hash = user.password
+                    print(f"    Hash anterior: {old_password_hash[:50]}...")
+                    
+                    # SALVAR SENHA CRIPTOGRAFADA NO MODELO USER
+                    user.set_password(password)  # Este método já criptografa a senha
+                    user.save()
+                    
+                    # 🔄 MANTER USUÁRIO LOGADO APÓS MUDANÇA DE SENHA
+                    # Atualiza o hash de autenticação da sessão para evitar logout automático
+                    update_session_auth_hash(request, user)
+                    
+                    # Verificar se o hash mudou
+                    new_password_hash = user.password
+                    print(f"    Hash novo: {new_password_hash[:50]}...")
+                    print(f"🔒 Senha do usuário atualizada e criptografada com sucesso")
+                    print(f"    Hash alterado: {old_password_hash != new_password_hash}")
+                    print(f"🔐 Sessão mantida ativa após mudança de senha")
+                    
+                    # Verificar se a senha funciona
+                    senha_verifica = user.check_password(password)
+                    print(f"    Verificação da senha: {senha_verifica}")
                 
+                # Não salvar senha no TenantSettings (remover do modelo se existir)
+                # A senha deve estar apenas no modelo User
                 print(f"Attempting to save settings...")  # Debug
                 settings.save()
                 print(f"Settings saved successfully!")  # Debug

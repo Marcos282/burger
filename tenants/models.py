@@ -253,8 +253,9 @@ class TenantSettings(models.Model):
     dt_nascimento = models.DateField(blank=True, null=True)
     cpf_ou_cnpj = models.CharField(max_length=10, default="CPF", choices=[("CPF", "CPF"), ("CNPJ", "CNPJ")])
     documento = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    password = models.CharField(max_length=128, blank=True, null=True)
+    # NOTA: email e password foram movidos para o modelo User (customers_user)
+    # email = models.EmailField(blank=True, null=True)  # REMOVIDO - usar User.email
+    # password = models.CharField(max_length=128, blank=True, null=True)  # REMOVIDO - usar User.password (criptografado)
     
     def is_open_now(self, dt=None):
         """

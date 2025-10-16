@@ -370,6 +370,43 @@
                                  opacity: 0;
                               }
                            }
+                           
+                           /* Estilos para validação de senhas */
+                           .form-control.is-valid {
+                              border-color: #28a745;
+                              background-image: none;
+                           }
+                           
+                           .form-control.is-invalid {
+                              border-color: #dc3545;
+                              background-image: none;
+                           }
+                           
+                           .form-control.is-valid:focus {
+                              border-color: #28a745;
+                              box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+                           }
+                           
+                           .form-control.is-invalid:focus {
+                              border-color: #dc3545;
+                              box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+                           }
+                           
+                           /* Animação para ícones de validação */
+                           .senha-icon {
+                              animation: fadeInIcon 0.3s ease-in-out;
+                           }
+                           
+                           @keyframes fadeInIcon {
+                              from {
+                                 opacity: 0;
+                                 transform: translateY(-50%) scale(0.5);
+                              }
+                              to {
+                                 opacity: 1;
+                                 transform: translateY(-50%) scale(1);
+                              }
+                           }
                         </style>
 
                         <div id="imagemPerfilErro" style="display:none; color:#856404; background:#fff3cd; border:1px solid #ffeeba; border-radius:6px; padding:8px 12px; margin-top:8px; font-size:0.95em;"></div>
@@ -904,10 +941,10 @@
                      </h6>
                      <!-- SEPARADOR -->
                      <div class="separator separator-dashed my-5"></div>
-                    <div class="form-group fv-plugins-icon-container">
+                     <div class="form-group fv-plugins-icon-container">
                         <label>E-mail</label>
-                        <input type="email" class="form-control" name="email"  value="{{ settings.email|default:'' }}">
-                        <!-- <span class="form-text text-muted">E-mail do responsável pela loja</span> -->
+                        <input type="email" class="form-control" name="email"  value="{{ user.email|default:'' }}">
+                        <span class="form-text text-muted">Este será o email usado para login no sistema</span>
                      </div>
                      <div class="form-group fv-plugins-icon-container">
                         <label>Senha</label>
@@ -935,9 +972,9 @@
                         Salvar
                         </button>
                         <!-- Botão de teste alternativo -->
-                        <button type="submit" class="btn btn-warning font-weight-bold text-uppercase px-9 py-4" id="btn-test-submit" onclick="alert('Testando submit direto!'); this.form.submit();" style="display: inline-block !important; margin-left: 10px;">
+                        <!-- <button type="submit" class="btn btn-warning font-weight-bold text-uppercase px-9 py-4" id="btn-test-submit" onclick="alert('Testando submit direto!'); this.form.submit();" style="display: inline-block !important; margin-left: 10px;">
                         TESTE SUBMIT
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
                         Próximo
                         </button>
@@ -1408,8 +1445,119 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('loading');
             
             setTimeout(() => {
-                // FASE 2: VALIDANDO
-                this.innerHTML = '<i class="fa fa-check-circle mr-2"></i> Validando...';
+                // FASE 2: VALIDANDO SENHAS
+                this.innerHTML = '<i class="fa fa-shield-alt mr-2"></i> Validando senhas...';
+                
+                // VALIDAÇÃO DE SEGURANÇA: COMPARAR SENHAS
+                const senhaInput = document.querySelector('input[name="password"]');
+                const confirmSenhaInput = document.querySelector('input[name="confirm_password"]');
+                
+                if (senhaInput && confirmSenhaInput) {
+                    const senha = senhaInput.value;
+                    const confirmSenha = confirmSenhaInput.value;
+                    
+                    console.log('🔐 Validando senhas...');
+                    
+                    // Verificar se as senhas foram preenchidas
+                    if (senha || confirmSenha) {
+                        // Se uma foi preenchida, ambas devem ser preenchidas
+                        if (!senha || !confirmSenha) {
+                            // ERRO - Campo vazio
+                            this.classList.remove('loading');
+                            this.classList.add('error');
+                            this.innerHTML = '<i class="fa fa-exclamation-triangle mr-2"></i> Erro de Validação!';
+                            
+                            if (typeof toastr !== 'undefined') {
+                                toastr.error('⚠️ Preencha tanto a senha quanto a confirmação da senha.', 'Validação', {
+                                    timeOut: 5000,
+                                    progressBar: true,
+                                    positionClass: 'toast-top-right'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Validação!',
+                                    text: '⚠️ Preencha tanto a senha quanto a confirmação da senha.',
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                            
+                            // Destacar campos com erro
+                            senhaInput.classList.add('is-invalid');
+                            confirmSenhaInput.classList.add('is-invalid');
+                            
+                            // Restaurar botão após delay
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.className = originalClass;
+                                this.disabled = false;
+                                this.classList.remove('error');
+                            }, 3000);
+                            
+                            return; // Parar execução
+                        }
+                        
+                        // Verificar se as senhas são iguais
+                        if (senha !== confirmSenha) {
+                            // ERRO - Senhas diferentes
+                            this.classList.remove('loading');
+                            this.classList.add('error');
+                            this.innerHTML = '<i class="fa fa-times mr-2"></i> Senhas Não Conferem!';
+                            
+                            if (typeof toastr !== 'undefined') {
+                                toastr.error('🔒 As senhas não conferem. Digite senhas idênticas.', 'Erro de Validação', {
+                                    timeOut: 5000,
+                                    progressBar: true,
+                                    positionClass: 'toast-top-right'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Senhas Não Conferem!',
+                                    text: '🔒 As senhas digitadas são diferentes. Digite senhas idênticas.',
+                                    confirmButtonText: 'Corrigir',
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                            
+                            // Destacar campos com erro
+                            senhaInput.classList.add('is-invalid');
+                            confirmSenhaInput.classList.add('is-invalid');
+                            
+                            // Focar no campo de senha
+                            senhaInput.focus();
+                            
+                            // Restaurar botão após delay
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.className = originalClass;
+                                this.disabled = false;
+                                this.classList.remove('error');
+                            }, 4000);
+                            
+                            return; // Parar execução
+                        }
+                        
+                        // Verificar força da senha (opcional)
+                        if (senha.length < 6) {
+                            // ALERTA - Senha fraca (mas permite continuar)
+                            if (typeof toastr !== 'undefined') {
+                                toastr.warning('⚠️ Recomendamos usar senhas com pelo menos 6 caracteres.', 'Dica de Segurança', {
+                                    timeOut: 4000,
+                                    progressBar: true,
+                                    positionClass: 'toast-top-right'
+                                });
+                            }
+                        }
+                        
+                        // Remover destaque de erro se tudo ok
+                        senhaInput.classList.remove('is-invalid');
+                        confirmSenhaInput.classList.remove('is-invalid');
+                        
+                        console.log('✅ Senhas validadas com sucesso!');
+                    }
+                }
                 
                 setTimeout(() => {
                     // FASE 3: ENVIANDO
@@ -1524,6 +1672,110 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Executar uma vez no carregamento
         toggleSubmitButton();
+    }
+    
+    // ========== VALIDAÇÃO EM TEMPO REAL DAS SENHAS ==========
+    const senhaInput = document.querySelector('input[name="password"]');
+    const confirmSenhaInput = document.querySelector('input[name="confirm_password"]');
+    
+    if (senhaInput && confirmSenhaInput) {
+        console.log('🔐 Configurando validação de senhas em tempo real');
+        
+        // Função para validar senhas
+        function validarSenhas() {
+            const senha = senhaInput.value;
+            const confirmSenha = confirmSenhaInput.value;
+            
+            // Remover classes de erro primeiro
+            senhaInput.classList.remove('is-invalid', 'is-valid');
+            confirmSenhaInput.classList.remove('is-invalid', 'is-valid');
+            
+            // Remover mensagens de erro antigas
+            const errorMsgs = document.querySelectorAll('.senha-error-msg');
+            errorMsgs.forEach(msg => msg.remove());
+            
+            if (senha || confirmSenha) {
+                // Se uma foi preenchida, validar ambas
+                if (senha && confirmSenha) {
+                    if (senha === confirmSenha) {
+                        // Senhas iguais - OK
+                        senhaInput.classList.add('is-valid');
+                        confirmSenhaInput.classList.add('is-valid');
+                        
+                        // Adicionar ícone de sucesso
+                        adicionarIconeSenha(confirmSenhaInput, 'success', '✅ Senhas conferem');
+                        
+                        if (senha.length < 6) {
+                            adicionarIconeSenha(senhaInput, 'warning', '⚠️ Recomendamos pelo menos 6 caracteres');
+                        } else {
+                            adicionarIconeSenha(senhaInput, 'success', '✅ Senha válida');
+                        }
+                    } else {
+                        // Senhas diferentes - ERRO
+                        senhaInput.classList.add('is-invalid');
+                        confirmSenhaInput.classList.add('is-invalid');
+                        
+                        adicionarIconeSenha(confirmSenhaInput, 'error', '❌ Senhas não conferem');
+                    }
+                } else {
+                    // Apenas uma preenchida - ALERTA
+                    if (senha && !confirmSenha) {
+                        adicionarIconeSenha(confirmSenhaInput, 'warning', '⚠️ Confirme a senha');
+                    } else if (!senha && confirmSenha) {
+                        adicionarIconeSenha(senhaInput, 'warning', '⚠️ Digite a senha');
+                    }
+                }
+            }
+        }
+        
+        // Função para adicionar ícones de feedback
+        function adicionarIconeSenha(input, tipo, mensagem) {
+            // Remover ícone antigo
+            const iconesAntigos = input.parentNode.querySelectorAll('.senha-icon');
+            iconesAntigos.forEach(icone => icone.remove());
+            
+            // Criar novo ícone
+            const icon = document.createElement('div');
+            icon.className = `senha-icon senha-error-msg`;
+            icon.style.cssText = `
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 12px;
+                z-index: 10;
+                pointer-events: none;
+            `;
+            
+            if (tipo === 'success') {
+                icon.style.color = '#28a745';
+                icon.innerHTML = '✅';
+                icon.title = mensagem;
+            } else if (tipo === 'error') {
+                icon.style.color = '#dc3545';
+                icon.innerHTML = '❌';
+                icon.title = mensagem;
+            } else if (tipo === 'warning') {
+                icon.style.color = '#ffc107';
+                icon.innerHTML = '⚠️';
+                icon.title = mensagem;
+            }
+            
+            // Posicionar relativamente o container
+            if (input.parentNode.style.position !== 'relative') {
+                input.parentNode.style.position = 'relative';
+            }
+            
+            input.parentNode.appendChild(icon);
+        }
+        
+        // Adicionar event listeners
+        senhaInput.addEventListener('input', validarSenhas);
+        senhaInput.addEventListener('blur', validarSenhas);
+        confirmSenhaInput.addEventListener('input', validarSenhas);
+        confirmSenhaInput.addEventListener('blur', validarSenhas);
+        
+        console.log('✅ Validação de senhas configurada!');
     }
     
     // Navegação automática para step4 se a URL contém #step4

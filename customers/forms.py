@@ -26,8 +26,12 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu email'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite sua senha'})
+    )
 
 
 class CategoryModelForm(forms.ModelForm):

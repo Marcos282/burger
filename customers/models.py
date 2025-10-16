@@ -4,35 +4,42 @@ from tenants.models import Tenant
 
 # --- User customizado para multi-tenant ---
 class UserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
+    def create_user(self, email, password=None, username=None, **extra_fields):
+        if not email:
+            raise ValueError('O campo email é obrigatório')
+        
+        email = self.normalize_email(email)
+        
+        # Se não foi fornecido username, usar a parte antes do @ do email
         if not username:
-            raise ValueError('O campo username é obrigatório')
+            username = email.split('@')[0]
+        
         # Cria ou recupera o Tenant com subdomain igual ao username
         tenant, _ = Tenant.objects.get_or_create(subdomain=username, defaults={'name': username})
-        user = self.model(username=username, tenant=tenant, **extra_fields)
+        user = self.model(email=email, username=username, tenant=tenant, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password=None, **extra_fields):
+    def create_superuser(self, email, password=None, username=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, password, **extra_fields)
+        return self.create_user(email, password, username, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         db_table = 'customers_user'
-    username = models.CharField(max_length=150, unique=True)
+    username = models.CharField(max_length=150, unique=True)  # Mantido para subdomain do tenant
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(unique=True)  # Agora obrigatório e único para login
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'email'  # Login será feito por email
+    REQUIRED_FIELDS = ['username']  # Username será solicitado na criação do superuser
 
     objects = UserManager()
 
