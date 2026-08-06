@@ -140,7 +140,8 @@ def verificar_loja_aberta(request, user=None):
             'aberta': False,
             'status_texto': 'Loja não configurada',
             'proximo_evento': None,
-            'horarios_hoje': None
+            'horarios_hoje': None,
+            'is_open': False,
         }
     
     agora = datetime.now()

@@ -34,6 +34,135 @@
 <!--begin::Card_pedidos-->
     {% include 'painel/card_pedidos.html' %}
 <!--end::Card_pedidos-->
+
+<div id="pending-audio-widget" style="position: fixed; right: 16px; bottom: 16px; z-index: 1050; display: none;">
+    <button id="enable-pending-audio" type="button" class="btn btn-warning font-weight-bold">
+        Ativar som de pedidos
+    </button>
+</div>
+
+<script>
+    (function () {
+        var pendingCount = Number("{{ ordens_pendentes_count|default:0 }}") || 0;
+        var audioContext = null;
+        var beepTimer = null;
+        var audioEnabled = false;
+        var widget = document.getElementById('pending-audio-widget');
+        var enableBtn = document.getElementById('enable-pending-audio');
+
+        function updateWidgetVisibility() {
+            if (!widget) return;
+            widget.style.display = pendingCount > 0 && !audioEnabled ? 'block' : 'none';
+        }
+
+        function ensureAudioContext() {
+            if (!audioContext) {
+                var AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) {
+                    return null;
+                }
+                audioContext = new AudioCtx();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            return audioContext;
+        }
+
+        function beepOnce() {
+            var ctx = ensureAudioContext();
+            if (!ctx) return;
+
+            function playBellTone(startAt, freq, duration, peakGain) {
+                var oscillator = ctx.createOscillator();
+                var gain = ctx.createGain();
+
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(freq, startAt);
+
+                gain.gain.setValueAtTime(0.0001, startAt);
+                gain.gain.exponentialRampToValueAtTime(peakGain, startAt + 0.015);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+
+                oscillator.connect(gain);
+                gain.connect(ctx.destination);
+                oscillator.start(startAt);
+                oscillator.stop(startAt + duration + 0.02);
+            }
+
+            var now = ctx.currentTime;
+
+            // Padrão "campainha de balcão": dois toques rápidos e fortes.
+            playBellTone(now, 900, 0.16, 0.45);
+            playBellTone(now, 1200, 0.16, 0.30);
+
+            playBellTone(now + 0.24, 900, 0.16, 0.45);
+            playBellTone(now + 0.24, 1200, 0.16, 0.30);
+        }
+
+        function startBeepLoop() {
+            if (!audioEnabled || pendingCount <= 0 || beepTimer) return;
+            beepOnce();
+            beepTimer = setInterval(function () {
+                if (pendingCount > 0) {
+                    beepOnce();
+                }
+            }, 2200);
+        }
+
+        function stopBeepLoop() {
+            if (!beepTimer) return;
+            clearInterval(beepTimer);
+            beepTimer = null;
+        }
+
+        function syncSoundState() {
+            if (pendingCount > 0 && audioEnabled) {
+                startBeepLoop();
+            } else {
+                stopBeepLoop();
+            }
+            updateWidgetVisibility();
+        }
+
+        function activateAudio() {
+            var ctx = ensureAudioContext();
+            if (!ctx) return;
+            audioEnabled = true;
+            syncSoundState();
+        }
+
+        if (enableBtn) {
+            enableBtn.addEventListener('click', activateAudio);
+        }
+
+        function fetchPendingCount() {
+            fetch("{% url 'painel_pedidos_pendentes_count' %}", {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('Falha ao buscar pedidos pendentes');
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                pendingCount = Number(data.pendentes || 0);
+                syncSoundState();
+            })
+            .catch(function () {
+                // Silencia erros de polling para não impactar a tela.
+            });
+        }
+
+        syncSoundState();
+        setInterval(fetchPendingCount, 7000);
+    })();
+</script>
 {% endblock %}
 
 

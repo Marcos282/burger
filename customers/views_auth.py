@@ -78,6 +78,7 @@ def painel_view(request):
 
         # Buscar todas as ordens do tenant atual
         ordens = Ordem.objects.filter(tenant=user.tenant).select_related('cliente')
+        ordens_pendentes_count = ordens.filter(completo=False).count()
 
         
 
@@ -131,12 +132,22 @@ def painel_view(request):
         context = {
             'localizacao': localizacao,
             'ordens_info': ordens_info,
+            'ordens_pendentes_count': ordens_pendentes_count,
             'url_marketplace': get_tenant_url(request, '/loja/'),
             
         }
         return render(request, 'painel/index.html', context)
     else:
         return redirect('login')
+
+
+def painel_pedidos_pendentes_count(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'detail': 'unauthorized'}, status=401)
+
+    user = request.user
+    pendentes = Ordem.objects.filter(tenant=user.tenant, completo=False).count()
+    return JsonResponse({'pendentes': pendentes})
 
 
 def painel_home(request):
@@ -211,8 +222,13 @@ def painel_categorias_add(request):
         if str(request.method) == 'POST':
             form = CategoryModelForm(request.POST)
             if form.is_valid():
+                tenant = getattr(request, 'tenant', None) or getattr(user, 'tenant', None)
+                if tenant is None:
+                    messages.error(request, 'Tenant não identificado para criar categoria.')
+                    return redirect('painel_categorias')
+
                 nova_categoria = form.save(commit=False)
-                nova_categoria.tenant = user.tenant
+                nova_categoria.tenant = tenant
                 nova_categoria.save()
                 print(f"Teste do POST>>>> {nova_categoria.ordem}")
                 show_success_modal = True

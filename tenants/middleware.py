@@ -1,133 +1,149 @@
-# tenants/middleware.py
+# Biblioteca padrão para validação de IP (usada para diferenciar host/IP de subdomínio).
+import ipaddress
+# Biblioteca padrão de logging para observabilidade do fluxo de tenant.
+import logging
+# Armazenamento local por thread para expor contexto do tenant globalmente na requisição.
+from threading import local
 
-from django.http import Http404, HttpResponseForbidden
-from django.urls import resolve
+# Exceção HTTP usada quando tenant é obrigatório e não foi encontrado.
+from django.http import Http404
+
+# Model principal de tenant do sistema.
 from tenants.models import Tenant
-from datetime import datetime
 
-class TenantMiddleware:
+# Logger deste módulo.
+logger = logging.getLogger(__name__)
+
+# Contexto local da requisição atual (thread local).
+_tenant_context = local()
+
+
+def get_current_tenant_id():
+    """Retorna o tenant_id da requisição atual (ou None)."""
+    return getattr(_tenant_context, 'tenant_id', None)
+
+
+def _get_configuracao_site_model():
+    # Import opcional para evitar quebra caso o model não exista em algum ambiente.
+    """Importa ConfiguracaoSite de forma opcional para evitar quebra se o model não existir."""
+    try:
+        # Import tardio para reduzir acoplamento e evitar erro em startup.
+        from core.models import ConfiguracaoSite  # type: ignore
+    except Exception:
+        # Se não conseguir importar, segue sem configuração global.
+        return None
+    # Retorna a classe quando disponível.
+    return ConfiguracaoSite
+
+
+def _extract_subdomain(host):
+    # Extrai subdomínio real do host removendo porta e ignorando casos sem domínio válido.
+    """Retorna o subdomínio quando existir, ignorando IP e domínio raiz."""
+    # Remove porta do host, ex.: loja.localhost:8000 -> loja.localhost.
+    host_without_port = host.split(':')[0]
+
+    try:
+        # Se for IP (127.0.0.1, ::1 etc.), não deve ser tratado como subdomínio.
+        ipaddress.ip_address(host_without_port)
+        return None
+    except ValueError:
+        # Não é IP, então segue o fluxo normal de parsing de domínio.
+        pass
+
+    # localhost puro não possui subdomínio.
+    if host_without_port == 'localhost':
+        return None
+
+    # Separa o host em partes para identificar subdomínio.
+    parts = host_without_port.split('.')
+    # Sem ponto suficiente, não há subdomínio.
+    if len(parts) <= 1:
+        return None
+
+    # Ex.: loja.localhost -> loja
+    if parts[-1] == 'localhost':
+        return parts[0] if len(parts) >= 2 else None
+
+    # Ex.: loja.exemplo.com -> loja
+    return parts[0]
+
+
+def _is_loja_path(path):
+    # Define quais rotas precisam de tenant obrigatório.
+    """Define quais rotas exigem tenant resolvido."""
+    return path.startswith('/loja')
+
+
+def _get_tenant_from_authenticated_user(request):
+    # Fallback para recuperar tenant a partir do usuário autenticado.
+    """Recupera tenant do usuário logado quando não há subdomínio na URL."""
+    # Usa getattr para evitar erro caso request.user não exista no contexto.
+    user = getattr(request, 'user', None)
+    # Só retorna tenant quando usuário está autenticado e com vínculo válido.
+    if user and user.is_authenticated and getattr(user, 'tenant_id', None):
+        return user.tenant
+    # Sem tenant autenticado, retorna None.
+    return None
+
+
+class SubdomainMiddleware:
+    # Middleware padrão: recebe próximo handler no pipeline do Django.
     def __init__(self, get_response):
+        # Função que continua o processamento da requisição.
         self.get_response = get_response
 
     def __call__(self, request):
-        # Pega o host e remove a porta, se presente
-        host = request.get_host().split(':')[0]  # Ex: 'andre.localhost:8000' -> 'andre.localhost'
-        parts = host.split('.')
+        # Lê host atual da requisição.
+        host = request.get_host()
+        # Tenta extrair subdomínio válido.
+        subdomain = _extract_subdomain(host)
 
-        # Para localhost, aceita subdomínio com len(parts) >= 2
-        subdomain = parts[0] if len(parts) >= 2 and parts[-1] == 'localhost' else None
+        # Inicializa tenant no request para sempre existir esse atributo.
+        request.tenant = None
 
-        # Proteção: bloquear acesso ao painel com subdomínio
-        if subdomain and request.path.startswith('/painel/'):
-            # Constrói URL sem subdomínio para redirecionamento
-            protocol = 'https' if request.is_secure() else 'http'
-            base_domain = '.'.join(parts[1:])  # Remove o subdomínio
-            port = f":{request.get_port()}" if request.get_port() not in ['80', '443'] else ''
-            painel_url = f"{protocol}://{base_domain}{port}/painel/home/"
-            
-            return HttpResponseForbidden(
-                f"Acesso negado: URLs do painel não podem ser acessadas via subdomínio. "
-                f"Acesse diretamente pelo domínio principal.<br> "
-                f"<a href='{painel_url}'>Ir para o painel</a>"
-            )
-        
-        # Busca tenant no banco
-        tenant = Tenant.objects.filter(subdomain=subdomain).first()
-        
-        # Lista de paths que não precisam de tenant (incluindo media e static)
-        no_tenant_required = [
-            '/admin/',
-            '/painel/',
-            '/media/',
-            '/static/',
-            '/logout/',
-            '/login/',
-            '/cdn-cgi/',
-            '/favicon.ico',
-            '/robots.txt',
-            '/manifest.json',
-            '/placeholder.png',
-        ]
-        
-        # Verifica se a rota não precisa de tenant
-        skip_tenant_check = any(request.path.startswith(path) for path in no_tenant_required)
-        
-        # Se não encontrar tenant e não for uma rota que dispensa tenant, lança 404
-        if not tenant and not skip_tenant_check:
-            raise Http404("Tenant não encontrado :: Administrador:  Verificar middleware TenantMiddleware")
-        elif tenant:
-            request.tenant = tenant  # Adiciona tenant ao request
+        # Se há subdomínio, tenta resolver tenant no banco.
+        if subdomain:
+            # Busca case-insensitive por segurança com variações de caixa.
+            request.tenant = Tenant.objects.filter(subdomain__iexact=subdomain).first()
+            if request.tenant:
+                # Log de sucesso na resolução do tenant.
+                logger.info("[TENANT] Tenant encontrado: '%s'", subdomain)
+            else:
+                # Log de falha na resolução do tenant pelo subdomínio.
+                logger.warning("[TENANT] Tenant nao encontrado: '%s'", subdomain)
+                # Bloco opcional para enriquecer log com nome do site.
+                configuracao_site_model = _get_configuracao_site_model()
+                if configuracao_site_model is not None:
+                    configuracao_site = configuracao_site_model.objects.first()
+                    if configuracao_site:
+                        logger.info("[CONFIG] Nome do site: %s", getattr(configuracao_site, 'nome_site', 'N/A'))
+        else:
+            # Acesso sem subdomínio (domínio raiz/localhost).
+            logger.debug("[TENANT] Sem subdominio - acesso direto")
 
-        # Processa a requisição primeiro
-        response = self.get_response(request)
-        
-        # Define quais rotas devem ser logadas
-        should_log = False
-        log_type = ""
-        
-        # Lista de paths que devem ser ignorados
-        ignored_paths = [
-            '/cdn-cgi/',
-            '/favicon.ico',
-            '/robots.txt',
-            '/logout/',
-            'rum?',  # Cloudflare RUM requests
-            '.css',
-            '.js',
-            '.png',
-            '.jpg',
-            '.jpeg',
-            '.gif',
-            '.ico',
-            '.woff',
-            '.woff2',
-            '.svg'
-        ]
-        
-        # Verifica se a rota deve ser ignorada
-        path_ignored = any(ignore in request.path for ignore in ignored_paths)
-        
-        if not path_ignored:
-            if request.path.startswith('/painel/'):
-                should_log = True
-                log_type = "PAINEL ADMINISTRATIVO"
-            elif request.path.startswith('/loja/'):
-                should_log = True
-                log_type = "MARKETPLACE"
-            elif request.path in ['/', '/manifest.json']:
-                should_log = True
-                log_type = "SISTEMA"
-        
-        # Faz log apenas para rotas importantes
-        if should_log:
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            ip_address = request.META.get('REMOTE_ADDR', 'N/A')
-            
-            # Verifica se o user está disponível
-            user_info = "Anônimo"
-            if hasattr(request, 'user'):
-                if request.user.is_authenticated:
-                    user_info = f"{request.user.username} ({request.user.email})"
-                else:
-                    user_info = "Não autenticado"
-            
-            # Adiciona informações do tenant quando aplicável
-            tenant_info = ""
-            if hasattr(request, 'tenant') and request.tenant:
-                tenant_info = f" | 🏪 {request.tenant.name}"
-            
-            # Log formatado e elegante
-            print("\n" + "🟦" * 50)
-            print(f"🏢 {log_type} | {timestamp}")
-            print("🟦" * 50)
-            print(f"📍 IP: {ip_address} | 👤 Usuário: {user_info}{tenant_info}")
-            print(f"🔗 Rota: {request.method} {request.path}")
-            
-            # Pega apenas o telefone do cliente do cookie
-            telefone_cliente = request.COOKIES.get('telefone_cliente', 'Não informado')
-            print(f"📞 Telefone Cliente (cookie): {telefone_cliente}")
-            
-            print(f"📊 Status: {response.status_code}")            
-            print("🟦" * 50 + "\n")
-            
-        return response
+        # Fallback para manter tenant na sessão em rotas sem subdomínio
+        # (ex.: login/painel no domínio raiz).
+        if request.tenant is None:
+            request.tenant = _get_tenant_from_authenticated_user(request)
+
+        # Em rotas de loja, tenant é obrigatório.
+        if _is_loja_path(request.path) and request.tenant is None:
+            raise Http404("Tenant nao encontrado.")
+
+        # Expõe subdomínio resolvido para uso em views/templates.
+        request.subdomain = subdomain
+        # Expõe tenant_id direto no request para acesso rápido no código.
+        request.tenant_id = request.tenant.id if request.tenant else None
+        # Persiste subdomínio na sessão para reaproveitamento entre requests.
+        request.session['subdomain'] = subdomain
+        # Persiste ID do tenant para uso global no sistema.
+        request.session['tenant_id'] = request.tenant_id
+        # Persiste tenant_id no contexto local para uso fora do request (na mesma thread).
+        _tenant_context.tenant_id = request.tenant_id
+        # Log técnico da rota processada e contexto de subdomínio.
+        logger.debug("[TENANT] %s %s - subdominio: %s", request.method, request.path, subdomain)
+        logger.debug("[TENANT] Tenant ID atual: %s", request.tenant_id)
+        # Continua pipeline normal do Django.
+        return self.get_response(request)
+# Mantém compatibilidade com settings atuais: tenants.middleware.TenantMiddleware
+TenantMiddleware = SubdomainMiddleware
