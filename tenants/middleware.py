@@ -1,12 +1,11 @@
 # Biblioteca padrão para validação de IP (usada para diferenciar host/IP de subdomínio).
 import ipaddress
+from django.shortcuts import redirect
+
 # Biblioteca padrão de logging para observabilidade do fluxo de tenant.
 import logging
 # Armazenamento local por thread para expor contexto do tenant globalmente na requisição.
 from threading import local
-
-# Exceção HTTP usada quando tenant é obrigatório e não foi encontrado.
-from django.http import Http404
 
 # Model principal de tenant do sistema.
 from tenants.models import Tenant
@@ -82,7 +81,11 @@ def _get_tenant_from_authenticated_user(request):
     # Só retorna tenant quando usuário está autenticado e com vínculo válido.
     if user and user.is_authenticated and getattr(user, 'tenant_id', None):
         return user.tenant
+      
+    # Sem tenant válido, retorna None.
     # Sem tenant autenticado, retorna None.
+    
+    
     return None
 
 
@@ -117,6 +120,7 @@ class SubdomainMiddleware:
                     configuracao_site = configuracao_site_model.objects.first()
                     if configuracao_site:
                         logger.info("[CONFIG] Nome do site: %s", getattr(configuracao_site, 'nome_site', 'N/A'))
+                return redirect("home_view")
         else:
             # Acesso sem subdomínio (domínio raiz/localhost).
             logger.debug("[TENANT] Sem subdominio - acesso direto")
@@ -128,7 +132,7 @@ class SubdomainMiddleware:
 
         # Em rotas de loja, tenant é obrigatório.
         if _is_loja_path(request.path) and request.tenant is None:
-            raise Http404("Tenant nao encontrado.")
+            return redirect("home_view")
 
         # Expõe subdomínio resolvido para uso em views/templates.
         request.subdomain = subdomain

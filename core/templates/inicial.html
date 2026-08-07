@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Online — Venda pelo WhatsApp</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        :root { --primario: #25D366; --escuro: #1f2937; --claro: #f9fafb; --destaque: #128C7E; }
+        body { line-height: 1.6; color: var(--escuro); }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        header { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--destaque); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--escuro); font-weight: 500; }
+        .btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: .3s; border: none; cursor: pointer; }
+        .btn-principal { background: var(--primario); color: #fff; }
+        .btn-principal:hover { background: #20bd5a; transform: translateY(-2px); }
+        .btn-secundario { background: transparent; color: var(--escuro); border: 2px solid #e5e7eb; }
+        .btn-secundario:hover { border-color: #d1d5db; background: #f9fafb; }
+        .hero { padding: 4rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .hero h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 1.5rem; color: var(--escuro); }
+        .hero p { font-size: 1.15rem; margin-bottom: 2rem; color: #4b5563; }
+        .destaque { color: var(--destaque); }
+        .passos, .recursos { padding: 4rem 0; }
+        .secao-titulo { text-align: center; font-size: 2rem; margin-bottom: 3rem; }
+        .grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .card { background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); text-align: center; }
+        .card h3 { margin: 1rem 0; color: var(--destaque); }
+        .pergunta { max-width: 800px; margin: 1rem auto; border-bottom: 1px solid #eee; padding: 1rem; }
+        footer { background: var(--escuro); color: #fff; padding: 3rem 0; text-align: center; margin-top: 4rem; }
+
+        /* Ajustes responsivos dos botões */
+        .botoes-cabecalho { display: flex; gap: 0.75rem; align-items: center; }
+
+        @media(max-width:768px){
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .nav-links li:not(.botoes-cabecalho) { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .btn { padding: 0.6rem 1rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">Catálogo Zap</div>
+            <ul class="nav-links">
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+                <li><a href="#planos">Planos</a></li>
+                <li><a href="#duvidas">Dúvidas</a></li>
+                <li class="botoes-cabecalho">
+                    <a href="#" class="btn btn-secundario">Entrar</a>
+                    <a href="{% url 'login' %}" class="btn btn-principal">Criar minha loja</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <div>
+            <h1>Monte seu Catálogo Online e <span class="destaque">Venda pelo WhatsApp</span></h1>
+            <p>Seus clientes acessam, escolhem e fazem pedidos — e tudo chega organizado no seu WhatsApp. Sem confusão, sem taxas extras, pronto em minutos.</p>
+            <a href="#" class="btn btn-principal">Começar Gratuitamente →</a>
+            <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • 7 dias grátis • Cancelamento fácil</p>
+        </div>
+        <div>
+            <img src="https://via.placeholder.com/500x400?text=Imagem+do+Catálogo" alt="Exemplo do catálogo" style="width:100%; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1);">
+        </div>
+    </div>
+</section>
+
+<section class="passos" id="como-funciona">
+    <div class="container">
+        <h2 class="secao-titulo">Como funciona em 4 passos</h2>
+        <div class="grade">
+            <div class="card">
+                <h3>📸 1. Cadastre</h3>
+                <p>Insira seus produtos com fotos, descrições e preços. Rápido e simples.</p>
+            </div>
+            <div class="card">
+                <h3>🎨 2. Personalize</h3>
+                <p>Coloque sua logo, cores da marca e informações de contato.</p>
+            </div>
+            <div class="card">
+                <h3>🔗 3. Compartilhe</h3>
+                <p>Envie o link para seus clientes ou coloque nas redes sociais.</p>
+            </div>
+            <div class="card">
+                <h3>💬 4. Receba</h3>
+                <p>Os pedidos chegam organizados diretamente no seu WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="recursos" id="recursos" style="background:#f0fdf4;">
+    <div class="container">
+        <h2 class="secao-titulo">Tudo que você precisa</h2>
+        <div class="grade">
+            <div class="card"><h3>📦 Produtos Ilimitados</h3><p>Cadastre quanto precisar, com fotos, vídeos e variações.</p></div>
+            <div class="card"><h3>💰 Sem Comissão</h3><p>Você fica com 100% do valor das vendas. Sem taxas por pedido.</p></div>
+            <div class="card"><h3>🏷️ Cupons</h3><p>Crie descontos e promoções em poucos cliques.</p></div>
+            <div class="card"><h3>📊 Relatórios</h3><p>Acompanhe acessos, pedidos e desempenho em tempo real.</p></div>
+            <div class="card"><h3>📱 100% Celular</h3><p>Seus clientes compram de qualquer tela, com facilidade.</p></div>
+            <div class="card"><h3>🔗 QR Code</h3><p>Gere um código para os clientes acessarem direto.</p></div>
+        </div>
+    </div>
+</section>
+
+<section id="duvidas" style="padding:4rem 0;">
+    <div class="container">
+        <h2 class="secao-titulo">Dúvidas Frequentes</h2>
+        <div class="pergunta">
+            <h4>✅ Preciso ter CNPJ?</h4>
+            <p>Pode começar com seu CPF e migrar quando quiser.</p>
+        </div>
+        <div class="pergunta">
+            <h4>💵 Pago por cada venda?</h4>
+            <p>Não! Você paga apenas o plano escolhido. Nenhuma comissão descontada.</p>
+        </div>
+        <div class="pergunta">
+            <h4>⏱️ Quanto tempo para montar?</h4>
+            <p>Em menos de 10 minutos você já tem seu catálogo no ar.</p>
+        </div>
+        <div class="pergunta">
+            <h4>🔒 Seus dados estão seguros?</h4>
+            <p>Sim, tudo protegido e sem compartilhamento de informações.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p><strong>Catálogo Zap</strong> — Venda de forma simples e organizada pelo WhatsApp.</p>
+        <p style="margin-top:1rem; font-size:0.9rem;">contato@catalogozap.com.br | (00) 00000-0000</p>
+    </div>
+</footer>
+
+</body>
+</html>

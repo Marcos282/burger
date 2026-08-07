@@ -13,6 +13,16 @@ import uuid
 import os
 
 
+def inicial(request):
+    """
+    Renderiza a página inicial do site.
+    """
+    return render(request, 'inicial.html')
+
+def home_view(request):
+
+    return render(request, 'inicial.html')
+
 # Funções utilitárias de sessão
 def get_cart(request):
     return request.session.get('cart', {})

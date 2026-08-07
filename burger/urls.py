@@ -41,6 +41,8 @@ from core.views import (
     cloudflare_dummy,
     image_placeholder,
     checkout_sucesso,
+    home_view,
+    inicial,
 )
 
 from orders.views import pedido_delivery, cadastro_form
@@ -86,6 +88,7 @@ urlpatterns = [
     path('cdn-cgi/<path:path>', cloudflare_dummy, name='cloudflare_dummy'),
     path('loja/cdn-cgi/<path:path>', cloudflare_dummy, name='loja_cloudflare_dummy'),
     path('placeholder.png', image_placeholder, name='image_placeholder'),
+    path('home_view/', home_view, name='home_view'),
     path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
