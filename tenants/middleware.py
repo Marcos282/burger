@@ -1,6 +1,7 @@
 # Biblioteca padrão para validação de IP (usada para diferenciar host/IP de subdomínio).
 import ipaddress
 from django.shortcuts import redirect
+from django.urls import NoReverseMatch, reverse
 
 # Biblioteca padrão de logging para observabilidade do fluxo de tenant.
 import logging
@@ -89,6 +90,24 @@ def _get_tenant_from_authenticated_user(request):
     return None
 
 
+def _redirect_home_if_needed(request):
+    # Evita loop quando a requisição já está na própria home.
+    try:
+        home_path = reverse('home_view')
+    except NoReverseMatch:
+        # Fallback seguro caso a URL nomeada não exista neste ambiente.
+        home_path = '/home_view/'
+
+    current_path = request.path.rstrip('/')
+    normalized_home_path = home_path.rstrip('/')
+
+    if current_path == normalized_home_path:
+        logger.warning("[TENANT] Redirect para home evitado para prevenir loop: %s", request.path)
+        return None
+
+    return redirect('home_view')
+
+
 class SubdomainMiddleware:
     # Middleware padrão: recebe próximo handler no pipeline do Django.
     def __init__(self, get_response):
@@ -120,7 +139,9 @@ class SubdomainMiddleware:
                     configuracao_site = configuracao_site_model.objects.first()
                     if configuracao_site:
                         logger.info("[CONFIG] Nome do site: %s", getattr(configuracao_site, 'nome_site', 'N/A'))
-                return redirect("home_view")
+                safe_redirect = _redirect_home_if_needed(request)
+                if safe_redirect:
+                    return safe_redirect
         else:
             # Acesso sem subdomínio (domínio raiz/localhost).
             logger.debug("[TENANT] Sem subdominio - acesso direto")
@@ -132,7 +153,9 @@ class SubdomainMiddleware:
 
         # Em rotas de loja, tenant é obrigatório.
         if _is_loja_path(request.path) and request.tenant is None:
-            return redirect("home_view")
+            safe_redirect = _redirect_home_if_needed(request)
+            if safe_redirect:
+                return safe_redirect
 
         # Expõe subdomínio resolvido para uso em views/templates.
         request.subdomain = subdomain

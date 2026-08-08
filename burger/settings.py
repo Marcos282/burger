@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-o8gaf2h7g*z2wnnc$m=cc6vdiz#6#t(j%@1p@t16_a6!t(8w*#
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
+ALLOWED_HOSTS = ['lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
 
 
 # Application definition
@@ -105,14 +105,21 @@ WSGI_APPLICATION = 'burger.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'master_db',
-        'USER': 'marcos',
-        'PASSWORD': 'mariola123',
-        'HOST': '/var/run/postgresql',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Use PostgreSQL only when explicitly enabled in the environment.
+if os.getenv('USE_POSTGRES', '0') == '1':
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'master_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'mariola123'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': int(os.getenv('DB_PORT', '5432')),
+    }
 
 
 
