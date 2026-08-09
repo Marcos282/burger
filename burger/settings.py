@@ -104,25 +104,15 @@ WSGI_APPLICATION = 'burger.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "master_db",
+        "USER": "postgres",
+        "PASSWORD": "mariola123",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
-}
-
-# Use PostgreSQL only when explicitly enabled in the environment.
-if os.getenv('USE_POSTGRES', '0') == '1':
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'master_db'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'mariola123'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': int(os.getenv('DB_PORT', '5432')),
-    }
-
-
-
+}   
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
