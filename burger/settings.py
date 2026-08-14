@@ -30,7 +30,37 @@ SECRET_KEY = 'django-insecure-o8gaf2h7g*z2wnnc$m=cc6vdiz#6#t(j%@1p@t16_a6!t(8w*#
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
+ALLOWED_HOSTS = ['*','marcos.dominio.com.br','lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
+
+
+# Configuração de Logs para aparecer no terminal
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simples': {
+            'format': '%(levelname)s | %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',  # ← Mostra no terminal
+            'formatter': 'simples',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',  # Nível: DEBUG, INFO, WARNING, ERROR, CRITICAL
+    },
+    'loggers': {
+        'tenants': {  # ← Nome do seu app/módulo (ex: tenants, core)
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
 
 
 # Application definition

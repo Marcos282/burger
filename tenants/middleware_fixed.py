@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponseForbidden
 from django.urls import resolve
 from tenants.models import Tenant
 
-class TenantMiddleware:
+class SubdomainMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 

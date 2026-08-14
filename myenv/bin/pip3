@@ -1,4 +1,4 @@
-#!/home/marcos/Documentos/burger/myenv/bin/python3.12
+#!/home/marcos/Documentos/BURGUER4/burger/myenv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
