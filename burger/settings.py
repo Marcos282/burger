@@ -33,34 +33,47 @@ DEBUG = True
 ALLOWED_HOSTS = ['*','marcos.dominio.com.br','lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
 
 
-# Configuração de Logs para aparecer no terminal
+# Configuração de Logs para aparecer no terminal e gravar em arquivo físico
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'simples': {
-            'format': '%(levelname)s | %(message)s'
+            'format': '%(asctime)s | %(levelname)s | %(name)s | %(message)s'
         },
     },
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',  # ← Mostra no terminal
+            'class': 'logging.StreamHandler',
             'formatter': 'simples',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': str(LOG_DIR / 'log.txt'),
+            'formatter': 'simples',
+            'encoding': 'utf-8',
         },
     },
     'root': {
-        'handlers': ['console'],
-        'level': 'INFO',  # Nível: DEBUG, INFO, WARNING, ERROR, CRITICAL
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
     },
     'loggers': {
-        'tenants': {  # ← Nome do seu app/módulo (ex: tenants, core)
-            'handlers': ['console'],
+        'tenants': {
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
         },
+        'tenants.middleware': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
-
 
 
 # Application definition
@@ -107,23 +120,6 @@ TEMPLATES = [
         },
     },
 ]
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'tenants.middleware': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
 
 WSGI_APPLICATION = 'burger.wsgi.application'
 

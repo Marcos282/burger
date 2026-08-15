@@ -11,6 +11,8 @@ class TenantMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        logger.info("EXEMPLO_LOG_MIDDLEWARE: request recebida para %s", request.path)
+
         # 1. Extrai o subdomínio
         host = request.get_host().split(':')[0]
         dados = tldextract.extract(host)

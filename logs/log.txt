@@ -1,0 +1,66 @@
+2026-08-14 21:21:57,425 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-14 21:22:05,092 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:22:05,092 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:22:05,094 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:22:05,094 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:22:05,098 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:22:05,098 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:22:05,100 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:22:05,100 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:22:05,102 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:22:05,102 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:39:48,693 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-14 21:40:10,171 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:10,171 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:10,173 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:10,173 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:10,176 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:40:10,176 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:40:10,179 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:10,179 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:10,181 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:10,181 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:40:59,210 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 21:40:59,213 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:59,213 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:40:59,213 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:40:59,213 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:42:55,357 | INFO | tenants.middleware | TESTE_FINAL_AQUI
+2026-08-14 21:42:55,357 | INFO | tenants.middleware | TESTE_FINAL_AQUI
+2026-08-14 21:43:46,627 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:43:46,627 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:43:46,628 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:43:46,628 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:45:34,359 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:45:34,359 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:45:34,360 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:45:34,360 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:49:45,474 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:49:45,474 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 21:49:45,475 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:49:45,475 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 21:51:00,853 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER7/burger/tenants/middleware.py changed, reloading.
+2026-08-14 21:51:01,135 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-14 21:51:04,816 | INFO | tenants.middleware | TESTE_EXEMPLO_MIDDLEWARE
+2026-08-14 21:51:04,816 | INFO | tenants.middleware | TESTE_EXEMPLO_MIDDLEWARE
+2026-08-14 21:51:19,041 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER7/burger/tenants/middleware.py changed, reloading.
+2026-08-14 21:51:19,266 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-14 22:21:51,720 | INFO | tenants.middleware | EXEMPLO_LOG_MIDDLEWARE: request recebida para /
+2026-08-14 22:21:51,720 | INFO | tenants.middleware | EXEMPLO_LOG_MIDDLEWARE: request recebida para /
+2026-08-14 22:21:51,756 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 22:21:51,756 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 22:21:51,758 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 22:21:51,758 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 22:21:51,762 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 22:21:51,762 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/
+2026-08-14 22:21:51,764 | INFO | tenants.middleware | EXEMPLO_LOG_MIDDLEWARE: request recebida para /home_view/
+2026-08-14 22:21:51,764 | INFO | tenants.middleware | EXEMPLO_LOG_MIDDLEWARE: request recebida para /home_view/
+2026-08-14 22:21:51,764 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 22:21:51,764 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-14 22:21:51,766 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0
+2026-08-14 22:21:51,766 | INFO | tenants.middleware | ✅ Resposta gerada — Tenant ID: 0

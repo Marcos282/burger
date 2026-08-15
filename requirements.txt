@@ -1,6 +1,14 @@
 asgiref==3.10.0
+certifi==2026.7.22
+charset-normalizer==3.5.0
 Django==5.2.7
+filelock==3.32.3
+idna==3.18
 pillow==11.3.0
 psycopg2-binary==2.9.11
 qrcode==8.2
+requests==2.34.2
+requests-file==3.0.1
 sqlparse==0.5.3
+tldextract==5.3.2
+urllib3==2.7.0
