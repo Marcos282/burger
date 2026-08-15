@@ -1,60 +1,105 @@
 import logging
+from typing import Iterable
+
 import tldextract
-from .models import Tenant
+from django.conf import settings
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 
+from .models import Tenant
+
 logger = logging.getLogger(__name__)
 
+
+def _default_allowed_subdomains() -> Iterable[str]:
+    return (
+        "www",
+        "admin",
+        "api",
+        "static",
+        "media",
+        "localhost",
+        "lignetbrasil",
+        "lignetbrasil.com.br",
+        "lignetbrasil.com",
+        "burger",
+        "burger.com.br",
+        "burger.com",
+    )
+
+
 class TenantMiddleware:
+    """
+    Resolve a Tenant from the request host subdomain.
+
+    Behavior:
+    - Normalizes host (removes port, trailing dots, lowercases).
+    - Uses settings.TENANT_ALLOWED_SUBDOMAINS when present, otherwise a sensible default.
+    - Sets `request.tenant` to a Tenant instance or None.
+    - Raises Http404 when a non-allowed subdomain has no Tenant.
+    - If downstream returns None (incorrectly), redirects to `home_view` to avoid middleware errors.
+    """
+
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.info("EXEMPLO_LOG_MIDDLEWARE: request recebida para %s", request.path)
+        # Normalize host and extract subdomain
+        host = (request.get_host() or "").split(":")[0].strip().lower().strip(".")
+        try:
+            extracted = tldextract.extract(host)
+            subdomain = (extracted.subdomain or "").lower()
+        except Exception:
+            logger.exception("Erro ao extrair subdomínio do host: %s", host)
+            subdomain = ""
 
-        # 1. Extrai o subdomínio
-        host = request.get_host().split(':')[0]
-        dados = tldextract.extract(host)
-        subdominio = dados.subdomain
-
-        if subdominio:
-            logger.info(f"Subdomínio nao detectado:")
-
-        nr = 0  # ✅ Definida AQUI (fora do if/else) → existe em todo lugar
-        #subdominio = "www.marcos.dominio.com.br"
-        # 2. Busca o Tenant no banco
-        if subdominio:
-            try:
-                request.tenant = Tenant.objects.get(subdomain=subdominio)
-                nr = request.tenant.id  # ✅ Agora nr recebe o ID do tenant
-                logger.info(f"✅ Tenant encontrado: {request.tenant} | ID: {nr}")
-            except Tenant.DoesNotExist:
-                logger.warning(f"⚠️ Tenant '{subdominio}' NÃO encontrado")
-                request.tenant = None
-                nr = 0
+        # Prepare allowed subdomains (configurable)
+        allowed = getattr(settings, "TENANT_ALLOWED_SUBDOMAINS", None)
+        if allowed is None:
+            allowed = set(_default_allowed_subdomains())
         else:
-            # Sem subdomínio = site principal
-            request.tenant = None
-            nr = 0
+            allowed = set(str(x).lower() for x in allowed)
+
+        # Default values
+        request.tenant = None
+        tenant_id = 0
+
+        # Resolve tenant when appropriate
+        if subdomain:
+            logger.debug("Subdomínio detectado: %s", subdomain)
+            if subdomain in allowed:
+                logger.debug("Subdomínio '%s' está na lista de liberados", subdomain)
+                request.tenant = None
+            else:
+                try:
+                    tenant = Tenant.objects.get(subdomain=subdomain)
+                    request.tenant = tenant
+                    tenant_id = tenant.id
+                    logger.info("✅ Tenant encontrado: %s | ID: %s", tenant, tenant_id)
+                except Tenant.DoesNotExist:
+                    logger.warning(
+                        "⚠️ Tenant '%s' NÃO encontrado para path %s", subdomain, request.path
+                    )
+                    request.tenant = None
+                    # If subdomain is not allowed, block access
+                    if subdomain not in allowed:
+                        raise Http404("Tenant não encontrado")
+        else:
             logger.info("ℹ️ Sem subdomínio (site principal)")
 
+        # Continue processing
+        response = self.get_response(request)
 
-            
-
-        # 3. Continua o fluxo
-        resposta = self.get_response(request)
-        logger.info(f"✅ Resposta gerada — Tenant ID: {nr}")
-
-        if not subdominio:
-            # Evita loop: se a requisição já for para a rota `home_view`, não redirecionar
+        # Guard: if downstream mistakenly returned None, redirect to home_view
+        if response is None:
+            logger.warning("⚠️ get_response retornou None; redirecionando para home_view")
             try:
-                home_path = reverse('home_view')
+                home_path = reverse("home_view")
             except Exception:
-                home_path = '/home_view/'
+                home_path = "/home_view/"
 
             if request.path != home_path:
-                logger.info("ℹ️ Sem subdomínio (site principal) — redirecionando para /home_view/")
-                return redirect('home_view')
+                return redirect("home_view")
 
-        return resposta
+        return response
