@@ -323,8 +323,8 @@ def painel_categorias_edit(request, categoria_id):
 def painel_produtos(request):
     if request.user.is_authenticated:
         from django.core.paginator import Paginator
-        user = request.user
-        produtos_list = Produto.objects.filter(tenant=user.tenant).order_by('-id')
+        tenant_obj = Tenant.objects.get(id=request.session.get('tenant_id'))
+        produtos_list = Produto.objects.filter(tenant_id=tenant_obj.id)
         paginator = Paginator(produtos_list, 10)  # 10 produtos por página
         page_number = request.GET.get('page')
         produtos = paginator.get_page(page_number)
@@ -360,7 +360,7 @@ def painel_produtos_add(request):
         status = request.POST.get('status') == 'True'
         descricao = request.POST.get('description', '')
         integrado = request.POST.get('integrado') == 'True'        
-        tenant = getattr(request, 'tenant', None) or getattr(user, 'tenant', None)
+        tenant = Tenant.objects.get(id=request.session['tenant_id'])
 
         categoria = Category.objects.get(id=categoria_id)
 
@@ -377,7 +377,7 @@ def painel_produtos_add(request):
                 description=descricao
             )
         else:
-            produto = Produto.objects.filter(nome=nome, tenant=tenant, category=categoria, price=preco).latest('id')
+            produto = Produto.objects.filter(nome=nome, tenant=tenant.id, category=categoria, price=preco).latest('id')
 
         # Imagem extra :: Imagem Principal
         imagem_extra = request.FILES.get('imagem_extra')

@@ -13977,3 +13977,174 @@ ValueError: Cannot assign "3": "Category.tenant" must be a "Tenant" instance.
 2026-08-16 15:37:23,795 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
 2026-08-16 15:37:23,805 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
 2026-08-16 15:37:23,805 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:04,930 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:38:17,417 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,417 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,426 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,426 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,516 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,516 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,525 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,525 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,526 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,526 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,533 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:38:17,536 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,536 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,541 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:38:17,546 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,546 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:17,556 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:17,556 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:22,653 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:22,653 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:22,662 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:22,662 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:40,825 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:40,825 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:40,835 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:40,835 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:40,986 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:40,986 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:40,995 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:40,995 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,272 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,272 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,281 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,281 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,317 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,318 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,317 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,318 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,327 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,327 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,331 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,331 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,337 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:38:43,338 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:38:43,468 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,468 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:38:43,478 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:38:43,478 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:46:11,230 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:46:11,477 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:46:21,496 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:46:21,496 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:46:21,505 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:46:21,505 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:46:21,522 | ERROR | django.request | Internal Server Error: /painel/produtos/
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/customers/views_auth.py", line 326, in painel_produtos
+    tenant_obj = Tenant.objects.get(id=id_tenant)
+                                       ^^^^^^^^^
+NameError: name 'id_tenant' is not defined
+2026-08-16 15:47:06,879 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:47:07,147 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:47:08,401 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,401 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,410 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,410 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,541 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,541 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,551 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,551 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,557 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:47:08,584 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,584 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,593 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,593 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,599 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:47:08,670 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,670 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:08,679 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:08,679 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,585 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,585 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,594 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,594 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,651 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,652 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,651 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,652 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,662 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,663 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,662 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,663 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,672 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:47:10,673 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:47:10,777 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,777 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:10,786 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:10,786 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:43,087 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:43,087 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:47:43,096 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:47:43,096 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:02,413 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:02,413 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:02,422 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:02,422 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:02,586 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:02,586 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:02,594 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:02,594 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,724 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,724 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,734 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,734 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,765 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,766 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,765 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,766 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,776 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,776 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,777 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,777 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,786 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:48:06,787 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:48:06,897 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,897 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:48:06,908 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:48:06,908 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:32,813 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:51:33,080 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:51:37,323 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:37,323 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:37,333 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:37,333 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:55,866 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:55,866 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:55,876 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:55,876 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:56,035 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:56,035 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:56,044 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:56,044 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,930 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,930 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,939 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,939 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,967 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,967 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,968 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,968 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,973 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,973 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:57,978 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,978 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,983 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,983 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,989 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,989 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:57,995 | WARNING | django.request | Not Found: /media/15168750256_paoqueijo_tradicional.jpg
+2026-08-16 15:51:57,995 | WARNING | django.request | Not Found: /media/images.jpeg
+2026-08-16 15:51:58,109 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:58,109 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:51:58,119 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:51:58,119 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
