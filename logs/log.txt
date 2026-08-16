@@ -13678,3 +13678,16 @@ AttributeError: 'NoneType' object has no attribute 'status_code'
 2026-08-15 16:46:00,147 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-15 16:46:12,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-15 16:46:12,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:25,307 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:19:51,522 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:51,522 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:51,576 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:51,576 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:53,655 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:19:53,655 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:20:43,712 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/burger/urls.py changed, reloading.
+2026-08-16 14:20:43,972 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:20:59,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:20:59,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:20:59,523 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:20:59,523 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
