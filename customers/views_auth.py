@@ -1,5 +1,5 @@
 from menu.models import Produto, ProdutoImagem, Category, Banners
-from tenants.models import Tenant
+from tenants.models import Tenant, TenantSettings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -14,6 +14,7 @@ from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .contexto import salvar_tenant_em_sessao
+from tenants.models import Tenant, TenantSettings
 
 # Função para contar itens do cliente
 def qt_items_cliente(request):
@@ -913,7 +914,7 @@ def painel_qrcode(request):
 
         user = request.user
         tenant = user.tenant
-        settings = tenant.settings
+        settings = TenantSettings.load(tenant)
 
         loja_url = get_tenant_url(request, '/loja/')
 
