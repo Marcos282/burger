@@ -6,8 +6,9 @@ from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-
+from customers.contexto import salvar_tenant_em_sessao
 from .models import Tenant
+
 
 logger = logging.getLogger(__name__)
 
@@ -91,6 +92,20 @@ class TenantMiddleware:
         # Continue processing
         response = self.get_response(request)
 
+        if request.user.is_authenticated:
+            tenant_do_login = getattr(request.user, 'tenant', None)
+            if tenant_do_login is not None:
+                print("=== TENANT NO FINAL DO MIDDLEWARE ===")
+                print({
+                    'request_user': getattr(request.user, 'email', None),
+                    'tenant_id': tenant_do_login.id,
+                    'tenant_name': tenant_do_login.name,
+                    'tenant_subdomain': tenant_do_login.subdomain,
+                    'session_tenant_id': request.session.get('tenant_id'),
+                    'session_id_tenant': request.session.get('id_tenant'),
+                })
+                print("====================================")
+
         # Guard: if downstream mistakenly returned None, redirect to home_view
         if response is None:
             logger.warning("⚠️ get_response retornou None; redirecionando para home_view")
@@ -103,3 +118,4 @@ class TenantMiddleware:
                 return redirect("home_view")
 
         return response
+

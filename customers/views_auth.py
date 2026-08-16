@@ -13,6 +13,7 @@ from menu.models import Category, Produto, ProdutoImagem
 from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from django.contrib import messages
 from django.core.paginator import Paginator
+from .contexto import salvar_tenant_em_sessao
 
 # Função para contar itens do cliente
 def qt_items_cliente(request):
@@ -50,8 +51,10 @@ def login_view(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             print(f"✅ Login bem-sucedido para: {user.email}")
+            email = user.email
             login(request, user)
-            return redirect('painel_home')  
+            salvar_tenant_em_sessao(request, email=email)
+            return redirect('painel_home')
         else:
             print(f"❌ Falha no login para: {email}")
             error = 'Email ou senha incorretos. Tente novamente.'
@@ -186,8 +189,8 @@ def painel_categorias(request):
            
         ]
         
-        categoria = Category.objects.select_related('tenant').filter(tenant=user.tenant).order_by('ordem')
-        qt_categoria = Category.objects.filter(tenant=user.tenant).count()
+        categoria = Category.objects.filter(tenant_id=request.session['tenant_id']).order_by('ordem')
+        qt_categoria = Category.objects.filter(tenant_id=request.session['tenant_id']).count()
 
         
         url = get_tenant_url(request, '/loja/')
@@ -222,13 +225,20 @@ def painel_categorias_add(request):
         if str(request.method) == 'POST':
             form = CategoryModelForm(request.POST)
             if form.is_valid():
-                tenant = getattr(request, 'tenant', None) or getattr(user, 'tenant', None)
-                if tenant is None:
+                id_tenant = request.session.get('tenant_id') or request.session.get('id_tenant')
+
+                if not id_tenant:
                     messages.error(request, 'Tenant não identificado para criar categoria.')
                     return redirect('painel_categorias')
 
+                try:
+                    tenant_obj = Tenant.objects.get(id=id_tenant)
+                except Tenant.DoesNotExist:
+                    messages.error(request, 'Tenant não encontrado para criar categoria.')
+                    return redirect('painel_categorias')
+
                 nova_categoria = form.save(commit=False)
-                nova_categoria.tenant = tenant
+                nova_categoria.tenant = tenant_obj
                 nova_categoria.save()
                 print(f"Teste do POST>>>> {nova_categoria.ordem}")
                 show_success_modal = True

@@ -13691,3 +13691,289 @@ AttributeError: 'NoneType' object has no attribute 'status_code'
 2026-08-16 14:20:59,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-16 14:20:59,523 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-16 14:20:59,523 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-16 14:33:41,716 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:33:45,148 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:45,148 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:45,158 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:33:45,158 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:33:53,026 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:53,026 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:53,036 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:33:53,036 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:33:53,051 | WARNING | django.request | Not Found: /painel/
+2026-08-16 14:33:59,320 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:59,320 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:33:59,329 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:33:59,329 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:34:09,416 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:34:09,416 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:34:09,426 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:34:09,426 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:34:09,754 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:34:09,754 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:34:09,763 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:34:09,763 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:44:06,254 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 14:44:06,544 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:44:21,339 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 14:44:21,602 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:48:40,479 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/contexto.py changed, reloading.
+2026-08-16 14:48:40,739 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:48:57,603 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/contexto.py changed, reloading.
+2026-08-16 14:48:57,852 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:49:11,535 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:11,535 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:11,544 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:11,544 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:13,994 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:13,994 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:14,004 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:14,004 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:14,035 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:14,035 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:14,045 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:14,045 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:19,133 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:19,133 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:19,142 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:19,142 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:19,456 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:19,456 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:19,465 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:19,465 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:25,139 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:25,139 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:49:25,148 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:49:25,148 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:07,210 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 14:54:07,466 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:54:16,418 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:16,418 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:16,427 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:16,427 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:17,946 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:17,946 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:17,956 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:17,956 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:38,105 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:38,105 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:38,113 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:38,113 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:45,323 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:45,323 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:45,332 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:45,332 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:47,577 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:47,577 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:47,586 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:47,586 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:53,440 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:53,440 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:54:53,449 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:54:53,449 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:07,144 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:07,144 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:07,154 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:07,154 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:09,280 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:09,280 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:09,290 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:09,290 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:22,311 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:22,311 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:55:22,319 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:55:22,319 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:06,647 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 14:57:06,917 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 14:57:09,470 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:09,470 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:09,480 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:09,480 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:13,622 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:13,622 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:13,631 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:13,631 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:15,087 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:15,087 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:15,096 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:15,096 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:17,968 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:17,968 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 14:57:17,977 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 14:57:17,977 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:10,295 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:00:10,544 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:00:19,342 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:19,342 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:19,351 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:19,351 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:23,040 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:23,040 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:23,049 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:23,049 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:24,369 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:24,369 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:24,378 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:24,378 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:29,223 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:29,223 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:29,233 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:29,233 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:44,432 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:44,432 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:00:44,441 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:44,441 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:00:44,462 | ERROR | django.request | Internal Server Error: /painel/categorias/adicionar/
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/customers/views_auth.py", line 229, in painel_categorias_add
+    tenant = Tenant.objects.filter(id_tenant=id_tenant).first()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1493, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1511, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1518, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1526, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1333, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1806, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'id_tenant' into field. Choices are: banners, category, cliente, cpf_ou_cnpj, created_at, documento, dt_nascimento, enderecoentrega, horarios, id, name, nome_responsavel, ordem, ordemitem, produto, settings, subdomain, user
+2026-08-16 15:04:38,201 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:04:38,463 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:04:40,360 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:40,360 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:40,369 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:40,369 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:44,603 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:44,603 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:44,611 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:44,611 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:46,113 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:46,113 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:46,122 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:46,122 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:50,504 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:50,504 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:50,514 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:50,514 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:54,889 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:54,889 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:54,899 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:54,899 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:56,225 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:56,225 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:04:56,234 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:04:56,234 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:01,711 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:01,711 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:01,721 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:01,721 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:08,480 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:08,480 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:08,489 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:08,489 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:13,588 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:13,588 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:13,597 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:13,597 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:24,837 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:24,837 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:24:24,846 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:24,846 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:24:24,865 | ERROR | django.request | Internal Server Error: /painel/categorias/adicionar/
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/customers/views_auth.py", line 235, in painel_categorias_add
+    nova_categoria.tenant = request.session.get('tenant_id')
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER9/burger/myenv/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 291, in __set__
+    raise ValueError(
+ValueError: Cannot assign "3": "Category.tenant" must be a "Tenant" instance.
+2026-08-16 15:25:45,578 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:25:45,893 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:26:01,764 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/views_auth.py changed, reloading.
+2026-08-16 15:26:02,049 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:26:50,074 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:26:50,074 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:26:50,084 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:26:50,084 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:26:58,243 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:26:58,243 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:26:58,252 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:26:58,252 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:01,874 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:01,874 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:01,883 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:01,883 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:08,209 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:08,209 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:08,218 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:08,218 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:15,249 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:15,249 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:15,259 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:15,259 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:17,025 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:17,025 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:27:17,034 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:27:17,034 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:32:25,287 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/contexto.py changed, reloading.
+2026-08-16 15:32:25,550 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:33:42,686 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/customers/contexto.py changed, reloading.
+2026-08-16 15:33:42,927 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:33:49,883 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:33:49,883 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:33:49,893 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:33:49,893 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:05,088 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:05,088 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:05,097 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:05,097 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:18,608 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:18,608 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:18,617 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:18,617 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:20,344 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:20,344 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:34:20,354 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:34:20,354 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:35:36,563 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER9/burger/tenants/middleware.py changed, reloading.
+2026-08-16 15:35:36,837 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-16 15:36:43,744 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:36:43,744 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:36:43,754 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:36:43,754 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:37:19,212 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:37:19,212 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:37:19,222 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:37:19,222 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:37:23,795 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:37:23,795 | DEBUG | tenants.middleware | Subdomínio detectado: marcos
+2026-08-16 15:37:23,805 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
+2026-08-16 15:37:23,805 | INFO | tenants.middleware | ✅ Tenant encontrado: marcos | ID: 1
