@@ -1,6 +1,7 @@
 from customers.views_auth import (
     login_view,
     register_view,
+    novocadastro_view,
     painel_view,
     painel_pedidos_pendentes_count,
     logout_view,
@@ -82,6 +83,7 @@ urlpatterns = [
     path('painel/banners/editar/<int:banner_id>/', painel_banners_edit, name='painel_banners_edit'),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
+    path('novocadastro/', novocadastro_view, name='novocadastro'),
     path('manifest.json', manifest_json, name='manifest'),
     path('loja/manifest.json', manifest_json, name='loja_manifest'),  # Para rotas dentro de /loja/
     # Rotas para lidar com Cloudflare CDN em desenvolvimento
@@ -90,6 +92,6 @@ urlpatterns = [
     path('placeholder.png', image_placeholder, name='image_placeholder'),
     path('', home_view, name='home_view'),
   #  path('', RedirectView.as_view(url='/loja/')),  # redireciona a raiz
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

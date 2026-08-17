@@ -65,7 +65,7 @@
                                     <div class="text-center pb-8">
                                         <h2 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Entrar</h2>
                                         <span class="text-muted font-weight-bold font-size-h4">
-                                            Ou <a href="" class="text-primary font-weight-bolder" id="kt_login_signup">Criar uma conta</a>
+                                            Ou <a href="{% url 'register' %}" class="text-primary font-weight-bolder" id="kt_login_signup">Criar uma conta</a>
                                         </span>
                                     </div>
                                     <!--fim::Título-->
@@ -101,13 +101,14 @@
 
                             <!--início::Cadastro-->
                             <div class="login-form login-signup pt-11">
-                                <form class="form" novalidate="novalidate" id="kt_login_signup_form">
+                                <form class="form" novalidate="novalidate" id="kt_login_signup_form" method="POST" action="{% url 'register' %}">
+                                    {% csrf_token %}
                                     <div class="text-center pb-8">
                                         <h2 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Cadastrar</h2>
                                         <p class="text-muted font-weight-bold font-size-h4">Digite seus dados para criar sua conta</p>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="Nome completo" name="fullname" autocomplete="off"/>
+                                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="text" placeholder="Nome completo" name="username" autocomplete="off"/>
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="email" placeholder="Email" name="email" autocomplete="off"/>
@@ -116,7 +117,7 @@
                                         <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="Senha" name="password" autocomplete="off"/>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="Confirmar senha" name="cpassword" autocomplete="off"/>
+                                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" placeholder="Confirmar senha" name="password2" autocomplete="off"/>
                                     </div>
                                     <div class="form-group">
                                         <label class="checkbox mb-0">
@@ -125,7 +126,7 @@
                                         </label>
                                     </div>
                                     <div class="form-group d-flex flex-wrap flex-center pb-lg-0 pb-3">
-                                        <button type="button" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mx-4">Enviar</button>
+                                        <button type="submit" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mx-4">Enviar</button>
                                         <button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mx-4">Cancelar</button>
                                     </div>
                                 </form>
@@ -193,6 +194,32 @@
 
         <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
         <!--início::Configuração Global (configuração para os scripts JS globais)-->
+        <script>
+            var KTAppSettings = {
+                "breakpoints": {
+                    "sm": 576,
+                    "md": 768,
+                    "lg": 992,
+                    "xl": 1200,
+                    "xxl": 1400
+                },
+                "colors": {
+                    "theme": {
+                        "base": {
+                            "white": "#ffffff",
+                            "primary": "#3699FF",
+                            "secondary": "#E5EAEE",
+                            "success": "#1BC5BD",
+                            "info": "#8950FC",
+                            "warning": "#FFA800",
+                            "danger": "#F64E60",
+                            "light": "#E4E6EF",
+                            "dark": "#181C32"
+                        }
+                    }
+                }
+            };
+        </script>
         <!--fim::Configuração Global-->
 
         <!--início::Pacote Global do Tema (usado em todas as páginas)-->
@@ -202,7 +229,7 @@
         <!--fim::Pacote Global do Tema-->
 
         <!--início::Scripts da Página (usados nesta página)-->
-        <script src="{% static 'assets/js/pages/custom/login/login-general.js' %}"></script>
+        <script src="{% static 'assets/js/pages/custom/login/form-handler.js' %}"></script>
         <!--fim::Scripts da Página-->
     </body>
     <!--fim::Corpo-->

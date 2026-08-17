@@ -93,7 +93,7 @@ var KTLogin = function() {
 			form,
 			{
 				fields: {
-					fullname: {
+					username: {
 						validators: {
 							notEmpty: {
 								message: 'Username is required'
@@ -110,21 +110,21 @@ var KTLogin = function() {
 							}
 						}
 					},
-                    password: {
+                    password1: {
                         validators: {
                             notEmpty: {
                                 message: 'The password is required'
                             }
                         }
                     },
-                    cpassword: {
+                    password2: {
                         validators: {
                             notEmpty: {
                                 message: 'The password confirmation is required'
                             },
                             identical: {
                                 compare: function() {
-                                    return form.querySelector('[name="password"]').value;
+                                    return form.querySelector('[name="password1"]').value;
                                 },
                                 message: 'The password and its confirm are not the same'
                             }
@@ -150,9 +150,8 @@ var KTLogin = function() {
 
 			validation.validate().then(function(status) {
 				if (status == 'Valid') {
-					// Aqui você pode submeter o formulário ou redirecionar, sem mostrar mensagem padrão
-					// Por exemplo:
-					// document.getElementById('kt_login_signup_form').submit();
+					// Submeter o formulário
+					document.getElementById('kt_login_signup_form').submit();
 				} else {
 					swal.fire({
 						text: "Sorry, looks like there are some errors detected, please try again.",

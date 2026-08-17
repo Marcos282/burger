@@ -1,203 +1,429 @@
-
-
+{% load static %}
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>lojazap - Login</title>
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-	    <meta property="og:title" content="Login - lojazap">
-	    <meta property="og:description" content="">
-	    <meta property="og:image" content="https://lojazap.com/_core/_cdn/img/favicon.png">
-		<link rel="shortcut icon" href="https://lojazap.com/_core/_cdn/img/favicon.png"/>
-		<link rel="manifest" href="https://lojazap.com/login/manifest.json" />
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/class.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/forms.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/typography.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/template.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/theme.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/panel/css/default.css">
-		<link rel="stylesheet" href="https://lojazap.com/_core/_cdn/lineicons/css/LineIcons.css">
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-		<!-- <link rel="stylesheet" href="https://lojazap.com/_core/_cdn/fonts/style.min.css"> -->
-			</head>
-	<body>
-	    
-	    <script>
-// This is the service worker with the Cache-first network
-// Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
-// Check compatibility for the browser we're running this in
-if ("serviceWorker" in navigator) {
- if (navigator.serviceWorker.controller) {
- console.log("[PWA Builder] active service worker found, no need to register");
- } else {
- // Register the service worker
- navigator.serviceWorker
- .register("https://lojazap.com/login/pwabuilder-sw.js", {
- scope: "./"
- })
- .then(function (reg) {
- console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
- });
- }
-}
-</script>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | Burger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-900: #071a2d;
+            --navy-800: #0c2542;
+            --navy-700: #133a60;
+            --orange-500: #ff8b2c;
+            --orange-600: #f2761a;
+            --orange-soft: #fff4ea;
+            --text: #142033;
+            --muted: #5e6d86;
+            --line: #e6edf8;
+            --bg: #f3f7ff;
+            --white: #ffffff;
+            --shadow: 0 28px 80px rgba(7, 26, 45, 0.14);
+        }
 
-		
-		<div class="bg-gray fullfit">
+        * { box-sizing: border-box; }
 
-			<div class="container">
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #edf4ff 0%, #f8fbff 45%, #eef3ff 100%);
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+        }
 
-				<div class="row">
+        .auth-shell {
+            width: min(1200px, 92vw);
+            min-height: 760px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            background: var(--white);
+            border: 1px solid rgba(19, 58, 96, 0.08);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
 
-					<div class="col-md-12">
+        .brand-panel {
+            position: relative;
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 52%, var(--navy-700) 100%);
+            padding: 42px 42px 34px;
+            color: var(--white);
+        }
 
-						<div class="login">
+        .brand-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255, 139, 44, 0.2), transparent 22%);
+        }
 
-							<form method="POST" action="https://lojazap.com/login/index.php?redirect=">
+        .brand-panel > * {
+            position: relative;
+            z-index: 1;
+        }
 
-								<div class="container">
+        .brand-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 90px;
+            gap: 18px;
+        }
 
-									<div class="row align-center">
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
 
-										<!-- Login Box -->
+        .brand-mark .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange-500), #ffd39b);
+            box-shadow: 0 0 20px rgba(255, 139, 44, 0.8);
+        }
 
-											<div class="login-box box-white">
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 14px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-												<div class="row">
+        .hero-copy {
+            max-width: 520px;
+        }
 
-													<div class="col-md-12">
+        .hero-copy h1 {
+            margin: 0 0 18px;
+            font-size: clamp(2.8rem, 4vw, 4.6rem);
+            line-height: 0.98;
+            letter-spacing: -0.08em;
+            font-weight: 800;
+        }
 
-														<div class="brand brand-login text-center">
-															<img src="https://lojazap.com/login/img/258x258.png"/>
-														</div>
+        .hero-copy p {
+            margin: 0;
+            color: rgba(255,255,255,0.82);
+            font-size: 1.08rem;
+            line-height: 1.7;
+            max-width: 500px;
+        }
 
-													</div>
+        .hero-stats {
+            margin-top: 44px;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
 
-												</div>
+        .stat {
+            min-width: 160px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            padding: 18px 18px 16px;
+            backdrop-filter: blur(2px);
+        }
 
-												
-												
-												<div class="row">
+        .stat strong {
+            display: block;
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            letter-spacing: -0.06em;
+        }
 
-													<div class="col-md-12">
+        .stat span {
+            color: rgba(255,255,255,0.72);
+            font-size: 0.82rem;
+        }
 
-														<div class="form-field form-field-icon form-field-text">
+        .form-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #f9fbff 0%, #f2f6ff 100%);
+            padding: 32px;
+        }
 
-															<i class="form-icon lni lni-user"></i>
-															<input type="text" name="email" placeholder="E-mail" value=""/>
+        .form-card {
+            width: min(100%, 430px);
+            background: var(--white);
+            border-radius: 24px;
+            padding: 32px 28px;
+            border: 1px solid rgba(17, 35, 62, 0.06);
+            box-shadow: 0 18px 40px rgba(10, 27, 46, 0.08);
+        }
 
-														</div>
+        .eyebrow {
+            margin: 0 0 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            font-size: 0.72rem;
+        }
 
-													</div>
+        h2 {
+            margin: 0 0 8px;
+            font-size: clamp(2rem, 2vw, 2.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.06em;
+            color: var(--navy-900);
+        }
 
-												</div>
+        .subtitle {
+            margin: 0 0 26px;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
 
-												<div class="row">
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: #fff1f1;
+            border: 1px solid rgba(220, 38, 38, 0.12);
+            color: #a12626;
+            font-size: 0.92rem;
+        }
 
-													<div class="col-md-12">
+        form {
+            display: grid;
+            gap: 18px;
+        }
 
-														<div class="form-field form-field-icon form-field-password">
+        .field {
+            display: grid;
+            gap: 8px;
+        }
 
-															<i class="form-icon lni lni-lock"></i>
-															<input type="password" name="pass" placeholder="Senha"/>
+        label {
+            color: var(--navy-800);
+            font-weight: 800;
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-														</div>
+        input {
+            width: 100%;
+            height: 56px;
+            background: #f8fbff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 0 16px;
+            font-size: 1rem;
+            color: var(--text);
+            transition: .2s ease;
+        }
 
-													</div>
+        input:focus {
+            outline: none;
+            border-color: rgba(255, 139, 44, 0.8);
+            box-shadow: 0 0 0 4px rgba(255, 139, 44, 0.12);
+            background: var(--white);
+        }
 
-												</div>
+        .row-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
 
-												<div class="row">
+        .helper-link {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--orange-600);
+            text-decoration: none;
+        }
 
-													<div class="col-md-8">
+        .primary-btn {
+            border: none;
+            border-radius: 14px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .2s ease;
+            box-shadow: 0 16px 28px rgba(242, 118, 26, 0.25);
+        }
 
-														<div class="form-field form-field-icon form-field-checkbox">
+        .primary-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 32px rgba(242, 118, 26, 0.3);
+        }
 
-															<input type="checkbox" name="keepalive" value="1" checked>
-															<span>Mantenha-me conectado</span>
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin: 8px 0 6px;
+        }
 
-														</div>
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
 
-													</div>
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid var(--line);
+            background: var(--white);
+            color: var(--navy-900);
+            border-radius: 14px;
+            height: 54px;
+            font-weight: 700;
+            cursor: pointer;
+        }
 
-													<div class="col-md-4">
+        .google-btn span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f0f4fb;
+            color: var(--navy-900);
+            font-size: 0.86rem;
+        }
 
-														<div class="form-field form-field-icon form-field-submit">
-															<button>
-																<span>Entrar</span>
-																<i class="lni lni-chevron-right"></i>
-															</button>
+        .footer-text {
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 0.96rem;
+            text-align: center;
+        }
 
-														</div>
+        .footer-text a {
+            color: var(--orange-600);
+            font-weight: 800;
+            text-decoration: none;
+        }
 
-													</div>
+        @media (max-width: 900px) {
+            .auth-shell {
+                grid-template-columns: 1fr;
+            }
 
-												</div>
+            .brand-panel {
+                min-height: 300px;
+                padding-bottom: 28px;
+            }
 
-												<div class="row">
+            .form-panel {
+                padding: 24px 18px 28px;
+            }
 
-													<div class="col-md-12">
+            .brand-top {
+                margin-bottom: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-shell">
+        <aside class="brand-panel">
+            <div class="brand-top">
+                <div class="brand-mark"><span class="dot"></span> Burger</div>
+                <div class="brand-badge">Acesso</div>
+            </div>
 
-														<div class="forgetpass">
+            <div class="hero-copy">
+                <h1>Fácil de vender. Simples de gerenciar.</h1>
+                <p>
+                    Organize suas vendas, acompanhe pedidos e transforme sua loja em uma experiência moderna,
+                    rápida e profissional para cada cliente.
+                </p>
+            </div>
 
-															<a href="https://lojazap.com/esqueci" class="text-center"><i class="lni lni-question-circle"></i> Esqueci minha senha?</a>
+            <div class="hero-stats">
+                <div class="stat">
+                    <strong>24h</strong>
+                    <span>pedidos ativos</span>
+                </div>
+                <div class="stat">
+                    <strong>10x</strong>
+                    <span>mais organização</span>
+                </div>
+                <div class="stat">
+                    <strong>100%</strong>
+                    <span>foco no cliente</span>
+                </div>
+            </div>
+        </aside>
 
-															<a href="https://lojazap.com" class="text-center"><i class="lni lni-cart"></i> Voltar</a>
+        <main class="form-panel">
+            <section class="form-card">
+                <p class="eyebrow">Bem-vindo</p>
+                <h2>Entrar</h2>
+                <p class="subtitle">Acesse sua conta para continuar.</p>
 
-															<!-- <a href="https://lojazap.com/comece" class="text-center"><i class="lni lni-rocket"></i> Quero vender</a> -->
+                {% if error %}
+                    <div class="alert">{{ error }}</div>
+                {% endif %}
 
-														</div>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
 
-													</div>
+                    <div class="field">
+                        <label for="id_email">E-mail</label>
+                        {{ form.email }}
+                    </div>
 
-												</div>
+                    <div class="field">
+                        <div class="row-between">
+                            <label for="id_password">Senha</label>
+                            <a href="#" class="helper-link">Esqueci</a>
+                        </div>
+                        {{ form.password }}
+                    </div>
 
+                    <button type="submit" class="primary-btn">Entrar</button>
+                </form>
 
-											</div>
+                <div class="divider">ou</div>
 
-										<!-- / Login Box -->
+                <button type="button" class="google-btn" aria-label="Entrar com Google">
+                    <span>G</span> Entrar com Google
+                </button>
 
-									</div>
-
-								</div>
-
-							</form>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-		
-	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"f8178609612d4a0fa8656f39eac0fd7b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+                <div class="footer-text">
+                    Ainda não tem conta? <a href="{% url 'register' %}">Criar conta</a>
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
-
 </html>
-
-<script src="https://lojazap.com/_core/_cdn/jquery/js/jquery.min.js"></script>
-<script src="https://lojazap.com/_core/_cdn/panel/js/template.js"></script>
-
-
-
-{% extends 'base.html' %}
-{% block content %}
-<h2>Entrar</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Entrar</button>
-</form>
-{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-<p>Não tem conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
-{% endblock %}
-
-
-

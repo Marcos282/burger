@@ -45,30 +45,34 @@ def login_view(request):
     if request.method == 'POST' and form.is_valid():
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        
+
         print(f"🔐 Tentativa de login: {email}")
-        
-        # Autenticar usando email (que agora é o USERNAME_FIELD)
+
         user = authenticate(request, username=email, password=password)
         if user is not None:
             print(f"✅ Login bem-sucedido para: {user.email}")
-            email = user.email
             login(request, user)
-            salvar_tenant_em_sessao(request, email=email)
+            salvar_tenant_em_sessao(request, email=user.email)
             return redirect('painel_home')
         else:
             print(f"❌ Falha no login para: {email}")
             error = 'Email ou senha incorretos. Tente novamente.'
-    #return render(request, 'login/login.html', {'form': form, 'error': error})
-    return render(request, 'login/demo1/dist/custom/pages/login/login-2.html', {'form': form, 'error': error})
-    #return HttpResponse('Login page is under maintenance.')
+
+    return render(request, 'login/login.html', {'form': form, 'error': error})
+
 
 def register_view(request):
     form = UserCreationForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('login')
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('login')
     return render(request, 'register/register.html', {'form': form})
+
+
+def novocadastro_view(request):
+    return register_view(request)
+
 
 def painel_view(request):
     if request.user.is_authenticated:

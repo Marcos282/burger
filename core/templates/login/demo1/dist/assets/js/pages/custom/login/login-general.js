@@ -103,7 +103,7 @@ var KTLogin = function() {
 			form,
 			{
 				fields: {
-					fullname: {
+					username: {
 						validators: {
 							notEmpty: {
 								message: 'Username is required'
@@ -127,7 +127,7 @@ var KTLogin = function() {
                             }
                         }
                     },
-                    cpassword: {
+                    password2: {
                         validators: {
                             notEmpty: {
                                 message: 'The password confirmation is required'
@@ -157,26 +157,32 @@ var KTLogin = function() {
 
         $('#kt_login_signup_submit').on('click', function (e) {
             e.preventDefault();
-
+            
+            console.log("🔵 Botão clicado - iniciando validação...");
+            
+            // Validar formulário antes de enviar
             validation.validate().then(function(status) {
+                console.log("🟢 Validação completa. Status:", status);
 		        if (status == 'Valid') {
-                    swal.fire({
-		                text: "All is cool! Now you submit this form",
-		                icon: "success",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
-                        customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
+                    console.log("✅ Formulário válido - enviando...");
+                    // Submeter o formulário diretamente
+                    var form = document.getElementById('kt_login_signup_form');
+                    console.log("   - Form objeto:", !!form);
+                    console.log("   - Action:", form ? form.action : 'N/A');
+                    
+                    if (form) {
+                        console.log("   - ENVIANDO AGORA!");
+                        form.submit();
+                    } else {
+                        console.log("   ❌ ERRO: Formulário não encontrado!");
+                    }
 				} else {
+                    console.log("❌ Formulário com erros");
 					swal.fire({
-		                text: "Sorry, looks like there are some errors detected, please try again.",
+		                text: "Por favor, corrija os erros no formulário.",
 		                icon: "error",
 		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
+		                confirmButtonText: "Ok",
                         customClass: {
     						confirmButton: "btn font-weight-bold btn-light-primary"
     					}
@@ -184,7 +190,9 @@ var KTLogin = function() {
 						KTUtil.scrollTop();
 					});
 				}
-		    });
+		    }).catch(function(err) {
+                console.log("❌ ERRO na validação:", err);
+            });
         });
 
         // Handle cancel button
