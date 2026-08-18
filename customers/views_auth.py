@@ -616,8 +616,8 @@ def painel_configuracao(request):
                     settings.foto_capa = request.FILES['foto_capa']
                 if 'color_theme' in request.POST:
                     settings.color_theme = request.POST['color_theme']
-                if 'delivery' in request.POST:
-                    settings.exibicao_produtos = request.POST['delivery']
+                if 'exibicao_produtos' in request.POST:
+                    settings.exibicao_produtos = request.POST['exibicao_produtos']
                 
                 # ==== STEP 3: PAGAMENTO ====
                 if 'pagamento_minimo' in request.POST:
@@ -741,7 +741,7 @@ def painel_configuracao(request):
                         return JsonResponse({
                             'success': False,
                             'message': 'As senhas não coincidem!'
-                        })
+                        }, status=400)
                     
                     # Validação de força mínima da senha
                     if len(password) < 6:
@@ -789,7 +789,7 @@ def painel_configuracao(request):
                 return JsonResponse({
                     'success': False,
                     'message': f'Erro ao salvar configurações: {str(e)}'
-                })
+                }, status=500)
 
         # Obter horários existentes para pré-carregar no formulário
         horarios_existentes = {}

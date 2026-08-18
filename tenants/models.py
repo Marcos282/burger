@@ -210,7 +210,7 @@ class TenantSettings(models.Model):
     theme_color = models.CharField(max_length=7, default='#FFFFFF')  # Hex color code
     logo_url = models.URLField(blank=True, null=True)
     support_email = models.EmailField(blank=True, null=True)
-    nome_loja = models.CharField(max_length=100, default='Minha Loja')
+    nome_loja = models.CharField(max_length=100, default='Seu nome completo')
     descricao_loja = models.TextField(blank=True, null=True)
     whatsapp = models.CharField(max_length=20, default='21976857525')
     taxa_entrega = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)

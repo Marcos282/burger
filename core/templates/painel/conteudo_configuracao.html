@@ -107,7 +107,7 @@
                               <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">A URL que seus clientes usarão para acessar a loja, não serão permitidos acentos, cedilha, pontos e caracteres especiais.</p>
                               <div class="form-group"></div>
                               <div class="input-group">
-                                 <input type="text" class="form-control" placeholder="subdomain" name="subdomain" aria-describedby="basic-addon2">
+                                 <input type="text" class="form-control" placeholder="subdomain" name="subdomain" value="{{ settings.subdomain|default:'' }}" aria-describedby="basic-addon2">
                                  <div class="input-group-append"><span class="input-group-text">.example.com</span></div>
                               </div>
                            </div>
@@ -857,7 +857,7 @@
 
                      <div class="form-group fv-plugins-icon-container">
                         <label>Google Analytics</label>
-                        <input type="url" class="form-control" name="googleanalytics"  value="">
+                        <input type="url" class="form-control" name="googleanalytics"  value="{{ settings.googleanalytics|default:'' }}">
                         <span class="form-text text-muted">ID do Google Analytics</span>
                      </div>
                      <div class="form-group fv-plugins-icon-container">
@@ -1411,11 +1411,93 @@ document.addEventListener('DOMContentLoaded', function() {
         // REMOVER ATRIBUTOS DO WIZARD PARA EVITAR INTERFERÊNCIA
         submitBtn.removeAttribute('data-wizard-type');
         submitBtn.type = 'button'; // Mudar de submit para button para controle total
+
+        function getCurrentWizardStepNumber() {
+            const stepContents = Array.from(form.querySelectorAll('[data-wizard-type="step-content"]'));
+            const currentStep = form.querySelector('[data-wizard-type="step-content"][data-wizard-state="current"]');
+
+            if (!currentStep) {
+                return null;
+            }
+
+            const currentIndex = stepContents.indexOf(currentStep);
+            return currentIndex >= 0 ? currentIndex + 1 : null;
+        }
+
+        function validarStepGeralSeAtivo() {
+            const currentStepNumber = getCurrentWizardStepNumber();
+
+            if (currentStepNumber !== 1) {
+                return true;
+            }
+
+            const camposObrigatoriosStep1 = [
+                { selector: 'input[name="name"]', label: 'Nome da loja' },
+                { selector: 'input[name="descricao_loja"]', label: 'Descrição da loja' },
+                { selector: 'select[name="estado"]', label: 'Estado' },
+                { selector: 'input[name="endereco"]', label: 'Rua' },
+                { selector: 'input[name="numero_endereco"]', label: 'Número' }
+            ];
+
+            const camposInvalidos = [];
+            let primeiroCampoInvalido = null;
+
+            camposObrigatoriosStep1.forEach(function(campoInfo) {
+                const campo = form.querySelector(campoInfo.selector);
+                if (!campo) {
+                    return;
+                }
+
+                const valor = (campo.value || '').trim();
+                const campoValido = valor.length > 0;
+
+                campo.classList.toggle('is-invalid', !campoValido);
+                campo.classList.toggle('is-valid', campoValido);
+
+                if (!campoValido) {
+                    camposInvalidos.push(campoInfo.label);
+                    if (!primeiroCampoInvalido) {
+                        primeiroCampoInvalido = campo;
+                    }
+                }
+            });
+
+            if (camposInvalidos.length === 0) {
+                return true;
+            }
+
+            const mensagem = `Preencha os campos obrigatórios da etapa Geral: ${camposInvalidos.join(', ')}.`;
+            if (typeof toastr !== 'undefined') {
+                toastr.error(mensagem, 'Validação', {
+                    timeOut: 5000,
+                    progressBar: true,
+                    positionClass: 'toast-top-right'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validação da etapa 1',
+                    text: mensagem,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#28a745'
+                });
+            }
+
+            if (primeiroCampoInvalido) {
+                primeiroCampoInvalido.focus();
+            }
+
+            return false;
+        }
         
         // ADICIONAR EVENT LISTENER PRÓPRIO - SEM INTERFERÊNCIA DO WIZARD
         submitBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+
+            if (!validarStepGeralSeAtivo()) {
+                return;
+            }
             
             console.log('🔥 BOTÃO SALVAR CLICADO!');
             
@@ -1573,8 +1655,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
                         }
                     })
-                    .then(response => {
-                        if (response.ok) {
+                    .then(async response => {
+                        let payload = null;
+                        try {
+                            payload = await response.json();
+                        } catch (e) {
+                            payload = null;
+                        }
+
+                        if (response.ok && payload && payload.success) {
                             // SUCESSO!
                             this.classList.remove('loading');
                             this.classList.add('success');
@@ -1613,7 +1702,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             }, 3000);
                             
                         } else {
-                            throw new Error('Erro HTTP: ' + response.status);
+                            const backendMessage = payload && payload.message ? payload.message : '';
+                            const defaultMessage = 'Erro HTTP: ' + response.status;
+                            throw new Error(backendMessage || defaultMessage);
                         }
                     })
                     .catch(error => {
@@ -1625,8 +1716,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.innerHTML = '<i class="fa fa-times mr-2"></i> Erro ao Salvar!';
                         
                         // NOTIFICAÇÃO DE ERRO
+                        const errorMessage = (error && error.message) ? error.message : 'Erro ao salvar configurações. Tente novamente.';
                         if (typeof toastr !== 'undefined') {
-                            toastr.error('❌ Erro ao salvar configurações. Tente novamente.', 'Erro!', {
+                            toastr.error(`❌ ${errorMessage}`, 'Erro!', {
                                 timeOut: 5000,
                                 progressBar: true,
                                 positionClass: 'toast-top-right'
@@ -1635,7 +1727,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Ops!',
-                                text: '❌ Erro ao salvar configurações. Tente novamente.',
+                                text: `❌ ${errorMessage}`,
                                 confirmButtonText: 'Tentar Novamente',
                                 confirmButtonColor: '#28a745'
                             });

@@ -14828,3 +14828,360 @@ tenants.models.TenantSettings.DoesNotExist: TenantSettings matching query does n
 2026-08-17 15:15:18,555 | DEBUG | tenants.middleware | Subdomínio detectado: pedro
 2026-08-17 15:15:18,564 | INFO | tenants.middleware | ✅ Tenant encontrado: pedro | ID: 18
 2026-08-17 15:15:18,564 | INFO | tenants.middleware | ✅ Tenant encontrado: pedro | ID: 18
+2026-08-18 13:19:34,885 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-18 13:19:39,263 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:19:39,263 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:19:39,914 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:19:39,914 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:19:39,918 | WARNING | django.request | Not Found: /favicon.ico
+2026-08-18 13:20:09,889 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:20:09,889 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:20:30,697 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:20:30,697 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:20:56,953 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:20:56,953 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:20,281 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:20,281 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:20,717 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:20,717 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:38,780 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:38,780 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:39,145 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:39,145 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:56,576 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:21:56,576 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:22:38,920 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:22:38,920 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:22:41,927 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:22:41,927 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:40:42,667 | INFO | django.utils.autoreload | /home/marcos/PycharmProjects/burger11/burger/tenants/models.py changed, reloading.
+2026-08-18 13:40:42,919 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-18 13:42:58,876 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:42:58,876 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:43:03,434 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:43:03,434 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:46:00,833 | INFO | django.utils.autoreload | /home/marcos/PycharmProjects/burger11/burger/customers/views_auth.py changed, reloading.
+2026-08-18 13:46:01,217 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-18 13:47:47,699 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:47:47,699 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:48:15,518 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:48:15,518 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:48:15,550 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 13:52:33,559 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:52:33,559 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:53:04,088 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:53:04,088 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:53:04,130 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 13:55:19,825 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 13:55:19,825 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:00:25,599 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:00:25,599 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:00:49,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:00:49,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:00:49,141 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 14:02:05,355 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:02:05,355 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:02:05,395 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 14:05:45,587 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:05:45,587 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:05:45,623 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 14:06:55,288 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:06:55,288 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:06:55,333 | ERROR | django.request | Internal Server Error: /painel/configuracao/
+2026-08-18 14:08:05,151 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:05,151 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:09,729 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:09,729 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:10,193 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:10,193 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:10,292 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:10,292 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:15,638 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:15,638 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:23,975 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:23,975 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:28,540 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:28,540 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:39,188 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:39,188 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:43,740 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:43,740 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:49,869 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:49,869 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:54,417 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:08:54,417 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:07,600 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:07,600 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:12,200 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:12,200 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:12,917 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:12,917 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:13,016 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:13,016 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:24,117 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:24,117 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:28,675 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:15:28,675 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:20,562 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-18 14:21:30,823 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:30,823 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:31,345 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:31,345 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:31,442 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:21:31,442 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:23:18,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:23:18,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:23:22,508 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:23:22,508 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-18 14:23:24,783 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:24,783 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:24,794 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:24,794 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:25,183 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:25,183 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:25,191 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:25,191 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:25,738 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:25,738 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:25,750 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:25,750 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,921 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,921 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,931 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,931 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,936 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,936 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,945 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,945 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,952 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,952 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:41,962 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:41,962 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:42,054 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:42,054 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:42,063 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:42,063 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:42,067 | WARNING | django.request | Not Found: /favicon.ico
+2026-08-18 14:23:55,514 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:55,514 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:55,523 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:55,523 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:55,812 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:55,812 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:55,822 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:55,822 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:59,211 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:59,211 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:23:59,221 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:23:59,221 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:00,939 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:00,939 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:00,949 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:00,949 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:13,014 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:13,014 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:13,023 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:13,023 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:14,843 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:14,843 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:14,852 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:14,852 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:16,251 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:16,251 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:16,267 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:16,267 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:29,052 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:29,052 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:29,062 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:29,062 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:32,787 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:32,787 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:32,797 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:32,797 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:37,627 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:37,627 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:37,637 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:37,637 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:41,042 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:41,042 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:41,052 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:41,052 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:42,996 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:42,996 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:24:43,005 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:24:43,005 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:44,106 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:44,106 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:44,115 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:44,115 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:44,290 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:44,290 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:44,299 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:44,299 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:46,115 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:46,115 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:46,131 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:46,131 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:46,291 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:46,291 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:46,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:46,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:52,014 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:52,014 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:25:52,023 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:25:52,023 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,555 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,555 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,568 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,568 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,583 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,583 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,601 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,601 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,778 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,778 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:01,793 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:01,793 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:02,352 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:02,352 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:02,362 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:02,362 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,650 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,650 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,659 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,659 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,674 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,674 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,680 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,680 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:12,684 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,684 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,690 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,690 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:12,692 | WARNING | django.request | Not Found: /loja/datail/manifest.json
+2026-08-18 14:26:13,304 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:13,305 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:13,304 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:13,305 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:13,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:13,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:13,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:13,315 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:13,319 | WARNING | django.request | Not Found: /loja/datail/manifest.json
+2026-08-18 14:26:24,341 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:24,341 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:24,351 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:24,351 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:25,985 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:25,985 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:25,995 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:25,995 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:26,007 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:26,007 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:26,016 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:26,016 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:26,017 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:26,017 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:26,026 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:26,026 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:28,020 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:28,020 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:28,030 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:28,030 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,554 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,554 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,564 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,564 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,575 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,575 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,585 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,585 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,799 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,799 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,799 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,799 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:30,808 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,809 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,808 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:30,809 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:32,831 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:32,831 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:32,841 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:32,841 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:32,933 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:32,933 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:26:32,943 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:32,943 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:26:32,949 | WARNING | django.request | Not Found: /serviceworker.js
+2026-08-18 14:27:08,437 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:08,437 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:08,447 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:08,447 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:09,176 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:09,176 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:09,185 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:09,185 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:09,236 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:09,236 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:09,246 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:09,246 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:38,543 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:38,543 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:38,553 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:38,553 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:38,603 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:38,603 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:38,614 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:38,614 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:41,735 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:41,735 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:41,744 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:41,744 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:44,494 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:44,494 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:44,505 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:44,505 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:51,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:51,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:51,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:51,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:58,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:58,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:27:58,565 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:27:58,565 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:05,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:05,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:05,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:05,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:12,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:12,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:12,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:12,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:19,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:19,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:19,567 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:19,567 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:26,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:26,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:26,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:26,566 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:33,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:33,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:33,568 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:33,568 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:40,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:40,557 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:40,565 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:40,565 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,142 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,142 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,152 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,152 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,605 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,605 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,614 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,614 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,706 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,706 | DEBUG | tenants.middleware | Subdomínio detectado: jupiter
+2026-08-18 14:28:43,714 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
+2026-08-18 14:28:43,714 | INFO | tenants.middleware | ✅ Tenant encontrado: jupiter | ID: 20
