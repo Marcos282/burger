@@ -714,7 +714,8 @@ def painel_configuracao(request):
                 if 'nome_responsavel' in request.POST:
                     settings.nome_responsavel = request.POST['nome_responsavel']
                 if 'dt_nascimento' in request.POST:
-                    settings.dt_nascimento = request.POST['dt_nascimento']
+                    dt_nascimento = request.POST['dt_nascimento'].strip()
+                    settings.dt_nascimento = dt_nascimento if dt_nascimento else None
                 if 'cpf_ou_cnpj' in request.POST:
                     settings.cpf_ou_cnpj = request.POST['cpf_ou_cnpj']
                 if 'documento' in request.POST:

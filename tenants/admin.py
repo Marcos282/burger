@@ -20,7 +20,7 @@ class TenantSettingsAdmin(admin.ModelAdmin):
 @admin.register(HorarioFuncionamento)
 class HorarioFuncionamentoAdmin(admin.ModelAdmin):
     list_display = ("tenant", "get_dia_display", "horario_abre", "horario_fecha", "ativo", "data_especifica")
-    list_filter = ("dia_semana", "ativo", "data_especifica")
+    list_filter = ("dia_semana", "ativo")
     search_fields = ("tenant__name", "descricao")
     ordering = ("tenant", "dia_semana", "horario_abre")
     
