@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tenant, TenantSettings, HorarioFuncionamento
+from .models import Tenant, TenantSettings, HorarioFuncionamento,Configuracao
 
 @admin.register(Tenant)
 class TenantAdmin(admin.ModelAdmin):
@@ -27,3 +27,8 @@ class HorarioFuncionamentoAdmin(admin.ModelAdmin):
     def get_dia_display(self, obj):
         return obj.get_dia_semana_display()
     get_dia_display.short_description = "Dia da Semana"
+
+@admin.register(Configuracao)
+class ConfiguracaoAdmin(admin.ModelAdmin):
+    list_display = ("nome_empresa", "email_contato", "telefone", "dominio")
+    search_fields = ("nome_empresa", "email_contato", "dominio")

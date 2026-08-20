@@ -117,6 +117,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'customers.contexto.recuperar_tenant_do_contexto',
+                'customers.contexto.configuracao_context',
             ],
         },
     },

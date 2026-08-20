@@ -1,4 +1,9 @@
-from tenants.models import Tenant
+from tenants.models import Tenant, Configuracao
+
+
+def configuracao_context(request):
+    """Expõe a Configuracao (singleton) em todos os templates."""
+    return {'configuracao': Configuracao.load()}
 
 
 def buscar_tenant_por_email(email):
@@ -88,3 +93,13 @@ def recuperar_tenant_do_contexto(request):
         request.tenant = tenant
 
     return {'tenant': tenant}
+
+def dominio_full(request):
+    """Retorna o domínio da loja com base na configuração."""
+    config = Configuracao.load()
+    subdomain = request.session.get('tenant_subdomain') if hasattr(request, 'session') else None
+    if not subdomain:
+        tenant = getattr(request, 'tenant', None) or getattr(getattr(request, 'user', None), 'tenant', None)
+        subdomain = getattr(tenant, 'subdomain', None)
+    loja_url = f"https://{subdomain}.{config.dominio}/loja/" if subdomain else f"https://{config.dominio}/loja/"
+    return loja_url

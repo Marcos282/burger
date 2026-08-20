@@ -1,7 +1,9 @@
 # tenants/models.py
+
+
 from django.db import models
 from django.core.exceptions import ValidationError
-
+ 
 class SingletonModel(models.Model):
     """
     Base para models Singleton.
@@ -22,7 +24,18 @@ class SingletonModel(models.Model):
         """
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
-
+ 
+ 
+class Configuracao(SingletonModel):
+    nome_empresa = models.CharField(max_length=100, default="Minha Empresa")
+    email_contato = models.EmailField(default="contato@empresa.com")
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    logo = models.ImageField(upload_to="logos/", blank=True, null=True)
+    dominio= models.CharField(max_length=100, default="meusite.com")
+    favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
+ 
+    def __str__(self):
+        return "Configurações do Sistema"
 
 
 class Tenant(models.Model):

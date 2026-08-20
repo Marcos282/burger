@@ -3,7 +3,7 @@
 <head>
     <base href="../../../">
     <meta charset="utf-8">
-    <title>Metronic | List Datatable</title>
+    <title>{% block title %}{{ configuracao.nome_empresa }}{% endblock %}</title>
     <meta name="description" content="Contacts datatable listing">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--begin::Fonts-->
@@ -20,7 +20,7 @@
     <link href="{% static 'assets/css/themes/layout/brand/dark.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/css/themes/layout/aside/dark.css' %}" rel="stylesheet" type="text/css">
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="{% static 'assets/imagens/logos/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static 'assets/imagens/logos/favicon.ico' %}{% endif %}">
     <link href="{% static 'app/painel/apexcharts-custom.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'app/painel/painel-footer-fix.css' %}" rel="stylesheet" type="text/css">
     {% block extra_head %}

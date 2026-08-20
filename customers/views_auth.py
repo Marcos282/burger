@@ -13,8 +13,8 @@ from menu.models import Category, Produto, ProdutoImagem
 from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from django.contrib import messages
 from django.core.paginator import Paginator
-from .contexto import salvar_tenant_em_sessao
-from tenants.models import Tenant, TenantSettings
+from .contexto import salvar_tenant_em_sessao, dominio_full
+from tenants.models import Tenant, TenantSettings,Configuracao
 
 # Função para contar itens do cliente
 def qt_items_cliente(request):
@@ -916,12 +916,14 @@ def painel_qrcode(request):
         import qrcode
         from io import BytesIO
         import base64
-
+        config = Configuracao.load()
         user = request.user
         tenant = user.tenant
         settings = TenantSettings.load(tenant)
 
-        loja_url = get_tenant_url(request, '/loja/')
+        # Monta a URL direto do tenant do usuário logado (mais confiável que a sessão) e sempre com a rota /loja/ no final
+        subdomain = getattr(tenant, 'subdomain', None)
+        loja_url = f"https://{subdomain}.{config.dominio}/loja/" if subdomain else f"https://{config.dominio}/loja/"
 
         # Gera QR Code
         qr = qrcode.QRCode(
@@ -951,7 +953,7 @@ def painel_qrcode(request):
             'loja_url': loja_url,
             'qr_code_base64': img_str,
             'qt_items_cliente': qt_items_cliente(request),
-            'url_marketplace': get_tenant_url(request, '/loja/'),
+            'url_marketplace': loja_url,
         }
         return render(request, 'painel/qrcode.html', context)
     else:
