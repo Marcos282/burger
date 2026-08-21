@@ -22,9 +22,16 @@ def pagamento(request):
     if user.data_expiracao:
         dias_restantes = (user.data_expiracao - timezone.now()).days
 
+    localizacao = [
+                {"n1": "Pagamento", "url": "pagamento"},
+               
+    ]
+
     context = {
         'dias_restantes': dias_restantes,
         'data_expiracao': user.data_expiracao,
         'valor_mensalidade': valor_mensalidade,
+        'localizacao': localizacao,
+        'configuracao': configuracao,
     }
     return render(request, 'pagamento/index.html', context)
