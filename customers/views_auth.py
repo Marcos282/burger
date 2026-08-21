@@ -172,13 +172,18 @@ def painel_home(request):
             {"n1": "Home", "url": "painel_home"}
         ]
 
-        
+        settings = TenantSettings.load(user.tenant)
+        whatsapp_default = TenantSettings._meta.get_field('whatsapp').default
+        whatsapp_valor = (settings.whatsapp or '').strip()
+        # Considera "vazio" também o valor padrão do campo (loja ainda não configurou o whatsapp)
+        mostrar_modal_orientacoes = whatsapp_valor == '' or whatsapp_valor == whatsapp_default
 
         context = {
             'localizacao': localizacao,
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': get_tenant_url(request, '/loja/'),
+            'mostrar_modal_orientacoes': mostrar_modal_orientacoes,
         }
         return render(request, 'painel/home.html', context)
     else:

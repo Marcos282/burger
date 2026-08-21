@@ -1,4 +1,4 @@
-#!/var/www/html/burger/myenv/bin/python3
+#!/home/marcos/BURGER16/burger/myenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

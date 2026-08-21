@@ -70,6 +70,12 @@
 <!--begin::Demo Panel-->
     {% include 'painel/demo_panel.html' %}
 <!--end::Demo Panel-->
+
+{% if mostrar_modal_orientacoes %}
+<!--begin::Modal Orientações de Uso-->
+    {% include 'painel/modal_orientacoes.html' %}
+<!--end::Modal Orientações de Uso-->
+{% endif %}
 {% endblock %}
 
 
