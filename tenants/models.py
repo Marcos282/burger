@@ -33,6 +33,7 @@ class Configuracao(SingletonModel):
     logo = models.ImageField(upload_to="logos/", blank=True, null=True)
     dominio= models.CharField(max_length=100, default="meusite.com")
     favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
+    valor_mensalidade = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
  
     def __str__(self):
         return "Configurações do Sistema"

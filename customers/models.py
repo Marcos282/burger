@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import timezone
+from datetime import timedelta
 from tenants.models import Tenant
 
 # --- User customizado para multi-tenant ---
@@ -37,6 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    data_expiracao = models.DateTimeField(null=True, blank=True, help_text="Data limite de acesso (trial ou assinatura)")
+
+
 
     USERNAME_FIELD = 'email'  # Login será feito por email
     REQUIRED_FIELDS = ['username']  # Username será solicitado na criação do superuser
@@ -54,7 +59,15 @@ class User(AbstractBaseUser, PermissionsMixin):
                 self.tenant.subdomain = self.username
                 self.tenant.name = self.username
                 self.tenant.save()
+        # Novo usuário: concede 30 dias de trial a partir de agora
+        if not self.pk and not self.data_expiracao:
+            self.data_expiracao = timezone.now() + timedelta(days=30)
         super().save(*args, **kwargs)
+
+    def estender_expiracao(self, dias=30):
+        """Soma `dias` à data de expiração, chamado quando o cliente realiza um pagamento."""
+        from core.utils import estender_expiracao
+        return estender_expiracao(self, dias)
 
     def __str__(self):
         return f'{self.username} ({self.tenant.subdomain})'

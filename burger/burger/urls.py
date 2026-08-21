@@ -46,7 +46,7 @@ from core.views import (
 )
 
 from orders.views import pedido_delivery, cadastro_form
-
+from pagamento import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -91,6 +91,7 @@ urlpatterns = [
     path('home_view/', home_view, name='home_view'),
     # Exibe a página principal (home_view) na raiz em vez de redirecionar para /loja/
     path('', home_view, name='home'),
+    path('pagamento/',pagamento.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

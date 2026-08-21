@@ -1,3 +1,15 @@
+from django.utils import timezone
+from datetime import timedelta
+
+
+def estender_expiracao(user, dias=30):
+    """Soma `dias` à data de expiração do usuário, chamado quando o cliente realiza um pagamento."""
+    base = user.data_expiracao if user.data_expiracao and user.data_expiracao > timezone.now() else timezone.now()
+    user.data_expiracao = base + timedelta(days=dias)
+    user.save(update_fields=['data_expiracao'])
+    return user.data_expiracao
+
+
 def formatar_brl(valor):
     return f"R$ {valor:,.2f}".replace('.', ',')
 
@@ -204,3 +216,4 @@ def verificar_loja_aberta(request, user=None):
         'horarios_hoje': horarios_hoje,
         'is_open': is_open,
     }
+

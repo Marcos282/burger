@@ -30,5 +30,5 @@ class HorarioFuncionamentoAdmin(admin.ModelAdmin):
 
 @admin.register(Configuracao)
 class ConfiguracaoAdmin(admin.ModelAdmin):
-    list_display = ("nome_empresa", "email_contato", "telefone", "dominio")
+    list_display = ("nome_empresa", "email_contato", "telefone", "dominio", "valor_mensalidade")
     search_fields = ("nome_empresa", "email_contato", "dominio")

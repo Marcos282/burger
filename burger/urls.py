@@ -83,6 +83,7 @@ urlpatterns = [
     path('painel/banners/adicionar/', painel_banners_add, name='painel_banners_add'),
     path('painel/banners/deletar/<int:banner_id>/', painel_banners_delete, name='painel_banners_delete'),
     path('painel/banners/editar/<int:banner_id>/', painel_banners_edit, name='painel_banners_edit'),
+    path('painel/pagamento/', include('pagamento.urls')),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
     path('novocadastro/', novocadastro_view, name='novocadastro'),

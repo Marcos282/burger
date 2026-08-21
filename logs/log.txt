@@ -25534,3 +25534,1483 @@ RuntimeError: You called this URL via POST, but the URL doesn't end in a slash a
 2026-08-21 17:10:17,855 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-21 17:10:24,855 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-21 17:10:24,855 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:00:51,941 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:00:54,957 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:00:54,957 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:01,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:01,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:08,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:08,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:15,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:15,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:22,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:22,941 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:29,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:29,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:36,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:36,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:43,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:43,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:46,854 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:46,854 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:49,553 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:49,553 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:50,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:50,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:52,623 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:52,623 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:57,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:01:57,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:04,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:04,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:11,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:11,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:18,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:18,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:25,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:25,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:32,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:32,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:34,129 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:34,129 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:34,415 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:34,415 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:39,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:39,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:44,559 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:44,559 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:44,842 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:44,842 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:46,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:46,942 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:53,943 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:02:53,943 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:00,943 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:00,943 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:08,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:08,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:15,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:15,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:22,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:22,009 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:29,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:29,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:36,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:36,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:43,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:43,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:50,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:50,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:57,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:03:57,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:04,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:04,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:11,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:11,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:18,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:18,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:25,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:25,010 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:32,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:32,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:39,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:39,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:46,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:46,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:53,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:04:53,011 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:00,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:00,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:07,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:07,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:14,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:14,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:21,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:21,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:28,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:28,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:35,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:35,095 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:42,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:42,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:49,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:49,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:56,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:05:56,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:03,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:03,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:10,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:10,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:17,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:17,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:24,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:24,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:31,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:31,096 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:38,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:38,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:45,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:45,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:52,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:52,097 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:59,198 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:06:59,198 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:06,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:06,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:13,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:13,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:20,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:20,641 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:27,642 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:27,642 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:34,642 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:34,642 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:41,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:41,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:48,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:48,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:55,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:07:55,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:02,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:02,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:09,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:09,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:16,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:16,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:23,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:23,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:30,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:30,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:37,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:37,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:44,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:44,741 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:51,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:51,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:58,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:08:58,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:05,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:05,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:12,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:12,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:19,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:19,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:26,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:26,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:33,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:33,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:40,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:40,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:47,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:47,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:54,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:09:54,742 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:01,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:01,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:08,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:08,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:15,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:15,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:22,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:22,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:29,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:29,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:36,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:36,743 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:43,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:43,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:50,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:50,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:57,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:10:57,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:04,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:04,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:11,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:11,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:18,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:18,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:25,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:25,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:32,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:32,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:39,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:39,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:46,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:46,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:53,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:11:53,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:00,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:00,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:07,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:07,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:14,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:14,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:21,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:21,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:28,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:28,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:35,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:35,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:42,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:42,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:49,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:49,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:56,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:12:56,779 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:03,848 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:03,848 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:10,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:10,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:17,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:17,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:24,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:24,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:31,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:31,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:38,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:38,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:45,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:45,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:52,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:52,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:59,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:13:59,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:06,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:06,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:13,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:13,849 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:20,785 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:20,785 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:20,858 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:20,858 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:27,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:27,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:34,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:34,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:41,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:41,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:48,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:48,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:55,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:14:55,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:02,935 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:02,935 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:10,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:10,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:17,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:17,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:24,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:24,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:31,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:31,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:38,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:38,003 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:45,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:45,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:52,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:52,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:59,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:15:59,004 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:06,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:06,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:13,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:13,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:20,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:20,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:27,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:27,057 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:34,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:34,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:41,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:41,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:48,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:48,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:55,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:16:55,058 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:02,177 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:02,177 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:09,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:09,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:16,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:16,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:23,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:23,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:30,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:30,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:37,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:37,261 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:44,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:44,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:51,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:51,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:58,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:17:58,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:05,377 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:05,377 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:12,377 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:12,377 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:19,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:19,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:26,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:26,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:33,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:33,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:40,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:18:40,378 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:31,591 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:31:34,428 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:34,428 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:35,506 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:35,506 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:41,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:41,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:48,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:48,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:55,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:31:55,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:02,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:02,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:09,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:09,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:16,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:16,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:21,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:21,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:23,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:23,499 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:27,448 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:32:30,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:30,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:32,478 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:32,478 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:35,978 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:35,978 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:37,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:37,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:44,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:44,500 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:51,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:51,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:58,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:32:58,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:05,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:05,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:12,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:12,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:16,141 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:33:19,265 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:19,265 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:19,316 | ERROR | django.request | Internal Server Error: /painel/home/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 207, in painel_home
+    return render(request, 'painel/home.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 210, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 173, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'pagamento' not found. 'pagamento' is not a valid view function or pattern name.
+2026-08-21 19:33:19,521 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:19,521 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:26,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:26,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:33,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:33,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:40,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:40,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:47,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:47,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:54,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:33:54,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:01,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:01,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:08,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:08,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:15,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:15,510 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:22,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:22,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:29,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:29,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:36,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:36,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:43,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:43,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:50,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:50,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:57,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:57,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:57,627 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:34:57,627 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:01,774 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:01,774 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:04,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:04,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:11,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:11,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:18,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:18,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:25,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:25,511 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:32,512 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:32,512 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:39,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:39,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:42,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:42,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:42,619 | ERROR | django.request | Internal Server Error: /painel/home/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 207, in painel_home
+    return render(request, 'painel/home.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader_tags.py", line 210, in render
+    return template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 173, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'pagamento' not found. 'pagamento' is not a valid view function or pattern name.
+2026-08-21 19:35:46,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:46,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:53,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:35:53,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:00,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:00,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:07,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:07,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:14,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:14,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:21,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:21,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:28,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:28,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:35,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:35,580 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:42,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:42,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:49,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:49,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:56,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:36:56,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:03,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:03,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:10,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:10,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:12,865 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/burger/settings.py changed, reloading.
+2026-08-21 19:37:13,145 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:37:17,621 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:17,621 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:22,783 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/burger/urls.py changed, reloading.
+2026-08-21 19:37:23,040 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:37:24,598 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:24,598 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:31,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:31,581 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:34,775 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/pagamento/views.py changed, reloading.
+2026-08-21 19:37:35,064 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:37:38,683 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:38,683 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:45,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:45,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:52,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:52,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:59,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:37:59,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:06,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:06,758 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:11,881 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/pagamento/urls.py changed, reloading.
+2026-08-21 19:38:12,190 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:38:13,776 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:13,776 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:20,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:20,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:27,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:27,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:34,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:34,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:36,853 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:36,853 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:41,450 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:41,450 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:41,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:41,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:48,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:48,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:55,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:38:55,759 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:02,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:02,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:09,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:09,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:16,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:16,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:23,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:23,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:30,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:30,841 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:37,944 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:37,944 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:45,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:45,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:52,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:52,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:59,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:39:59,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:06,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:06,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:13,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:13,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:20,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:20,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:27,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:27,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:34,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:34,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:41,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:41,027 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:48,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:48,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:55,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:40:55,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:02,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:02,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:09,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:09,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:16,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:16,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:23,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:23,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:30,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:30,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:37,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:37,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:44,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:44,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:51,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:51,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:58,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:41:58,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:05,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:05,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:12,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:12,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:19,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:19,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:26,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:26,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:33,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:33,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:40,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:40,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:47,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:47,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:54,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:42:54,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:01,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:01,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:08,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:08,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:15,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:15,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:22,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:22,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:29,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:29,063 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:36,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:36,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:43,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:43,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:50,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:50,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:57,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:43:57,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:04,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:04,064 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:11,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:11,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:18,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:18,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:18,206 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/pagamento/views.py changed, reloading.
+2026-08-21 19:44:18,499 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:44:25,103 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:25,103 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:30,221 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/pagamento/views.py changed, reloading.
+2026-08-21 19:44:30,489 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:44:32,082 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:32,082 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:37,408 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:37,408 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:39,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:39,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:46,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:46,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:53,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:44:53,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:00,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:00,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:07,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:07,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:14,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:14,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:21,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:21,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:28,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:28,065 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:35,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:35,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:42,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:42,066 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:49,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:49,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:56,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:45:56,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:03,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:03,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:10,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:10,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:17,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:17,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:24,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:24,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:31,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:31,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:38,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:38,133 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:45,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:45,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:52,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:52,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:59,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:46:59,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:06,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:06,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:13,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:13,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:20,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:20,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:27,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:27,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:34,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:34,134 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:41,135 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:41,135 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:47,714 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/models.py changed, reloading.
+2026-08-21 19:47:47,964 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:47:48,235 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:48,235 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:48,302 | ERROR | django.request | Internal Server Error: /painel/pedidos/dados/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 163, in painel_pedidos_dados
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+2026-08-21 19:47:55,218 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:55,218 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:47:55,252 | ERROR | django.request | Internal Server Error: /painel/pedidos/dados/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 163, in painel_pedidos_dados
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+2026-08-21 19:48:02,218 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:48:02,218 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:48:02,252 | ERROR | django.request | Internal Server Error: /painel/pedidos/dados/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 163, in painel_pedidos_dados
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+2026-08-21 19:48:09,240 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:48:09,240 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:48:09,274 | ERROR | django.request | Internal Server Error: /painel/pedidos/dados/
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/views_auth.py", line 163, in painel_pedidos_dados
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.valor_mensalidade não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+2026-08-21 19:57:45,971 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 19:57:47,043 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:47,043 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:47,795 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:47,795 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:51,168 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:51,168 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:54,203 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:57:54,203 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:01,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:01,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:08,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:08,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:15,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:15,271 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:22,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:22,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:29,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:29,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:36,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:36,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:43,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:43,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:50,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:50,272 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:57,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:58:57,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:04,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:04,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:11,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:11,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:18,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:18,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:25,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:25,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:32,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:32,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:39,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:39,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:46,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:46,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:53,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 19:59:53,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:00,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:00,273 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:07,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:07,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:14,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:14,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:21,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:21,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:28,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:28,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:35,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:35,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:42,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:42,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:49,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:49,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:56,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:00:56,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:03,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:03,274 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:10,276 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:10,276 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:17,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:17,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:24,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:24,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:31,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:31,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:38,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:38,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:45,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:45,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:52,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:52,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:59,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:01:59,275 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:06,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:06,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:13,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:13,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:20,144 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/admin.py changed, reloading.
+2026-08-21 20:02:20,410 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 20:02:24,793 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/admin.py changed, reloading.
+2026-08-21 20:02:25,039 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 20:02:27,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:27,360 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:29,986 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:29,986 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:31,209 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:31,209 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:31,806 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:31,806 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:34,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:34,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:41,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:41,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:48,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:48,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:55,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:02:55,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:02,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:02,343 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:09,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:09,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:16,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:16,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:23,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:23,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:30,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:30,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:37,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:37,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:44,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:44,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:51,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:51,344 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:54,581 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 20:03:57,622 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:57,622 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,405 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,405 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,415 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,415 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,843 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:58,843 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,192 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,192 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,365 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,365 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,538 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,538 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,710 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,710 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,840 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:03:59,840 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:00,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:00,062 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:00,530 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:00,530 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:01,048 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:01,048 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:01,895 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:01,895 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:02,618 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:02,618 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:05,657 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:05,657 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:09,930 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:09,930 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:12,657 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:12,657 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:19,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:19,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:24,121 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:24,121 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:26,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:26,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:27,506 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:27,506 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:31,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:31,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:33,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:33,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:40,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:40,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:47,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:47,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:54,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:04:54,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:01,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:01,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:08,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:08,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:15,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:15,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:22,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:22,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:29,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:29,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:36,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:36,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:43,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:43,659 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:50,693 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:50,693 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:57,693 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:57,693 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:58,585 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:58,585 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:59,459 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:59,459 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:59,881 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:05:59,881 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:04,970 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:04,970 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:12,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:12,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,053 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,053 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,736 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:19,736 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,159 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,159 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,405 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,405 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,597 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,597 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,801 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:20,801 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:21,042 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:21,042 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:26,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:26,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:33,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:33,038 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:40,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:40,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:47,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:47,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:54,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:06:54,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:01,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:01,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:08,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:08,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:15,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:15,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:22,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:22,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:28,243 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:28,243 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:29,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:29,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:36,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:36,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:41,279 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:41,279 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:41,297 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:41,297 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:43,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:43,039 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:45,496 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:45,496 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:50,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:50,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:50,696 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:50,696 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:57,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:07:57,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:04,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:04,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:08,665 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:08,665 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:11,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:11,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:18,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:18,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:25,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:25,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:32,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:32,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:39,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:39,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:46,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:46,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:53,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:08:53,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:00,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:00,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:04,007 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:04,007 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:07,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:07,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:14,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:09:14,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:18,406 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-21 20:10:24,141 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:24,141 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:26,666 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:26,666 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:26,940 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:26,940 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:30,185 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:30,185 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:30,296 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:30,296 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:31,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:31,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:34,304 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:34,304 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:34,340 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:34,340 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:38,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:38,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:45,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:45,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,721 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,721 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,774 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,774 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:52,850 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:59,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:10:59,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:06,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:06,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:09,453 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:09,453 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:09,468 | WARNING | django.request | Not Found: /painel/
+2026-08-21 20:11:13,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:13,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:15,448 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:15,448 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:20,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:20,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:21,770 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:21,770 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:27,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:27,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:34,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:34,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:41,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:41,109 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:48,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:48,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:55,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:11:55,110 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:02,211 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:02,211 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:09,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:09,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:16,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:16,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:23,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:23,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:30,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:30,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:37,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:37,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:44,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:44,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:51,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:51,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:58,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:12:58,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:13:05,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-21 20:13:05,515 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
