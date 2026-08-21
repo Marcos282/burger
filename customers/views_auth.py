@@ -3,6 +3,7 @@ from tenants.models import Tenant, TenantSettings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.utils import timezone
 from itertools import count
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, HttpResponse
@@ -197,12 +198,17 @@ def painel_home(request):
         # Considera "vazio" também o valor padrão do campo (loja ainda não configurou o whatsapp)
         mostrar_modal_orientacoes = whatsapp_valor == '' or whatsapp_valor == whatsapp_default
 
+        dias_restantes = None
+        if user.data_expiracao:
+            dias_restantes = (user.data_expiracao - timezone.now()).days
+
         context = {
             'localizacao': localizacao,
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': get_tenant_url(request, '/loja/'),
             'mostrar_modal_orientacoes': mostrar_modal_orientacoes,
+            'dias_restantes': dias_restantes,
         }
         return render(request, 'painel/home.html', context)
     else:

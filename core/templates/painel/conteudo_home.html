@@ -180,7 +180,17 @@
             </span>
             <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 0.7rem;">
                <div class="text-inverse-dark font-weight-bolder font-size-h5 mb-2">Pagamentos</div>
-               <div class="font-weight-bold text-inverse-dark font-size-sm">Dias restantes </div>
+               <div class="font-weight-bold text-inverse-dark font-size-sm">
+                  {% if dias_restantes is not None %}
+                     {% if dias_restantes >= 0 %}
+                        {{ dias_restantes }} dia{{ dias_restantes|pluralize }} restante{{ dias_restantes|pluralize }}
+                     {% else %}
+                        Expirado
+                     {% endif %}
+                  {% else %}
+                     Dias restantes
+                  {% endif %}
+               </div>
             </div>
          </div>
          <!--end::Body-->
