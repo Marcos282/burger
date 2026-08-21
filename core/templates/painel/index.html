@@ -32,7 +32,9 @@
 <!--end::Subheader-->
 
 <!--begin::Card_pedidos-->
+<div id="card-pedidos-container">
     {% include 'painel/card_pedidos.html' %}
+</div>
 <!--end::Card_pedidos-->
 
 <div id="pending-audio-widget" style="position: fixed; right: 16px; bottom: 16px; z-index: 1050; display: none;">
@@ -136,8 +138,10 @@
             enableBtn.addEventListener('click', activateAudio);
         }
 
-        function fetchPendingCount() {
-            fetch("{% url 'painel_pedidos_pendentes_count' %}", {
+        function fetchPedidos() {
+            // URL absoluta (origin + path) para evitar que a tag <base> do layout resolva o caminho errado.
+            var url = window.location.origin + "{% url 'painel_pedidos_dados' %}";
+            fetch(url, {
                 method: 'GET',
                 credentials: 'same-origin',
                 headers: {
@@ -146,12 +150,16 @@
             })
             .then(function (response) {
                 if (!response.ok) {
-                    throw new Error('Falha ao buscar pedidos pendentes');
+                    throw new Error('Falha ao buscar pedidos');
                 }
                 return response.json();
             })
             .then(function (data) {
-                pendingCount = Number(data.pendentes || 0);
+                var container = document.getElementById('card-pedidos-container');
+                if (container && typeof data.html === 'string') {
+                    container.innerHTML = data.html;
+                }
+                pendingCount = Number(data.ordens_pendentes_count || 0);
                 syncSoundState();
             })
             .catch(function () {
@@ -160,7 +168,7 @@
         }
 
         syncSoundState();
-        setInterval(fetchPendingCount, 7000);
+        setInterval(fetchPedidos, 7000);
     })();
 </script>
 {% endblock %}

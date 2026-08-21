@@ -74,9 +74,62 @@ def novocadastro_view(request):
     return register_view(request)
 
 
+def montar_ordens_info(tenant):
+    """Monta a lista de pedidos (ordens_info) usada nas telas do painel."""
+    ordens = Ordem.objects.filter(tenant=tenant).select_related('cliente')
+    ordens_pendentes_count = ordens.filter(completo=False).count()
+
+    ordens_info = []
+    for ordem in ordens:
+        qt_itens = OrdemItem.objects.filter(ordem=ordem).count()
+        nome_cliente = ordem.cliente.nome if ordem.cliente else "-"
+        telefone_cliente = ordem.cliente.telefone if ordem.cliente and hasattr(ordem.cliente, 'telefone') else "-"
+        import re
+        telefone_cliente_wa = re.sub(r'\D', '', telefone_cliente)
+        valor = ordem.valor_total if ordem.valor_total is not None else 0
+        tx_entrega = ordem.tx_entrega if ordem.tx_entrega is not None else 0
+        valor_total_formatado = f"R${valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        taxa_entrega_formatado = f"R${tx_entrega:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        itens_ordem_objs = OrdemItem.objects.filter(ordem=ordem)
+        itens_ordem = []
+        total_geral = 0
+        for item in itens_ordem_objs:
+            preco_unitario = float(item.preco_unitario) if item.preco_unitario is not None else 0.0
+            quantidade = item.quantidade if item.quantidade is not None else 0
+            amount = preco_unitario * quantidade
+            itens_ordem.append({
+                'id': item.id,
+                'produto': item.produto,
+                'preco_unitario': preco_unitario,
+                'quantidade': quantidade,
+                'amount': amount,
+
+            })
+            total_geral = amount + total_geral
+
+        endereco_entrega = EnderecoEntrega.objects.filter(ordem=ordem).first()
+        dados_cliente = Cliente.objects.filter(id=ordem.cliente_id).first()
+        ordens_info.append({
+            'ordem': ordem,
+            'qt_itens': qt_itens,
+            'nome_cliente': nome_cliente,
+            'telefone_cliente': telefone_cliente,
+            'telefone_cliente_wa': telefone_cliente_wa,
+            'valor_total_formatado': valor_total_formatado,
+            'taxa_entrega_formatado': taxa_entrega_formatado,
+            'itens_ordem': itens_ordem,
+            'dados_cliente': dados_cliente,
+            'endereco_entrega': endereco_entrega,
+            'total_geral': formatar_brl(total_geral),
+            'data_hora': ordem.dataHora.strftime('%d/%m/%Y %H:%M'),
+        })
+
+    return ordens_info, ordens_pendentes_count
+
+
 def painel_view(request):
     if request.user.is_authenticated:
-                
+
         user = request.user
 
         localizacao = [
@@ -84,59 +137,8 @@ def painel_view(request):
             
         ]
 
-        # Buscar todas as ordens do tenant atual
-        ordens = Ordem.objects.filter(tenant=user.tenant).select_related('cliente')
-        ordens_pendentes_count = ordens.filter(completo=False).count()
+        ordens_info, ordens_pendentes_count = montar_ordens_info(user.tenant)
 
-        
-
-        ordens_info = []
-        for ordem in ordens:
-            qt_itens = OrdemItem.objects.filter(ordem=ordem).count()
-            nome_cliente = ordem.cliente.nome if ordem.cliente else "-"
-            telefone_cliente = ordem.cliente.telefone if ordem.cliente and hasattr(ordem.cliente, 'telefone') else "-"
-            import re
-            telefone_cliente_wa = re.sub(r'\D', '', telefone_cliente)
-            valor = ordem.valor_total if ordem.valor_total is not None else 0
-            tx_entrega = ordem.tx_entrega if ordem.tx_entrega is not None else 0
-            valor_total_formatado = f"R${valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            taxa_entrega_formatado = f"R${tx_entrega:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            itens_ordem_objs = OrdemItem.objects.filter(ordem=ordem)
-            itens_ordem = []
-            total_geral = 0
-            for item in itens_ordem_objs:
-                preco_unitario = float(item.preco_unitario) if item.preco_unitario is not None else 0.0
-                quantidade = item.quantidade if item.quantidade is not None else 0
-                amount = preco_unitario * quantidade
-                itens_ordem.append({
-                    'id': item.id,
-                    'produto': item.produto,
-                    'preco_unitario': preco_unitario,
-                    'quantidade': quantidade,
-                    'amount': amount,
-                    
-                })
-                total_geral = amount + total_geral
-
-            endereco_entrega = EnderecoEntrega.objects.filter(ordem=ordem).first()
-            dados_cliente = Cliente.objects.filter(id=ordem.cliente_id).first()
-            #total_geral_formatado = f"R${total_geral:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            ordens_info.append({
-                'ordem': ordem,
-                'qt_itens': qt_itens,
-                'nome_cliente': nome_cliente,
-                'telefone_cliente': telefone_cliente,
-                'telefone_cliente_wa': telefone_cliente_wa,
-                'valor_total_formatado': valor_total_formatado,
-                'taxa_entrega_formatado': taxa_entrega_formatado,
-                'itens_ordem': itens_ordem,
-                'dados_cliente': dados_cliente,                                
-                'endereco_entrega': endereco_entrega,
-                'total_geral':  formatar_brl(total_geral),
-                'data_hora': ordem.dataHora.strftime('%d/%m/%Y %H:%M'),
-            })
-
-        
         context = {
             'localizacao': localizacao,
             'ordens_info': ordens_info,
@@ -147,6 +149,23 @@ def painel_view(request):
         return render(request, 'painel/index.html', context)
     else:
         return redirect('login')
+
+
+def painel_pedidos_dados(request):
+    """Retorna em JSON o HTML atualizado da tabela de pedidos, para atualização em tempo real."""
+    if not request.user.is_authenticated:
+        return JsonResponse({'detail': 'unauthorized'}, status=401)
+
+    user = request.user
+    ordens_info, ordens_pendentes_count = montar_ordens_info(user.tenant)
+
+    from django.template.loader import render_to_string
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+
+    return JsonResponse({
+        'html': html,
+        'ordens_pendentes_count': ordens_pendentes_count,
+    })
 
 
 def painel_pedidos_pendentes_count(request):
