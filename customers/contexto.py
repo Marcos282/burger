@@ -1,9 +1,18 @@
-from tenants.models import Tenant, Configuracao
+from tenants.models import Tenant, Configuracao, TenantSettings
 
 
 def configuracao_context(request):
     """Expõe a Configuracao (singleton) em todos os templates."""
     return {'configuracao': Configuracao.load()}
+
+
+def loja_aberta_context(request):
+    """Expõe se a loja do tenant logado está aberta ou fechada em todos os templates."""
+    user = getattr(request, 'user', None)
+    tenant = getattr(user, 'tenant', None) if user and user.is_authenticated else None
+    if tenant is None:
+        return {'loja_aberta': None}
+    return {'loja_aberta': TenantSettings.load(tenant).aberto}
 
 
 def buscar_tenant_por_email(email):

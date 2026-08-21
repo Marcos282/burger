@@ -160,11 +160,13 @@ def painel_pedidos_pendentes_count(request):
 
 def painel_home(request):
     if request.user.is_authenticated:
-        
-        status_loja = verificar_loja_aberta(request)
-        print(f"Status da loja: {status_loja['status_texto']} - Aberta: {status_loja['aberta']}")
-
         user = request.user
+
+        if request.method == 'POST' and request.POST.get('toggle_aberto'):
+            settings = TenantSettings.load(user.tenant)
+            settings.aberto = not settings.aberto
+            settings.save()
+            return JsonResponse({'success': True, 'aberto': settings.aberto})
 
         localizacao = [
             {"n1": "Home", "url": "painel_home"}
@@ -177,7 +179,6 @@ def painel_home(request):
             'user': user,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': get_tenant_url(request, '/loja/'),
-            'status_loja': status_loja,
         }
         return render(request, 'painel/home.html', context)
     else:
@@ -958,7 +959,8 @@ def painel_qrcode(request):
         return render(request, 'painel/qrcode.html', context)
     else:
         return redirect('login')
-    
+
+
 def painel_banners(request):
     if request.user.is_authenticated:
         user = request.user        

@@ -109,8 +109,9 @@
       <!--begin::Toolbar-->
       
       <div class="d-flex align-items-center">
-         <a href="{% url 'painel_configuracao' %}#step4" class="btn btn-icon btn-light-danger pulse pulse-danger mr-5">
-    <i class="flaticon2-information" title="Loja Fechada.  Clique aqui para configurar o horario."></i>
+         <a href="#" id="btn-toggle-loja-aberta" data-aberto="{{ loja_aberta|yesno:'true,false' }}"
+            class="btn btn-icon {% if loja_aberta %}btn-light-success pulse pulse-success{% else %}btn-light-danger pulse pulse-danger{% endif %} mr-5">
+    <i class="flaticon2-information" title="{% if loja_aberta %}Loja Aberta. Clique aqui para fechar.{% else %}Loja Fechada. Clique aqui para abrir.{% endif %}"></i>
     <span class="pulse-ring"></span>
    </a>
          <a href="{{ url_marketplace }}" class="btn btn-warning" target="_blank">Ver meu site</a>
@@ -118,3 +119,49 @@
       <!--end::Toolbar-->
    </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('btn-toggle-loja-aberta');
+    if (!btn) return;
+
+    function getCsrfToken() {
+        var match = document.cookie.match(/csrftoken=([^;]+)/);
+        return match ? match[1] : '';
+    }
+
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var formData = new FormData();
+        formData.append('toggle_aberto', '1');
+        fetch("{% url 'painel_home' %}", {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCsrfToken() },
+            body: formData,
+        })
+            .then(function (resp) { return resp.json(); })
+            .then(function (data) {
+                if (!data.success) return;
+                var aberto = data.aberto;
+                var icon = btn.querySelector('.flaticon2-information');
+                btn.classList.toggle('btn-light-success', aberto);
+                btn.classList.toggle('pulse-success', aberto);
+                btn.classList.toggle('btn-light-danger', !aberto);
+                btn.classList.toggle('pulse-danger', !aberto);
+                btn.dataset.aberto = aberto;
+                if (icon) {
+                    icon.title = aberto ? 'Loja Aberta. Clique aqui para fechar.' : 'Loja Fechada. Clique aqui para abrir.';
+                }
+                if (window.Swal) {
+                    Swal.fire({
+                        title: aberto ? 'Loja aberta!' : 'Loja fechada!',
+                        icon: aberto ? 'success' : 'warning',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    alert(aberto ? 'Loja aberta!' : 'Loja fechada!');
+                }
+            });
+    });
+});
+</script>

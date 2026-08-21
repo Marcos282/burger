@@ -118,6 +118,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'customers.contexto.recuperar_tenant_do_contexto',
                 'customers.contexto.configuracao_context',
+                'customers.contexto.loja_aberta_context',
             ],
         },
     },

@@ -269,6 +269,7 @@ class TenantSettings(models.Model):
     # NOTA: email e password foram movidos para o modelo User (customers_user)
     # email = models.EmailField(blank=True, null=True)  # REMOVIDO - usar User.email
     # password = models.CharField(max_length=128, blank=True, null=True)  # REMOVIDO - usar User.password (criptografado)
+    aberto = models.BooleanField(default=True, help_text="Indica se a loja está aberta ou fechada")
     
     def is_open_now(self, dt=None):
         """
