@@ -921,12 +921,13 @@ def painel_qrcode(request):
         user = request.user
         tenant = user.tenant
         settings = TenantSettings.load(tenant)
-
+        loja_url = dominio_full(request)
         # Monta a URL direto do tenant do usuário logado (mais confiável que a sessão) e sempre com a rota /loja/ no final
         subdomain = getattr(tenant, 'subdomain', None)
-        loja_url = f"https://{subdomain}.{config.dominio}/loja/" if subdomain else f"https://{config.dominio}/loja/"
-
         # Gera QR Code
+        #loja_url = session.get(tenant_subdomain) + '/loja/'
+        
+       
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -951,7 +952,7 @@ def painel_qrcode(request):
             'localizacao': localizacao,
             'user': user,
             'settings': settings,
-            'loja_url': loja_url,
+            'loja_url': dominio_full(request),
             'qr_code_base64': img_str,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': loja_url,
