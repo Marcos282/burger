@@ -27257,3 +27257,381 @@ NameError: name 'timezone' is not defined
 2026-08-22 13:50:13,836 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-22 13:53:42,312 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/models.py changed, reloading.
 2026-08-22 13:53:42,574 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:03:27,241 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:03:30,308 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:03:30,308 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:03:30,349 | ERROR | django.request | Internal Server Error: /admin/tenants/configuracao/1/change/
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1987, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1840, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1863, in _changeform_view
+    obj = self.get_object(request, unquote(object_id), to_field)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 897, in get_object
+    return queryset.get(**{field.name: object_id})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+2026-08-22 14:03:38,721 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:03:38,721 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:03:38,778 | ERROR | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/core/views.py", line 24, in home_view
+    return render(request, 'inicial.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+2026-08-22 14:04:37,146 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:04:41,382 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:04:41,382 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:04:41,440 | ERROR | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/core/views.py", line 24, in home_view
+    return render(request, 'inicial.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...con", "tenants_configuracao"."valor_mensalidade", "tenants_c...
+                                                             ^
+
+2026-08-22 14:07:21,691 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/models.py changed, reloading.
+2026-08-22 14:07:21,934 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:07:25,945 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:07:25,945 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:07:26,003 | ERROR | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/core/views.py", line 24, in home_view
+    return render(request, 'inicial.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/Documentos/BURGER17/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.Token_mercadolivre não existe
+LINE 1: ...cao"."dominio", "tenants_configuracao"."favicon", "tenants_c...
+                                                             ^
+
+2026-08-22 14:10:12,550 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:10:12,550 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:03,142 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:11:07,736 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:07,736 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,102 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,102 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,394 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,394 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,658 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:16,674 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-22 14:11:25,591 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:11:25,591 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 14:17:46,985 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/models.py changed, reloading.
+2026-08-22 14:17:47,247 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:17:52,661 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/burger/settings.py changed, reloading.
+2026-08-22 14:17:52,913 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:18:07,704 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/pagamento/views.py changed, reloading.
+2026-08-22 14:18:07,994 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:18:12,330 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/burger/settings.py changed, reloading.
+2026-08-22 14:18:12,587 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:18:16,973 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/admin.py changed, reloading.
+2026-08-22 14:18:17,226 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 14:19:38,625 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/models.py changed, reloading.
+2026-08-22 14:19:38,850 | INFO | django.utils.autoreload | Watching for file changes with StatReloader

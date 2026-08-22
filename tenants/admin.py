@@ -32,3 +32,7 @@ class HorarioFuncionamentoAdmin(admin.ModelAdmin):
 class ConfiguracaoAdmin(admin.ModelAdmin):
     list_display = ("nome_empresa", "email_contato", "telefone", "dominio", "valor_mensalidade")
     search_fields = ("nome_empresa", "email_contato", "dominio")
+    fields = (
+        "nome_empresa", "email_contato", "telefone", "logo", "dominio", "favicon",
+        "valor_mensalidade", "client_id_mercadolivre", "secret_mercadolivre", "Token_mercadolivre",
+    )

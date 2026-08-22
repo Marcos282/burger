@@ -1,10 +1,8 @@
-from django.conf import settings
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
 from tenants.models import Configuracao
 import requests
-from django.http import JsonResponse
 
 
 def pagamento(request):
@@ -12,8 +10,8 @@ def pagamento(request):
         return redirect('login')
 
     user = request.user
-    configuracao = Configuracao.load()
-    valor_mensalidade = configuracao.valor_mensalidade
+    config = Configuracao.load()
+    valor_mensalidade = config.valor_mensalidade
 
     if request.method == 'POST':
         # Valor sempre vem do servidor (Configuracao.valor_mensalidade), nunca do POST do cliente.
@@ -34,26 +32,33 @@ def pagamento(request):
         'data_expiracao': user.data_expiracao,
         'valor_mensalidade': valor_mensalidade,
         'localizacao': localizacao,
-        'configuracao': configuracao,
+        'configuracao': config,
     }
-    return render(request, 'pagamento/index.html', context)
-
-
-def pagamento_callback(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
 
     code = request.GET.get("code")
-    if not code:
-        return JsonResponse({"error": "missing_code"}, status=400)
+    if code:
+        data = {
+            "grant_type": "authorization_code",
+            "client_id": config.client_id_mercadolivre,
+            "client_secret": config.secret_mercadolivre,
+            "code": code,
+            "redirect_uri": "http://localhost:8000/pagamento",
+        }
+        response = requests.post("https://api.mercadolibre.com/oauth/token", data=data)
+        token_info = response.json()
 
-    data = {
-        "grant_type": "authorization_code",
-        "client_id": settings.MERCADOLIVRE_CLIENT_ID,
-        "client_secret": settings.MERCADOLIVRE_CLIENT_SECRET,
-        "code": code,
-        "redirect_uri": settings.MERCADOLIVRE_REDIRECT_URI,
-    }
-    response = requests.post("https://api.mercadolibre.com/oauth/token", data=data)
+        access_token = token_info.get("access_token")
+        context["access_token"] = access_token
+        context["refresh_token"] = token_info.get("refresh_token")
+        context["expires_in"] = token_info.get("expires_in")
 
-    return JsonResponse(response.json(), status=response.status_code)
+        if access_token:
+            # Persiste o token para uso posterior (ex: chamadas futuras à API do Mercado Livre)
+            config.Token_mercadolivre = access_token
+            config.save()
+
+            headers = {"Authorization": f"Bearer {access_token}"}
+            user_response = requests.get("https://api.mercadolibre.com/users/me", headers=headers)
+            context["user_info"] = user_response.json()
+
+    return render(request, 'pagamento/index.html', context)
