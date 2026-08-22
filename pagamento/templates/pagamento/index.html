@@ -101,14 +101,39 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success font-weight-bolder btn-block py-3 mt-4">
-                        Continuar para pagamento
+                    <button type="submit" class="btn btn-mercadopago font-weight-bolder btn-block py-3 mt-4">
+                        Pagar com Mercado Pago
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+{% if mercadopago_preference_json or mercadopago_return_json %}
+<div class="row">
+    <div class="col-12 mb-8">
+        <div class="card card-custom gutter-b">
+            <div class="card-header border-0 py-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark">Dados do Mercado Pago</span>
+                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Resposta da preferência e retorno do pagamento</span>
+                </h3>
+            </div>
+            <div class="card-body pt-0">
+                {% if mercadopago_preference_json %}
+                    <label class="font-weight-bold">Preferência</label>
+                    <pre class="bg-light p-4 rounded text-break">{{ mercadopago_preference_json }}</pre>
+                {% endif %}
+                {% if mercadopago_return_json %}
+                    <label class="font-weight-bold">Retorno do pagamento</label>
+                    <pre class="bg-light p-4 rounded text-break">{{ mercadopago_return_json }}</pre>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% if access_token %}
 <div class="row">
@@ -148,6 +173,17 @@
 {% endif %}
 
 <style>
+    .btn-mercadopago {
+        background-color: #009ee3;
+        border-color: #009ee3;
+        color: #fff;
+    }
+    .btn-mercadopago:hover,
+    .btn-mercadopago:focus {
+        background-color: #008ed0;
+        border-color: #008ed0;
+        color: #fff;
+    }
     .payment-option {
         cursor: pointer;
         border-radius: 10px;

@@ -1,64 +1,187 @@
+import logging
+import json
+
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
+from django.http import JsonResponse
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from tenants.models import Configuracao
-import requests
+import mercadopago
 
+
+
+logger = logging.getLogger(__name__)
 
 def pagamento(request):
+    logger.debug('Requisição %s recebida em /pagamento por %s', request.method, request.user)
+
     if not request.user.is_authenticated:
         return redirect('login')
 
     user = request.user
     config = Configuracao.load()
-    valor_mensalidade = config.valor_mensalidade
 
     if request.method == 'POST':
-        # Valor sempre vem do servidor (Configuracao.valor_mensalidade), nunca do POST do cliente.
-        forma_pagamento = request.POST.get('forma_pagamento', '')
-        # TODO: integrar com o gateway de pagamento (ex: Mercado Pago) usando `valor_mensalidade` e `forma_pagamento`.
-        messages.info(request, f'Pagamento de R$ {valor_mensalidade:.2f} via {forma_pagamento} recebido. Integração de cobrança em breve.')
+        logger.info(
+            'POST de pagamento recebido: usuário=%s dados=%s',
+            user.pk,
+            {
+                key: value
+                for key, value in request.POST.dict().items()
+                if key != 'csrfmiddlewaretoken'
+            },
+        )
+
+        if not config.access_token_mercadopago:
+            logger.warning('Pagamento recusado: Access Token não configurado.')
+            messages.error(request, 'Access Token do Mercado Pago não configurado.')
+            return redirect('pagamento')
+
+        valor = config.valor_mensalidade
+        forma_pagamento = request.POST.get('forma_pagamento', 'pix')
+        success_url = request.build_absolute_uri(reverse('pagamento_sucesso'))
+        preference_data = {
+            'items': [
+                {
+                    'title': 'Renovação de Assinatura',
+                    'quantity': 1,
+                    'unit_price': float(valor),
+                    'currency_id': 'BRL',
+                }
+            ],
+            'payer': {'email': user.email},
+            'back_urls': {
+                'success': success_url,
+                'failure': request.build_absolute_uri(reverse('pagamento_falha')),
+                'pending': request.build_absolute_uri(reverse('pagamento_pendente')),
+            },
+            'notification_url': request.build_absolute_uri(reverse('webhook_mercadopago')),
+        }
+
+        if not success_url.startswith(('http://localhost', 'http://127.0.0.1')):
+            preference_data['auto_return'] = 'approved'
+
+        logger.info(
+            'Criando preferência para usuário=%s forma=%s valor=%s',
+            user.pk,
+            forma_pagamento,
+            valor,
+        )
+        preference_response = mercadopago.SDK(
+            config.access_token_mercadopago
+        ).preference().create(preference_data)
+        preference = preference_response.get('response', {})
+        logger.info(
+            'Resposta da preferência do Mercado Pago: status=%s resposta=%s',
+            preference_response.get('status'),
+            preference,
+        )
+        request.session['mercadopago_preference_json'] = json.dumps(
+            preference_response,
+            ensure_ascii=False,
+            indent=2,
+            default=str,
+        )
+
+        if preference_response.get('status') not in (200, 201):
+            logger.error('Falha ao criar preferência: %s', preference_response)
+            messages.error(request, 'Não foi possível gerar o pagamento.')
+            return redirect('pagamento')
+
+        is_sandbox = config.access_token_mercadopago.startswith('TEST-')
+        checkout_url = (
+            preference.get('sandbox_init_point')
+            if is_sandbox
+            else preference.get('init_point')
+        )
+        if not checkout_url:
+            logger.error('Preferência criada sem URL de checkout: %s', preference_response)
+            messages.error(request, 'O Mercado Pago não retornou a URL de pagamento.')
+            return redirect('pagamento')
+
+        logger.info(
+            'Redirecionando para checkout: preferência=%s sandbox=%s url=%s',
+            preference.get('id'),
+            is_sandbox,
+            checkout_url,
+        )
+        return redirect(checkout_url)
 
     dias_restantes = None
     if user.data_expiracao:
         dias_restantes = (user.data_expiracao - timezone.now()).days
 
-    localizacao = [
-        {"n1": "Pagamento", "url": "pagamento"},
-    ]
-
     context = {
-        'dias_restantes': dias_restantes,
-        'data_expiracao': user.data_expiracao,
-        'valor_mensalidade': valor_mensalidade,
-        'localizacao': localizacao,
-        'configuracao': config,
+        "configuracao": config,
+        "dias_restantes": dias_restantes,
+        "data_expiracao": user.data_expiracao,
+        "mercadopago_preference_json": request.session.pop(
+            'mercadopago_preference_json', None
+        ),
+        "mercadopago_return_json": request.session.pop(
+            'mercadopago_return_json', None
+        ),
     }
 
-    code = request.GET.get("code")
-    if code:
-        data = {
-            "grant_type": "authorization_code",
-            "client_id": config.client_id_mercadolivre,
-            "client_secret": config.secret_mercadolivre,
-            "code": code,
-            "redirect_uri": "http://localhost:8000/pagamento",
-        }
-        response = requests.post("https://api.mercadolibre.com/oauth/token", data=data)
-        token_info = response.json()
-
-        access_token = token_info.get("access_token")
-        context["access_token"] = access_token
-        context["refresh_token"] = token_info.get("refresh_token")
-        context["expires_in"] = token_info.get("expires_in")
-
-        if access_token:
-            # Persiste o token para uso posterior (ex: chamadas futuras à API do Mercado Livre)
-            config.Token_mercadolivre = access_token
-            config.save()
-
-            headers = {"Authorization": f"Bearer {access_token}"}
-            user_response = requests.get("https://api.mercadolibre.com/users/me", headers=headers)
-            context["user_info"] = user_response.json()
-
     return render(request, 'pagamento/index.html', context)
+
+
+def pagamento_sucesso(request):
+    retorno = request.GET.dict()
+    logger.info('Retorno aprovado do Mercado Pago: %s', retorno)
+    request.session['mercadopago_return_json'] = json.dumps(
+        retorno, ensure_ascii=False, indent=2
+    )
+    messages.success(request, 'Pagamento aprovado. Obrigado!')
+    return redirect('pagamento')
+
+
+def pagamento_falha(request):
+    retorno = request.GET.dict()
+    logger.warning('Retorno de pagamento recusado/cancelado: %s', retorno)
+    request.session['mercadopago_return_json'] = json.dumps(
+        retorno, ensure_ascii=False, indent=2
+    )
+    messages.error(request, 'O pagamento não foi concluído. Tente novamente.')
+    return redirect('pagamento')
+
+
+def pagamento_pendente(request):
+    retorno = request.GET.dict()
+    logger.info('Retorno de pagamento pendente: %s', retorno)
+    request.session['mercadopago_return_json'] = json.dumps(
+        retorno, ensure_ascii=False, indent=2
+    )
+    messages.info(request, 'Pagamento pendente de confirmação.')
+    return redirect('pagamento')
+
+
+@csrf_exempt
+@require_POST
+def webhook_mercadopago(request):
+    conteudo_bruto = request.body.decode('utf-8', errors='replace')
+    logger.info(
+        'Webhook recebido: query=%s request_id=%s tópico=%s corpo=%s',
+        request.GET.dict(),
+        request.headers.get('x-request-id'),
+        request.GET.get('type') or request.GET.get('topic'),
+        conteudo_bruto,
+    )
+
+    try:
+        dados = json.loads(conteudo_bruto)
+    except json.JSONDecodeError as error:
+        logger.warning('Webhook do Mercado Pago com JSON inválido: %s', error)
+        return JsonResponse({'error': 'JSON inválido'}, status=400)
+
+    logger.info(
+        'Webhook processado: ação=%s tipo=%s id=%s dados=%s',
+        dados.get('action'),
+        dados.get('type'),
+        (dados.get('data') or {}).get('id'),
+        json.dumps(dados, ensure_ascii=False),
+    )
+    return JsonResponse({'received': True, 'data': dados}, status=200)
