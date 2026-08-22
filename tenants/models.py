@@ -34,6 +34,8 @@ class Configuracao(SingletonModel):
     dominio= models.CharField(max_length=100, default="meusite.com")
     favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
     valor_mensalidade = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    Token_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
+    secret_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
  
     def __str__(self):
         return "Configurações do Sistema"

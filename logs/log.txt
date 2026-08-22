@@ -27166,3 +27166,94 @@ NameError: name 'timezone' is not defined
 2026-08-21 20:23:59,145 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-21 20:24:06,146 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-21 20:24:06,146 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:13:41,846 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:14:16,638 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:16,638 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:19,342 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:19,342 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:27,350 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:27,350 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:41,890 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:41,890 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:42,200 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:42,200 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:42,918 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:42,918 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:42,973 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-22 13:14:56,051 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:14:56,051 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:25:51,110 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/pagamento/views.py changed, reloading.
+2026-08-22 13:25:51,386 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:25:53,682 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/pagamento/views.py changed, reloading.
+2026-08-22 13:25:53,965 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:25:57,313 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/pagamento/views.py changed, reloading.
+2026-08-22 13:25:57,581 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:26:11,341 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/burger/settings.py changed, reloading.
+2026-08-22 13:26:11,605 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:28:15,828 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:15,828 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:15,853 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:15,853 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:20,072 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:20,072 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:35,772 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:35,772 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:55,929 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:28:55,929 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:05,724 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:31:09,782 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:09,782 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:09,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:09,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:20,228 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:20,228 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:51,237 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:31:51,237 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:32:19,607 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:32:19,607 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:32:24,492 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:32:24,492 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:06,006 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-22 13:35:12,529 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:12,529 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:29,008 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:29,008 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:29,291 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:29,291 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:35:29,304 | WARNING | django.request | Not Found: /admin/l
+2026-08-22 13:37:57,920 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:37:57,920 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:37:57,934 | WARNING | django.request | Not Found: /admin/l
+2026-08-22 13:37:58,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:37:58,833 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:37:58,847 | WARNING | django.request | Not Found: /admin/l
+2026-08-22 13:39:50,316 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:50,316 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:50,978 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:50,978 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:50,991 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-22 13:39:59,445 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:59,445 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:59,478 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:39:59,478 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,186 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,186 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,488 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,488 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,760 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,760 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:18,774 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-22 13:40:29,619 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:40:29,619 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:06,203 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:06,203 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:09,694 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:09,694 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:09,740 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:09,740 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:13,744 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:13,744 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:13,836 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:50:13,836 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-22 13:53:42,312 | INFO | django.utils.autoreload | /home/marcos/Documentos/BURGER17/burger/tenants/models.py changed, reloading.
+2026-08-22 13:53:42,574 | INFO | django.utils.autoreload | Watching for file changes with StatReloader

@@ -29,6 +29,11 @@ SECRET_KEY = 'django-insecure-o8gaf2h7g*z2wnnc$m=cc6vdiz#6#t(j%@1p@t16_a6!t(8w*#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Credenciais do OAuth do Mercado Livre (nunca hardcode; use variáveis de ambiente)
+MERCADOLIVRE_CLIENT_ID = os.environ.get('MERCADOLIVRE_CLIENT_ID', '')
+MERCADOLIVRE_CLIENT_SECRET = os.environ.get('MERCADOLIVRE_CLIENT_SECRET', '')
+MERCADOLIVRE_REDIRECT_URI = os.environ.get('MERCADOLIVRE_REDIRECT_URI', 'http://localhost:8000/pagamento/callback')
+
 
 ALLOWED_HOSTS = ['*','marcos.dominio.com.br','lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
 
