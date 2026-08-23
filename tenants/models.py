@@ -25,7 +25,6 @@ class SingletonModel(models.Model):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
  
- 
 class Configuracao(SingletonModel):
     nome_empresa = models.CharField(max_length=100, default="Minha Empresa")
     email_contato = models.EmailField(default="contato@empresa.com")

@@ -28929,3 +28929,131 @@ NameError: name 'reverse' is not defined. Did you mean: 'reversed'?
 2026-08-23 13:39:42,791 | INFO | pagamento.views | Criando preferência para usuário=8 forma=pix valor=29.00
 2026-08-23 13:39:43,547 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'additional_info': '', 'auto_return': '', 'back_urls': {'failure': '', 'pending': '', 'success': ''}, 'binary_mode': False, 'client_id': '5943250370946885', 'collector_id': 3634531928, 'coupon_code': None, 'coupon_labels': None, 'date_created': '2026-08-23T12:39:43.466-04:00', 'date_of_expiration': None, 'expiration_date_from': None, 'expiration_date_to': None, 'expires': False, 'external_reference': '', 'id': '3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'init_point': 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'internal_metadata': None, 'items': [{'id': '', 'category_id': '', 'currency_id': 'BRL', 'description': '', 'title': 'Renovação de Assinatura', 'quantity': 1, 'unit_price': 29}], 'marketplace': 'NONE', 'marketplace_fee': 0, 'metadata': {}, 'notification_url': 'http://localhost:8000/painel/pagamento/webhook/mercadopago/', 'operation_type': 'regular_payment', 'payer': {'phone': {'area_code': '', 'number': ''}, 'address': {'zip_code': '', 'street_name': '', 'street_number': None}, 'email': 'nessa@nessa.com', 'identification': {'number': '', 'type': ''}, 'name': '', 'surname': '', 'date_created': None, 'last_purchase': None}, 'payment_methods': {'default_card_id': None, 'default_payment_method_id': None, 'excluded_payment_methods': [{'id': ''}], 'excluded_payment_types': [{'id': ''}], 'installments': None, 'default_installments': None}, 'processing_modes': None, 'product_id': None, 'preference_expired': False, 'redirect_urls': {'failure': '', 'pending': '', 'success': ''}, 'sandbox_init_point': 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'site_id': 'MLB', 'shipments': {'default_shipping_method': None, 'receiver_address': {'zip_code': '', 'street_name': '', 'street_number': None, 'floor': '', 'apartment': '', 'city_name': None, 'state_name': None, 'country_name': None, 'neighborhood': None}}, 'total_amount': None, 'last_updated': None, 'financing_group': ''}
 2026-08-23 13:39:43,547 | INFO | pagamento.views | Redirecionando para checkout: preferência=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85 sandbox=False url=https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85
+2026-08-23 19:35:30,672 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:06:33,167 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:07:48,652 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:10:22,515 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:13:42,574 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:14:28,194 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/models.py changed, reloading.
+2026-08-23 20:14:28,445 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:14:34,927 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/models.py changed, reloading.
+2026-08-23 20:14:35,172 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:14:41,613 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:14:41,613 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:14:42,133 | ERROR | django.request | Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: ERRO:  coluna tenants_configuracao.dia não existe
+LINE 1: ...nants_configuracao"."webhook_secret_mercadopago", "tenants_c...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/core/views.py", line 24, in home_view
+    return render(request, 'inicial.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/base.py", line 169, in render
+    with context.bind_template(self):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/template/context.py", line 259, in bind_template
+    context = processor(self.request)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/customers/contexto.py", line 6, in configuracao_context
+    return {'configuracao': Configuracao.load()}
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/tenants/models.py", line 25, in load
+    obj, created = cls.objects.get_or_create(pk=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 946, in get_or_create
+    return self.get(**kwargs), False
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 629, in get
+    num = len(clone)
+          ^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 366, in __len__
+    self._fetch_all()
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/marcos/BURGER16/burger/myenv/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: ERRO:  coluna tenants_configuracao.dia não existe
+LINE 1: ...nants_configuracao"."webhook_secret_mercadopago", "tenants_c...
+                                                             ^
+
+2026-08-23 20:15:06,769 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/models.py changed, reloading.
+2026-08-23 20:15:07,034 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:15:12,972 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:15:12,972 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:15:54,121 | INFO | django.utils.autoreload | /home/marcos/BURGER16/burger/tenants/models.py changed, reloading.
+2026-08-23 20:15:54,360 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:16:32,077 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:17:02,415 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:17:40,422 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 20:22:20,516 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:20,516 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:24,245 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:24,245 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:33,085 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:33,085 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:33,391 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:33,391 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:34,402 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:34,402 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:54,814 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:22:54,814 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:00,128 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:00,128 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:20,363 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:20,363 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:20,364 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por nessa (nessa)
+2026-08-23 20:23:30,191 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:30,191 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 20:23:30,191 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por nessa (nessa)
+2026-08-23 20:23:30,203 | INFO | pagamento.views | POST de pagamento recebido: usuário=8 dados={'forma_pagamento': 'pix'}
+2026-08-23 20:23:30,203 | INFO | pagamento.views | Criando preferência para usuário=8 forma=pix valor=29.00
+2026-08-23 20:23:30,927 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'additional_info': '', 'auto_return': '', 'back_urls': {'failure': '', 'pending': '', 'success': ''}, 'binary_mode': False, 'client_id': '5943250370946885', 'collector_id': 3634531928, 'coupon_code': None, 'coupon_labels': None, 'date_created': '2026-08-23T19:23:30.834-04:00', 'date_of_expiration': None, 'expiration_date_from': None, 'expiration_date_to': None, 'expires': False, 'external_reference': '', 'id': '3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'init_point': 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'internal_metadata': None, 'items': [{'id': '', 'category_id': '', 'currency_id': 'BRL', 'description': '', 'title': 'Renovação de Assinatura', 'quantity': 1, 'unit_price': 29}], 'marketplace': 'NONE', 'marketplace_fee': 0, 'metadata': {}, 'notification_url': 'http://localhost:8000/painel/pagamento/webhook/mercadopago/', 'operation_type': 'regular_payment', 'payer': {'phone': {'area_code': '', 'number': ''}, 'address': {'zip_code': '', 'street_name': '', 'street_number': None}, 'email': 'nessa@nessa.com', 'identification': {'number': '', 'type': ''}, 'name': '', 'surname': '', 'date_created': None, 'last_purchase': None}, 'payment_methods': {'default_card_id': None, 'default_payment_method_id': None, 'excluded_payment_methods': [{'id': ''}], 'excluded_payment_types': [{'id': ''}], 'installments': None, 'default_installments': None}, 'processing_modes': None, 'product_id': None, 'preference_expired': False, 'redirect_urls': {'failure': '', 'pending': '', 'success': ''}, 'sandbox_init_point': 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'site_id': 'MLB', 'shipments': {'default_shipping_method': None, 'receiver_address': {'zip_code': '', 'street_name': '', 'street_number': None, 'floor': '', 'apartment': '', 'city_name': None, 'state_name': None, 'country_name': None, 'neighborhood': None}}, 'total_amount': None, 'last_updated': None, 'financing_group': ''}
+2026-08-23 20:23:30,928 | INFO | pagamento.views | Redirecionando para checkout: preferência=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444 sandbox=False url=https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444

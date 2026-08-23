@@ -10,20 +10,25 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='configuracao',
-            name='Token_mercadolivre',
-            field=models.CharField(blank=True, max_length=255, null=True),
-        ),
-        migrations.AddField(
-            model_name='configuracao',
-            name='client_id_mercadolivre',
-            field=models.CharField(blank=True, max_length=255, null=True),
-        ),
-        migrations.AddField(
-            model_name='configuracao',
-            name='secret_mercadolivre',
-            field=models.CharField(blank=True, max_length=255, null=True),
+        migrations.SeparateDatabaseAndState(
+            state_operations=[
+                migrations.AddField(
+                    model_name='configuracao',
+                    name='Token_mercadolivre',
+                    field=models.CharField(blank=True, max_length=255, null=True),
+                ),
+                migrations.AddField(
+                    model_name='configuracao',
+                    name='client_id_mercadolivre',
+                    field=models.CharField(blank=True, max_length=255, null=True),
+                ),
+                migrations.AddField(
+                    model_name='configuracao',
+                    name='secret_mercadolivre',
+                    field=models.CharField(blank=True, max_length=255, null=True),
+                ),
+            ],
+            database_operations=[],
         ),
         migrations.AlterField(
             model_name='configuracao',
