@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from core.utils import calcular_dias_restantes
 from tenants.models import Configuracao
 import mercadopago
 
@@ -112,7 +113,7 @@ def pagamento(request):
 
     dias_restantes = None
     if user.data_expiracao:
-        dias_restantes = (user.data_expiracao - timezone.now()).days
+        dias_restantes = calcular_dias_restantes(user.data_expiracao)
 
     context = {
         "configuracao": config,

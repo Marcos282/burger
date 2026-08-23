@@ -11,7 +11,7 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
+from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .contexto import salvar_tenant_em_sessao, dominio_full
@@ -200,7 +200,7 @@ def painel_home(request):
 
         dias_restantes = None
         if user.data_expiracao:
-            dias_restantes = (user.data_expiracao - timezone.now()).days
+            dias_restantes = calcular_dias_restantes(user.data_expiracao)
 
         context = {
             'localizacao': localizacao,

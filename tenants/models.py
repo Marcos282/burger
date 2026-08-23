@@ -40,6 +40,7 @@ class Configuracao(SingletonModel):
     access_token_mercadopago = models.CharField(max_length=255, blank=True, null=True)
     public_key_mercadopago = models.CharField(max_length=255, blank=True, null=True)
     webhook_secret_mercadopago = models.CharField(max_length=255, blank=True, null=True)
+    dias_gratuitos = models.IntegerField(default=30)
 
     def __str__(self):
         return "Configurações do Sistema"

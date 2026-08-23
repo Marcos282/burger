@@ -2,9 +2,23 @@ from django.utils import timezone
 from datetime import timedelta
 
 
+def normalizar_datetime(valor):
+    if valor is not None and timezone.is_naive(valor):
+        return timezone.make_aware(valor, timezone.get_current_timezone())
+    return valor
+
+
+def calcular_dias_restantes(data_expiracao, agora=None):
+    data_expiracao = normalizar_datetime(data_expiracao)
+    agora = normalizar_datetime(agora or timezone.now())
+    return (data_expiracao - agora).days
+
+
 def estender_expiracao(user, dias=30):
     """Soma `dias` à data de expiração do usuário, chamado quando o cliente realiza um pagamento."""
-    base = user.data_expiracao if user.data_expiracao and user.data_expiracao > timezone.now() else timezone.now()
+    agora = timezone.now()
+    data_expiracao = normalizar_datetime(user.data_expiracao)
+    base = data_expiracao if data_expiracao and data_expiracao > agora else agora
     user.data_expiracao = base + timedelta(days=dias)
     user.save(update_fields=['data_expiracao'])
     return user.data_expiracao

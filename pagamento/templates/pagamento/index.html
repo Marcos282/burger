@@ -65,6 +65,33 @@
                 </h3>
             </div>
             <div class="card-body pt-0">
+                {% if pagamento_pix %}
+                <div id="pix-resultado" data-external-reference="{{ pagamento_pix.external_reference }}">
+                    <div class="alert alert-light-success d-flex align-items-center mb-6" role="alert">
+                        <span>Cobrança Pix gerada! Escaneie o QR Code ou copie o código abaixo para pagar.</span>
+                    </div>
+                    <div class="text-center mb-4">
+                        {% if pagamento_pix.pix_qr_code_base64 %}
+                        <img src="data:image/png;base64,{{ pagamento_pix.pix_qr_code_base64 }}" alt="QR Code Pix" style="width:220px; height:220px;">
+                        {% endif %}
+                    </div>
+                    {% if pagamento_pix.pix_qr_code %}
+                    <div class="form-group">
+                        <label class="font-weight-bold">Pix copia e cola</label>
+                        <div class="input-group">
+                            <input type="text" id="pix-copia-cola" class="form-control" value="{{ pagamento_pix.pix_qr_code }}" readonly>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('pix-copia-cola').select(); document.execCommand('copy');">Copiar</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <p id="pix-status" class="text-muted mb-0">Aguardando confirmação do pagamento...</p>
+                </div>
+                {% else %}
+                <div class="alert alert-light-primary d-flex align-items-center mb-6" role="alert">
+                    <span>Não se preocupe. Se tem ainda dias restantes eles serão adicionados.</span>
+                </div>
                 <form method="post" action="{% url 'pagamento' %}">
                     {% csrf_token %}
                     <div class="form-group">
@@ -105,6 +132,7 @@
                         Pagar com Mercado Pago
                     </button>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -196,6 +224,35 @@
         background-color: rgba(221, 123, 10, 0.08) !important;
     }
 </style>
+
+{% if pagamento_pix %}
+<script>
+    (function () {
+        var container = document.getElementById('pix-resultado');
+        var statusEl = document.getElementById('pix-status');
+        var externalReference = container.dataset.externalReference;
+        var statusUrl = "{% url 'pagamento_status' 'PLACEHOLDER' %}".replace('PLACEHOLDER', externalReference);
+
+        function verificarStatus() {
+            fetch(statusUrl, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
+                    if (data.status === 'approved') {
+                        statusEl.textContent = 'Pagamento aprovado! Atualizando...';
+                        window.location.reload();
+                    } else if (data.status === 'rejected' || data.status === 'cancelled') {
+                        statusEl.textContent = 'Pagamento não aprovado. Tente novamente.';
+                    }
+                })
+                .catch(function () {
+                    // Silencia erros de polling.
+                });
+        }
+
+        setInterval(verificarStatus, 5000);
+    })();
+</script>
+{% endif %}
 {% endblock %}
 
 
