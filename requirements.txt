@@ -5,6 +5,7 @@ Django==5.2.7
 filelock==3.32.3
 gunicorn==26.1.0
 idna==3.18
+mercadopago==3.5.0
 pillow==11.3.0
 psycopg2-binary==2.9.11
 qrcode==8.2

@@ -28906,3 +28906,26 @@ NameError: name 'reverse' is not defined. Did you mean: 'reversed'?
 2026-08-22 18:51:11,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-22 18:51:11,041 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-22 18:51:11,042 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por nessa (nessa)
+2026-08-23 13:37:51,388 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 13:39:05,338 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 13:39:23,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:23,579 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:26,234 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:26,234 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:32,319 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:32,319 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:32,628 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:32,628 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:33,498 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:33,498 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:33,565 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-23 13:39:38,809 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:38,809 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:38,810 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por nessa (nessa)
+2026-08-23 13:39:42,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:42,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 13:39:42,779 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por nessa (nessa)
+2026-08-23 13:39:42,790 | INFO | pagamento.views | POST de pagamento recebido: usuário=8 dados={'forma_pagamento': 'pix'}
+2026-08-23 13:39:42,791 | INFO | pagamento.views | Criando preferência para usuário=8 forma=pix valor=29.00
+2026-08-23 13:39:43,547 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'additional_info': '', 'auto_return': '', 'back_urls': {'failure': '', 'pending': '', 'success': ''}, 'binary_mode': False, 'client_id': '5943250370946885', 'collector_id': 3634531928, 'coupon_code': None, 'coupon_labels': None, 'date_created': '2026-08-23T12:39:43.466-04:00', 'date_of_expiration': None, 'expiration_date_from': None, 'expiration_date_to': None, 'expires': False, 'external_reference': '', 'id': '3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'init_point': 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'internal_metadata': None, 'items': [{'id': '', 'category_id': '', 'currency_id': 'BRL', 'description': '', 'title': 'Renovação de Assinatura', 'quantity': 1, 'unit_price': 29}], 'marketplace': 'NONE', 'marketplace_fee': 0, 'metadata': {}, 'notification_url': 'http://localhost:8000/painel/pagamento/webhook/mercadopago/', 'operation_type': 'regular_payment', 'payer': {'phone': {'area_code': '', 'number': ''}, 'address': {'zip_code': '', 'street_name': '', 'street_number': None}, 'email': 'nessa@nessa.com', 'identification': {'number': '', 'type': ''}, 'name': '', 'surname': '', 'date_created': None, 'last_purchase': None}, 'payment_methods': {'default_card_id': None, 'default_payment_method_id': None, 'excluded_payment_methods': [{'id': ''}], 'excluded_payment_types': [{'id': ''}], 'installments': None, 'default_installments': None}, 'processing_modes': None, 'product_id': None, 'preference_expired': False, 'redirect_urls': {'failure': '', 'pending': '', 'success': ''}, 'sandbox_init_point': 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85', 'site_id': 'MLB', 'shipments': {'default_shipping_method': None, 'receiver_address': {'zip_code': '', 'street_name': '', 'street_number': None, 'floor': '', 'apartment': '', 'city_name': None, 'state_name': None, 'country_name': None, 'neighborhood': None}}, 'total_amount': None, 'last_updated': None, 'financing_group': ''}
+2026-08-23 13:39:43,547 | INFO | pagamento.views | Redirecionando para checkout: preferência=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85 sandbox=False url=https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-0556358c-1ed6-4c97-acc4-4122ab92db85
