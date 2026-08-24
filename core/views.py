@@ -1,6 +1,6 @@
 from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
-from menu.models import Produto, Category
+from menu.models import Banners, Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -43,8 +43,6 @@ def loja(request):
    categoria_id = request.GET.get("categoria_id")
    produtos = Produto.objects.none()
    configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
-   from menu.models import MenuBanner
-   banners = menu_banners.objects.filter(tenant=request.tenant, ativo=True).order_by('ordem')
    if categoria_id is None:
  
       # Obtendo produtos do tenant atual
@@ -118,7 +116,10 @@ def loja(request):
 
    context = {
        'settings': configuracao,
-       'banners': banners,
+       'banners': Banners.objects.filter(
+           tenant=request.tenant,
+           ativo=True,
+       ).order_by('ordem_exibicao'),
        'produtos': produtos,
        'categorias': categorias,
        'cart_count': cart_count,
