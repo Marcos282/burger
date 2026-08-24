@@ -36343,3 +36343,95 @@ django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '
 2026-08-24 16:08:06,291 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
 2026-08-24 16:08:06,301 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
 2026-08-24 16:08:06,301 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:18,135 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-24 16:10:22,207 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,207 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,217 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:22,217 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:22,228 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,228 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,238 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:22,238 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:22,245 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,245 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:22,255 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:22,255 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:48,676 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:48,676 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:10:48,685 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:10:48,685 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:11:04,033 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:11:04,033 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:11:04,044 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:11:04,044 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:11:16,738 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:11:16,738 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:11:16,748 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:11:16,748 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:12:49,736 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:12:49,736 | DEBUG | tenants.middleware | Subdomínio detectado: marcoss
+2026-08-24 16:12:49,745 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 16:12:49,745 | INFO | tenants.middleware | ✅ Tenant encontrado: marcoss | ID: 16
+2026-08-24 17:57:13,420 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:13,420 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:13,435 | WARNING | django.request | Not Found: /painel/
+2026-08-24 17:57:18,887 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:18,887 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:25,050 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:25,050 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:27,346 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:27,346 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:39,106 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:39,106 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:43,834 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:43,834 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:47,393 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:47,393 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:49,242 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:57:49,242 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:01,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:01,509 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:03,635 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:03,635 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:07,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:07,040 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:15,336 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:15,336 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:17,178 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:17,178 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:20,568 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:20,568 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:29,530 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:29,530 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:31,747 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:58:31,747 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:05,788 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:05,788 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:06,020 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:06,020 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:12,725 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:12,725 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:12,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:12,778 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:21,536 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:21,536 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:58,147 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:58,147 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:58,243 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 17:59:58,243 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:05,324 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:05,324 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:05,372 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:05,372 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:18,296 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:18,296 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:55,178 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:55,178 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:55,356 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:55,356 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,364 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,364 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,414 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,414 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,431 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-24 18:00:58,431 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
