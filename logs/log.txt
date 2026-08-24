@@ -29057,3 +29057,22 @@ LINE 1: ...nants_configuracao"."webhook_secret_mercadopago", "tenants_c...
 2026-08-23 20:23:30,203 | INFO | pagamento.views | Criando preferência para usuário=8 forma=pix valor=29.00
 2026-08-23 20:23:30,927 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'additional_info': '', 'auto_return': '', 'back_urls': {'failure': '', 'pending': '', 'success': ''}, 'binary_mode': False, 'client_id': '5943250370946885', 'collector_id': 3634531928, 'coupon_code': None, 'coupon_labels': None, 'date_created': '2026-08-23T19:23:30.834-04:00', 'date_of_expiration': None, 'expiration_date_from': None, 'expiration_date_to': None, 'expires': False, 'external_reference': '', 'id': '3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'init_point': 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'internal_metadata': None, 'items': [{'id': '', 'category_id': '', 'currency_id': 'BRL', 'description': '', 'title': 'Renovação de Assinatura', 'quantity': 1, 'unit_price': 29}], 'marketplace': 'NONE', 'marketplace_fee': 0, 'metadata': {}, 'notification_url': 'http://localhost:8000/painel/pagamento/webhook/mercadopago/', 'operation_type': 'regular_payment', 'payer': {'phone': {'area_code': '', 'number': ''}, 'address': {'zip_code': '', 'street_name': '', 'street_number': None}, 'email': 'nessa@nessa.com', 'identification': {'number': '', 'type': ''}, 'name': '', 'surname': '', 'date_created': None, 'last_purchase': None}, 'payment_methods': {'default_card_id': None, 'default_payment_method_id': None, 'excluded_payment_methods': [{'id': ''}], 'excluded_payment_types': [{'id': ''}], 'installments': None, 'default_installments': None}, 'processing_modes': None, 'product_id': None, 'preference_expired': False, 'redirect_urls': {'failure': '', 'pending': '', 'success': ''}, 'sandbox_init_point': 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444', 'site_id': 'MLB', 'shipments': {'default_shipping_method': None, 'receiver_address': {'zip_code': '', 'street_name': '', 'street_number': None, 'floor': '', 'apartment': '', 'city_name': None, 'state_name': None, 'country_name': None, 'neighborhood': None}}, 'total_amount': None, 'last_updated': None, 'financing_group': ''}
 2026-08-23 20:23:30,928 | INFO | pagamento.views | Redirecionando para checkout: preferência=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444 sandbox=False url=https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-c5b18724-c1a2-4983-8d64-dad37aa8f444
+2026-08-23 22:22:55,172 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:27:54,849 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:32:14,218 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:32:18,702 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:34:00,847 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:36:48,472 | INFO | django.utils.autoreload | /home/marcos/burger/myenv/lib/python3.12/site-packages/asgiref/sync.py changed, reloading.
+2026-08-23 22:44:42,038 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:45:29,116 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:45:57,300 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:46:35,302 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:46:48,428 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:46:48,428 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:49:18,894 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 22:49:30,352 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:49:30,352 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:50:05,921 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:50:05,921 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:50:12,125 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 22:50:12,125 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)

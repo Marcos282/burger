@@ -47,6 +47,9 @@ def pagamento(request):
         preference_data = {
             'items': [
                 {
+                    'id': config.token_mercadopago,
+                    'user_id': '3634590631',
+                    'usuario_teste': 'TESTUSER5363523354863917438',
                     'title': 'Renovação de Assinatura',
                     'quantity': 1,
                     'unit_price': float(valor),

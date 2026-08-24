@@ -36,9 +36,8 @@ class Configuracao(SingletonModel):
     Token_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
     secret_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
     client_id_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
-    access_token_mercadopago = models.CharField(max_length=255, blank=True, null=True)
-    public_key_mercadopago = models.CharField(max_length=255, blank=True, null=True)
-    webhook_secret_mercadopago = models.CharField(max_length=255, blank=True, null=True)
+    SecrectKey = models.CharField(max_length=255, blank=True, null=True)
+    Token_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
     dias_gratuitos = models.IntegerField(default=30)
 
     def __str__(self):
