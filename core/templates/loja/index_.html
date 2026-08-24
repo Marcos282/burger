@@ -156,7 +156,7 @@
                      <div class="col-md-3">
                         <div class="brand">
                            <a href="{% url 'loja' %}">
-                           <img src="{% static '_core/_uploads/cadastro/2023/02/generated-image-2.png' %}" alt="Tiger Burger "/>
+                            <img src="{% static '_core/_uploads/cadastro/2023/02/generated-image-2.png' %}" alt="Tiger Burger "/>
                            <span>Tiger Burger <strong class="colored">.</strong></span>
                            </a>
                         </div>
@@ -361,7 +361,7 @@
                <div class="app-infos">
                   <div class="row">
                      <div class="col-md-12">
-                        <span class="title">Tiger Burger </span>
+                        <span class="title">{{ configuracao.nome_loja }}</span>
                      </div>
                   </div>
                   <div class="row">
@@ -390,10 +390,9 @@
                            </div>
                            <div class="info-badge">
                               <i class="lni lni-whatsapp"></i>
-                              <span><a href="https://api.whatsapp.com/send?text=*Abre%20ai*%20e%20confere%20e%20confere%20essa%20novidade.%20%20https://demo6.lojazap.com/" target="_blank">
-                              Compartilhe<br/>
-                              no WhatsAPP
-                              </a></span>
+                              <span><br/>
+                              no WhatsAPP {{ configuracao.whatsapp }}
+                              </span>
                               <div class="clear"></div>
                            </div>
                         </div>
@@ -426,6 +425,7 @@
                      <div id="carouselbanners" class="carousel slide">
                         <div class="carousel-inner">
                            <div class="item active">
+                            
                               <img class="hidden-xs hidden-sm" src="{% static '_core/_uploads/68/2024/01/1808020124b1ejh3j177.webp' %}"/>
                               <img class="visible-xs visible-sm" src="{% static '_core/_uploads/68/2024/01/1808020124abhehifk0c.webp' %}"/>
                            </div>
@@ -555,7 +555,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>1250, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/></span>
+                        <span>, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/></span>
                      </div>
                   </div>
                   <div class="row">
@@ -571,7 +571,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://conheca.lojazap.com/" target="_blank">
+                        <a class="watermark" href="https://vaidezap.com/" target="_blank">
                         <img src="{% static '_core/_cdn/img/logo.png' %}"/>
                         </a>
                      </div>

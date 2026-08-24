@@ -42,7 +42,9 @@ def loja(request):
    qtd_prd = get_qdt_prod(request)
    categoria_id = request.GET.get("categoria_id")
    produtos = Produto.objects.none()
-
+   configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
+   from menu.models import MenuBanner
+   banners = menu_banners.objects.filter(tenant=request.tenant, ativo=True).order_by('ordem')
    if categoria_id is None:
  
       # Obtendo produtos do tenant atual
@@ -115,6 +117,8 @@ def loja(request):
 
 
    context = {
+       'settings': configuracao,
+       'banners': banners,
        'produtos': produtos,
        'categorias': categorias,
        'cart_count': cart_count,

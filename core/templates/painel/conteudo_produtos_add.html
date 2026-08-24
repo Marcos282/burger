@@ -6,6 +6,27 @@
     border-radius: 8px;
     background: #f8f9fa;
 }
+.dropzone .dz-preview {
+    position: relative;
+}
+.dropzone .dz-preview .dz-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    bottom: auto;
+    z-index: 30;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #c82333;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+.dropzone .dz-preview .dz-remove:hover {
+    color: #a71d2a;
+    text-decoration: underline;
+}
 </style>
 <div class="card card-custom">
 <!-- Modal de sucesso -->
@@ -161,6 +182,32 @@ var imagemExtraDropzone = new Dropzone("#dropzoneImagemExtra", {
     dictDefaultMessage: "Arraste arquivos aqui para enviar <br> ou clique para selecionar",
     dictMaxFilesExceeded: "",
 });
+
+function mensagemErroUpload(file, message, xhr) {
+    if ((xhr && xhr.status === 413) || (typeof message === 'string' && message.includes('413'))) {
+        return 'A imagem ou o conjunto de imagens excede o limite permitido pelo servidor.';
+    }
+    if (file && file.size > 5 * 1024 * 1024) {
+        return 'Cada imagem deve ter no máximo 5 MB.';
+    }
+    return typeof message === 'string' && !message.trim().startsWith('<')
+        ? message
+        : 'Não foi possível enviar a imagem. Verifique o tamanho e tente novamente.';
+}
+
+imagemDropzone.on('error', function(file, message, xhr) {
+    if (!file.previewElement) return;
+    file.previewElement.querySelectorAll('[data-dz-errormessage]').forEach(function(element) {
+        element.textContent = mensagemErroUpload(file, message, xhr);
+    });
+});
+
+imagemExtraDropzone.on('error', function(file, message, xhr) {
+    var erroDiv = document.getElementById('imagemExtraErro');
+    erroDiv.textContent = mensagemErroUpload(file, message, xhr);
+    erroDiv.style.display = 'block';
+});
+
 // Exibe mensagem de erro abaixo do campo Dropzone
 imagemExtraDropzone.on('maxfilesexceeded', function(file) {
     imagemExtraDropzone.removeFile(file);
