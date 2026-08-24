@@ -9,15 +9,28 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, username=None, **extra_fields):
         if not email:
             raise ValueError('O campo email é obrigatório')
-        
-        email = self.normalize_email(email)
+
+        email = self.normalize_email(email).strip()
         
         # Se não foi fornecido username, usar a parte antes do @ do email
         if not username:
             username = email.split('@')[0]
-        
-        # Cria ou recupera o Tenant com subdomain igual ao username
-        tenant, _ = Tenant.objects.get_or_create(subdomain=username, defaults={'name': username})
+        username = username.strip()
+
+        if not username:
+            raise ValueError('O campo username é obrigatório')
+        if self.filter(email__iexact=email).exists():
+            raise ValueError('Já existe um usuário com este email.')
+        if self.filter(username__iexact=username).exists():
+            raise ValueError('Já existe um usuário com este username.')
+
+        # Reutiliza um tenant informado ou cria um para o novo username.
+        tenant = extra_fields.pop('tenant', None)
+        if tenant is None:
+            tenant, _ = Tenant.objects.get_or_create(
+                subdomain=username,
+                defaults={'name': username},
+            )
         user = self.model(email=email, username=username, tenant=tenant, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)

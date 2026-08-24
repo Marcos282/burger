@@ -11,6 +11,18 @@ class UserCreationForm(forms.ModelForm):
         model = User
         fields = ('username', 'email')
 
+    def clean_username(self):
+        username = self.cleaned_data['username'].strip()
+        if User.objects.filter(username__iexact=username).exists():
+            raise forms.ValidationError('Este username já está em uso.')
+        return username
+
+    def clean_email(self):
+        email = User.objects.normalize_email(self.cleaned_data['email']).strip()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError('Este email já está em uso.')
+        return email
+
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
