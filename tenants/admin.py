@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from .models import Tenant, TenantSettings, HorarioFuncionamento,Configuracao
 
 @admin.register(Tenant)
@@ -34,5 +35,12 @@ class ConfiguracaoAdmin(admin.ModelAdmin):
     search_fields = ("nome_empresa", "email_contato", "dominio")
     fields = (
         "nome_empresa", "email_contato", "telefone", "logo", "dominio", "favicon",
-        "valor_mensalidade", "client_id_mercadolivre", "secret_mercadolivre", "Token_mercadolivre",
+        "valor_mensalidade", "SecrectKey", "client_id_mercadolivre",
+        "secret_mercadolivre", "Token_mercadolivre",
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields["SecrectKey"].label = "Access Token do Mercado Pago"
+        form.base_fields["SecrectKey"].widget = forms.PasswordInput(render_value=True)
+        return form

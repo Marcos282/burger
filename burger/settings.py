@@ -147,6 +147,9 @@ DATABASES = {
         "PORT": "5432",
     }
 }   
+
+MERCADOPAGO_WEBHOOK_SECRET = os.getenv('MERCADOPAGO_WEBHOOK_SECRET', '')
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

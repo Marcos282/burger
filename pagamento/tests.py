@@ -5,9 +5,14 @@ from unittest.mock import Mock, patch
 
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.test import RequestFactory, SimpleTestCase
+from django.core.exceptions import ImproperlyConfigured
+from django.test import RequestFactory, SimpleTestCase, override_settings
 
-from pagamento.mercadopago_client import get_sdk
+from pagamento.mercadopago_client import (
+	get_access_token,
+	get_sdk,
+	validar_assinatura_webhook,
+)
 from pagamento.views import pagamento, webhook_log, webhook_mercadopago
 
 
@@ -20,18 +25,20 @@ class MercadoPagoTokenTests(SimpleTestCase):
 			dias_gratuitos=30,
 		)
 
-	@patch('pagamento.views.mercadopago.SDK')
+	@patch('pagamento.views.get_sdk')
+	@patch('pagamento.views.get_access_token', return_value='TEST-access-token')
 	@patch('pagamento.views.Configuracao.load')
 	@patch('pagamento.views.Pagamento.objects.create')
 	def test_pagamento_usa_secrect_key(
 		self,
 		pagamento_create,
 		configuracao_load,
-		sdk_class,
+		access_token,
+		get_sdk_mock,
 	):
 		configuracao_load.return_value = self.configuracao
 		pagamento_registro = pagamento_create.return_value
-		sdk = sdk_class.return_value
+		sdk = get_sdk_mock.return_value
 		sdk.preference.return_value.create.return_value = {
 			'status': 201,
 			'response': {
@@ -56,9 +63,16 @@ class MercadoPagoTokenTests(SimpleTestCase):
 
 		response = pagamento(request)
 
-		sdk_class.assert_called_once_with('TEST-access-token')
+		access_token.assert_called_once_with()
+		get_sdk_mock.assert_called_once_with()
 		preference_data = sdk.preference.return_value.create.call_args.args[0]
 		self.assertTrue(preference_data['external_reference'].startswith('renovacao-1-'))
+		self.assertNotIn('user_id', preference_data['items'][0])
+		self.assertNotIn('usuario_teste', preference_data['items'][0])
+		self.assertEqual(
+			json.loads(request.session['mercadopago_request_json']),
+			preference_data,
+		)
 		self.assertEqual(
 			pagamento_registro.mp_preference_id,
 			'preference-id',
@@ -78,6 +92,30 @@ class MercadoPagoTokenTests(SimpleTestCase):
 
 		sdk_class.assert_called_once_with('TEST-access-token')
 		self.assertIs(sdk, sdk_class.return_value)
+
+	@patch('pagamento.mercadopago_client.Configuracao.load')
+	def test_access_token_rejeita_formato_invalido(self, configuracao_load):
+		configuracao_load.return_value = SimpleNamespace(SecrectKey='token-invalido')
+
+		with self.assertRaises(ImproperlyConfigured):
+			get_access_token()
+
+	@override_settings(MERCADOPAGO_WEBHOOK_SECRET='webhook-secret')
+	@patch('pagamento.mercadopago_client.WebhookSignatureValidator.validate')
+	def test_webhook_usa_chave_de_assinatura_configurada(self, validate):
+		request = self.factory.post(
+			'/painel/pagamento/webhook/mercadopago/?data.id=123',
+			HTTP_X_SIGNATURE='ts=1,v1=hash',
+			HTTP_X_REQUEST_ID='request-123',
+		)
+
+		self.assertTrue(validar_assinatura_webhook(request, '123'))
+		validate.assert_called_once_with(
+			'ts=1,v1=hash',
+			'request-123',
+			'123',
+			'webhook-secret',
+		)
 
 	@patch('pagamento.views.validar_assinatura_webhook', return_value=True)
 	@patch('pagamento.views.buscar_pagamento')

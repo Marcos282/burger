@@ -1,14 +1,29 @@
-import hashlib
-import hmac
+import logging
 
 import mercadopago
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from mercadopago.webhook.validator import (
+    InvalidWebhookSignatureError,
+    WebhookSignatureValidator,
+)
 from tenants.models import Configuracao
 
 
+logger = logging.getLogger(__name__)
+
+
+def get_access_token():
+    access_token = (Configuracao.load().SecrectKey or '').strip()
+    if not access_token:
+        raise ImproperlyConfigured('Access Token do Mercado Pago não configurado.')
+    if not access_token.startswith(('APP_USR-', 'TEST-')):
+        raise ImproperlyConfigured('Access Token do Mercado Pago possui formato inválido.')
+    return access_token
+
+
 def get_sdk():
-    access_token = Configuracao.load().SecrectKey
-    return mercadopago.SDK(access_token)
+    return mercadopago.SDK(get_access_token())
 
 
 def criar_pagamento_pix(pagamento, notification_url):
@@ -38,30 +53,19 @@ def validar_assinatura_webhook(request, data_id):
     Valida o header x-signature do webhook do Mercado Pago.
     https://www.mercadopago.com.br/developers/pt/docs/checkout-api/webhooks#editor_5
     """
-    secret = getattr(settings, 'MERCADOPAGO_WEBHOOK_SECRET', '')
+    secret = getattr(settings, 'MERCADOPAGO_WEBHOOK_SECRET', '').strip()
     if not secret:
-        # Ambiente de teste do Mercado Pago não fornece uma chave de assinatura própria.
-        # Não bloqueia o webhook, mas o status ainda é confirmado via buscar_pagamento()
-        # (nunca confiamos apenas no payload recebido).
-        print("⚠️ MERCADOPAGO_WEBHOOK_SECRET não configurado — pulando validação de assinatura (modo teste).")
+        # A consulta posterior à API continua sendo a fonte de verdade do pagamento.
+        logger.warning('MERCADOPAGO_WEBHOOK_SECRET não configurado; assinatura não validada.')
         return True
 
-    signature_header = request.headers.get('x-signature', '')
-    request_id = request.headers.get('x-request-id', '')
-
-    ts = None
-    v1 = None
-    for part in signature_header.split(','):
-        part = part.strip()
-        if part.startswith('ts='):
-            ts = part[3:]
-        elif part.startswith('v1='):
-            v1 = part[3:]
-
-    if not ts or not v1:
+    try:
+        WebhookSignatureValidator.validate(
+            request.headers.get('x-signature'),
+            request.headers.get('x-request-id'),
+            data_id,
+            secret,
+        )
+    except InvalidWebhookSignatureError:
         return False
-
-    manifest = f"id:{data_id};request-id:{request_id};ts:{ts};"
-    assinatura_calculada = hmac.new(secret.encode(), manifest.encode(), hashlib.sha256).hexdigest()
-
-    return hmac.compare_digest(assinatura_calculada, v1)
+    return True

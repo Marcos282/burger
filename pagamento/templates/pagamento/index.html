@@ -133,6 +133,10 @@
                     </button>
                 </form>
                 <div class="mt-6">
+                    <label class="font-weight-bold d-block">JSON enviado</label>
+                    <pre id="mercadopago-request-json" class="bg-light p-4 rounded text-break mb-0">{% if mercadopago_request_json %}{{ mercadopago_request_json }}{% else %}O JSON aparecerá aqui após o envio.{% endif %}</pre>
+                </div>
+                <div class="mt-6">
                     <label class="font-weight-bold d-block">Log do webhook</label>
                     <pre id="webhook-json" class="bg-light p-4 rounded text-break mb-0">{% if webhook_json %}{{ webhook_json }}{% else %}Aguardando webhook...{% endif %}</pre>
                 </div>
