@@ -2,11 +2,12 @@ import hashlib
 import hmac
 
 import mercadopago
+from django.conf import settings
 from tenants.models import Configuracao
 
 
 def get_sdk():
-    access_token = Configuracao.load().access_token_mercadopago
+    access_token = Configuracao.load().SecrectKey
     return mercadopago.SDK(access_token)
 
 
@@ -37,7 +38,7 @@ def validar_assinatura_webhook(request, data_id):
     Valida o header x-signature do webhook do Mercado Pago.
     https://www.mercadopago.com.br/developers/pt/docs/checkout-api/webhooks#editor_5
     """
-    secret = Configuracao.load().webhook_secret_mercadopago
+    secret = getattr(settings, 'MERCADOPAGO_WEBHOOK_SECRET', '')
     if not secret:
         # Ambiente de teste do Mercado Pago não fornece uma chave de assinatura própria.
         # Não bloqueia o webhook, mas o status ainda é confirmado via buscar_pagamento()

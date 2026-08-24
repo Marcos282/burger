@@ -132,6 +132,10 @@
                         Pagar com Mercado Pago
                     </button>
                 </form>
+                <div class="mt-6">
+                    <label class="font-weight-bold d-block">Log do webhook</label>
+                    <pre id="webhook-json" class="bg-light p-4 rounded text-break mb-0">{% if webhook_json %}{{ webhook_json }}{% else %}Aguardando webhook...{% endif %}</pre>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -224,6 +228,33 @@
         background-color: rgba(221, 123, 10, 0.08) !important;
     }
 </style>
+
+<script>
+    (function () {
+        const webhookOutput = document.getElementById('webhook-json');
+        if (!webhookOutput) return;
+
+        async function atualizarWebhook() {
+            try {
+                const response = await fetch('{% url "webhook_log" %}', {
+                    headers: {'Accept': 'application/json'},
+                    credentials: 'same-origin'
+                });
+                if (!response.ok) return;
+
+                const result = await response.json();
+                if (result.webhook) {
+                    webhookOutput.textContent = JSON.stringify(result.webhook, null, 2);
+                }
+            } catch (error) {
+                console.warn('Não foi possível atualizar o log do webhook.', error);
+            }
+        }
+
+        atualizarWebhook();
+        window.setInterval(atualizarWebhook, 3000);
+    }());
+</script>
 
 {% if pagamento_pix %}
 <script>

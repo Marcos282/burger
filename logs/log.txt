@@ -29076,3 +29076,95 @@ LINE 1: ...nants_configuracao"."webhook_secret_mercadopago", "tenants_c...
 2026-08-23 22:50:05,921 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-23 22:50:12,125 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
 2026-08-23 22:50:12,125 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:22:28,295 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:26:26,619 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:42:56,346 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:44:10,403 | INFO | django.utils.autoreload | /home/marcos/burger/burger/settings.py changed, reloading.
+2026-08-23 23:44:10,658 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:44:20,258 | INFO | django.utils.autoreload | /home/marcos/burger/burger/settings.py changed, reloading.
+2026-08-23 23:44:20,499 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:44:21,994 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:44:21,994 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:45:50,691 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:45:50,691 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:02,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:02,061 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:04,886 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:04,886 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:16,706 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:16,706 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:30,139 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:30,139 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:35,606 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:35,606 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:41,661 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:46:41,661 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:47:11,773 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:47:11,773 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:01,141 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:01,141 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:01,468 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:01,468 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:07,606 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:07,606 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:07,880 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:07,880 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:08,695 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:08,695 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:08,711 | WARNING | django.request | Not Found: /media/favicons/15168750256_paoqueijo_tradicional.jpg
+2026-08-23 23:48:17,860 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:17,860 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:17,860 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por fifi@fifi.com (fifi@fifi.com)
+2026-08-23 23:48:27,339 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:27,339 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:48:27,339 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por fifi@fifi.com (fifi@fifi.com)
+2026-08-23 23:48:27,351 | INFO | pagamento.views | POST de pagamento recebido: usuário=12 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:48:27,363 | ERROR | django.request | Internal Server Error: /painel/pagamento/
+Traceback (most recent call last):
+  File "/home/marcos/burger/myenv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/burger/myenv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marcos/burger/pagamento/views.py", line 39, in pagamento
+    if not config.access_token_mercadopago:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Configuracao' object has no attribute 'access_token_mercadopago'
+2026-08-23 23:49:27,508 | INFO | django.utils.autoreload | /home/marcos/burger/pagamento/views.py changed, reloading.
+2026-08-23 23:49:27,791 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:49:50,899 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por namespace(is_authenticated=True, pk=1, email='cliente@example.com', data_expiracao=None)
+2026-08-23 23:49:50,899 | INFO | pagamento.views | POST de pagamento recebido: usuário=1 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:49:50,905 | INFO | pagamento.views | Criando preferência para usuário=1 forma=pix valor=49.90
+2026-08-23 23:49:50,905 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'id': 'preference-id', 'sandbox_init_point': 'https://sandbox.mercadopago.test/checkout'}
+2026-08-23 23:49:50,905 | INFO | pagamento.views | Redirecionando para checkout: preferência=preference-id sandbox=True url=https://sandbox.mercadopago.test/checkout
+2026-08-23 23:50:01,185 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:50:01,185 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:50:01,187 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por AnonymousUser
+2026-08-23 23:51:12,175 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:51:12,175 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:51:12,176 | DEBUG | pagamento.views | Requisição GET recebida em /pagamento por fifi@fifi.com (fifi@fifi.com)
+2026-08-23 23:51:17,890 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:51:17,890 | INFO | tenants.middleware | ℹ️ Sem subdomínio (site principal)
+2026-08-23 23:51:17,890 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por fifi@fifi.com (fifi@fifi.com)
+2026-08-23 23:51:17,902 | INFO | pagamento.views | POST de pagamento recebido: usuário=12 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:51:17,903 | INFO | pagamento.views | Criando preferência para usuário=12 forma=pix valor=29.00
+2026-08-23 23:51:18,587 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'additional_info': '', 'auto_return': '', 'back_urls': {'failure': '', 'pending': '', 'success': ''}, 'binary_mode': False, 'client_id': '5943250370946885', 'collector_id': 3634531928, 'coupon_code': None, 'coupon_labels': None, 'date_created': '2026-08-23T22:51:18.494-04:00', 'date_of_expiration': None, 'expiration_date_from': None, 'expiration_date_to': None, 'expires': False, 'external_reference': '', 'id': '3634531928-47a7cb46-95b2-4ecd-b47e-0714c021f7d9', 'init_point': 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-47a7cb46-95b2-4ecd-b47e-0714c021f7d9', 'internal_metadata': None, 'items': [{'id': 'renovacao-assinatura', 'category_id': '', 'currency_id': 'BRL', 'description': '', 'title': 'Renovação de Assinatura', 'quantity': 1, 'unit_price': 29}], 'marketplace': 'NONE', 'marketplace_fee': 0, 'metadata': {}, 'notification_url': 'http://localhost:8000/painel/pagamento/webhook/mercadopago/', 'operation_type': 'regular_payment', 'payer': {'phone': {'area_code': '', 'number': ''}, 'address': {'zip_code': '', 'street_name': '', 'street_number': None}, 'email': 'fifi@fifi.com', 'identification': {'number': '', 'type': ''}, 'name': '', 'surname': '', 'date_created': None, 'last_purchase': None}, 'payment_methods': {'default_card_id': None, 'default_payment_method_id': None, 'excluded_payment_methods': [{'id': ''}], 'excluded_payment_types': [{'id': ''}], 'installments': None, 'default_installments': None}, 'processing_modes': None, 'product_id': None, 'preference_expired': False, 'redirect_urls': {'failure': '', 'pending': '', 'success': ''}, 'sandbox_init_point': 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-47a7cb46-95b2-4ecd-b47e-0714c021f7d9', 'site_id': 'MLB', 'shipments': {'default_shipping_method': None, 'receiver_address': {'zip_code': '', 'street_name': '', 'street_number': None, 'floor': '', 'apartment': '', 'city_name': None, 'state_name': None, 'country_name': None, 'neighborhood': None}}, 'total_amount': None, 'last_updated': None, 'financing_group': ''}
+2026-08-23 23:51:18,588 | INFO | pagamento.views | Redirecionando para checkout: preferência=3634531928-47a7cb46-95b2-4ecd-b47e-0714c021f7d9 sandbox=False url=https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3634531928-47a7cb46-95b2-4ecd-b47e-0714c021f7d9
+2026-08-23 23:53:50,383 | INFO | django.utils.autoreload | /home/marcos/burger/pagamento/views.py changed, reloading.
+2026-08-23 23:53:50,700 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
+2026-08-23 23:53:56,084 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por namespace(is_authenticated=True, pk=1, email='cliente@example.com', data_expiracao=None)
+2026-08-23 23:53:56,084 | INFO | pagamento.views | POST de pagamento recebido: usuário=1 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:54:15,356 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por namespace(is_authenticated=True, pk=1, email='cliente@example.com', data_expiracao=None, tenant=namespace(pk=1))
+2026-08-23 23:54:15,356 | INFO | pagamento.views | POST de pagamento recebido: usuário=1 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:54:15,359 | INFO | pagamento.views | Webhook recebido: query={} request_id=request-123 tópico=None corpo={"type": "payment", "data": {"id": "123"}}
+2026-08-23 23:54:15,359 | INFO | pagamento.views | Webhook processado: ação=None tipo=payment id=123 dados={"type": "payment", "data": {"id": "123"}}
+2026-08-23 23:54:24,617 | DEBUG | pagamento.views | Requisição POST recebida em /pagamento por namespace(is_authenticated=True, pk=1, email='cliente@example.com', data_expiracao=None, tenant=namespace(pk=1))
+2026-08-23 23:54:24,618 | INFO | pagamento.views | POST de pagamento recebido: usuário=1 dados={'forma_pagamento': 'pix'}
+2026-08-23 23:54:24,623 | INFO | pagamento.views | Criando preferência para usuário=1 forma=pix valor=49.90
+2026-08-23 23:54:24,623 | INFO | pagamento.views | Resposta da preferência do Mercado Pago: status=201 resposta={'id': 'preference-id', 'sandbox_init_point': 'https://sandbox.mercadopago.test/checkout'}
+2026-08-23 23:54:24,624 | INFO | pagamento.views | Redirecionando para checkout: preferência=preference-id sandbox=True url=https://sandbox.mercadopago.test/checkout
+2026-08-23 23:54:24,625 | INFO | pagamento.views | Webhook recebido: query={} request_id=request-123 tópico=None corpo={"type": "payment", "data": {"id": "123"}}
+2026-08-23 23:54:24,625 | INFO | pagamento.views | Webhook processado: ação=None tipo=payment id=123 dados={"type": "payment", "data": {"id": "123"}}
+2026-08-23 23:55:03,744 | INFO | django.utils.autoreload | /home/marcos/burger/pagamento/urls.py changed, reloading.
+2026-08-23 23:55:03,977 | INFO | django.utils.autoreload | Watching for file changes with StatReloader
