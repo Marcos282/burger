@@ -35,6 +35,19 @@ from tenants.models import Configuracao
 logger = logging.getLogger(__name__)
 
 
+def _url_absoluta(config, nome_rota):
+    """Monta a URL pública de uma rota usando o domínio de Configuracao.
+
+    Usar o domínio cadastrado (em vez do host da requisição) evita back_urls
+    e notification_url erradas em testes locais feitos por túnel (ex: ngrok).
+    """
+    dominio = (config.dominio or '').strip().rstrip('/')
+    esquema = 'http' if dominio.startswith(('localhost', '127.0.0.1')) else 'https'
+    url = f'{esquema}://{dominio}{reverse(nome_rota)}'
+    logger.debug('URL absoluta montada para %s: %s', nome_rota, url)
+    return url
+
+
 def pagamento(request):
     """Exibe a renovação e cria uma preferência no Mercado Pago via POST.
 
@@ -55,16 +68,8 @@ def pagamento(request):
 
     # Um POST representa a solicitação de criação de uma nova cobrança.
     if request.method == 'POST':
-        # Registra somente os campos comuns do formulário; o token CSRF é omitido.
-        logger.info(
-            'POST de pagamento recebido: usuário=%s dados=%s',
-            user.pk,
-            {
-                key: value
-                for key, value in request.POST.dict().items()
-                if key != 'csrfmiddlewaretoken'
-            },
-        )
+        # Registra a tentativa; o formulário simplificado não envia mais campos sensíveis.
+        logger.info('POST de pagamento recebido: usuário=%s', user.pk)
 
         # Obtém e valida o Access Token antes de criar qualquer pagamento remoto.
         try:
@@ -77,8 +82,6 @@ def pagamento(request):
 
         # O valor vem da configuração do servidor, nunca de um valor enviado pelo cliente.
         valor = config.valor_mensalidade
-        # A forma selecionada é armazenada para auditoria do registro local.
-        forma_pagamento = request.POST.get('forma_pagamento', 'pix')
         # A referência única conecta preferência, pagamento, webhook e usuário.
         external_reference = f'renovacao-{user.pk}-{uuid.uuid4().hex}'
 
@@ -88,13 +91,14 @@ def pagamento(request):
             tenant=user.tenant,
             user=user,
             valor=valor,
-            forma_pagamento=forma_pagamento,
+            # Checkout Pro deixa o pagador escolher o método na própria tela do Mercado Pago.
+            forma_pagamento='pix',
             external_reference=external_reference,
             dias_creditados=config.dias_gratuitos,
         )
 
-        # Constrói URLs absolutas, exigidas pelo Mercado Pago nos retornos e webhook.
-        success_url = request.build_absolute_uri(reverse('pagamento_sucesso'))
+        # URLs absolutas usam o domínio cadastrado em Configuracao (ver `_url_absoluta`).
+        success_url = _url_absoluta(config, 'pagamento_sucesso')
 
         # Payload oficial da preferência do Checkout Pro.
         preference_data = {
@@ -108,18 +112,20 @@ def pagamento(request):
                     'currency_id': 'BRL',
                 }
             ],
-            # E-mail do pagador autenticado no sistema.
-            'payer': {'email': user.email},
+            # Sem 'payer' pré-preenchido: o e-mail real do usuário não corresponde a uma
+            # conta do Mercado Pago (produção) nem a um comprador de teste (sandbox), e
+            # enviá-lo causa a página de erro "/fatal/" no checkout. O pagador se
+            # identifica/loga diretamente na tela do Mercado Pago.
             # Referência usada para localizar o Pagamento quando chegar o webhook.
             'external_reference': external_reference,
             # Destinos utilizados após aprovação, falha ou pendência no checkout.
             'back_urls': {
                 'success': success_url,
-                'failure': request.build_absolute_uri(reverse('pagamento_falha')),
-                'pending': request.build_absolute_uri(reverse('pagamento_pendente')),
+                'failure': _url_absoluta(config, 'pagamento_falha'),
+                'pending': _url_absoluta(config, 'pagamento_pendente'),
             },
             # Endpoint público em que o Mercado Pago enviará as notificações.
-            'notification_url': request.build_absolute_uri(reverse('webhook_mercadopago')),
+            'notification_url': _url_absoluta(config, 'webhook_mercadopago'),
         }
 
         # O retorno automático requer uma URL pública; localhost não é acessível pelo gateway.
@@ -135,12 +141,7 @@ def pagamento(request):
         )
 
         # Informa a tentativa sem registrar o Access Token nos logs.
-        logger.info(
-            'Criando preferência para usuário=%s forma=%s valor=%s',
-            user.pk,
-            forma_pagamento,
-            valor,
-        )
+        logger.info('Criando preferência para usuário=%s valor=%s', user.pk, valor)
 
         # O cliente centralizado cria a preferência usando o Access Token validado.
         preference_response = get_sdk().preference().create(preference_data)

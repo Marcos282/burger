@@ -61,147 +61,55 @@
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label font-weight-bolder text-dark">Renovar acesso</span>
-                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Confira o valor e escolha a forma de pagamento</span>
+                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Pagamento seguro via Checkout Mercado Pago</span>
                 </h3>
             </div>
-            <div class="card-body pt-0">
-                {% if pagamento_pix %}
-                <div id="pix-resultado" data-external-reference="{{ pagamento_pix.external_reference }}">
-                    <div class="alert alert-light-success d-flex align-items-center mb-6" role="alert">
-                        <span>Cobrança Pix gerada! Escaneie o QR Code ou copie o código abaixo para pagar.</span>
-                    </div>
-                    <div class="text-center mb-4">
-                        {% if pagamento_pix.pix_qr_code_base64 %}
-                        <img src="data:image/png;base64,{{ pagamento_pix.pix_qr_code_base64 }}" alt="QR Code Pix" style="width:220px; height:220px;">
-                        {% endif %}
-                    </div>
-                    {% if pagamento_pix.pix_qr_code %}
-                    <div class="form-group">
-                        <label class="font-weight-bold">Pix copia e cola</label>
-                        <div class="input-group">
-                            <input type="text" id="pix-copia-cola" class="form-control" value="{{ pagamento_pix.pix_qr_code }}" readonly>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('pix-copia-cola').select(); document.execCommand('copy');">Copiar</button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    <p id="pix-status" class="text-muted mb-0">Aguardando confirmação do pagamento...</p>
+            <div class="card-body pt-0 d-flex flex-column align-items-center text-center">
+                <div class="alert alert-light-primary d-flex align-items-center mb-6 w-100" role="alert">
+                    <span>Não se preocupe. Se você ainda tem dias restantes, eles serão adicionados.</span>
                 </div>
-                {% else %}
-                <div class="alert alert-light-primary d-flex align-items-center mb-6" role="alert">
-                    <span>Não se preocupe. Se tem ainda dias restantes eles serão adicionados.</span>
-                </div>
-                <form method="post" action="{% url 'pagamento' %}">
+
+                <label class="font-weight-bold text-muted mb-1">Valor da renovação</label>
+                <!-- Valor fixo definido em Configuracao.valor_mensalidade; o cliente não pode alterá-lo -->
+                <div class="display-4 font-weight-boldest mb-6" style="color:#DD7B0A;">R$ {{ configuracao.valor_mensalidade|floatformat:2 }}</div>
+
+                <form method="post" action="{% url 'pagamento' %}" class="w-100" style="max-width: 360px;">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label class="font-weight-bold">Valor</label>
-                        <!-- Valor fixo definido em Configuracao.valor_mensalidade; o cliente não pode alterá-lo -->
-                        <div class="display-4 font-weight-boldest" style="color:#DD7B0A;">R$ {{ configuracao.valor_mensalidade|floatformat:2 }}</div>
-                        <span class="form-text text-muted">Valor referente à renovação do plano.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="font-weight-bold d-block mb-3">Forma de pagamento</label>
-                        <div class="row">
-                            <div class="col-4">
-                                <label class="btn btn-outline-secondary btn-block d-flex flex-column align-items-center py-4 payment-option">
-                                    <input type="radio" name="forma_pagamento" value="pix" class="d-none" checked>
-                                    <i class="flaticon2-qrcode icon-2x mb-2"></i>
-                                    Pix
-                                </label>
-                            </div>
-                            <div class="col-4">
-                                <label class="btn btn-outline-secondary btn-block d-flex flex-column align-items-center py-4 payment-option">
-                                    <input type="radio" name="forma_pagamento" value="cartao" class="d-none">
-                                    <i class="flaticon-technology-1 icon-2x mb-2"></i>
-                                    Cartão
-                                </label>
-                            </div>
-                            <div class="col-4">
-                                <label class="btn btn-outline-secondary btn-block d-flex flex-column align-items-center py-4 payment-option">
-                                    <input type="radio" name="forma_pagamento" value="boleto" class="d-none">
-                                    <i class="flaticon2-print icon-2x mb-2"></i>
-                                    Boleto
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-mercadopago font-weight-bolder btn-block py-3 mt-4">
+                    <button type="submit" class="btn btn-mercadopago font-weight-bolder btn-block py-3">
                         Pagar com Mercado Pago
                     </button>
                 </form>
-                <div class="mt-6">
-                    <label class="font-weight-bold d-block">JSON enviado</label>
-                    <pre id="mercadopago-request-json" class="bg-light p-4 rounded text-break mb-0">{% if mercadopago_request_json %}{{ mercadopago_request_json }}{% else %}O JSON aparecerá aqui após o envio.{% endif %}</pre>
-                </div>
-                <div class="mt-6">
-                    <label class="font-weight-bold d-block">Log do webhook</label>
-                    <pre id="webhook-json" class="bg-light p-4 rounded text-break mb-0">{% if webhook_json %}{{ webhook_json }}{% else %}Aguardando webhook...{% endif %}</pre>
-                </div>
-                {% endif %}
+                <span class="form-text text-muted mt-3">Você escolhe Pix, cartão ou boleto na tela do Mercado Pago.</span>
             </div>
         </div>
     </div>
 </div>
 
-{% if mercadopago_preference_json or mercadopago_return_json %}
+{% if mercadopago_request_json or mercadopago_preference_json or mercadopago_return_json or webhook_json %}
 <div class="row">
     <div class="col-12 mb-8">
         <div class="card card-custom gutter-b">
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label font-weight-bolder text-dark">Dados do Mercado Pago</span>
-                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Resposta da preferência e retorno do pagamento</span>
+                    <span class="card-label font-weight-bolder text-dark">Diagnóstico da integração</span>
+                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Dados técnicos para auditoria e depuração</span>
                 </h3>
             </div>
             <div class="card-body pt-0">
+                {% if mercadopago_request_json %}
+                    <label class="font-weight-bold d-block">JSON enviado ao Mercado Pago</label>
+                    <pre class="bg-light p-4 rounded text-break mb-6">{{ mercadopago_request_json }}</pre>
+                {% endif %}
                 {% if mercadopago_preference_json %}
-                    <label class="font-weight-bold">Preferência</label>
-                    <pre class="bg-light p-4 rounded text-break">{{ mercadopago_preference_json }}</pre>
+                    <label class="font-weight-bold d-block">Resposta da preferência</label>
+                    <pre class="bg-light p-4 rounded text-break mb-6">{{ mercadopago_preference_json }}</pre>
                 {% endif %}
                 {% if mercadopago_return_json %}
-                    <label class="font-weight-bold">Retorno do pagamento</label>
-                    <pre class="bg-light p-4 rounded text-break">{{ mercadopago_return_json }}</pre>
+                    <label class="font-weight-bold d-block">Retorno do pagamento</label>
+                    <pre class="bg-light p-4 rounded text-break mb-6">{{ mercadopago_return_json }}</pre>
                 {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-{% if access_token %}
-<div class="row">
-    <div class="col-12 mb-8">
-        <div class="card card-custom gutter-b">
-            <div class="card-header border-0 py-5">
-                <h3 class="card-title align-items-start flex-column">
-                    <span class="card-label font-weight-bolder text-dark">Pagamento Mercado Livre</span>
-                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Conta autenticada via OAuth</span>
-                </h3>
-            </div>
-            <div class="card-body pt-0">
-                <div class="form-group">
-                    <label class="font-weight-bold">Token</label>
-                    <p class="text-break mb-1">{{ access_token }}</p>
-                    <span class="form-text text-muted">Expira em {{ expires_in }} segundos</span>
-                </div>
-
-                <div class="form-group mb-0">
-                    <label class="font-weight-bold d-block">Usuário autenticado</label>
-                    <pre class="bg-light p-4 rounded text-break">{{ user_info }}</pre>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% else %}
-<div class="row">
-    <div class="col-12 mb-8">
-        <div class="card card-custom gutter-b">
-            <div class="card-body">
-                <p class="mb-0 text-muted">Nenhum token disponível. Faça login pelo Mercado Livre.</p>
+                <label class="font-weight-bold d-block">Último webhook recebido</label>
+                <pre id="webhook-json" class="bg-light p-4 rounded text-break mb-0">{% if webhook_json %}{{ webhook_json }}{% else %}Aguardando webhook...{% endif %}</pre>
             </div>
         </div>
     </div>
@@ -220,20 +128,10 @@
         border-color: #008ed0;
         color: #fff;
     }
-    .payment-option {
-        cursor: pointer;
-        border-radius: 10px;
-        transition: all 0.15s ease;
-    }
-    .payment-option input:checked + i,
-    .payment-option:has(input:checked) {
-        border-color: #DD7B0A !important;
-        color: #DD7B0A !important;
-        background-color: rgba(221, 123, 10, 0.08) !important;
-    }
 </style>
 
 <script>
+    // Atualiza o log do último webhook a cada 3s, sem recarregar a página.
     (function () {
         const webhookOutput = document.getElementById('webhook-json');
         if (!webhookOutput) return;
@@ -259,36 +157,8 @@
         window.setInterval(atualizarWebhook, 3000);
     }());
 </script>
-
-{% if pagamento_pix %}
-<script>
-    (function () {
-        var container = document.getElementById('pix-resultado');
-        var statusEl = document.getElementById('pix-status');
-        var externalReference = container.dataset.externalReference;
-        var statusUrl = "{% url 'pagamento_status' 'PLACEHOLDER' %}".replace('PLACEHOLDER', externalReference);
-
-        function verificarStatus() {
-            fetch(statusUrl, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(function (response) { return response.json(); })
-                .then(function (data) {
-                    if (data.status === 'approved') {
-                        statusEl.textContent = 'Pagamento aprovado! Atualizando...';
-                        window.location.reload();
-                    } else if (data.status === 'rejected' || data.status === 'cancelled') {
-                        statusEl.textContent = 'Pagamento não aprovado. Tente novamente.';
-                    }
-                })
-                .catch(function () {
-                    // Silencia erros de polling.
-                });
-        }
-
-        setInterval(verificarStatus, 5000);
-    })();
-</script>
-{% endif %}
 {% endblock %}
+
 
 
 

@@ -45,14 +45,31 @@ class TenantMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
+    # Domínios de túnel de teste (ngrok, cloudflare, etc.): tratados sempre como site principal,
+    # pois o "subdomínio" nesses hosts é um identificador de sessão do túnel, não um tenant.
+    TUNNEL_REGISTERED_DOMAINS = {
+        "ngrok-free.dev",
+        "ngrok.app",
+        "ngrok.io",
+        "ngrok-free.app",
+        "trycloudflare.com",
+        "loca.lt",
+    }
+
     def __call__(self, request):
         # Normalize host and extract subdomain
         host = (request.get_host() or "").split(":")[0].strip().lower().strip(".")
         try:
             extracted = tldextract.extract(host)
             subdomain = (extracted.subdomain or "").lower()
+            registered_domain = extracted.registered_domain.lower()
         except Exception:
             logger.exception("Erro ao extrair subdomínio do host: %s", host)
+            subdomain = ""
+            registered_domain = ""
+
+        if registered_domain in self.TUNNEL_REGISTERED_DOMAINS:
+            logger.debug("Host de túnel de teste detectado (%s); ignorando subdomínio.", host)
             subdomain = ""
 
         # Prepare allowed subdomains (configurable)

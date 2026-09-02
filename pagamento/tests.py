@@ -20,7 +20,7 @@ class MercadoPagoTokenTests(SimpleTestCase):
 	def setUp(self):
 		self.factory = RequestFactory()
 		self.configuracao = SimpleNamespace(
-			SecrectKey='TEST-access-token',
+			dominio='localhost',
 			valor_mensalidade=Decimal('49.90'),
 			dias_gratuitos=30,
 		)
@@ -29,7 +29,7 @@ class MercadoPagoTokenTests(SimpleTestCase):
 	@patch('pagamento.views.get_access_token', return_value='TEST-access-token')
 	@patch('pagamento.views.Configuracao.load')
 	@patch('pagamento.views.Pagamento.objects.create')
-	def test_pagamento_usa_secrect_key(
+	def test_pagamento_cria_preferencia_checkout_pro(
 		self,
 		pagamento_create,
 		configuracao_load,
@@ -48,7 +48,6 @@ class MercadoPagoTokenTests(SimpleTestCase):
 		}
 		request = self.factory.post(
 			'/painel/pagamento/',
-			{'forma_pagamento': 'pix'},
 			HTTP_HOST='localhost',
 		)
 		request.user = SimpleNamespace(
@@ -83,20 +82,16 @@ class MercadoPagoTokenTests(SimpleTestCase):
 			'https://sandbox.mercadopago.test/checkout',
 		)
 
+	@override_settings(MERCADO_PAGO_TOKEN='TEST-access-token')
 	@patch('pagamento.mercadopago_client.mercadopago.SDK')
-	@patch('pagamento.mercadopago_client.Configuracao.load')
-	def test_get_sdk_usa_secrect_key(self, configuracao_load, sdk_class):
-		configuracao_load.return_value = self.configuracao
-
+	def test_get_sdk_usa_token_do_settings(self, sdk_class):
 		sdk = get_sdk()
 
 		sdk_class.assert_called_once_with('TEST-access-token')
 		self.assertIs(sdk, sdk_class.return_value)
 
-	@patch('pagamento.mercadopago_client.Configuracao.load')
-	def test_access_token_rejeita_formato_invalido(self, configuracao_load):
-		configuracao_load.return_value = SimpleNamespace(SecrectKey='token-invalido')
-
+	@override_settings(MERCADO_PAGO_TOKEN='token-invalido')
+	def test_access_token_rejeita_formato_invalido(self):
 		with self.assertRaises(ImproperlyConfigured):
 			get_access_token()
 

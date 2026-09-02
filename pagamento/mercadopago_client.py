@@ -7,38 +7,23 @@ from mercadopago.webhook.validator import (
     InvalidWebhookSignatureError,
     WebhookSignatureValidator,
 )
-from tenants.models import Configuracao
 
 
 logger = logging.getLogger(__name__)
 
 
 def get_access_token():
-    access_token = (Configuracao.load().SecrectKey or '').strip()
+    """Retorna o Access Token do Mercado Pago a partir do settings do projeto."""
+    access_token = (getattr(settings, 'MERCADO_PAGO_TOKEN', '') or '').strip()
     if not access_token:
-        raise ImproperlyConfigured('Access Token do Mercado Pago não configurado.')
+        raise ImproperlyConfigured('MERCADO_PAGO_TOKEN não configurado no settings.')
     if not access_token.startswith(('APP_USR-', 'TEST-')):
-        raise ImproperlyConfigured('Access Token do Mercado Pago possui formato inválido.')
+        raise ImproperlyConfigured('MERCADO_PAGO_TOKEN possui formato inválido.')
     return access_token
 
 
 def get_sdk():
     return mercadopago.SDK(get_access_token())
-
-
-def criar_pagamento_pix(pagamento, notification_url):
-    """Cria uma cobrança Pix no Mercado Pago para o registro `Pagamento` informado."""
-    sdk = get_sdk()
-    payload = {
-        "transaction_amount": float(pagamento.valor),
-        "description": f"Renovação de acesso - {pagamento.user.username}",
-        "payment_method_id": "pix",
-        "payer": {"email": pagamento.user.email},
-        "external_reference": pagamento.external_reference,
-        "notification_url": notification_url,
-    }
-    result = sdk.payment().create(payload)
-    return result["response"]
 
 
 def buscar_pagamento(mp_payment_id):
