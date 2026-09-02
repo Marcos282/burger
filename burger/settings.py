@@ -16,33 +16,34 @@ from pathlib import Path
 
 import os
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Carrega o .env do diretório raiz; variáveis já definidas no ambiente têm prioridade.
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o8gaf2h7g*z2wnnc$m=cc6vdiz#6#t(j%@1p@t16_a6!t(8w*#'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
 ####################  MERCADO PAGO ==============================
-# Credenciais fixas do sistema (não vêm mais de Configuracao no banco).
-# Prefira sempre variáveis de ambiente em produção; os valores literais
-# abaixo só existem como fallback para não quebrar o ambiente atual.
-MERCADO_PAGO_ACCESS_KEY = os.getenv(
-    'MERCADO_PAGO_ACCESS_KEY', 'APP_USR-8073328b-8597-41d5-a2fe-bf1dbee71a64'
-)
-MERCADO_PAGO_TOKEN = os.getenv(
-    'MERCADO_PAGO_TOKEN',
-    'APP_USR-3988226426579443-082321-e1daa08e1c948f1585bf3bd037583a21-3634590631',
-)
+MERCADO_PAGO_ACCESS_KEY = os.getenv('MERCADO_PAGO_ACCESS_KEY', '')
+MERCADO_PAGO_TOKEN = os.getenv('MERCADO_PAGO_TOKEN', '')
 ##################################################################
 
-ALLOWED_HOSTS = ['*','marcos.dominio.com.br','lignetbrasil.com.br','localhost', '127.0.0.1', 'andre.localhost', 'marcos.localhost', 'sofia.localhost','outro.localhost','wanessa.localhost',"*.localhost"]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    if host.strip()
+]
 
 
 # Configuração de Logs para aparecer no terminal e gravar em arquivo físico
@@ -153,11 +154,11 @@ WSGI_APPLICATION = 'burger.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "master_db",
-        "USER": "marcos",
-        "PASSWORD": "mariola",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv('DB_NAME', 'master_db'),
+        "USER": os.environ['DB_USER'],
+        "PASSWORD": os.environ['DB_PASSWORD'],
+        "HOST": os.getenv('DB_HOST', 'localhost'),
+        "PORT": os.getenv('DB_PORT', '5432'),
     }
 }   
 
