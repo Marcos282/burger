@@ -46,6 +46,30 @@ class UserLoginForm(forms.Form):
     )
 
 
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu email'})
+    )
+
+
+class SetNewPasswordForm(forms.Form):
+    password1 = forms.CharField(
+        label='Nova senha',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite a nova senha'})
+    )
+    password2 = forms.CharField(
+        label='Confirme a nova senha',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme a nova senha'})
+    )
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("As senhas não coincidem.")
+        return password2
+
+
 class CategoryModelForm(forms.ModelForm):
     class Meta:
         model = Category

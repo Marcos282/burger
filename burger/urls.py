@@ -23,6 +23,8 @@ from customers.views_auth import (
     painel_banners_add,
     painel_banners_delete,
     painel_banners_edit,
+    password_reset_request_view,
+    password_reset_confirm_view,
 )
  
 from django.contrib import admin
@@ -63,6 +65,8 @@ urlpatterns = [
     path('cadastro_form',cadastro_form, name='cadastro_form'),
     path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('login/', login_view, name='login'),
+    path('password-reset/', password_reset_request_view, name='password_reset_request'),
+    path('password-reset/<uidb64>/<token>/', password_reset_confirm_view, name='password_reset_confirm'),
     path('painel/pedidos', painel_view, name='painel_pedidos'),
     path('painel/pedidos/pendentes-count/', painel_pedidos_pendentes_count, name='painel_pedidos_pendentes_count'),
     path('painel/pedidos/dados/', painel_pedidos_dados, name='painel_pedidos_dados'),

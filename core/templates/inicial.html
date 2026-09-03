@@ -34,11 +34,81 @@
         /* Ajustes responsivos dos botões */
         .botoes-cabecalho { display: flex; gap: 0.75rem; align-items: center; }
 
+        .oferta-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1.25rem;
+        }
+
+        .badge-gratis {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 999px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: var(--destaque);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .preco-card {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.15rem;
+            padding: 0.85rem 1.4rem;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+        }
+
+        .preco-card span { font-size: 0.85rem; color: #6b7280; }
+        .preco-card strong { font-size: 2rem; color: var(--escuro); line-height: 1.1; }
+        .preco-card strong small { font-size: 1rem; font-weight: 500; color: #6b7280; }
+
+        .imagem-exemplo { cursor: pointer; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            z-index: 1000;
+        }
+
+        .modal-overlay.aberto { display: block; }
+
+        .modal-fechar {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @media(max-width:768px){
             .hero { grid-template-columns: 1fr; text-align: center; }
             .nav-links li:not(.botoes-cabecalho) { display: none; }
             .hero h1 { font-size: 2rem; }
             .btn { padding: 0.6rem 1rem; font-size: 0.9rem; }
+            .oferta-box { justify-content: center; }
+            .preco-card { align-items: center; }
         }
     </style>
 </head>
@@ -55,7 +125,7 @@
                 <li><a href="#duvidas">Dúvidas</a></li>
                 <li class="botoes-cabecalho">
                     <a href="{% url 'login' %}" class="btn btn-secundario">Entrar</a>
-                    <a href="{% url 'login' %}" class="btn btn-principal">Criar minha loja</a>
+                    <a href="{% url 'register' %}" class="btn btn-principal">Criar minha loja</a>
                 </li>
             </ul>
         </nav>
@@ -67,14 +137,42 @@
         <div>
             <h1>Monte seu Catálogo Online e <span class="destaque">Venda pelo WhatsApp</span></h1>
             <p>Seus clientes acessam, escolhem e fazem pedidos — e tudo chega organizado no seu WhatsApp. Sem confusão, sem taxas extras, pronto em minutos.</p>
-            <a href="#" class="btn btn-principal">Começar Gratuitamente →</a>
-            <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • 7 dias grátis • Cancelamento fácil</p>
+            <a href="{% url 'register' %}" class="btn btn-principal">Começar Gratuitamente →</a>
+            <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • 30 dias grátis • Cancelamento fácil</p>
+            <div class="oferta-box">
+                <div class="badge-gratis">✨ 30 dias grátis</div>
+                <div class="preco-card">
+                    <span>Depois, apenas</span>
+                    <strong>R$ 30,00 <small>/mês</small></strong>
+                </div>
+            </div>
         </div>
         <div>
-            <img src="https://via.placeholder.com/500x400?text=Imagem+do+Catálogo" alt="Exemplo do catálogo" style="width:100%; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1);">
+            <img src="https://via.placeholder.com/500x400?text=Imagem+do+Catálogo" alt="Exemplo do catálogo" class="imagem-exemplo" onclick="abrirModalExemplo()" style="width:100%; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1);">
         </div>
     </div>
 </section>
+
+<div class="modal-overlay" id="modal-exemplo">
+    <button type="button" class="modal-fechar" onclick="fecharModalExemplo()" aria-label="Fechar">&times;</button>
+    <iframe class="modal-iframe" id="modal-exemplo-iframe" src="" title="Exemplo do catálogo"></iframe>
+</div>
+
+<script>
+    function abrirModalExemplo() {
+        document.getElementById('modal-exemplo-iframe').src = 'https://andre.dominioatual.net/loja';
+        document.getElementById('modal-exemplo').classList.add('aberto');
+    }
+
+    function fecharModalExemplo() {
+        document.getElementById('modal-exemplo').classList.remove('aberto');
+        document.getElementById('modal-exemplo-iframe').src = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') fecharModalExemplo();
+    });
+</script>
 
 <section class="passos" id="como-funciona">
     <div class="container">

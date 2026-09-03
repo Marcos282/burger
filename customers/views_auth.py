@@ -7,7 +7,7 @@ from django.utils import timezone
 from itertools import count
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, HttpResponse
-from .forms import UserLoginForm, UserCreationForm, CategoryModelForm
+from .forms import UserLoginForm, UserCreationForm, CategoryModelForm, PasswordResetRequestForm, SetNewPasswordForm
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
@@ -60,6 +60,70 @@ def login_view(request):
             error = 'Email ou senha incorretos. Tente novamente.'
 
     return render(request, 'login/login.html', {'form': form, 'error': error})
+
+
+def password_reset_request_view(request):
+    from django.contrib.auth.tokens import default_token_generator
+    from django.utils.encoding import force_bytes
+    from django.utils.http import urlsafe_base64_encode
+    from django.core.mail import send_mail
+    from customers.models import User
+
+    form = PasswordResetRequestForm(request.POST or None)
+    sent = False
+    if request.method == 'POST' and form.is_valid():
+        email = form.cleaned_data['email']
+        user = User.objects.filter(email__iexact=email).first()
+        if user is not None:
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            reset_url = request.build_absolute_uri(
+                f'/password-reset/{uidb64}/{token}/'
+            )
+            send_mail(
+                subject='Recuperação de senha',
+                message=(
+                    f'Olá, {user.username},\n\n'
+                    f'Recebemos uma solicitação para redefinir sua senha. '
+                    f'Clique no link abaixo para escolher uma nova senha:\n\n'
+                    f'{reset_url}\n\n'
+                    f'Se você não solicitou isso, ignore este e-mail.'
+                ),
+                from_email=None,
+                recipient_list=[user.email],
+            )
+            print(f"📧 E-mail de recuperação de senha enviado para: {user.email}")
+        # Mensagem genérica: não revela se o e-mail existe na base
+        sent = True
+
+    return render(request, 'login/forgot_password.html', {'form': form, 'sent': sent})
+
+
+def password_reset_confirm_view(request, uidb64, token):
+    from django.contrib.auth.tokens import default_token_generator
+    from django.utils.encoding import force_str
+    from django.utils.http import urlsafe_base64_decode
+    from customers.models import User
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    valid_link = user is not None and default_token_generator.check_token(user, token)
+
+    if not valid_link:
+        return render(request, 'login/reset_password_confirm.html', {'valid_link': False})
+
+    form = SetNewPasswordForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user.set_password(form.cleaned_data['password1'])
+        user.save()
+        messages.success(request, 'Senha redefinida com sucesso. Faça login com a nova senha.')
+        return redirect('login')
+
+    return render(request, 'login/reset_password_confirm.html', {'valid_link': True, 'form': form})
 
 
 def register_view(request):

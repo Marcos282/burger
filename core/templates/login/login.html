@@ -394,6 +394,12 @@
                     <div class="alert">{{ error }}</div>
                 {% endif %}
 
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert-success" style="margin-bottom: 20px; border-radius: 12px; padding: 12px 14px; background: #eefbf1; border: 1px solid rgba(22, 163, 74, 0.16); color: #15803d; font-size: 0.92rem;">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
                 <form method="post" action="{% url 'login' %}">
                     {% csrf_token %}
 
@@ -405,7 +411,7 @@
                     <div class="field">
                         <div class="row-between">
                             <label for="id_password">Senha</label>
-                            <a href="#" class="helper-link">Esqueci</a>
+                            <a href="{% url 'password_reset_request' %}" class="helper-link">Esqueci</a>
                         </div>
                         {{ form.password }}
                     </div>
