@@ -39,10 +39,20 @@ MERCADO_PAGO_ACCESS_KEY = os.getenv('MERCADO_PAGO_ACCESS_KEY', '')
 MERCADO_PAGO_TOKEN = os.getenv('MERCADO_PAGO_TOKEN', '')
 ##################################################################
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-    if host.strip()
+# ALLOWED_HOSTS = [
+#     host.strip()
+#     for host in os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(',')
+#     if host.strip()
+# ]
+
+ALLOWED_HOSTS = ['*']
+
+
+# Necessário para hosts externos (ex.: ngrok) que fazem POST via HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    f'https://{host}'
+    for host in ALLOWED_HOSTS
+    if host not in ('localhost', '127.0.0.1')
 ]
 
 

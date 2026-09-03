@@ -58,10 +58,21 @@ def build_full_url(request, path='', user=None):
     
     # Determina qual user usar
     target_user = user if user else getattr(request, 'user', None)
-    
+    tenant = getattr(request, 'tenant', None)
+
+    if tenant is None and target_user and hasattr(target_user, 'tenant'):
+        tenant = target_user.tenant
+
+    if tenant is None and hasattr(request, 'session'):
+        from tenants.models import Tenant
+
+        tenant_id = request.session.get('tenant_id') or request.session.get('id_tenant')
+        if tenant_id:
+            tenant = Tenant.objects.filter(id=tenant_id).first()
+
     # Obtém o subdomínio do tenant
-    if target_user and hasattr(target_user, 'tenant') and target_user.tenant:
-        subdomain = target_user.tenant.subdomain
+    if tenant:
+        subdomain = tenant.subdomain
         
         # Para desenvolvimento local
         if 'localhost' in request.get_host() or request.get_host().startswith('127.0.0.1'):
@@ -69,8 +80,11 @@ def build_full_url(request, path='', user=None):
             port = ':8000' if ':' not in request.get_host() or ':8000' in request.get_host() else ''
             host = f"{subdomain}.localhost{port}"
         else:
-            # Para produção - ajuste conforme seu domínio
-            host = f"{subdomain}.seudominio.com"
+            from tenants.models import Configuracao
+
+            domain = Configuracao.load().dominio.strip()
+            domain = domain.removeprefix('https://').removeprefix('http://').rstrip('/')
+            host = f"{subdomain}.{domain}"
     else:
         # Fallback: usa o host atual se não conseguir determinar o tenant
         host = request.get_host()
