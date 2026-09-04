@@ -671,7 +671,7 @@ def painel_configuracao(request):
         from datetime import time
         import json
         
-        tenant = user.tenant
+        tenant = getattr(request, 'tenant', None) or user.tenant
         settings = TenantSettings.load(tenant)
         
         if request.method == 'POST':
@@ -929,6 +929,7 @@ def painel_configuracao(request):
         context = {
             'localizacao': localizacao,
             'user': user,
+            'tenant': tenant,
             'settings': settings,
             'settings_data': json.dumps(settings_data),
             'horarios_existentes': json.dumps(horarios_existentes),

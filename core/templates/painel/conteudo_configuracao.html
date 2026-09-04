@@ -107,7 +107,7 @@
                               <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">A URL que seus clientes usarão para acessar a loja, não serão permitidos acentos, cedilha, pontos e caracteres especiais.</p>
                               <div class="form-group"></div>
                               <div class="input-group">
-                                 <input type="text" class="form-control" placeholder="subdomain" name="subdomain" value="{{ settings.subdomain|default:'' }}" aria-describedby="basic-addon2">
+                                 <input type="text" class="form-control text-right" placeholder="subdomain" name="subdomain" value="{{ tenant.subdomain|default:'' }}" aria-describedby="basic-addon2" disabled>
                                  <div class="input-group-append"><span class="input-group-text">.example.com</span></div>
                               </div>
                            </div>
@@ -574,7 +574,7 @@
                      <div class="my-5">
                         <div class="alert alert-info">
                            <i class="bi bi-info-circle me-2"></i>
-                           Configure os horários de funcionamento para cada dia da semana. Deixe em branco ou marque "Fechado" para dias sem funcionamento.
+                           Esta etapa ainda está em desenvolvimento. A abertura e o fechamento da loja são controlados pelo botão verde no topo da página.
                         </div>
                         
                         <!--begin::Horários por dia da semana-->
@@ -585,7 +585,7 @@
                                     <h3 class="card-title">Configurar Horários</h3>
                                  </div>
                                  <div class="card-body">
-                                    <div id="horarios-container">
+                                    <fieldset id="horarios-container" disabled>
                                        <!-- Segunda-feira -->
                                        <div class="row align-items-center mb-4 horario-dia" data-dia="1">
                                           <div class="col-md-2">
@@ -795,7 +795,7 @@
                                              </button>
                                           </div>
                                        </div>
-                                    </div>
+                                    </fieldset>
                                  </div>
                               </div>
                            </div>
@@ -943,7 +943,7 @@
                      <div class="separator separator-dashed my-5"></div>
                      <div class="form-group fv-plugins-icon-container">
                         <label>E-mail</label>
-                        <input type="email" class="form-control" name="email"  value="{{ user.email|default:'' }}">
+                        <input type="email" class="form-control" name="email" value="{{ user.email|default:'' }}" disabled>
                         <span class="form-text text-muted">Este será o email usado para login no sistema</span>
                      </div>
                      <div class="form-group fv-plugins-icon-container">

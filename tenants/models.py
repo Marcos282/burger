@@ -38,6 +38,7 @@ class Configuracao(SingletonModel):
     client_id_mercadolivre = models.CharField(max_length=255, blank=True, null=True)
     SecrectKey = models.CharField(max_length=255, blank=True, null=True)
     dias_gratuitos = models.IntegerField(default=30)
+    front_page = models.ImageField(upload_to="front_pages/", blank=True, null=True)
 
     def __str__(self):
         return "Configurações do Sistema"
