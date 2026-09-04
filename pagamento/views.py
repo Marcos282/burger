@@ -210,9 +210,12 @@ def pagamento(request):
         .order_by('-data_atualizacao')
         .first()
     )
-
+    localizacao = [
+        {"n1": "Pagamento", "url": "pagamento"},
+    ]   
     # Dados usados para renderizar status, respostas temporárias e log persistido.
     context = {
+        "localizacao": localizacao,
         "configuracao": config,
         "dias_restantes": dias_restantes,
         "data_expiracao": user.data_expiracao,
