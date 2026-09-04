@@ -302,7 +302,7 @@ def painel_categorias(request):
             'qt_items_cliente': qt_items_cliente(request),
             'categoria': categoria,
             'qt_categoria': qt_categoria,
-            'marketplace_url': get_tenant_url(request, '/loja/'),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/categorias.html', context)
     else:
@@ -437,6 +437,7 @@ def painel_produtos(request):
             'localizacao': localizacao,
             'produtos': produtos,
             'messages': messages.get_messages(request),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
 
         return render(request, 'painel/produtos.html', context)
@@ -705,10 +706,11 @@ def painel_configuracao(request):
                     settings.segmento = request.POST['segmento']
                 
                 # ==== STEP 2: APARÊNCIA ====
+                configuracao = Configuracao.load()
                 if 'foto_perfil' in request.FILES:
-                    settings.foto_perfil = request.FILES['foto_perfil']
+                    configuracao.logo = request.FILES['foto_perfil']
                 if 'foto_capa' in request.FILES:
-                    settings.foto_capa = request.FILES['foto_capa']
+                    configuracao.front_page = request.FILES['foto_capa']
                 if 'color_theme' in request.POST:
                     settings.color_theme = request.POST['color_theme']
                 if 'exibicao_produtos' in request.POST:
@@ -871,6 +873,7 @@ def painel_configuracao(request):
                 # A senha deve estar apenas no modelo User
                 print(f"Attempting to save settings...")  # Debug
                 settings.save()
+                configuracao.save()
                 print(f"Settings saved successfully!")  # Debug
                 
                 return JsonResponse({
@@ -947,17 +950,14 @@ def upload_foto_perfil(request):
     
     if request.method == 'POST' and 'foto_perfil' in request.FILES:
         try:
-            from tenants.models import TenantSettings
-            
-            tenant = request.user.tenant
-            settings = TenantSettings.load(tenant)
-            settings.foto_perfil = request.FILES['foto_perfil']
-            settings.save()
+            configuracao = Configuracao.load()
+            configuracao.logo = request.FILES['foto_perfil']
+            configuracao.save()
             
             return JsonResponse({
                 'success': True,
                 'message': 'Foto de perfil atualizada com sucesso!',
-                'url': settings.foto_perfil.url
+                'url': configuracao.logo.url
             })
         except Exception as e:
             return JsonResponse({
@@ -981,19 +981,16 @@ def upload_foto_capa(request):
     if request.method == 'POST':
         if 'foto_capa' in request.FILES:
             try:
-                from tenants.models import TenantSettings
+                configuracao = Configuracao.load()
+                configuracao.front_page = request.FILES['foto_capa']
+                configuracao.save()
                 
-                tenant = request.user.tenant
-                settings = TenantSettings.load(tenant)
-                settings.foto_capa = request.FILES['foto_capa']
-                settings.save()
-                
-                print(f"Foto de capa salva com sucesso: {settings.foto_capa.url}")
+                print(f"Foto de capa salva com sucesso: {configuracao.front_page.url}")
                 
                 return JsonResponse({
                     'success': True,
                     'message': 'Foto de capa atualizada com sucesso!',
-                    'url': settings.foto_capa.url
+                    'url': configuracao.front_page.url
                 })
             except Exception as e:
                 print(f"Erro ao salvar foto de capa: {str(e)}")

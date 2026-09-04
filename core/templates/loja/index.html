@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
       <title>{{ config.nome_loja }}</title>
       <meta name="description" content="O melhor hambúrguer de Itajaí ">
-      <meta name="keywords" content="Tiger Burger , lojazap">
+      <meta name="keywords" content="{{ config.nome_loja }} , loja viazap.net">
       <meta property="og:title" content="{{ config.nome_loja }}">
       <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
@@ -156,8 +156,8 @@
                      <div class="col-md-3">
                         <div class="brand">
                            <a href="{% url 'loja' %}">
-                            <img src="{% static '_core/_uploads/cadastro/2023/02/generated-image-2.png' %}" alt="Tiger Burger "/>
-                           <span>Tiger Burger <strong class="colored">.</strong></span>
+                           <img src="{% static config.logo %}" alt="{{ config.nome_loja }}"/>
+                           <span>{{ config.nome_loja }} <strong class="colored">.</strong></span>
                            </a>
                         </div>
                      </div>
@@ -233,16 +233,16 @@
                      <div class="col-md-12">
                         <nav class="navbar pull-left">
                            <ul class="nav navbar-nav">
-                              <li class="active"><a href="{% url 'loja' %}">Início</a></li>
-                              <li class="dropdown">
+                              <li{% if not categoria_selecionada %} class="active"{% endif %}><a href="{% url 'loja' %}">Início</a></li>
+                              <li class="dropdown{% if categoria_selecionada %} active{% endif %}">
                                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                  Categorias
                                  <i class="lni lni-chevron-down icon-right"></i>
                                  </a>
                                  <ul class="dropdown-menu">
-                                    <li><a href="{% url 'loja' %}">Todas</a></li>
+         									<li{% if not categoria_selecionada %} class="active"{% endif %}><a href="{% url 'loja' %}">Todas</a></li>
 									{% for categoria in categorias %}
-                                    <li><a href="{% url 'loja'%}?categoria_id={{ categoria.id }}">{{ categoria.name }}</a></li>
+         									<li{% if categoria_selecionada and categoria.id == categoria_selecionada.id %} class="active"{% endif %}><a href="{% url 'loja'%}?categoria_id={{ categoria.id }}">{{ categoria.name }}</a></li>
 									{% endfor %}
                                  </ul>
                               </li>
@@ -425,34 +425,37 @@
                      <div id="carouselbanners" class="carousel slide">
                         <div class="carousel-inner">
                            <div class="item active">
-                              {% if settings and settings.foto_capa %}
-                              <img class="hidden-xs hidden-sm" src="{{ settings.foto_capa.url }}" alt="Capa de {{ settings.nome_loja }}"/>
-                              <img class="visible-xs visible-sm" src="{{ settings.foto_capa.url }}" alt="Capa de {{ settings.nome_loja }}"/>
+                              {% if configuracao.front_page %}
+                              <img class="hidden-xs hidden-sm" src="{{ configuracao.front_page.url }}" alt="Capa de {{ settings.nome_loja }}"/>
+                              <img class="visible-xs visible-sm" src="{{ configuracao.front_page.url }}" alt="Capa de {{ settings.nome_loja }}"/>
                               {% else %}
-                              <!-- <img class="hidden-xs hidden-sm" src="{% static '_core/_uploads/68/2024/01/1808020124b1ejh3j177.webp' %}" alt="Capa da loja"/>
-                              <img class="visible-xs visible-sm" src="{% static '_core/_uploads/68/2024/01/1808020124abhehifk0c.webp' %}" alt="Capa da loja"/> -->
+                              <img class="hidden-xs hidden-sm" src="{% static '_core/_uploads/68/2024/01/1808020124b1ejh3j177.webp' %}" alt="Capa da loja"/>
+                              <img class="visible-xs visible-sm" src="{% static '_core/_uploads/68/2024/01/1808020124abhehifk0c.webp' %}" alt="Capa da loja"/>
                               {% endif %}
 
                            </div>
                         </div>
                      </div>
                   </div>
+                  
                   <div class="categorias">
+                     {% for categoria in categorias %}
                      <div class="categoria">
                         <div class="row">
                            <div class="col-md-10 col-sm-10 col-xs-10">
-                              <span class="title">Lanches</span>
+                              <span class="title">{{ categoria.name }}</span>
                            </div>
                            <div class="col-md-2 col-sm-2 col-xs-2">
-                              <a class="vertudo" href="categoria/65699.html"><i class="lni lni-arrow-right"></i></a>
+                              <a class="vertudo" href="{% url 'loja' %}?categoria_id={{ categoria.id }}"><i class="lni lni-arrow-right"></i></a>
                            </div>
                         </div>
+
                         <div class="produtos">
                            <div class="row">
                               <div class="novalistagem">
                                  
 								<!-- Inicio listagem de produtods -->
-								{% for produto in produtos %}
+                        {% for produto in categoria.produtos_visiveis %}
 								<div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="novoproduto">
                                        <a href="{% url 'detalhe' produto.id %}" title="{{ produto.nome }}">
@@ -467,7 +470,11 @@
                                              </div>
                                              <div class="col-md-3 col-sm-5 col-xs-5">
                                                 <div class="capa">
-                                                   <img src="{% static '_core/_uploads/68/2023/11/09582411232ga0bj59df.webp' %}"/>
+                                                   {% if produto.imagem_extra %}
+                                                   <img src="{{ produto.imagem_extra.url }}" alt="{{ produto.nome }}"/>
+                                                   {% elif produto.image %}
+                                                   <img src="{{ produto.image.url }}" alt="{{ produto.nome }}"/>
+                                                   {% endif %}
                                                 </div>
                                              </div>
                                           </div>
@@ -550,6 +557,7 @@
                            </div>
                         </div>
                      </div>
+                     {% endfor %}
                   </div>
                </div>
             </div>

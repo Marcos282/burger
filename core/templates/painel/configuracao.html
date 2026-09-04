@@ -291,13 +291,13 @@ $(document).ready(function() {
     }, 100); // Aguarda 100ms para garantir que todos os scripts foram carregados
     
     // Pré-carrega foto de perfil existente
-    {% if settings.foto_perfil %}
+    {% if configuracao.logo %}
     setTimeout(function() {
         const profileDropzone = document.getElementById('dropzoneImagemPerfil');
         if (profileDropzone && profileDropzone.dropzone) {
             // Cria um arquivo mock para exibir a imagem existente
             const mockFile = {
-                name: "{{ settings.foto_perfil.name|default:'foto_perfil.jpg' }}",
+                name: "{{ configuracao.logo.name|default:'foto_perfil.jpg' }}",
                 size: 1024, // tamanho fictício
                 type: "image/jpeg",
                 status: Dropzone.ADDED,
@@ -306,10 +306,10 @@ $(document).ready(function() {
             
             profileDropzone.dropzone.files.push(mockFile);
             profileDropzone.dropzone.emit("addedfile", mockFile);
-            profileDropzone.dropzone.emit("thumbnail", mockFile, "{{ settings.foto_perfil.url }}");
+            profileDropzone.dropzone.emit("thumbnail", mockFile, "{{ configuracao.logo.url }}");
             profileDropzone.dropzone.emit("complete", mockFile);
             
-            console.log('Foto de perfil pré-carregada:', "{{ settings.foto_perfil.url }}");
+            console.log('Foto de perfil pré-carregada:', "{{ configuracao.logo.url }}");
         }
     }, 200);
     {% endif %}
@@ -379,13 +379,13 @@ $(document).ready(function() {
     }, 150); // Delay um pouco maior para evitar conflitos
     
     // Pré-carrega foto de capa existente
-    {% if settings.foto_capa %}
+    {% if configuracao.front_page %}
     setTimeout(function() {
         const coverDropzone = document.getElementById('dropzoneFotoCapa');
         if (coverDropzone && coverDropzone.dropzone) {
             // Cria um arquivo mock para exibir a imagem existente
             const mockFile = {
-                name: "{{ settings.foto_capa.name|default:'foto_capa.jpg' }}",
+                name: "{{ configuracao.front_page.name|default:'foto_capa.jpg' }}",
                 size: 1024, // tamanho fictício
                 type: "image/jpeg",
                 status: Dropzone.ADDED,
@@ -394,10 +394,10 @@ $(document).ready(function() {
             
             coverDropzone.dropzone.files.push(mockFile);
             coverDropzone.dropzone.emit("addedfile", mockFile);
-            coverDropzone.dropzone.emit("thumbnail", mockFile, "{{ settings.foto_capa.url }}");
+            coverDropzone.dropzone.emit("thumbnail", mockFile, "{{ configuracao.front_page.url }}");
             coverDropzone.dropzone.emit("complete", mockFile);
             
-            console.log('Foto de capa pré-carregada:', "{{ settings.foto_capa.url }}");
+            console.log('Foto de capa pré-carregada:', "{{ configuracao.front_page.url }}");
         }
     }, 300);
     {% endif %}

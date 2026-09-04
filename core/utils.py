@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.conf import settings
 from datetime import timedelta
 
 
@@ -74,11 +75,9 @@ def build_full_url(request, path='', user=None):
     if tenant:
         subdomain = tenant.subdomain
         
-        # Para desenvolvimento local
-        if 'localhost' in request.get_host() or request.get_host().startswith('127.0.0.1'):
-            # Preserva a porta se existir
-            port = ':8000' if ':' not in request.get_host() or ':8000' in request.get_host() else ''
-            host = f"{subdomain}.localhost{port}"
+        if settings.DEBUG:
+            protocol = 'http'
+            host = f"{subdomain}.localhost:8000"
         else:
             from tenants.models import Configuracao
 

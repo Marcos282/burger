@@ -1,5 +1,6 @@
 from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.db.models import Prefetch
 from menu.models import Banners, Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
 from django.http import JsonResponse
@@ -41,29 +42,26 @@ def get_categorias(request):
 def loja(request):
    qtd_prd = get_qdt_prod(request)
    categoria_id = request.GET.get("categoria_id")
-   produtos = Produto.objects.none()
    configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
-   if categoria_id is None:
- 
-      # Obtendo produtos do tenant atual
-      produtos = Produto.objects.filter(
-         tenant=request.tenant,
-         category__exibir=True  # Filtra apenas categorias marcadas para exibir
-      )
-   else:
-   
-      # Se categoria_id for fornecido, filtra os produtos por essa categoria
-      produtos = Produto.objects.filter(
-         tenant=request.tenant,
-         category__id=categoria_id  # Filtra apenas categorias marcadas para exibir
-      )
+   categorias = Category.objects.filter(
+       tenant=request.tenant,
+   ).order_by('ordem', 'name')
+   categoria_selecionada = categorias.filter(id=categoria_id).first() if categoria_id else None
+   produtos = Produto.objects.filter(
+       tenant=request.tenant,
+   ).order_by('ordem_exibicao', 'nome')
 
-   for produto in produtos:
-      
-       produto.preco_formatado = formatar_brl(produto.price)
+   if categoria_selecionada:
+       produtos = produtos.filter(category=categoria_selecionada)
 
-   # Obtendo todas as categorias do tenant atual para exibir no menu categorias      
-   categorias = get_categorias(request)
+   categorias = categorias.prefetch_related(
+       Prefetch('produto_set', queryset=produtos, to_attr='produtos_visiveis')
+   )
+
+   for categoria in categorias:
+       for produto in categoria.produtos_visiveis:
+           produto.preco_formatado = formatar_brl(produto.price)
+
    # Pega o carrinho da sessão
    cart = request.session.get('cart', {})
    cart_count = sum(cart.values())
@@ -87,6 +85,8 @@ def loja(request):
    else:            
        ordens_pendentes = 0
        cliente = None
+
+    
 
    # Verifica se existe TenantSettings para o tenant
    if TenantSettings.objects.filter(tenant=request.tenant).exists():
@@ -120,8 +120,8 @@ def loja(request):
            tenant=request.tenant,
            ativo=True,
        ).order_by('ordem_exibicao'),
-       'produtos': produtos,
        'categorias': categorias,
+      'categoria_selecionada': categoria_selecionada,
        'cart_count': cart_count,
        'qtd_prd': len(cart),
        'telefone_cookie': telefone_cookie,
