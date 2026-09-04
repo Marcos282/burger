@@ -20,7 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 # Regras e integrações internas do projeto.
-from core.utils import calcular_dias_restantes
+from core.utils import calcular_dias_restantes, get_tenant_url
 from pagamento.mercadopago_client import (
     buscar_pagamento,
     get_access_token,
@@ -217,6 +217,7 @@ def pagamento(request):
     context = {
         "localizacao": localizacao,
         "configuracao": config,
+        "url_marketplace": get_tenant_url(request, '/loja/'),
         "dias_restantes": dias_restantes,
         "data_expiracao": user.data_expiracao,
         # ``pop`` mostra a resposta uma vez e depois a remove da sessão.
