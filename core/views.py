@@ -13,6 +13,8 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import uuid
 import os
+from django.conf import settings
+
 
 def inicial(request):
     """
@@ -499,7 +501,10 @@ def image_placeholder(request):
     background_color = (240, 240, 240)  # Cinza claro
     text_color = (150, 150, 150)  # Cinza escuro
     
-    # Cria a imagem
+    # muda a cor de fundo se a configuração de adicionar ruído estiver ativada
+    if settings.ADICIONAR_RUIDO_EM_FOTOS:
+        background_color = (200, 200, 200)  # Cinza um pouco mais escuro
+   
     img = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(img)
     

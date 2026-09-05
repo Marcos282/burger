@@ -126,6 +126,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'tenants.middleware.TenantMiddleware',
@@ -235,3 +236,9 @@ STATICFILES_DIRS = [BASE_DIR / "core" / "assets"]
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+##############################WHITENOISE##############################
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+ADICIONAR_RUIDO_EM_FOTOS = True   # muda aqui e afeta tudo
+##############################END WHITENOISE###########################
