@@ -20,7 +20,7 @@
     <link href="{% static 'assets/css/themes/layout/brand/dark.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/css/themes/layout/aside/dark.css' %}" rel="stylesheet" type="text/css">
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="{% static 'assets/imagens/logos/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static 'assets/imagens/logos/favicon.ico' %}{% endif %}">
     <link href="{% static 'app/painel/apexcharts-custom.css' %}" rel="stylesheet" type="text/css">
        
 </head>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Online — Venda pelo WhatsApp</title>
+    {% if configuracao.favicon %}<link rel="icon" href="{{ configuracao.favicon.url }}">{% endif %}
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         :root { --primario: #25D366; --escuro: #1f2937; --claro: #f9fafb; --destaque: #128C7E; }

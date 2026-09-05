@@ -11,7 +11,7 @@
       <meta property="og:title" content="Tiger Burger  - lojazap">
       <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
-      <link rel="shortcut icon" href="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
+      <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
       <link rel="stylesheet" href="{% static '_core/_cdn/bootstrap/css/bootstrap.min.css' %}">
       <link rel="stylesheet" href="{% static '_core/_cdn/app/css/class.css' %}">
