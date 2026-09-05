@@ -5,11 +5,11 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>Tiger Burger  - lojazap</title>
-      <meta name="description" content="O melhor hambúrguer de Itajaí ">
+      <title>{{ configuracao_extra.nome }}</title>
+      <meta name="description" content="{{ configuracao_extra.descricao }}">
       <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="Tiger Burger  - lojazap">
-      <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
+      <meta property="og:title" content="{{ configuracao_extra.nome }}">
+      <meta property="og:description" content="{{ configuracao_extra.descricao }}">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
       <link rel="shortcut icon" href="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
       <link rel="manifest" href="manifest.json">
@@ -217,8 +217,8 @@
                      <div class="col-md-3">
                         <div class="brand">
                            <a href="{% url 'loja' %}">
-                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="Tiger Burger "/>
-                           <span>Tiger Burger <strong class="colored">.</strong></span>
+                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ configuracao_extra.nome }}"/>
+                           <span>{{ configuracao_extra.nome }} <strong class="colored">.</strong></span>
                            </a>
                         </div>
                      </div>
@@ -227,14 +227,14 @@
                            <div class="col-md-9">
                               <div class="search-bar">
                                  <div class="clear"></div>
-                                 <form class="align-middle" method="GET" action="https://demo6.lojazap.com/categoria">
+                                 <!-- <form class="align-middle" method="GET" action="https://demo6.lojazap.com/categoria">
                                     <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
                                     <input type="hidden" name="categoria" value=""/>
                                     <button>
                                     <i class="lni lni-search-alt"></i>
                                     </button>
                                     <div class="clear"></div>
-                                 </form>
+                                 </form> -->
                               </div>
                            </div>
                            <div class="col-md-3">
@@ -295,7 +295,7 @@
                               </li>
                               <li><a href="../categoriab4a6.html?filtro=4">Ofertas</a></li>
                               <li><span class="sidrLeft">Fale conosco</span></li>
-                              <!-- <li class="visible-sm visible-xs"><a href="#">Suporte</a></li> -->
+                              <li class="visible-sm visible-xs"><a href="#" data-toggle="modal" data-target="#modalSuporte">Suporte</a></li>
                            </ul>
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
@@ -392,6 +392,37 @@
                </div>
             </div>
          </div>
+         <div id="modalSuporte" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title">Fale com o suporte</h5>
+                     <button type="button" class="close" data-dismiss="modal"><i class="lni lni-close"></i></button>
+                  </div>
+                  <div class="modal-body">
+                     {% if config.whatsapp %}
+                     <p>Prefere WhatsApp? Fale direto: <a href="https://wa.me/{{ config.whatsapp }}" target="_blank">{{ config.whatsapp }}</a></p>
+                     {% endif %}
+                     <form id="formSuporte">
+                        <div class="line">
+                           <label for="suporte_nome">Nome</label>
+                           <input id="suporte_nome" type="text" name="nome" class="form-control" required/>
+                        </div>
+                        <div class="line">
+                           <label for="suporte_email">E-mail</label>
+                           <input id="suporte_email" type="email" name="email" class="form-control" required/>
+                        </div>
+                        <div class="line">
+                           <label for="suporte_assunto">Assunto</label>
+                           <textarea id="suporte_assunto" name="assunto" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div id="suporte_feedback"></div>
+                        <button type="submit" class="botao-acao">Enviar</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
          <div class="sceneElement">
             <div class="header-interna">
                <div class="locked-bar visible-xs visible-sm">
@@ -459,7 +490,7 @@
                                           {% endif %}
                                        </div>
                                     </div>
-                                    {% if imagens_galeria|length > 1 %}
+                                    {% if imagens_galeria %}
                                     <div class="galeria-thumbs">
                                        {% for imagem in imagens_galeria %}
                                        <a data-fancybox="galeria-{{ produto.id }}" href="{{ imagem.imagem.url }}" class="galeria-thumb-item{% if forloop.first %} active{% endif %}" data-slide-to="{{ forloop.counter0 }}">
@@ -683,8 +714,8 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://conheca.lojazap.com/" target="_blank">
-                        <img src="{% static '_core/_cdn/img/logo.png' %}"/>
+                        <a class="watermark" href="https://conheca.viazap.net/" target="_blank">
+                        <img src="{% static '{config_geral.logo}' %}"/>
                         </a>
                      </div>
                   </div>
@@ -771,6 +802,29 @@
       $('.galeria-thumb-item').removeClass('active');
       $(this).addClass('active');
       $('#carouselgaleria .item').removeClass('active').eq(idx).addClass('active');
+    });
+
+    // Envio do formulário de suporte (modal)
+    $('#formSuporte').on('submit', function(e) {
+      e.preventDefault();
+      var $form = $(this);
+      var $feedback = $('#suporte_feedback');
+
+      $.post("{% url 'enviar_suporte' %}", {
+        nome: $('#suporte_nome').val(),
+        email: $('#suporte_email').val(),
+        assunto: $('#suporte_assunto').val(),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }).done(function(data) {
+        if (data.status === 'ok') {
+          $feedback.html('<p style="color: green;">Mensagem enviada com sucesso!</p>');
+          $form[0].reset();
+        } else {
+          $feedback.html('<p style="color: red;">' + (data.message || 'Erro ao enviar mensagem.') + '</p>');
+        }
+      }).fail(function() {
+        $feedback.html('<p style="color: red;">Erro ao enviar mensagem.</p>');
+      });
     });
 
     // preço unitário vindo do Django

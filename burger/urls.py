@@ -47,6 +47,7 @@ from core.views import (
     checkout_sucesso,
     home_view,
     inicial,
+    enviar_suporte,
 )
 
 from orders.views import pedido_delivery, cadastro_form
@@ -56,6 +57,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('loja/', loja, name='loja'),
     path('loja/datail/<int:produto_id>', detalhe, name='detalhe'),
+    path('suporte/enviar/', enviar_suporte, name='enviar_suporte'),
     path('add-to-cart/', add_to_cart, name='add_to_cart'),
     path('loja/sacola', sacola, name='sacola'),
     path('loja/checkout', checkout, name='finalizar_pedido'),

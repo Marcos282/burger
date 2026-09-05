@@ -5,14 +5,14 @@ from menu.models import Banners, Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 from orders.models import Ordem, OrdemItem
 from customers.models import Cliente
-from tenants.models import Tenant, TenantSettings
+from tenants.models import Tenant, TenantSettings, Configuracao
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import uuid
 import os
-
 
 def inicial(request):
     """
@@ -43,6 +43,7 @@ def loja(request):
    qtd_prd = get_qdt_prod(request)
    categoria_id = request.GET.get("categoria_id")
    configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
+   configuracao_extra = Configuracao.load()
    categorias = Category.objects.filter(
        tenant=request.tenant,
    ).order_by('ordem', 'name')
@@ -115,6 +116,7 @@ def loja(request):
 
 
    context = {
+       'configuracao_extra': configuracao_extra,
        'settings': configuracao,
        'banners': Banners.objects.filter(
            tenant=request.tenant,
@@ -157,7 +159,7 @@ def detalhe(request,produto_id):
    # Galeria de imagens do produto (vinculada via produto_id; produto já é isolado por tenant acima)
    imagens_galeria = list(produto.imagens.all().order_by('ordem'))
 
-   # Tema de cores do tenant (mesmo usado na home da loja)
+   # Tema de cores e dados do tenant (mesmo usado na home da loja)
    config = TenantSettings.objects.filter(tenant=request.tenant).first()
 
    context = {
@@ -169,9 +171,39 @@ def detalhe(request,produto_id):
       'cart_count': cart_count,
       'tot_prod_cart' : len(cart),
       'color_theme': config.color_theme if config else '#ff5900',
+      'config': config,
    }
-   
+
    return render(request, 'loja/produto/detail.html', context)
+
+
+# Envio do formulário de suporte (modal "Suporte") ============================
+def enviar_suporte(request):
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'Método não permitido.'}, status=405)
+
+    nome = request.POST.get('nome', '').strip()
+    email = request.POST.get('email', '').strip()
+    assunto = request.POST.get('assunto', '').strip()
+
+    if not nome or not email or not assunto:
+        return JsonResponse({'status': 'error', 'message': 'Preencha nome, e-mail e assunto.'}, status=400)
+
+    config = TenantSettings.objects.filter(tenant=request.tenant).first()
+    destinatario = config.support_email if config and config.support_email else None
+
+    if not destinatario:
+        return JsonResponse({'status': 'error', 'message': 'E-mail de suporte não configurado para esta loja.'}, status=400)
+
+    # Reutiliza a mesma ferramenta de envio de e-mails usada na recuperação de senha
+    send_mail(
+        subject=f'[Suporte] {assunto}',
+        message=f'Nome: {nome}\nE-mail: {email}\n\nAssunto:\n{assunto}',
+        from_email=None,
+        recipient_list=[destinatario],
+    )
+
+    return JsonResponse({'status': 'ok'})
 
 
 
