@@ -27,6 +27,151 @@
       <link rel="stylesheet" href="{% static '_core/_cdn/sidr/css/jquery.sidr.light.min.css' %}">
       <link  href="{% static '_core/_cdn/fancybox/css/jquery.fancybox.min.css' %}" rel="stylesheet">
       <link rel="stylesheet" href="{% static 'app/estabelecimento/css/style5aaa.css' %}">
+      <!-- 🎨 CSS DINÂMICO - TEMA DE CORES (mesmo tema usado nas demais páginas da loja) -->
+      <style>
+         :root {
+            --theme-color: {{ color_theme }};
+         }
+
+         .colored,
+         .shop-bag i,
+         .naver .navbar a i,
+         .header .naver .navbar .social a:hover i,
+         .naver .navbar a:hover,
+         .user-menu i,
+         .search-bar-mobile button i,
+         .categoria .vertudo i,
+         .categoria .counter,
+         .bread i,
+         .produto-detalhes .categoria a,
+         .campo-numero i,
+         .sacola-table .sacola-remover i,
+         .sacola-table .sacola-change i,
+         .adicionado .checkicon,
+         .title-line i,
+         .back-button i,
+         .sidebar-info i,
+         .filter-select .outside,
+         .filter-select .fake-select i,
+         .pagination i,
+         .funcionamento-mobile i,
+         .fake-select i,
+         .search-bar button i,
+         .holder-shop-bag i {
+            color: var(--theme-color) !important;
+         }
+
+         .top {
+            border-color: var(--theme-color) !important;
+         }
+
+         .footer-info,
+         .categoria .produto .detalhes,
+         .cover,
+         .carousel-indicators .active,
+         .botao-acao,
+         .sidebar .sidebar-header,
+         .minitop,
+         .opcoes .opcao.active .check,
+         .floatbar {
+            background: var(--theme-color) !important;
+         }
+
+         .pagination > li > a:hover,
+         .pagination > .active > a,
+         .pagination > .active > a:focus,
+         .pagination > .active > a:hover,
+         .pagination > .active > span,
+         .pagination > .active > span:focus,
+         .pagination > .active > span:hover {
+            background: var(--theme-color) !important;
+            color: #fff !important;
+         }
+
+         .tv-infinite-menu a.active,
+         .tv-infinite-menu a:hover,
+         .fancybox-thumbs__list a::before {
+            border-color: var(--theme-color) !important;
+         }
+
+         .novoproduto .plus,
+         .novoproduto .plus-desc {
+            background: var(--theme-color) !important;
+         }
+
+         @media (max-width: 991px) {
+            .top {
+               border-top: 0;
+               background: var(--theme-color) !important;
+            }
+         }
+      </style>
+      <style>
+         /* Setas do modal Fancybox sempre visíveis, sem depender de hover/mousemove */
+         .fancybox-navigation .fancybox-button {
+            opacity: 1 !important;
+            visibility: visible !important;
+         }
+         /* Setas maiores e circulares, ao invés do botão quadrado padrão */
+         .fancybox-button--arrow_left,
+         .fancybox-button--arrow_right {
+            width: 56px !important;
+            height: 56px !important;
+            border-radius: 50% !important;
+            background: rgba(30, 30, 30, 0.75) !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+         .fancybox-button--arrow_left:hover,
+         .fancybox-button--arrow_right:hover {
+            background: rgba(0, 0, 0, 0.9) !important;
+         }
+         .fancybox-button--arrow_left div,
+         .fancybox-button--arrow_right div {
+            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+         }
+         .fancybox-button--arrow_left svg,
+         .fancybox-button--arrow_right svg {
+            width: 28px !important;
+            height: 28px !important;
+         }
+         .galeria-thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+         }
+         .galeria-thumb-item {
+            display: block;
+            width: 64px;
+            height: 64px;
+            flex: 0 0 auto;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+         }
+         .galeria-thumb-item.active {
+            border-color: #f64e60;
+         }
+         .galeria-thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+         }
+         @media (max-width: 767px) {
+            .galeria-thumb-item {
+               width: 52px;
+               height: 52px;
+            }
+         }
+      </style>
       <script src="{% static '_core/_cdn/jquery/js/jquery.min.js' %}"></script>
       <script src="{% static '_core/_cdn/fancybox/js/jquery.fancybox.min.js' %}"></script>
       <!-- <script src="https://demo6.lojazap.com/_core/_cdn/instantclick/js/instantclick.min.js' %}"></script> -->
@@ -291,13 +436,38 @@
                                  <div class="col-md-12">
                                     <div id="carouselgaleria" class="carousel slide">
                                        <div class="carousel-inner">
-                                          <div class="item zoomer active">
-                                             <a data-fancybox="galeria" href="../_core/_uploads/68/2023/11/0958241123h2ddeghekb.webp">
-                                             <img src="{% static '_core/_uploads/68/2023/11/0958241123h2ddeghekb.webp' %}" alt="Veloz" title="Veloz"/>
-                                             </a>
-                                          </div>
+                                          {% if imagens_galeria %}
+                                             {% for imagem in imagens_galeria %}
+                                             <div class="item zoomer{% if forloop.first %} active{% endif %}">
+                                                <a data-fancybox="galeria-{{ produto.id }}" href="{{ imagem.imagem.url }}">
+                                                <img src="{{ imagem.imagem.url }}" alt="{{ produto.nome }}" title="{{ produto.nome }}"/>
+                                                </a>
+                                             </div>
+                                             {% endfor %}
+                                          {% elif produto.imagem_extra %}
+                                             <div class="item zoomer active">
+                                                <a data-fancybox="galeria-{{ produto.id }}" href="{{ produto.imagem_extra.url }}">
+                                                <img src="{{ produto.imagem_extra.url }}" alt="{{ produto.nome }}" title="{{ produto.nome }}"/>
+                                                </a>
+                                             </div>
+                                          {% elif produto.image %}
+                                             <div class="item zoomer active">
+                                                <a data-fancybox="galeria-{{ produto.id }}" href="{{ produto.image.url }}">
+                                                <img src="{{ produto.image.url }}" alt="{{ produto.nome }}" title="{{ produto.nome }}"/>
+                                                </a>
+                                             </div>
+                                          {% endif %}
                                        </div>
                                     </div>
+                                    {% if imagens_galeria|length > 1 %}
+                                    <div class="galeria-thumbs">
+                                       {% for imagem in imagens_galeria %}
+                                       <a data-fancybox="galeria-{{ produto.id }}" href="{{ imagem.imagem.url }}" class="galeria-thumb-item{% if forloop.first %} active{% endif %}" data-slide-to="{{ forloop.counter0 }}">
+                                          <img src="{{ imagem.imagem.url }}" alt="{{ produto.nome }}"/>
+                                       </a>
+                                       {% endfor %}
+                                    </div>
+                                    {% endif %}
                                  </div>
                               </div>
                            </div>
@@ -561,6 +731,48 @@
 
 <script>
   $(document).ready(function() {
+    // Garante setas de navegação sempre visíveis no modal (sem esconder por inatividade)
+    if (window.jQuery && $.fancybox) {
+      $.fancybox.defaults.arrows = true;
+      $.fancybox.defaults.keyboard = true;
+      $.fancybox.defaults.idleTime = false;
+
+      // Reposiciona as setas coladas nas bordas da imagem (em vez das bordas da tela)
+      function posicionarSetasNaImagem(instance) {
+        if (!instance || !instance.current) return;
+        var $content = instance.current.$content;
+        if (!$content || !$content.length) return;
+
+        var rect = $content.get(0).getBoundingClientRect();
+        var $left = instance.$refs.container.find('.fancybox-button--arrow_left');
+        var $right = instance.$refs.container.find('.fancybox-button--arrow_right');
+        var btnWidth = 56;
+        var btnHeight = 56;
+        var top = rect.top + (rect.height / 2) - (btnHeight / 2);
+
+        $left.css({ left: Math.max(rect.left - (btnWidth / 2), 0) + 'px', right: 'auto', top: top + 'px' });
+        $right.css({ right: Math.max(window.innerWidth - rect.right - (btnWidth / 2), 0) + 'px', left: 'auto', top: top + 'px' });
+      }
+
+      $.fancybox.defaults.afterShow = posicionarSetasNaImagem;
+      $.fancybox.defaults.afterLoad = posicionarSetasNaImagem;
+      $.fancybox.defaults.onUpdate = posicionarSetasNaImagem;
+
+      $(window).on('resize', function() {
+        if ($.fancybox.getInstance()) {
+          posicionarSetasNaImagem($.fancybox.getInstance());
+        }
+      });
+    }
+
+    // Sincroniza clique na miniatura com a imagem principal do carrossel (o Fancybox cuida do modal)
+    $('.galeria-thumb-item').on('click', function() {
+      var idx = $(this).data('slide-to');
+      $('.galeria-thumb-item').removeClass('active');
+      $(this).addClass('active');
+      $('#carouselgaleria .item').removeClass('active').eq(idx).addClass('active');
+    });
+
     // preço unitário vindo do Django
     var precoUnitario = parseFloat("{{ produto.price }}");
 

@@ -153,14 +153,22 @@ def detalhe(request,produto_id):
 
    # Obtendo todas as categorias do tenant atual para exibir no menu categorias   
    categorias = get_categorias(request)
-  
+
+   # Galeria de imagens do produto (vinculada via produto_id; produto já é isolado por tenant acima)
+   imagens_galeria = list(produto.imagens.all().order_by('ordem'))
+
+   # Tema de cores do tenant (mesmo usado na home da loja)
+   config = TenantSettings.objects.filter(tenant=request.tenant).first()
+
    context = {
       'valor_sem_S' : valor_br_semS,
       'valor_br' : valor_br,
       'produto' : produto,
+      'imagens_galeria' : imagens_galeria,
       'categorias' : categorias,
       'cart_count': cart_count,
       'tot_prod_cart' : len(cart),
+      'color_theme': config.color_theme if config else '#ff5900',
    }
    
    return render(request, 'loja/produto/detail.html', context)
