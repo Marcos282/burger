@@ -219,6 +219,9 @@ def pagamento(request):
         .order_by('-data_atualizacao')
         .first()
     )
+    # Lista de pagamentos do usuário para seleção no dropdown de comprovantes
+    pagamentos_usuario = Pagamento.objects.filter(user=user).order_by('-data_criacao')
+
     localizacao = [
         {"n1": "Pagamento", "url": "pagamento"},
     ]   
@@ -229,6 +232,7 @@ def pagamento(request):
         "url_marketplace": get_tenant_url(request, '/loja/'),
         "dias_restantes": dias_restantes,
         "data_expiracao": user.data_expiracao,
+        "pagamentos_usuario": pagamentos_usuario,
         # ``pop`` mostra a resposta uma vez e depois a remove da sessão.
         "mercadopago_request_json": request.session.pop(
             'mercadopago_request_json', None
@@ -469,3 +473,102 @@ def webhook_log(request):
             else None
         ),
     })
+
+
+from datetime import datetime
+
+
+def extrair_comprovante_amigavel(pagamento_registro, mp_dados=None):
+    """Gera um dicionário formatado e amigável com os dados do comprovante."""
+    mp_dados = mp_dados or {}
+
+    # Trata data de pagamento/aprovação
+    data_raw = mp_dados.get('date_approved') or mp_dados.get('date_created')
+    if data_raw:
+        try:
+            dt = datetime.fromisoformat(str(data_raw).replace('Z', '+00:00'))
+            data_str = dt.strftime('%d/%m/%Y às %H:%M:%S')
+        except Exception:
+            data_str = str(data_raw)
+    else:
+        data_str = pagamento_registro.data_criacao.strftime('%d/%m/%Y às %H:%M:%S')
+
+    # Identificação da forma de pagamento
+    tipo = mp_dados.get('payment_type_id', '')
+    metodo = (mp_dados.get('payment_method_id') or '').lower()
+
+    if tipo == 'credit_card':
+        card_digits = (mp_dados.get('card') or {}).get('last_four_digits', '')
+        forma_str = f"Cartão de Crédito ({metodo.upper()})" + (f" final {card_digits}" if card_digits else "")
+    elif tipo in ['bank_transfer', 'pix'] or metodo == 'pix':
+        forma_str = "PIX"
+    elif tipo == 'ticket' or 'bol' in metodo:
+        forma_str = "Boleto Bancário"
+    else:
+        forma_str = pagamento_registro.get_forma_pagamento_display()
+
+    status_final = mp_dados.get('status') or pagamento_registro.status
+    status_map = dict(Pagamento.STATUS_CHOICES)
+    status_display = status_map.get(status_final, status_final.upper() if status_final else 'Pendente')
+
+    comprovante_id = str(
+        mp_dados.get('id')
+        or pagamento_registro.mp_payment_id
+        or pagamento_registro.nr_cobranca
+    )
+
+    return {
+        'comprovante_id': comprovante_id,
+        'referencia': pagamento_registro.external_reference,
+        'empresa': pagamento_registro.tenant.name if pagamento_registro.tenant else 'Empresa',
+        'usuario': pagamento_registro.user.email,
+        'valor': f"R$ {pagamento_registro.valor:,.2f}".replace('.', ','),
+        'status': status_final,
+        'status_display': status_display,
+        'forma_pagamento': forma_str,
+        'data_pagamento': data_str,
+        'dias_creditados': pagamento_registro.dias_creditados,
+        'data_expiracao': pagamento_registro.user.data_expiracao.strftime('%d/%m/%Y') if pagamento_registro.user.data_expiracao else 'N/A',
+    }
+
+
+def consultar_comprovante(request):
+    """Consulta o pagamento no Mercado Pago pelo ID selecionado e retorna o comprovante."""
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Não autorizado'}, status=401)
+
+    pagamento_id = request.GET.get('pagamento_id')
+    if not pagamento_id:
+        return JsonResponse({'error': 'Selecione um pagamento para consultar o comprovante.'}, status=400)
+
+    # Localiza o registro de pagamento do usuário logado
+    pagamento_registro = Pagamento.objects.filter(id=pagamento_id, user=request.user).first()
+    if not pagamento_registro:
+        return JsonResponse({'error': 'Registro de pagamento não encontrado.'}, status=404)
+
+    # Identifica o mp_payment_id
+    mp_payment_id = pagamento_registro.mp_payment_id
+
+    # Fallback: se não estiver salvo diretamente, tenta buscar na resposta_bruta
+    if not mp_payment_id and pagamento_registro.resposta_bruta:
+        resp = pagamento_registro.resposta_bruta
+        payment_info = resp.get('payment') or {}
+        mp_payment_id = payment_info.get('id') or (resp.get('webhook') or {}).get('data', {}).get('id')
+
+    mp_dados = {}
+    if mp_payment_id:
+        try:
+            logger.info('[COMPROVANTE] Consultando ID %s no Mercado Pago...', mp_payment_id)
+            mp_dados = buscar_pagamento(mp_payment_id)
+            novo_status = mp_dados.get('status')
+            if novo_status and novo_status in dict(Pagamento.STATUS_CHOICES):
+                if novo_status == 'approved' and pagamento_registro.status != 'approved':
+                    pagamento_registro.user.estender_expiracao(dias=pagamento_registro.dias_creditados or 30)
+                pagamento_registro.status = novo_status
+                pagamento_registro.mp_payment_id = str(mp_payment_id)
+                pagamento_registro.save()
+        except Exception as error:
+            logger.warning('[COMPROVANTE] Não foi possível consultar o Mercado Pago para id=%s: %s', mp_payment_id, error)
+
+    comprovante = extrair_comprovante_amigavel(pagamento_registro, mp_dados)
+    return JsonResponse({'success': True, 'comprovante': comprovante})

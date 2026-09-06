@@ -85,6 +85,95 @@
     </div>
 </div>
 
+<!-- Seção para Seleção de Pagamentos e Emissão do Comprovante -->
+<div class="row">
+    <div class="col-12 mb-8">
+        <div class="card card-custom gutter-b">
+            <div class="card-header border-0 py-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark">📜 Consultar Comprovante de Pagamento</span>
+                    <span class="text-muted mt-2 font-weight-bold font-size-sm">Selecione uma cobrança para verificar o status e obter o comprovante detalhado</span>
+                </h3>
+            </div>
+            <div class="card-body pt-0">
+                {% if pagamentos_usuario %}
+                    <div class="form-group mb-6">
+                        <label for="select-pagamento-id" class="font-weight-bold">Selecione o Pagamento / Cobrança:</label>
+                        <select id="select-pagamento-id" class="form-control form-control-solid">
+                            <option value="">-- Selecione uma cobrança para visualizar o comprovante --</option>
+                            {% for pag in pagamentos_usuario %}
+                                <option value="{{ pag.id }}">
+                                    {{ pag.data_criacao|date:"d/m/Y H:i" }} — R$ {{ pag.valor|floatformat:2 }} — Status: {{ pag.get_status_display }} {% if pag.mp_payment_id %}(ID MP: {{ pag.mp_payment_id }}){% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="button" id="btn-consultar-comprovante" class="btn btn-success font-weight-bolder px-6 py-3">
+                        📄 Gerar / Verificar Comprovante no Mercado Pago
+                    </button>
+
+                    <!-- Área do Comprovante Formatado -->
+                    <div id="area-comprovante" class="mt-8" style="display: none;">
+                        <div class="card card-custom border border-success p-6 bg-light-success">
+                            <div class="d-flex justify-content-between align-items-center mb-6">
+                                <div>
+                                    <h4 class="font-weight-boldest text-success mb-1">COMPROVANTE DE PAGAMENTO</h4>
+                                    <span class="text-muted font-size-sm" id="comp-referencia">Ref: ---</span>
+                                </div>
+                                <div>
+                                    <span class="badge badge-lg badge-success font-weight-bold" id="comp-status">APROVADO</span>
+                                </div>
+                            </div>
+
+                            <div class="separator separator-dashed mb-6"></div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">ID da Transação (Mercado Pago):</span>
+                                    <span class="font-weight-bolder font-size-h6 text-dark" id="comp-id">---</span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Data / Hora:</span>
+                                    <span class="font-weight-bolder font-size-h6 text-dark" id="comp-data">---</span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Valor Pago:</span>
+                                    <span class="font-weight-boldest font-size-h4 text-success" id="comp-valor">R$ 0,00</span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Forma de Pagamento:</span>
+                                    <span class="font-weight-bolder font-size-h6 text-dark" id="comp-forma">---</span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Empresa / Beneficiário:</span>
+                                    <span class="font-weight-bolder font-size-h6 text-dark" id="comp-empresa">---</span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Usuário / Pagador:</span>
+                                    <span class="font-weight-bolder font-size-h6 text-dark" id="comp-usuario">---</span>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <span class="text-muted d-block font-size-xs text-uppercase font-weight-bold mb-1">Status da Validade:</span>
+                                    <span class="font-weight-bolder font-size-h6 text-primary" id="comp-expiracao">---</span>
+                                </div>
+                            </div>
+
+                            <div class="text-right mt-4">
+                                <button type="button" onclick="window.print()" class="btn btn-outline-secondary font-weight-bold">
+                                    🖨️ Imprimir / Salvar PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">Nenhum histórico de cobrança gerado até o momento.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
 {% if mercadopago_request_json or mercadopago_preference_json or mercadopago_return_json or webhook_json %}
 <div class="row">
     <div class="col-12 mb-8">
@@ -131,6 +220,70 @@
 </style>
 
 <script>
+    // Lógica para consulta de comprovante no Mercado Pago via ID selecionado
+    (function () {
+        const btnConsultar = document.getElementById('btn-consultar-comprovante');
+        if (!btnConsultar) return;
+
+        btnConsultar.addEventListener('click', async function () {
+            const select = document.getElementById('select-pagamento-id');
+            const pagamentoId = select ? select.value : '';
+
+            if (!pagamentoId) {
+                alert('Por favor, selecione um pagamento/cobrança na lista.');
+                return;
+            }
+
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Consultando Mercado Pago...';
+
+            try {
+                const response = await fetch(`{% url "consultar_comprovante" %}?pagamento_id=${pagamentoId}`, {
+                    headers: {'Accept': 'application/json'},
+                    credentials: 'same-origin'
+                });
+                const data = await response.json();
+
+                if (data.success && data.comprovante) {
+                    const comp = data.comprovante;
+                    document.getElementById('comp-id').textContent = comp.comprovante_id;
+                    document.getElementById('comp-referencia').textContent = 'Ref: ' + comp.referencia;
+                    document.getElementById('comp-data').textContent = comp.data_pagamento;
+                    document.getElementById('comp-valor').textContent = comp.valor;
+                    document.getElementById('comp-forma').textContent = comp.forma_pagamento;
+                    document.getElementById('comp-empresa').textContent = comp.empresa;
+                    document.getElementById('comp-usuario').textContent = comp.usuario;
+                    document.getElementById('comp-status').textContent = comp.status_display.toUpperCase();
+                    document.getElementById('comp-expiracao').textContent = `Assinatura liberada (+${comp.dias_creditados} dias) até ${comp.data_expiracao}`;
+
+                    // Ajusta classe do badge de status
+                    const statusBadge = document.getElementById('comp-status');
+                    if (comp.status === 'approved') {
+                        statusBadge.className = 'badge badge-lg badge-success font-weight-bold';
+                    } else if (comp.status === 'pending' || comp.status === 'in_process') {
+                        statusBadge.className = 'badge badge-lg badge-warning font-weight-bold';
+                    } else {
+                        statusBadge.className = 'badge badge-lg badge-danger font-weight-bold';
+                    }
+
+                    const areaComprovante = document.getElementById('area-comprovante');
+                    areaComprovante.style.display = 'block';
+                    areaComprovante.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert(data.error || 'Não foi possível gerar o comprovante.');
+                }
+            } catch (error) {
+                console.error('Erro na consulta do comprovante:', error);
+                alert('Ocorreu um erro ao consultar o comprovante no servidor.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+    }());
+
     // Atualiza o log do último webhook a cada 3s, sem recarregar a página.
     (function () {
         const webhookOutput = document.getElementById('webhook-json');

@@ -8,4 +8,5 @@ urlpatterns = [
     path('pendente/', views.pagamento_pendente, name='pagamento_pendente'),
     path('webhook/mercadopago/', views.webhook_mercadopago, name='webhook_mercadopago'),
     path('webhook/log/', views.webhook_log, name='webhook_log'),
+    path('comprovante/', views.consultar_comprovante, name='consultar_comprovante'),
 ]
