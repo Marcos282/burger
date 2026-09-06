@@ -242,12 +242,12 @@ $(document).ready(function() {
             url: "{% url 'upload_foto_perfil' %}", // URL para onde enviar o arquivo
             paramName: "foto_perfil", // Nome do campo que a view espera
             maxFiles: 1,
-            maxFilesize: 5, // 5MB máximo
+            maxFilesize: 3, // 3MB máximo
             acceptedFiles: "image/*",
             addRemoveLinks: true,
-            dictDefaultMessage: '<i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i><br><b>Clique aqui ou arraste uma imagem</b><br><small class="text-muted">PNG, JPG ou GIF (máx. 5MB)</small>',
+            dictDefaultMessage: '<i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i><br><b>Clique aqui ou arraste uma imagem</b><br><small class="text-muted">PNG, JPG ou GIF (máx. 3MB)</small>',
             dictRemoveFile: "Remover",
-            dictFileTooBig: "Arquivo muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
+            dictFileTooBig: "Não é possível enviar arquivo acima de 3 MB.",
             dictInvalidFileType: "Tipo de arquivo não permitido.",
             dictMaxFilesExceeded: "Você só pode enviar {{maxFiles}} arquivo por vez.",
             
@@ -327,12 +327,12 @@ $(document).ready(function() {
                 url: "{% url 'upload_foto_capa' %}",
                 paramName: "foto_capa", // Nome do campo que o servidor espera
                 maxFiles: 1,
-                maxFilesize: 5, // 5MB máximo
+                maxFilesize: 3, // 3MB máximo
                 acceptedFiles: "image/*",
                 addRemoveLinks: true,
-                dictDefaultMessage: '<i class="fas fa-image fa-3x text-primary mb-3"></i><br><b>Clique aqui ou arraste uma imagem de capa</b><br><small class="text-muted">PNG, JPG ou GIF (máx. 5MB)</small>',
+                dictDefaultMessage: '<i class="fas fa-image fa-3x text-primary mb-3"></i><br><b>Clique aqui ou arraste uma imagem de capa</b><br><small class="text-muted">PNG, JPG ou GIF (máx. 3MB)</small>',
                 dictRemoveFile: "Remover",
-                dictFileTooBig: "Arquivo muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
+                dictFileTooBig: "Não é possível enviar arquivo acima de 3 MB.",
                 dictInvalidFileType: "Tipo de arquivo não permitido.",
                 dictMaxFilesExceeded: "Você só pode enviar {{maxFiles}} arquivo por vez.",
                 

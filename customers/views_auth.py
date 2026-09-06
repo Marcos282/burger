@@ -17,6 +17,9 @@ from django.core.paginator import Paginator
 from .contexto import salvar_tenant_em_sessao, dominio_full
 from tenants.models import Tenant, TenantSettings,Configuracao
 
+MAX_CONFIG_UPLOAD_SIZE = 3 * 1024 * 1024
+UPLOAD_SIZE_ERROR = 'Não é possível enviar arquivo acima de 3 MB.'
+
 # Função para contar itens do cliente
 def qt_items_cliente(request):
     if request.user.is_authenticated:
@@ -677,6 +680,15 @@ def painel_configuracao(request):
         
         if request.method == 'POST':
             try:
+                if any(
+                    upload.size > MAX_CONFIG_UPLOAD_SIZE
+                    for upload in request.FILES.values()
+                ):
+                    return JsonResponse({
+                        'success': False,
+                        'message': UPLOAD_SIZE_ERROR,
+                    }, status=400)
+
                 print(f"POST data received: {dict(request.POST)}")  # Debug
                 
                 # ==== STEP 1: DADOS GERAIS ====
@@ -950,8 +962,12 @@ def upload_foto_perfil(request):
     
     if request.method == 'POST' and 'foto_perfil' in request.FILES:
         try:
+            foto_perfil = request.FILES['foto_perfil']
+            if foto_perfil.size > MAX_CONFIG_UPLOAD_SIZE:
+                return JsonResponse({'success': False, 'message': UPLOAD_SIZE_ERROR}, status=400)
+
             configuracao = Configuracao.load()
-            configuracao.logo = request.FILES['foto_perfil']
+            configuracao.logo = foto_perfil
             configuracao.save()
             
             return JsonResponse({
@@ -981,8 +997,12 @@ def upload_foto_capa(request):
     if request.method == 'POST':
         if 'foto_capa' in request.FILES:
             try:
+                foto_capa = request.FILES['foto_capa']
+                if foto_capa.size > MAX_CONFIG_UPLOAD_SIZE:
+                    return JsonResponse({'success': False, 'message': UPLOAD_SIZE_ERROR}, status=400)
+
                 configuracao = Configuracao.load()
-                configuracao.front_page = request.FILES['foto_capa']
+                configuracao.front_page = foto_capa
                 configuracao.save()
                 
                 print(f"Foto de capa salva com sucesso: {configuracao.front_page.url}")

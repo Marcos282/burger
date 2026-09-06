@@ -6,6 +6,7 @@ painel autenticado.
 """
 
 # Biblioteca padrão usada para serialização, logs e identificadores únicos.
+from datetime import timedelta
 import logging
 import json
 import uuid
@@ -16,17 +17,21 @@ from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 from django.http import JsonResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 # Regras e integrações internas do projeto.
-from core.utils import calcular_dias_restantes, get_tenant_url
+from customers.models import User
+from core.utils import calcular_dias_restantes, get_tenant_url, gravar_os_dias, somar_data_expiracao
 from pagamento.mercadopago_client import (
     buscar_pagamento,
     get_access_token,
     get_sdk,
     validar_assinatura_webhook,
 )
+
+from core.utils import calcular_dias_restantes, estender_expiracao, normalizar_datetime,somar_data_expiracao
 from pagamento.models import Pagamento
 from tenants.models import Configuracao
 
@@ -170,6 +175,10 @@ def pagamento(request):
             messages.error(request, 'Não foi possível gerar o pagamento.')
             return redirect('pagamento')
 
+        if pagamento_registro.status == 'success':
+            somar_data_expiracao(user)
+            user.refresh_from_db(fields=['data_expiracao'])
+
         # Tokens TEST usam a URL sandbox; tokens APP_USR usam a URL de produção.
         is_sandbox = access_token.startswith('TEST-')
         checkout_url = (
@@ -177,7 +186,7 @@ def pagamento(request):
             if is_sandbox
             else preference.get('init_point')
         )
-
+        
         # Impede um redirecionamento vazio quando a API responde sem URL de checkout.
         if not checkout_url:
             logger.error('Preferência criada sem URL de checkout: %s', preference_response)
@@ -251,7 +260,33 @@ def pagamento_sucesso(request):
     """
     # Captura os parâmetros recebidos para diagnóstico na página.
     retorno = request.GET.dict()
-    logger.info('Retorno aprovado do Mercado Pago: %s', retorno)
+    logger.info('[PAGAMENTO_SUCESSO] Retorno GET aprovado do Mercado Pago: %s', retorno)
+
+    external_reference = retorno.get('external_reference')
+    status = retorno.get('status') or retorno.get('collection_status')
+    logger.info('[PAGAMENTO_SUCESSO] external_reference: %s | status: %s', external_reference, status)
+
+    if external_reference and status == 'approved':
+        pagamento_registro = Pagamento.objects.filter(
+            external_reference=external_reference
+        ).first()
+        if pagamento_registro:
+            logger.info('[PAGAMENTO_SUCESSO] Registro encontrado! Status atual do pagamento no DB: %s | Usuário: %s', pagamento_registro.status, pagamento_registro.user)
+            if pagamento_registro.status != 'approved':
+                pagamento_registro.status = 'approved'
+                pagamento_registro.save(update_fields=['status', 'data_atualizacao'])
+                
+                user = pagamento_registro.user
+                exp_anterior = user.data_expiracao
+                nova_exp = user.estender_expiracao(dias=pagamento_registro.dias_creditados or 30)
+                logger.info('[PAGAMENTO_SUCESSO] Expiracao estendida com SUCESSO! Usuario: %s | Exp. Anterior: %s | Nova Exp.: %s', user.email, exp_anterior, nova_exp)
+            else:
+                logger.info('[PAGAMENTO_SUCESSO] Pagamento ja estava como approved no DB. Nenhuma alteracao extra feita.')
+        else:
+            logger.warning('[PAGAMENTO_SUCESSO] Nenhum registro de Pagamento encontrado para external_reference: %s', external_reference)
+    else:
+        logger.warning('[PAGAMENTO_SUCESSO] Condicao nao satisfeita. external_reference=%s, status=%s', external_reference, status)
+
     # Armazena temporariamente o retorno até o próximo carregamento da página.
     request.session['mercadopago_return_json'] = json.dumps(
         retorno, ensure_ascii=False, indent=2
@@ -362,13 +397,28 @@ def webhook_mercadopago(request):
     # Persiste o log e sincroniza identificador/status quando o pagamento é encontrado.
     if pagamento_registro:
         pagamento_registro.resposta_bruta = webhook_log
+        user = pagamento_registro.user
+        if user and user.data_expiracao:
+            total = user.data_expiracao - timezone.now()
+            logger.info('[WEBHOOK] Tempo restante para expiração do usuário (%s): %s', user.email, total)
+
         if data_id:
             pagamento_registro.mp_payment_id = data_id
         # Aceita somente estados previstos no model local.
         status = pagamento_dados.get('status')
+        logger.info('[WEBHOOK] Pagamento encontrado no DB: ID=%s | Status atual: %s | Status retornado API MP: %s', pagamento_registro.id, pagamento_registro.status, status)
         if status in dict(Pagamento.STATUS_CHOICES):
+            if status == 'approved' and pagamento_registro.status != 'approved':
+                user = pagamento_registro.user
+                exp_anterior = user.data_expiracao
+                nova_exp = user.estender_expiracao(
+                    dias=pagamento_registro.dias_creditados or 30
+                )
+                logger.info('[WEBHOOK] Expiracao estendida via Webhook! Usuario: %s | Exp. Anterior: %s | Nova Exp.: %s', user.email, exp_anterior, nova_exp)
             pagamento_registro.status = status
         pagamento_registro.save()
+    else:
+        logger.warning('[WEBHOOK] Nenhum pagamento local localizado para external_reference: %s', external_reference)
 
     # Registra a conclusão do processamento sem incluir credenciais secretas.
     logger.info(

@@ -15,16 +15,42 @@ def calcular_dias_restantes(data_expiracao, agora=None):
     return (data_expiracao - agora).days
 
 
-def estender_expiracao(user, dias=30):
-    """Soma `dias` à data de expiração do usuário, chamado quando o cliente realiza um pagamento."""
+def gravar_os_dias(dias_restantes, data_atual=None, dias=30):
+    """Retorna a nova expiração, já com timezone, após creditar ``dias``.
+
+    ``dias_restantes`` pode ser um número de dias ou um ``timedelta``. Valores
+    positivos são preservados e recebem o novo crédito; valores zero ou
+    negativos iniciam o prazo com apenas os dias do crédito.
+    """
+    data_atual = normalizar_datetime(data_atual or timezone.now())
+
+    if isinstance(dias_restantes, timedelta):
+        restante = max(dias_restantes, timedelta())
+    else:
+        restante = timedelta(days=max(dias_restantes or 0, 0))
+
+    return data_atual + restante + timedelta(days=dias)
+
+
+def somar_data_expiracao(user, dias_creditados=30):
+    """Consulta a data de expiração do usuário no banco de dados,
+    soma os dias creditados (preservando os dias restantes) e
+    retorna a nova data com timezone pronta para salvar.
+    """
     agora = timezone.now()
-    data_expiracao = normalizar_datetime(user.data_expiracao)
-    base = data_expiracao if data_expiracao and data_expiracao > agora else agora
-    user.data_expiracao = base + timedelta(days=dias)
+    if getattr(user, 'pk', None):
+        user.refresh_from_db(fields=['data_expiracao'])
+
+    expiracao_atual = normalizar_datetime(user.data_expiracao)
+    base = expiracao_atual if (expiracao_atual and expiracao_atual > agora) else agora
+    return base + timedelta(days=dias_creditados)
+
+
+def estender_expiracao(user, dias=30):
+    """Calcula a nova expiração e salva no banco de dados."""
+    user.data_expiracao = somar_data_expiracao(user, dias)
     user.save(update_fields=['data_expiracao'])
     return user.data_expiracao
-
-
 def formatar_brl(valor):
     return f"R$ {valor:,.2f}".replace('.', ',')
 
@@ -243,4 +269,3 @@ def verificar_loja_aberta(request, user=None):
         'horarios_hoje': horarios_hoje,
         'is_open': is_open,
     }
-
