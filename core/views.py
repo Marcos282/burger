@@ -44,6 +44,7 @@ def get_categorias(request):
 def loja(request):
    qtd_prd = get_qdt_prod(request)
    categoria_id = request.GET.get("categoria_id")
+   termo_busca = request.GET.get("busca", "").strip()
    configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
    configuracao_extra = Configuracao.load()
    categorias = Category.objects.filter(
@@ -53,6 +54,9 @@ def loja(request):
    produtos = Produto.objects.filter(
        tenant=request.tenant,
    ).order_by('ordem_exibicao', 'nome')
+
+   if termo_busca:
+       produtos = produtos.filter(nome__icontains=termo_busca)
 
    if categoria_selecionada:
        produtos = produtos.filter(category=categoria_selecionada)
@@ -134,6 +138,7 @@ def loja(request):
        'config': config,
        'aberto': aberto,
        'hora_fechamento': hora_fechamento,
+       'termo_busca': termo_busca,
        'color_theme': config.color_theme if config else '#ff5900',  # Cor do tema ou padrão laranja
     }
    print(f"Total>>>>> {get_qdt_prod(request)}")
@@ -163,7 +168,7 @@ def detalhe(request,produto_id):
 
    # Tema de cores e dados do tenant (mesmo usado na home da loja)
    config = TenantSettings.objects.filter(tenant=request.tenant).first()
-
+   configuracao = Configuracao.load()
    context = {
       'valor_sem_S' : valor_br_semS,
       'valor_br' : valor_br,
@@ -174,6 +179,7 @@ def detalhe(request,produto_id):
       'tot_prod_cart' : len(cart),
       'color_theme': config.color_theme if config else '#ff5900',
       'config': config,
+      'configuracao': configuracao,
    }
 
    return render(request, 'loja/produto/detail.html', context)

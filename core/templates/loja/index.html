@@ -174,10 +174,12 @@
                            <div class="col-md-9">
                               <div class="search-bar">
                                  <div class="clear"></div>
-                                 <form class="align-middle" method="GET" action="https://demo6.lojazap.com/categoria">
-                                    <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
-                                    <input type="hidden" name="categoria" value=""/>
-                                    <button>
+                                 <form class="align-middle" method="GET" action="{% url 'loja' %}">
+                                    <input type="text" name="busca" placeholder="Digite sua busca..." value="{{ termo_busca|default:'' }}"/>
+                                    {% if categoria_selecionada %}
+                                    <input type="hidden" name="categoria_id" value="{{ categoria_selecionada.id }}"/>
+                                    {% endif %}
+                                    <button type="submit">
                                     <i class="lni lni-search-alt"></i>
                                     </button>
                                     <div class="clear"></div>
@@ -261,7 +263,7 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/21986758278" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              <a href="https://wa.me/21990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -418,10 +420,12 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="search-bar-mobile visible-xs visible-sm">
-                           <form class="align-middle" action="" method="GET">
-                              <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
-                              <input type="hidden" name="categoria" value=""/>
-                              <button>
+                           <form class="align-middle" action="{% url 'loja' %}" method="GET">
+                              <input type="text" name="busca" placeholder="Digite sua busca..." value="{{ termo_busca|default:'' }}"/>
+                              {% if categoria_selecionada %}
+                              <input type="hidden" name="categoria_id" value="{{ categoria_selecionada.id }}"/>
+                              {% endif %}
+                              <button type="submit">
                               <i class="lni lni-search-alt"></i>
                               </button>
                               <div class="clear"></div>
@@ -489,6 +493,7 @@
                                        </a>
                                     </div>
                                  </div>
+
 								 {% endfor %}
 								 <!-- Fim listagem de produtos -->	
 								<!-- # Verificar o que é esse produto fixo 
@@ -565,6 +570,29 @@
                            </div>
                         </div>
                      </div>
+
+                     <!-- Banner exibido ao final da categoria -->
+                     {% if banners %}
+                        {% with banner=banners|random %}
+                           {% if banner.banner_pc or banner.banner_mobile %}
+                           <div class="row my-4">
+                              <div class="col-md-12 text-center">
+                                 {% if banner.link %}<a href="{{ banner.link }}" target="_blank">{% endif %}
+                                    {% if banner.banner_pc %}
+                                    <img class="img-responsive hidden-xs hidden-sm rounded mx-auto" src="{{ banner.banner_pc.url }}" alt="{{ banner.titulo }}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 0 auto;"/>
+                                    {% endif %}
+                                    {% if banner.banner_mobile %}
+                                    <img class="img-responsive visible-xs visible-sm rounded mx-auto" src="{{ banner.banner_mobile.url }}" alt="{{ banner.titulo }}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 0 auto;"/>
+                                    {% elif banner.banner_pc %}
+                                    <img class="img-responsive visible-xs visible-sm rounded mx-auto" src="{{ banner.banner_pc.url }}" alt="{{ banner.titulo }}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 0 auto;"/>
+                                    {% endif %}
+                                 {% if banner.link %}</a>{% endif %}
+                              </div>
+                           </div>
+                           {% endif %}
+                        {% endwith %}
+                     {% endif %}
+
                      {% endfor %}
                   </div>
                </div>
@@ -576,13 +604,13 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/></span>
+                        <span>, Nº {{ configuracao.numero }}, <br/>Bairro: {{ configuracao.bairro }}, CEP: {{ configuracao.cep }}, {{ configuracao.cidade }}/{{ configuracao.estado }}<br/></span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           <a href="https://wa.me/21990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
                         </div>
                      </div>
                   </div>
@@ -593,7 +621,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <a class="watermark" href="https://vaidezap.com/" target="_blank">
-                        <img src="{% static '_core/_cdn/img/logo.png' %}"/>
+                        <img src="{{ configuracao.logo_footer.url }}"/>
                         </a>
                      </div>
                   </div>

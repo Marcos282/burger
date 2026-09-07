@@ -37,6 +37,8 @@ class ConfiguracaoAdmin(admin.ModelAdmin):
         "nome_empresa", "email_contato", "telefone", "logo", "dominio", "favicon",
         "valor_mensalidade", "SecrectKey", "client_id_mercadolivre",
         "secret_mercadolivre", "Token_mercadolivre",
+        "endereco", "numero", "complemento", "bairro", "cidade", "estado", "cep",
+        "cnpj", "inscricao_estadual","nome_razao_social","logo_footer"
     )
 
     def get_form(self, request, obj=None, **kwargs):

@@ -651,7 +651,7 @@
                   </div>
                </div>
             </div>
-            <div class="container relacionados">
+            <!-- <div class="container relacionados">
                <div class="categoria">
                   <div class="row">
                      <div class="col-md-10 col-sm-10 col-xs-10">
@@ -707,20 +707,20 @@
                      </div>
                   </div>
                </div>
-            </div>
+            </div> -->
          </div>
          <div class="footer">
             <div class="footer-info">
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>1250, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/></span>
+                        <span>{{ configuracao.endereco }}, Nº {{ configuracao.numero }} <br/>Bairro: {{ configuracao.bairro }}, CEP: {{ configuracao.cep }}, {{ configuracao.cidade }}/{{ configuracao.estado }}<br/></span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           <a href="https://wa.me/5521990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
                         </div>
                      </div>
                   </div>
@@ -730,8 +730,14 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://conheca.viazap.net/" target="_blank">
-                        <img src="{% static '{config_geral.logo}' %}"/>
+                        <a class="watermark" href="https://viazap.net/conheca" target="_blank">
+                        {% if configuracao.logo_footer %}
+                           <img src="{{ configuracao.logo_footer.url }}"/>
+                        {% elif configuracao.logo %}
+                           <img src="{{ configuracao.logo.url }}"/>
+                        {% else %}
+                           <img src="{% static '_core/_cdn/img/logo.png' %}"/>
+                        {% endif %}
                         </a>
                      </div>
                   </div>

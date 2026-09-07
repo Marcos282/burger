@@ -46,6 +46,11 @@ class Configuracao(SingletonModel):
     cidade = models.CharField(max_length=255, blank=True, null=True)
     estado = models.CharField(max_length=255, blank=True, null=True)
     cep = models.CharField(max_length=20, blank=True, null=True)
+    cnpj = models.CharField(max_length=20, blank=True, null=True)
+    inscricao_estadual = models.CharField(max_length=20, blank=True, null=True)
+    nome_razao_social = models.CharField(max_length=255, blank=True, null=True)
+    logo_footer = models.ImageField(upload_to="logos/", blank=True, null=True)
+
 
     def __str__(self):
         return "Configurações do Sistema"
