@@ -217,8 +217,16 @@
                      <div class="col-md-3">
                         <div class="brand">
                            <a href="{% url 'loja' %}">
-                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ configuracao_extra.nome }}"/>
-                           <span>{{ configuracao_extra.nome }} <strong class="colored">.</strong></span>
+                           {% if config.foto_perfil %}
+                              <img src="{{ config.foto_perfil.url }}" alt="{{ config.nome_loja }}"/>
+                           {% elif config.logo_url %}
+                              <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                           {% elif configuracao.logo %}
+                              <img src="{{ configuracao.logo.url }}" alt="{{ config.nome_loja }}"/>
+                           {% else %}
+                              <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ config.nome_loja }}"/>
+                           {% endif %}
+                           <span>{{ config.nome_loja }} <strong class="colored">.</strong></span>
                            </a>
                         </div>
                      </div>
@@ -429,7 +437,15 @@
                   <div class="avatar">
                      <div class="holder">
                         <a href="{% url 'loja' %}">
-                        <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
+                        {% if config.foto_perfil %}
+                           <img src="{{ config.foto_perfil.url }}" alt="{{ config.nome_loja }}"/>
+                        {% elif config.logo_url %}
+                           <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                        {% elif configuracao.logo %}
+                           <img src="{{ configuracao.logo.url }}" alt="{{ config.nome_loja }}"/>
+                        {% else %}
+                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ config.nome_loja }}"/>
+                        {% endif %}
                         </a>
                      </div>
                   </div>

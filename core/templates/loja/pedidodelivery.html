@@ -71,9 +71,9 @@
                   <div class="row align-middle hidden-sm hidden-xs">
                      <div class="col-md-3">
                         <div class="brand">
-                           <a href="https://demo6.lojazap.com">
-                           <img src="https://demo6.lojazap.com/_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg" alt="Tiger Burger "/>
-                           <span>Tiger Burger <strong class="colored">.</strong></span>
+                           <a href="https://vaidezap.com">
+                           <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                           <span>{{ config.nome_loja }} <strong class="colored">.</strong></span>
                            </a>
                         </div>
                      </div>
@@ -82,7 +82,7 @@
                            <div class="col-md-9">
                               <div class="search-bar">
                                  <div class="clear"></div>
-                                 <form class="align-middle" method="GET" action="https://demo6.lojazap.com/categoria">
+                                 <form class="align-middle" method="GET" action="https://x.vaidezap.com/loja">
                                     <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
                                     <input type="hidden" name="categoria" value=""/>
                                     <button>
@@ -93,7 +93,7 @@
                               </div>
                            </div>
                            <div class="col-md-3">
-                              <a class="holder-shop-bag pull-right" href="https://demo6.lojazap.com/sacola" title="Minha sacola">
+                              <a class="holder-shop-bag pull-right" href="https://x.vaidezap.com/loja" title="Minha sacola">
                                  <span class="cash">Minha sacola</span>
                                  <div>
                                     <div class="shop-bag">
@@ -119,7 +119,7 @@
                      <div class="col-md-3 col-sm-3 col-xs-3">
                         <div class="user-info pull-right">
                            <div class="holder-shop-bag pull-right">
-                              <a href="https://demo6.lojazap.com/sacola" title="Minha sacola">
+                              <a href="https://x.vaidezap.com/loja" title="Minha sacola">
                                  <div class="shop-bag">
                                     <i class="lni lni-cart"></i>
                                     <span class="counter">1</span>
@@ -137,25 +137,25 @@
                      <div class="col-md-12">
                         <nav class="navbar pull-left">
                            <ul class="nav navbar-nav">
-                              <li class="active"><a href="https://demo6.lojazap.com">Início</a></li>
+                              <li class="active"><a href="https://x.vaidezap.com">Início</a></li>
                               <li class="dropdown">
                                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                  Categorias
                                  <i class="lni lni-chevron-down icon-right"></i>
                                  </a>
                                  <ul class="dropdown-menu">
-                                    <li><a href="https://demo6.lojazap.com/categoria">Todas</a></li>
-                                    <li><a href="https://demo6.lojazap.com/categoria/65699">Lanches</a></li>
+                                    <li><a href="https://x.vaidezap.com/categoria">Todas</a></li>
+                                    <li><a href="https://x.vaidezap.com/categoria">Lanches</a></li>
                                  </ul>
                               </li>
-                              <li><a href="https://demo6.lojazap.com/categoria?filtro=4">Ofertas</a></li>
+                              <li><a href="https://x.vaidezap.com/categoria>Ofertas</a></li>
                               <li><span class="sidrLeft">Fale conosco</span></li>
                               <!-- <li class="visible-sm visible-xs"><a href="#">Suporte</a></li> -->
                            </ul>
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              <a href="https://wa.me/5521990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -210,7 +210,7 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>47997277362</span>
+                              <span>21990921092</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
@@ -251,7 +251,7 @@
             <div class="locked-bar visible-xs visible-sm">
                <div class="avatar">
                   <div class="holder">
-                     <a href="https://demo6.lojazap.com">
+                     <a href="https://x.lojazap.com/loja">
                      <img src="https://demo6.lojazap.com/_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg"/>
                      </a>
                   </div>
@@ -269,11 +269,11 @@
                         </div>
                         <div class="bread-box">
                            <div class="bread">
-                              <a href="https://demo6.lojazap.com"><i class="lni lni-home"></i></a>
+                              <a href="https://x.lojazap.com/loja"><i class="lni lni-home"></i></a>
                               <span>/</span>
-                              <a href="https://demo6.lojazap.com/sacola.php">Minha sacola</a>
+                              <a href="https://x.lojazap.com/loja/sacola.php">Minha sacola</a>
                               <span>/</span>
-                              <a href="https://demo6.lojazap.com/pedido.php">Pedido Delivery</a>
+                              <a href="https://x.lojazap.com/loja/pedido.php">Pedido Delivery</a>
                            </div>
                         </div>
                      </div>
@@ -464,7 +464,7 @@
                               <div class="comprovante-parent grudado-desktop">
                          <div class="comprovante">
                            <div class="content">
-                              <strong>DUCK BURGER</strong>
+                              <strong>{{ config.nome_loja }}</strong>
                               <br>
                               ------
                               <br>
@@ -509,7 +509,7 @@
                            </div>
                            <div class="row">
                               <div class="col-md-3 col-xs-5 col-sm-5">
-                                 <a class="back-button" href="https://demo6.lojazap.com/sacola"><i class="lni lni-arrow-left"></i> <span>Alterar</span></a>
+                                 <a class="back-button" href="https://x.lojazap.com/loja/sacola"><i class="lni lni-arrow-left"></i> <span>Alterar</span></a>
                               </div>
                               <div class="col-md-6 hidden-xs hidden-sm"></div>
                               <div class="col-md-3 col-xs-7 col-sm-7">
@@ -544,8 +544,8 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://conheca.lojazap.com" target="_blank">
-                        <img src="https://demo6.lojazap.com/_core/_cdn/img/logo.png"/>
+                        <a class="watermark" href="https://viazap.com/conheca" target="_blank">
+                        <img src="https://viazap.com/_core/_cdn/img/logo.png" alt="ViaZap Logo">
                         </a>
                      </div>
                   </div>

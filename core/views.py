@@ -307,11 +307,15 @@ def sacola(request):
         })
 
    categorias = get_categorias(request)
+   config = TenantSettings.objects.filter(tenant=request.tenant).first()
+
    context = {
       'produtos': produtos,
       'total': formatar_brl(total),
-      'categorias':categorias,
-      'cart_count':cart_count,
+      'categorias': categorias,
+      'cart_count': cart_count,
+      'color_theme': config.color_theme if config else '#ff5900',
+      'config': config,
    }
  
    return render(request, 'loja/sacola.html', context)
