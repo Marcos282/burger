@@ -148,41 +148,32 @@ def loja(request):
 
 #detalhe =====================================================================
 def detalhe(request,produto_id):
+    produto = get_object_or_404(Produto, tenant=request.tenant, id=produto_id)
+    valor_br = formatar_brl(produto.price)
+    valor_br_semS = formatar_brl_noS(produto.price)
+    cart = get_cart(request)
+    cart_count = sum(cart.values())
 
-   produto = get_object_or_404(Produto, tenant=request.tenant, id=produto_id)
-   # formata para R$ 23,44
-   valor_br = formatar_brl(produto.price)
-   valor_br_semS = formatar_brl_noS(produto.price)
+    print(f" contador: {cart_count}")
 
-    # Pega o carrinho da sessão
-   cart = get_cart(request)
-   cart_count = sum(cart.values())
+    categorias = get_categorias(request)
+    imagens_galeria = list(produto.imagens.all().order_by('ordem'))
+    config = TenantSettings.objects.filter(tenant=request.tenant).first()
+    configuracao = Configuracao.load()
+    context = {
+        'valor_sem_S': valor_br_semS,
+        'valor_br': valor_br,
+        'produto': produto,
+        'imagens_galeria': imagens_galeria,
+        'categorias': categorias,
+        'cart_count': cart_count,
+        'tot_prod_cart': len(cart),
+        'color_theme': config.color_theme if config else '#ff5900',
+        'config': config,
+        'configuracao': configuracao,
+    }
 
-   print(f" contador: {cart_count}")
-
-   # Obtendo todas as categorias do tenant atual para exibir no menu categorias   
-   categorias = get_categorias(request)
-
-   # Galeria de imagens do produto (vinculada via produto_id; produto já é isolado por tenant acima)
-   imagens_galeria = list(produto.imagens.all().order_by('ordem'))
-
-   # Tema de cores e dados do tenant (mesmo usado na home da loja)
-   config = TenantSettings.objects.filter(tenant=request.tenant).first()
-   configuracao = Configuracao.load()
-   context = {
-      'valor_sem_S' : valor_br_semS,
-      'valor_br' : valor_br,
-      'produto' : produto,
-      'imagens_galeria' : imagens_galeria,
-      'categorias' : categorias,
-      'cart_count': cart_count,
-      'tot_prod_cart' : len(cart),
-      'color_theme': config.color_theme if config else '#ff5900',
-      'config': config,
-      'configuracao': configuracao,
-   }
-
-   return render(request, 'loja/produto/detail.html', context)
+    return render(request, 'loja/produto/detail.html', context)
 
 
 # Envio do formulário de suporte (modal "Suporte") ============================
@@ -298,33 +289,33 @@ def remover_do_carrinho_ajax(request):
 
 # Ver carrinho ================================================================
 def sacola(request):
-   cart = get_cart(request)
-   cart_count = sum(cart.values())
-   produtos = []
-   total = 0
-   for produto_id, qtd in cart.items():
-      produto = get_object_or_404(Produto, id=produto_id)
-      subtotal = produto.price * qtd
-      total += subtotal
-      produtos.append({
+    cart = get_cart(request)
+    cart_count = sum(cart.values())
+    produtos = []
+    total = 0
+    for produto_id, qtd in cart.items():
+        produto = get_object_or_404(Produto, id=produto_id)
+        subtotal = produto.price * qtd
+        total += subtotal
+        produtos.append({
             'produto': produto,
             'quantidade': qtd,
-            'subtotal': subtotal
+            'subtotal': subtotal,
         })
 
-   categorias = get_categorias(request)
-   config = TenantSettings.objects.filter(tenant=request.tenant).first()
+    categorias = get_categorias(request)
+    settings = TenantSettings.load(tenant=request.tenant)
 
-   context = {
-      'produtos': produtos,
-      'total': formatar_brl(total),
-      'categorias': categorias,
-      'cart_count': cart_count,
-      'color_theme': config.color_theme if config else '#ff5900',
-      'config': config,
-   }
- 
-   return render(request, 'loja/sacola.html', context)
+    context = {
+        'produtos': produtos,
+        'total': formatar_brl(total),
+        'categorias': categorias,
+        'cart_count': cart_count,
+        'color_theme': settings.color_theme or '#ff5900',
+        'config': settings,
+    }
+
+    return render(request, 'loja/sacola.html', context)
 
 
 

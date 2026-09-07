@@ -285,34 +285,24 @@ $(document).ready(function() {
                 this.on("removedfile", function(file) {
                     console.log("Arquivo removido:", file.name);
                 });
+
+                {% if configuracao.logo %}
+                const mockFile = {
+                    name: "{{ configuracao.logo.name|default:'foto_perfil.jpg'|escapejs }}",
+                    size: 1024,
+                    type: "image/jpeg",
+                    status: Dropzone.ADDED,
+                    accepted: true
+                };
+                this.files.push(mockFile);
+                this.emit("addedfile", mockFile);
+                this.emit("thumbnail", mockFile, "{{ configuracao.logo.url|escapejs }}");
+                this.emit("complete", mockFile);
+                {% endif %}
             }
         });
         }
     }, 100); // Aguarda 100ms para garantir que todos os scripts foram carregados
-    
-    // Pré-carrega foto de perfil existente
-    {% if configuracao.logo %}
-    setTimeout(function() {
-        const profileDropzone = document.getElementById('dropzoneImagemPerfil');
-        if (profileDropzone && profileDropzone.dropzone) {
-            // Cria um arquivo mock para exibir a imagem existente
-            const mockFile = {
-                name: "{{ configuracao.logo.name|default:'foto_perfil.jpg' }}",
-                size: 1024, // tamanho fictício
-                type: "image/jpeg",
-                status: Dropzone.ADDED,
-                accepted: true
-            };
-            
-            profileDropzone.dropzone.files.push(mockFile);
-            profileDropzone.dropzone.emit("addedfile", mockFile);
-            profileDropzone.dropzone.emit("thumbnail", mockFile, "{{ configuracao.logo.url }}");
-            profileDropzone.dropzone.emit("complete", mockFile);
-            
-            console.log('Foto de perfil pré-carregada:', "{{ configuracao.logo.url }}");
-        }
-    }, 200);
-    {% endif %}
     
     // Inicializa o Dropzone para upload de foto de capa
     setTimeout(function() {
@@ -373,34 +363,25 @@ $(document).ready(function() {
                     this.on("removedfile", function(file) {
                         console.log("Arquivo de capa removido:", file.name);
                     });
+
+                    {% if configuracao.front_page %}
+                    const mockFile = {
+                        name: "{{ configuracao.front_page.name|default:'foto_capa.jpg'|escapejs }}",
+                        size: 1024,
+                        type: "image/jpeg",
+                        status: Dropzone.ADDED,
+                        accepted: true
+                    };
+                    this.files.push(mockFile);
+                    this.emit("addedfile", mockFile);
+                    this.emit("thumbnail", mockFile, "{{ configuracao.front_page.url|escapejs }}");
+                    this.emit("complete", mockFile);
+                    {% endif %}
                 }
             });
         }
     }, 150); // Delay um pouco maior para evitar conflitos
     
-    // Pré-carrega foto de capa existente
-    {% if configuracao.front_page %}
-    setTimeout(function() {
-        const coverDropzone = document.getElementById('dropzoneFotoCapa');
-        if (coverDropzone && coverDropzone.dropzone) {
-            // Cria um arquivo mock para exibir a imagem existente
-            const mockFile = {
-                name: "{{ configuracao.front_page.name|default:'foto_capa.jpg' }}",
-                size: 1024, // tamanho fictício
-                type: "image/jpeg",
-                status: Dropzone.ADDED,
-                accepted: true
-            };
-            
-            coverDropzone.dropzone.files.push(mockFile);
-            coverDropzone.dropzone.emit("addedfile", mockFile);
-            coverDropzone.dropzone.emit("thumbnail", mockFile, "{{ configuracao.front_page.url }}");
-            coverDropzone.dropzone.emit("complete", mockFile);
-            
-            console.log('Foto de capa pré-carregada:', "{{ configuracao.front_page.url }}");
-        }
-    }, 300);
-    {% endif %}
 });
 
       
