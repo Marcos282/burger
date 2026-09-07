@@ -61,14 +61,14 @@
                 audioContext = new AudioCtx();
             }
             if (audioContext.state === 'suspended') {
-                audioContext.resume();
+                audioContext.resume().catch(function () {});
             }
             return audioContext;
         }
 
         function beepOnce() {
             var ctx = ensureAudioContext();
-            if (!ctx) return;
+            if (!ctx || ctx.state === 'suspended') return;
 
             function playBellTone(startAt, freq, duration, peakGain) {
                 var oscillator = ctx.createOscillator();
@@ -120,13 +120,20 @@
 
             if (pendingCount > 0) {
                 widget.style.display = 'block';
+                var ctx = ensureAudioContext();
+
                 if (!audioMuted) {
-                    enableBtn.className = 'btn btn-danger font-weight-bold shadow-sm';
-                    enableBtn.innerHTML = '🔇 Parar de tocar pedidos (' + pendingCount + ')';
-                    startBeepLoop();
+                    if (ctx && ctx.state === 'suspended') {
+                        enableBtn.className = 'btn btn-warning font-weight-bold shadow-lg animate-pulse';
+                        enableBtn.innerHTML = '🔔 ' + pendingCount + ' pedido(s) novo(s)! Clique em qualquer lugar para liberar o som';
+                    } else {
+                        enableBtn.className = 'btn btn-danger font-weight-bold shadow-sm';
+                        enableBtn.innerHTML = '🔇 Parar de tocar pedidos (' + pendingCount + ')';
+                        startBeepLoop();
+                    }
                 } else {
-                    enableBtn.className = 'btn btn-warning font-weight-bold shadow-sm';
-                    enableBtn.innerHTML = '🔔 Reativar som de pedidos';
+                    enableBtn.className = 'btn btn-secondary font-weight-bold shadow-sm';
+                    enableBtn.innerHTML = '🔔 Reativar som de pedidos (' + pendingCount + ')';
                     stopBeepLoop();
                 }
             } else {
@@ -137,7 +144,14 @@
         }
 
         function toggleAudio() {
-            ensureAudioContext();
+            var ctx = ensureAudioContext();
+            if (ctx && ctx.state === 'suspended') {
+                ctx.resume().then(function () {
+                    audioMuted = false;
+                    syncSoundState();
+                });
+                return;
+            }
             audioMuted = !audioMuted;
             syncSoundState();
         }
@@ -151,15 +165,15 @@
                 var ctx = ensureAudioContext();
                 if (ctx && ctx.state === 'suspended') {
                     ctx.resume().then(function () {
-                        startBeepLoop();
+                        syncSoundState();
                     });
                 } else {
-                    startBeepLoop();
+                    syncSoundState();
                 }
             }
         }
 
-        ['click', 'keydown', 'pointerdown', 'touchstart'].forEach(function (evt) {
+        ['click', 'keydown', 'pointerdown', 'touchstart', 'focus'].forEach(function (evt) {
             document.addEventListener(evt, unlockAudioOnInteraction, { passive: true });
         });
 
@@ -180,15 +194,30 @@
                 return response.json();
             })
             .then(function (data) {
-                var container = document.getElementById('card-pedidos-container');
-                if (container && typeof data.html === 'string') {
-                    container.innerHTML = data.html;
-                }
                 pendingCount = Number(data.ordens_pendentes_count || 0);
                 syncSoundState();
+
+                // Evita substituir o HTML se o usuário estiver com algum modal aberto (para não fechar o modal na cara dele e travar o fundo escuro)
+                var isModalOpen = document.body.classList.contains('modal-open') || !!document.querySelector('.modal.show');
+
+                var container = document.getElementById('card-pedidos-container');
+                if (container && typeof data.html === 'string' && !isModalOpen) {
+                    container.innerHTML = data.html;
+                }
             })
             .catch(function () {
                 // Silencia erros de polling para não impactar a tela.
+            });
+        }
+
+        // Quando o modal for fechado, limpa fundos pendentes e atualiza a tabela
+        if (typeof $ !== 'undefined') {
+            $(document).on('hidden.bs.modal', function () {
+                if (!$('.modal.show').length) {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open').css('padding-right', '');
+                    fetchPedidos();
+                }
             });
         }
 
