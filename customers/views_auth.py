@@ -720,9 +720,13 @@ def painel_configuracao(request):
                 # ==== STEP 2: APARÊNCIA ====
                 configuracao = Configuracao.load()
                 if 'foto_perfil' in request.FILES:
-                    configuracao.logo = request.FILES['foto_perfil']
+                    foto = request.FILES['foto_perfil']
+                    configuracao.logo = foto
+                    settings.foto_perfil = foto
                 if 'foto_capa' in request.FILES:
-                    configuracao.front_page = request.FILES['foto_capa']
+                    capa = request.FILES['foto_capa']
+                    configuracao.front_page = capa
+                    settings.foto_capa = capa
                 if 'color_theme' in request.POST:
                     settings.color_theme = request.POST['color_theme']
                 if 'exibicao_produtos' in request.POST:
@@ -881,8 +885,10 @@ def painel_configuracao(request):
                     senha_verifica = user.check_password(password)
                     print(f"    Verificação da senha: {senha_verifica}")
                 
-                # Não salvar senha no TenantSettings (remover do modelo se existir)
-                # A senha deve estar apenas no modelo User
+                # Atualiza logo_url se houver foto_perfil
+                if settings.foto_perfil:
+                    settings.logo_url = settings.foto_perfil.url
+
                 print(f"Attempting to save settings...")  # Debug
                 settings.save()
                 configuracao.save()
@@ -966,6 +972,17 @@ def upload_foto_perfil(request):
             if foto_perfil.size > MAX_CONFIG_UPLOAD_SIZE:
                 return JsonResponse({'success': False, 'message': UPLOAD_SIZE_ERROR}, status=400)
 
+            # Salva no TenantSettings do tenant do usuário
+            tenant = getattr(request, 'tenant', None) or request.user.tenant
+            settings = TenantSettings.load(tenant)
+            settings.foto_perfil = foto_perfil
+            settings.save()
+
+            if settings.foto_perfil:
+                settings.logo_url = settings.foto_perfil.url
+                settings.save(update_fields=['logo_url'])
+
+            # Também salva na Configuracao global
             configuracao = Configuracao.load()
             configuracao.logo = foto_perfil
             configuracao.save()
@@ -973,7 +990,7 @@ def upload_foto_perfil(request):
             return JsonResponse({
                 'success': True,
                 'message': 'Foto de perfil atualizada com sucesso!',
-                'url': configuracao.logo.url
+                'url': settings.foto_perfil.url if settings.foto_perfil else configuracao.logo.url
             })
         except Exception as e:
             return JsonResponse({
@@ -1001,6 +1018,13 @@ def upload_foto_capa(request):
                 if foto_capa.size > MAX_CONFIG_UPLOAD_SIZE:
                     return JsonResponse({'success': False, 'message': UPLOAD_SIZE_ERROR}, status=400)
 
+                # Salva no TenantSettings do tenant do usuário
+                tenant = getattr(request, 'tenant', None) or request.user.tenant
+                settings = TenantSettings.load(tenant)
+                settings.foto_capa = foto_capa
+                settings.save()
+
+                # Também salva na Configuracao global
                 configuracao = Configuracao.load()
                 configuracao.front_page = foto_capa
                 configuracao.save()
@@ -1010,7 +1034,7 @@ def upload_foto_capa(request):
                 return JsonResponse({
                     'success': True,
                     'message': 'Foto de capa atualizada com sucesso!',
-                    'url': configuracao.front_page.url
+                    'url': settings.foto_capa.url if settings.foto_capa else configuracao.front_page.url
                 })
             except Exception as e:
                 print(f"Erro ao salvar foto de capa: {str(e)}")

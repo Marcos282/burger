@@ -108,7 +108,7 @@
                               <div class="form-group"></div>
                               <div class="input-group">
                                  <input type="text" class="form-control text-right" placeholder="subdomain" name="subdomain" value="{{ tenant.subdomain|default:'' }}" aria-describedby="basic-addon2" disabled>
-                                 <div class="input-group-append"><span class="input-group-text">.example.com</span></div>
+                                 <div class="input-group-append"><span class="input-group-text">.{% if configuracao.dominio %}{{ configuracao.dominio }}{% elif settings.dominio %}{{ settings.dominio }}{% else %}exemplo.com{% endif %}</span></div>
                               </div>
                            </div>
                            <!--end::Input-->

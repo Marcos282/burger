@@ -38,8 +38,8 @@
 <!--end::Card_pedidos-->
 
 <div id="pending-audio-widget" style="position: fixed; right: 16px; bottom: 16px; z-index: 1050; display: none;">
-    <button id="enable-pending-audio" type="button" class="btn btn-warning font-weight-bold">
-        Ativar som de pedidos
+    <button id="enable-pending-audio" type="button" class="btn btn-danger font-weight-bold shadow-sm">
+        🔇 Parar de tocar pedidos
     </button>
 </div>
 
@@ -48,14 +48,9 @@
         var pendingCount = Number("{{ ordens_pendentes_count|default:0 }}") || 0;
         var audioContext = null;
         var beepTimer = null;
-        var audioEnabled = false;
+        var audioMuted = false;
         var widget = document.getElementById('pending-audio-widget');
         var enableBtn = document.getElementById('enable-pending-audio');
-
-        function updateWidgetVisibility() {
-            if (!widget) return;
-            widget.style.display = pendingCount > 0 && !audioEnabled ? 'block' : 'none';
-        }
 
         function ensureAudioContext() {
             if (!audioContext) {
@@ -103,11 +98,13 @@
         }
 
         function startBeepLoop() {
-            if (!audioEnabled || pendingCount <= 0 || beepTimer) return;
+            if (audioMuted || pendingCount <= 0 || beepTimer) return;
             beepOnce();
             beepTimer = setInterval(function () {
-                if (pendingCount > 0) {
+                if (pendingCount > 0 && !audioMuted) {
                     beepOnce();
+                } else {
+                    stopBeepLoop();
                 }
             }, 2200);
         }
@@ -119,24 +116,52 @@
         }
 
         function syncSoundState() {
-            if (pendingCount > 0 && audioEnabled) {
-                startBeepLoop();
+            if (!widget || !enableBtn) return;
+
+            if (pendingCount > 0) {
+                widget.style.display = 'block';
+                if (!audioMuted) {
+                    enableBtn.className = 'btn btn-danger font-weight-bold shadow-sm';
+                    enableBtn.innerHTML = '🔇 Parar de tocar pedidos (' + pendingCount + ')';
+                    startBeepLoop();
+                } else {
+                    enableBtn.className = 'btn btn-warning font-weight-bold shadow-sm';
+                    enableBtn.innerHTML = '🔔 Reativar som de pedidos';
+                    stopBeepLoop();
+                }
             } else {
+                widget.style.display = 'none';
                 stopBeepLoop();
+                audioMuted = false;
             }
-            updateWidgetVisibility();
         }
 
-        function activateAudio() {
-            var ctx = ensureAudioContext();
-            if (!ctx) return;
-            audioEnabled = true;
+        function toggleAudio() {
+            ensureAudioContext();
+            audioMuted = !audioMuted;
             syncSoundState();
         }
 
         if (enableBtn) {
-            enableBtn.addEventListener('click', activateAudio);
+            enableBtn.addEventListener('click', toggleAudio);
         }
+
+        function unlockAudioOnInteraction() {
+            if (pendingCount > 0 && !audioMuted) {
+                var ctx = ensureAudioContext();
+                if (ctx && ctx.state === 'suspended') {
+                    ctx.resume().then(function () {
+                        startBeepLoop();
+                    });
+                } else {
+                    startBeepLoop();
+                }
+            }
+        }
+
+        ['click', 'keydown', 'pointerdown', 'touchstart'].forEach(function (evt) {
+            document.addEventListener(evt, unlockAudioOnInteraction, { passive: true });
+        });
 
         function fetchPedidos() {
             // URL absoluta (origin + path) para evitar que a tag <base> do layout resolva o caminho errado.
