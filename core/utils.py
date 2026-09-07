@@ -75,48 +75,49 @@ def build_full_url(request, path='', user=None):
     
     Returns:
         str: URL completa com subdomínio do tenant
-    
-    Exemplo:
-        build_full_url(request, '/painel/produtos/')
-        # Retorna: http://marcos.localhost:8000/painel/produtos/
     """
-    # Obtém o protocolo (http ou https)
-    protocol = 'https' if request.is_secure() else 'http'
-    
+    from tenants.models import Configuracao, Tenant
+
+    config = Configuracao.load()
+    domain = (config.dominio or '').strip().removeprefix('https://').removeprefix('http://').rstrip('/')
+
     # Determina qual user usar
     target_user = user if user else getattr(request, 'user', None)
     tenant = getattr(request, 'tenant', None)
 
-    if tenant is None and target_user and hasattr(target_user, 'tenant'):
-        tenant = target_user.tenant
+    if tenant is None and target_user and getattr(target_user, 'is_authenticated', False):
+        try:
+            tenant = getattr(target_user, 'tenant', None)
+        except Exception:
+            tenant = None
 
     if tenant is None and hasattr(request, 'session'):
-        from tenants.models import Tenant
-
         tenant_id = request.session.get('tenant_id') or request.session.get('id_tenant')
         if tenant_id:
             tenant = Tenant.objects.filter(id=tenant_id).first()
 
-    # Obtém o subdomínio do tenant
+    # Pega subdomínio do tenant ou da sessão
+    subdomain = None
     if tenant:
         subdomain = tenant.subdomain
-        
-        if settings.DEBUG:
-            protocol = 'http'
-            host = f"{subdomain}.localhost:8000"
-        else:
-            from tenants.models import Configuracao
+    elif hasattr(request, 'session') and request.session.get('tenant_subdomain'):
+        subdomain = request.session.get('tenant_subdomain')
 
-            domain = Configuracao.load().dominio.strip()
-            domain = domain.removeprefix('https://').removeprefix('http://').rstrip('/')
-            host = f"{subdomain}.{domain}"
-    else:
-        # Fallback: usa o host atual se não conseguir determinar o tenant
-        host = request.get_host()
-    
     # Remove a barra inicial do path se existir para evitar duplicação
     if path.startswith('/'):
         path = path[1:]
+
+    # Obtém o subdomínio e domínio
+    if subdomain:
+        if domain:
+            protocol = 'http' if domain.startswith(('localhost', '127.0.0.1')) else 'https'
+            host = f"{subdomain}.{domain}"
+        else:
+            protocol = 'http' if settings.DEBUG else ('https' if request.is_secure() else 'http')
+            host = f"{subdomain}.localhost:8000" if settings.DEBUG else request.get_host()
+    else:
+        protocol = 'http' if (domain and domain.startswith(('localhost', '127.0.0.1'))) else ('https' if domain else ('http' if settings.DEBUG else 'https'))
+        host = domain if domain else request.get_host()
     
     # Constrói a URL completa
     full_url = f"{protocol}://{host}/{path}"

@@ -380,6 +380,7 @@ def painel_categoria_delete(request, categoria_id):
             'user': user,
             'localizacao': 'Categorias',
             'qt_items_cliente': qt_items_cliente(request),
+            'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/categorias.html', context)
     else:

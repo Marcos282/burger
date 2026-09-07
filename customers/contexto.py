@@ -103,12 +103,26 @@ def recuperar_tenant_do_contexto(request):
 
     return {'tenant': tenant}
 
+def url_marketplace_context(request):
+    """Disponibiliza 'url_marketplace' globalmente em todos os templates."""
+    from core.utils import get_tenant_url
+    return {'url_marketplace': get_tenant_url(request, '/loja/')}
+
+
 def dominio_full(request):
     """Retorna o domínio da loja com base na configuração."""
     config = Configuracao.load()
+    domain = (config.dominio or '').strip().removeprefix('https://').removeprefix('http://').rstrip('/')
     subdomain = request.session.get('tenant_subdomain') if hasattr(request, 'session') else None
     if not subdomain:
         tenant = getattr(request, 'tenant', None) or getattr(getattr(request, 'user', None), 'tenant', None)
         subdomain = getattr(tenant, 'subdomain', None)
-    loja_url = f"https://{subdomain}.{config.dominio}/loja/" if subdomain else f"https://{config.dominio}/loja/"
-    return loja_url
+
+    protocol = 'http' if domain.startswith(('localhost', '127.0.0.1')) else 'https'
+    if subdomain and domain:
+        return f"{protocol}://{subdomain}.{domain}/loja/"
+    elif domain:
+        return f"{protocol}://{domain}/loja/"
+    elif subdomain:
+        return f"http://{subdomain}.localhost:8000/loja/"
+    return f"https://{domain}/loja/" if domain else "http://localhost:8000/loja/"

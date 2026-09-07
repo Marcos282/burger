@@ -152,6 +152,7 @@ TEMPLATES = [
                 'customers.contexto.recuperar_tenant_do_contexto',
                 'customers.contexto.configuracao_context',
                 'customers.contexto.loja_aberta_context',
+                'customers.contexto.url_marketplace_context',
             ],
         },
     },
