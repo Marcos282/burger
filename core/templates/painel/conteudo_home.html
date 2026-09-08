@@ -252,31 +252,24 @@
       <!--end::Stats Widget 18-->
    </div>
    <div class="col-xl-4">
-      <!--begin::Stats Widget 18-->
-      <a href="#" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
-         <!--begin::Body-->
+      <a href="{% url 'painel_bot_atendimento' %}" class="card card-custom bg-warning bg-hover-state-warning card-stretch gutter-b" style="overflow: hidden; text-decoration: none;">
          <div class="card-body" style="padding: 1.25rem 1.25rem 1rem 1.25rem;">
             <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
-               <!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
-               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                     <rect x="0" y="0" width="24" height="24"></rect>
-                     <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5"></rect>
-                     <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5"></rect>
-                     <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5"></rect>
-                     <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5"></rect>
-                  </g>
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 8C6 5.79086 7.79086 4 10 4H14C16.2091 4 18 5.79086 18 8V12C18 14.2091 16.2091 16 14 16H10C7.79086 16 6 14.2091 6 12V8Z" fill="white"/>
+                  <path d="M9 20H15L13.5 17H10.5L9 20Z" fill="white"/>
                </svg>
-               <!--end::Svg Icon-->
             </span>
             <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 0.7rem;">
-               <div class="text-inverse-dark font-weight-bolder font-size-h5 mb-2">Sales Stats</div>
-               <div class="font-weight-bold text-inverse-dark font-size-sm">50% Increased for FY20</div>
+               <div class="text-inverse-warning font-weight-bolder font-size-h5 mb-2">Atendimento IA</div>
+               <span class="label {% if chat_handoff %}label-success{% else %}label-light{% endif %} label-pill font-weight-bold">{% if chat_handoff %}Atendente{% else %}Bot{% endif %}</span>
+            </div>
+            <div class="mt-3 text-inverse-warning font-size-sm">
+               Assuma a conversa do cliente e responda diretamente pelo atendimento humano.
             </div>
          </div>
-         <!--end::Body-->
       </a>
-      <!--end::Stats Widget 18-->
    </div>
+
    <!--End::Row-->
 </div>

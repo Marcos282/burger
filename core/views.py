@@ -1,3 +1,4 @@
+import json
 from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.db.models import Prefetch
@@ -5,10 +6,21 @@ from menu.models import Banners, Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 from orders.models import Ordem, OrdemItem
 from customers.models import Cliente
 from tenants.models import Tenant, TenantSettings, Configuracao
+from core.ai_chat import (
+    ask_ai_assistant,
+    add_chat_message,
+    build_store_context,
+    chat_session_belongs_to_tenant,
+    ensure_chat_session_state,
+    get_chat_messages,
+    list_active_chat_sessions,
+    set_chat_session_mode,
+)
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import uuid
@@ -177,6 +189,98 @@ def detalhe(request,produto_id):
 
 
 # Envio do formulário de suporte (modal "Suporte") ============================
+@require_POST
+def loja_ai_chat(request):
+    try:
+        payload = json.loads(request.body.decode('utf-8') or '{}')
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Mensagem inválida.'}, status=400)
+
+    message = str(payload.get('message', '')).strip()
+    session_id = str(payload.get('session_id') or '').strip() or str(request.session.session_key or 'default')
+    if not message:
+        return JsonResponse({'status': 'error', 'message': 'Digite uma mensagem.'}, status=400)
+
+    if len(message) > 1000:
+        return JsonResponse({'status': 'error', 'message': 'Mensagem muito longa.'}, status=400)
+
+    tenant_id = getattr(getattr(request, 'tenant', None), 'id', None)
+    state = ensure_chat_session_state(session_id, tenant_id=tenant_id)
+    if tenant_id is not None and not chat_session_belongs_to_tenant(session_id, tenant_id):
+        return JsonResponse({'status': 'error', 'message': 'Sessão de chat inválida.'}, status=403)
+
+    customer_message = add_chat_message(session_id, 'customer', message, tenant_id=tenant_id)
+    if state.get('mode') == 'operator':
+        return JsonResponse({
+            'status': 'ok',
+            'answer': None,
+            'ai_enabled': False,
+            'handoff': True,
+            'mode': 'operator',
+            'session_id': session_id,
+            'customer_message_id': customer_message['id'],
+        })
+
+    context = build_store_context(request)
+    answer, ai_enabled = ask_ai_assistant(message, context)
+    bot_message = add_chat_message(session_id, 'bot', answer, tenant_id=tenant_id)
+
+    return JsonResponse({
+        'status': 'ok',
+        'answer': answer,
+        'ai_enabled': ai_enabled,
+        'handoff': bool(state.get('mode') == 'operator'),
+        'mode': state.get('mode', 'bot'),
+        'session_id': session_id,
+        'customer_message_id': customer_message['id'],
+        'answer_message_id': bot_message['id'],
+    })
+
+
+def loja_ai_chat_status(request):
+    session_id = str(request.GET.get('session_id') or request.POST.get('session_id') or '').strip() or str(request.session.session_key or 'default')
+    state = ensure_chat_session_state(session_id, tenant_id=getattr(getattr(request, 'tenant', None), 'id', None))
+    return JsonResponse({
+        'status': 'ok',
+        'handoff': state.get('mode') == 'operator',
+        'mode': state.get('mode', 'bot'),
+        'session_id': session_id,
+    })
+
+
+def loja_ai_chat_messages(request):
+    session_id = str(request.GET.get('session_id') or '').strip() or str(request.session.session_key or 'default')
+    tenant_id = getattr(getattr(request, 'tenant', None), 'id', None)
+    if not chat_session_belongs_to_tenant(session_id, tenant_id):
+        return JsonResponse({'status': 'error', 'message': 'Sessão de chat inválida.'}, status=403)
+
+    try:
+        after_id = max(0, int(request.GET.get('after_id', 0)))
+    except (TypeError, ValueError):
+        after_id = 0
+    return JsonResponse({
+        'status': 'ok',
+        'messages': get_chat_messages(session_id, after_id),
+    })
+
+
+@require_POST
+def loja_ai_chat_assumir(request):
+    if not getattr(request.user, 'is_staff', False):
+        return JsonResponse({'status': 'error', 'message': 'Acesso restrito ao operador.'}, status=403)
+
+    session_id = str(request.POST.get('session_id') or '').strip() or str(request.session.session_key or 'default')
+    action = str(request.POST.get('action', 'assumir')).strip().lower()
+    state = set_chat_session_mode(session_id, 'bot' if action == 'liberar' else 'operator', getattr(request.user, 'id', None))
+    return JsonResponse({
+        'status': 'ok',
+        'mode': state.get('mode', 'bot'),
+        'handoff': state.get('mode') == 'operator',
+        'session_id': session_id,
+        'assumido_por': state.get('assumido_por'),
+    })
+
+
 def enviar_suporte(request):
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Método não permitido.'}, status=405)

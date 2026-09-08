@@ -64,6 +64,7 @@ class Tenant(models.Model):
     documento = models.CharField(max_length=20, blank=True, null=True)
     cpf_ou_cnpj = models.CharField(max_length=20, blank=True, null=True)
     nome_responsavel = models.CharField(max_length=100, blank=True, null=True)
+    aberto = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

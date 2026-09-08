@@ -12,6 +12,13 @@ from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
 from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
+from core.ai_chat import (
+    add_chat_message,
+    chat_session_belongs_to_tenant,
+    get_chat_messages,
+    list_active_chat_sessions,
+    set_chat_session_mode,
+)
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .contexto import salvar_tenant_em_sessao, dominio_full
@@ -276,10 +283,99 @@ def painel_home(request):
             'url_marketplace': get_tenant_url(request, '/loja/'),
             'mostrar_modal_orientacoes': mostrar_modal_orientacoes,
             'dias_restantes': dias_restantes,
+            'chat_handoff': request.session.get('ai_chat_handoff') == 'operator',
+            'chat_assumir_url': '/loja/chat/assumir/',
         }
         return render(request, 'painel/home.html', context)
     else:
         return redirect('login')
+
+
+def painel_bot_atendimento(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user = request.user
+    localizacao = [
+        {"n1": "Home", "url": "painel_home"},
+        {"n2": "Atendimento IA", "url": "painel_bot_atendimento"},
+    ]
+
+    sessions = list_active_chat_sessions(tenant_id=user.tenant_id)
+    context = {
+        'localizacao': localizacao,
+        'user': user,
+        'qt_items_cliente': qt_items_cliente(request),
+        'url_marketplace': get_tenant_url(request, '/loja/'),
+        'chat_handoff': any(session.get('mode') == 'operator' for session in sessions),
+        'chat_assumir_url': '/loja/chat/assumir/',
+        'chat_sessions': sessions,
+        'chat_sessions_url': '/painel/atendimento-ia/sessoes/',
+        'chat_messages_url': '/painel/atendimento-ia/mensagens/',
+        'chat_send_url': '/painel/atendimento-ia/enviar/',
+    }
+    return render(request, 'painel/atendimento_bots.html', context)
+
+
+def _painel_chat_session_response(request, session_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Autenticação necessária.'}, status=403)
+    if not chat_session_belongs_to_tenant(session_id, request.user.tenant_id):
+        return JsonResponse({'status': 'error', 'message': 'Sessão não encontrada.'}, status=404)
+    return None
+
+
+def painel_bot_sessoes(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Autenticação necessária.'}, status=403)
+    return JsonResponse({
+        'status': 'ok',
+        'sessions': list_active_chat_sessions(tenant_id=request.user.tenant_id),
+    })
+
+
+def painel_bot_mensagens(request):
+    session_id = str(request.GET.get('session_id') or '').strip()
+    error = _painel_chat_session_response(request, session_id)
+    if error:
+        return error
+    try:
+        after_id = max(0, int(request.GET.get('after_id', 0)))
+    except (TypeError, ValueError):
+        after_id = 0
+    return JsonResponse({'status': 'ok', 'messages': get_chat_messages(session_id, after_id)})
+
+
+@require_POST
+def painel_bot_enviar(request):
+    session_id = str(request.POST.get('session_id') or '').strip()
+    message = str(request.POST.get('message') or '').strip()
+    error = _painel_chat_session_response(request, session_id)
+    if error:
+        return error
+    if not message:
+        return JsonResponse({'status': 'error', 'message': 'Digite uma mensagem.'}, status=400)
+    if len(message) > 1000:
+        return JsonResponse({'status': 'error', 'message': 'Mensagem muito longa.'}, status=400)
+
+    state = set_chat_session_mode(session_id, 'operator', request.user.id)
+    entry = add_chat_message(session_id, 'operator', message, tenant_id=request.user.tenant_id)
+    return JsonResponse({'status': 'ok', 'message': entry, 'mode': state['mode']})
+
+
+@require_POST
+def painel_bot_alternar_sessao(request):
+    session_id = str(request.POST.get('session_id') or '').strip()
+    error = _painel_chat_session_response(request, session_id)
+    if error:
+        return error
+    action = str(request.POST.get('action') or 'assumir').strip().lower()
+    state = set_chat_session_mode(
+        session_id,
+        'bot' if action == 'liberar' else 'operator',
+        None if action == 'liberar' else request.user.id,
+    )
+    return JsonResponse({'status': 'ok', 'mode': state['mode'], 'session_id': session_id})
 
 
 def painel_categorias(request): 

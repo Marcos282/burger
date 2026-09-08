@@ -59,9 +59,25 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-# Configuração de Logs para aparecer no terminal e gravar em arquivo físico
+# Configuração de Logs para aparecer no terminal e gravar em arquivo físico.
+# Em produção, o diretório pode não ser gravável pelo usuário do processo. Nesse caso,
+# o sistema usa apenas o console para evitar falha na inicialização do Django.
 LOG_DIR = BASE_DIR / 'logs'
-LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+try:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    LOG_DIR = Path('/tmp') / 'burger_logs'
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+FILE_HANDLER = {}
+if os.access(str(LOG_DIR), os.W_OK):
+    FILE_HANDLER = {
+        'class': 'logging.FileHandler',
+        'filename': str(LOG_DIR / 'log.txt'),
+        'formatter': 'simples',
+        'encoding': 'utf-8',
+    }
 
 LOGGING = {
     'version': 1,
@@ -76,30 +92,25 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simples',
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': str(LOG_DIR / 'log.txt'),
-            'formatter': 'simples',
-            'encoding': 'utf-8',
-        },
+        **({'file': FILE_HANDLER} if FILE_HANDLER else {}),
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console'] + (['file'] if FILE_HANDLER else []),
         'level': 'INFO',
     },
     'loggers': {
         'tenants': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'] + (['file'] if FILE_HANDLER else []),
             'level': 'DEBUG',
             'propagate': False,
         },
         'tenants.middleware': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'] + (['file'] if FILE_HANDLER else []),
             'level': 'DEBUG',
             'propagate': True,
         },
         'pagamento': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'] + (['file'] if FILE_HANDLER else []),
             'level': 'DEBUG',
             'propagate': False,
         },
@@ -178,6 +189,13 @@ DATABASES = {
 }   
 
 MERCADOPAGO_WEBHOOK_SECRET = os.getenv('MERCADOPAGO_WEBHOOK_SECRET', '')
+
+####################  CHAT COM IA =================================
+AI_CHAT_API_KEY = os.getenv('AI_CHAT_API_KEY', '')
+AI_CHAT_API_URL = os.getenv('AI_CHAT_API_URL', 'https://api.openai.com/v1/chat/completions')
+AI_CHAT_MODEL = os.getenv('AI_CHAT_MODEL', 'gpt-4o-mini')
+AI_CHAT_TIMEOUT = int(os.getenv('AI_CHAT_TIMEOUT', '20'))
+##################################################################
 
 ####################  E-MAIL (recuperação de senha, etc.) =======
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
