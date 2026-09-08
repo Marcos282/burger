@@ -1,5 +1,10 @@
 import logging
-from datetime import datetime, timezone as datetime_timezone
+import re
+from django.db import transaction
+from django.db.models import Count
+from django.utils import timezone
+
+from .models import ChatSession, ChatMessage
 
 import requests
 from django.conf import settings
@@ -10,78 +15,77 @@ from orders.models import Ordem
 from tenants.models import TenantSettings
 
 logger = logging.getLogger(__name__)
-_CHAT_SESSIONS = {}
+def _session_state(session):
+    return {
+        'session_id': session.session_key,
+        'session_number': session.pk,
+        'tenant_id': session.tenant_id,
+        'mode': session.mode,
+        'introduction_complete': session.introduction_complete or bool(session.customer_phone),
+        'assumido_por': session.operator_id,
+        'last_update': session.updated_at.isoformat(),
+    }
+
+
+def _tenant_sessions(tenant_id):
+    if tenant_id is None:
+        raise ValueError('Tenant obrigatório para acessar o chat.')
+    return ChatSession.objects.filter(tenant_id=tenant_id)
 
 
 def ensure_chat_session_state(session_key, tenant_id=None):
-    key = str(session_key or '').strip() or 'default'
-    if key not in _CHAT_SESSIONS:
-        _CHAT_SESSIONS[key] = {
-            'mode': 'bot',
-            'assumido_por': None,
-            'last_update': None,
-            'tenant_id': tenant_id,
-            'messages': [],
-        }
-    elif tenant_id is not None and _CHAT_SESSIONS[key].get('tenant_id') is None:
-        _CHAT_SESSIONS[key]['tenant_id'] = tenant_id
-    return _CHAT_SESSIONS[key]
+    session, _ = _tenant_sessions(tenant_id).get_or_create(
+        session_key=str(session_key or '').strip() or 'default',
+        defaults={'tenant_id': tenant_id},
+    )
+    return _session_state(session)
 
 
-def set_chat_session_mode(session_key, mode='bot', user_id=None):
-    state = ensure_chat_session_state(session_key)
-    normalized_mode = 'operator' if str(mode or '').strip().lower() == 'operator' else 'bot'
-    state['mode'] = normalized_mode
-    state['assumido_por'] = user_id
-    state['last_update'] = __import__('datetime').datetime.utcnow().isoformat()
-    return state
+def set_chat_session_mode(session_key, mode='bot', user_id=None, *, tenant_id):
+    session = _tenant_sessions(tenant_id).get(session_key=session_key)
+    session.mode = 'operator' if mode == 'operator' else 'bot'
+    if user_id is not None and session.mode == 'operator':
+        from django.contrib.auth import get_user_model
+        if not get_user_model().objects.filter(pk=user_id, tenant_id=tenant_id).exists():
+            raise ValueError('Operador não pertence ao tenant.')
+    session.operator_id = user_id if session.mode == 'operator' else None
+    session.save(update_fields=['mode', 'operator', 'updated_at'])
+    return _session_state(session)
 
 
 def list_active_chat_sessions(tenant_id=None):
-    sessions = []
-    for session_key, state in _CHAT_SESSIONS.items():
-        if not isinstance(state, dict):
-            continue
-        if tenant_id is not None and str(state.get('tenant_id')) != str(tenant_id):
-            continue
-        sessions.append({
-            'session_id': session_key,
-            'mode': 'operator' if state.get('mode') == 'operator' else 'bot',
-            'assumido_por': state.get('assumido_por'),
-            'last_update': state.get('last_update'),
-            'message_count': len(state.get('messages', [])),
-        })
-    return sorted(sessions, key=lambda item: item['session_id'])
+    return [dict(_session_state(session), message_count=session.message_count)
+            for session in _tenant_sessions(tenant_id).annotate(message_count=Count('messages')).order_by('-id')]
 
 
-def get_chat_session(session_key):
-    return _CHAT_SESSIONS.get(str(session_key or '').strip())
+def get_chat_session(session_key, *, tenant_id):
+    session = _tenant_sessions(tenant_id).filter(session_key=session_key).first()
+    return _session_state(session) if session else None
 
 
 def chat_session_belongs_to_tenant(session_key, tenant_id):
-    state = get_chat_session(session_key)
-    return bool(state and str(state.get('tenant_id')) == str(tenant_id))
+    return tenant_id is not None and _tenant_sessions(tenant_id).filter(session_key=session_key).exists()
 
 
+def _message_data(message):
+    return {'id': message.id, 'sender': message.sender, 'message': message.message,
+            'created_at': message.created_at.isoformat()}
+
+
+@transaction.atomic
 def add_chat_message(session_key, sender, message, tenant_id=None):
-    state = ensure_chat_session_state(session_key, tenant_id=tenant_id)
-    messages = state.setdefault('messages', [])
-    entry = {
-        'id': len(messages) + 1,
-        'sender': sender,
-        'message': str(message).strip(),
-        'created_at': datetime.now(datetime_timezone.utc).isoformat(),
-    }
-    messages.append(entry)
-    state['last_update'] = entry['created_at']
-    return entry
+    ensure_chat_session_state(session_key, tenant_id=tenant_id)
+    # Serializa gravações da sessão para preservar a ordem dos IDs no polling.
+    session = _tenant_sessions(tenant_id).select_for_update().get(session_key=str(session_key or '').strip() or 'default')
+    entry = ChatMessage.objects.create(session=session, sender=sender, message=str(message).strip())
+    session.updated_at = timezone.now()
+    session.save(update_fields=['updated_at'])
+    return _message_data(entry)
 
 
-def get_chat_messages(session_key, after_id=0):
-    state = get_chat_session(session_key)
-    if not state:
-        return []
-    return [message for message in state.get('messages', []) if message['id'] > after_id]
+def get_chat_messages(session_key, after_id=0, *, tenant_id):
+    sessions = _tenant_sessions(tenant_id).filter(session_key=session_key)
+    return [_message_data(entry) for entry in ChatMessage.objects.filter(session__in=sessions, id__gt=after_id)]
 
 
 def _format_money(value):
@@ -155,6 +159,37 @@ def build_store_context(request):
     }
 
 
+def chat_greeting():
+    hour = timezone.localtime().hour
+    return 'Bom dia' if hour < 12 else 'Boa tarde' if hour < 18 else 'Boa noite'
+
+
+@transaction.atomic
+def chat_introduction(session_key, message, *, tenant_id):
+    session = _tenant_sessions(tenant_id).select_for_update().get(session_key=session_key)
+    if session.introduction_complete or session.customer_phone:
+        return None
+    match = re.fullmatch(r'\s*(?:meu (?:telefone|número|numero) (?:é|e)\s*)?([+\d() .-]+)\s*', message, re.IGNORECASE)
+    phone = re.sub(r'\D', '', match.group(1)) if match else ''
+    if len(phone) in (10, 11) or (len(phone) in (12, 13) and phone.startswith('55')):
+        session.customer_phone = phone
+        session.introduction_complete = True
+        session.save(update_fields=['customer_phone', 'introduction_complete', 'updated_at'])
+        return 'Obrigado! Como posso ajudar você hoje?'
+    if message.strip().lower() in ('prefiro não informar', 'prefiro nao informar', 'não quero informar', 'nao quero informar'):
+        session.introduction_complete = True
+        session.save(update_fields=['introduction_complete', 'updated_at'])
+        return 'Tudo bem! Como posso ajudar você hoje?'
+    return 'Claro, será um prazer ajudar! Por gentileza, qual é o seu telefone com DDD?'
+
+
+def whatsapp_handoff_reply(context):
+    whatsapp = str(context.get('store', {}).get('whatsapp') or '').strip()
+    if whatsapp:
+        return f'Não consegui esclarecer essa dúvida. Por favor, fale com um atendente pelo WhatsApp da loja: {whatsapp}.'
+    return 'Não consegui esclarecer essa dúvida. Por favor, procure um atendente da loja. O WhatsApp ainda não está cadastrado.'
+
+
 def fallback_reply(message, context):
     termo = message.lower().strip()
     store = context.get('store', {})
@@ -164,8 +199,13 @@ def fallback_reply(message, context):
         return f"Olá! Posso te ajudar com informações da {store.get('nome', 'loja')}"
 
     if any(keyword in termo for keyword in ['endereco', 'endereço', 'local', 'onde fica', 'bairro', 'cidade']):
-        endereco = store.get('endereco') or 'Endereço não informado.'
-        return f"O endereço da {store.get('nome', 'loja')} é: {endereco}"
+        endereco = str(store.get('endereco') or '').strip()
+        if endereco:
+            return f'O endereço da loja é: {endereco}'
+        whatsapp = str(store.get('whatsapp') or '').strip()
+        if whatsapp:
+            return f'O endereço da loja ainda não está cadastrado. Por gentileza, confirme com um atendente pelo WhatsApp: {whatsapp}.'
+        return 'O endereço da loja ainda não está cadastrado. Por gentileza, confirme com um atendente da loja.'
 
     if any(keyword in termo for keyword in ['whatsapp', 'contato', 'telefone', 'falar com', 'atendimento']):
         whatsapp = store.get('whatsapp') or 'Não informado.'
@@ -189,17 +229,13 @@ def fallback_reply(message, context):
         status = 'aberta' if store.get('aberto') else 'fechada'
         return f"A loja está {status} no momento. Se quiser, também posso te passar o endereço ou formas de pagamento."
 
-    encontrados = [produto for produto in produtos if termo and termo in produto['nome'].lower()]
+    encontrados = [produto for produto in produtos if termo and (termo in produto['nome'].lower() or produto['nome'].lower() in termo)]
 
     if encontrados:
         linhas = [f"{produto['nome']} - {produto['preco']}" for produto in encontrados[:5]]
         return 'Encontrei estes itens no cardapio:\n' + '\n'.join(linhas)
 
-    if produtos:
-        sugestoes = [f"{produto['nome']} ({produto['preco']})" for produto in produtos[:4]]
-        return f"Posso te ajudar com o cardapio da {store.get('nome', 'loja')}. Sugestoes: " + ', '.join(sugestoes) + '. '
-
-    return f"Olá! Posso te ajudar com informações da {store.get('nome', 'loja')}."
+    return whatsapp_handoff_reply(context)
 
 
 def ask_ai_assistant(message, context):
@@ -214,18 +250,18 @@ def ask_ai_assistant(message, context):
                 'role': 'system',
                 'content': (
                     'Não fale posso te ajudar com cardapio.  Fale que pode me ajudar com informações da loja. '
-                    'se apresente inicialmente dando bom dia ou boa tarde, e informe que quem está falando é um atendente virtual. '
+                    'O cumprimento e a coleta do telefone já foram realizados pelo sistema. Não repita essas etapas. '
                     'Responda em portugues do Brasil, '
                     'com frases curtas, usando apenas as informacoes do contexto da loja. '
                     'Quando nao souber, oriente o cliente a chamar no WhatsApp da loja.'
-                    'Você é o atendente virtual da empresa Nova Rede Fibra.'
+                    'Você atende a empresa identificada no contexto da loja. '
                     'o WhatsApp da loja é o principal canal de contato. Voce pode passar pegando do contexto.'
                     'Regras:'
                     '- Responda sempre em português do Brasil.'
                     'informe se a loja esta aberta ou fechada de acordo com o contexto.  Tente pegar essa informação das configurações da loja.'
-                    '- Seja educado, direto e amigável.'
+                    '- Seja educado, gentil e acolhedor. Ao perguntar como pode ajudar, use: Como posso ajudar você hoje? '
                     '- Nunca invente informações.'
-                    '- Se não souber a resposta, diga que precisa consultar um atendente.'
+                    '- Se não souber a resposta ou faltar informação no contexto, encaminhe gentilmente para um atendente e inclua o número exato de store.whatsapp na resposta. Se não estiver cadastrado, informe isso sem inventar um telefone. '
                     '- Não fale sobre assuntos que não tenham relação com a empresa.'                    
                     '- Nunca diga que é um robô.'
                     '- Quando o cliente quiser contratar, peça nome, telefone e endereço.'
@@ -235,7 +271,9 @@ def ask_ai_assistant(message, context):
                 'role': 'system',
                 'content': f'Contexto da loja vindo do banco de dados: {context}',
             },
-            {'role': 'user', 'content': message},
+            {
+                'role': 'user', 'content': message
+            },
         ],
         'temperature': 0.4,
     }
@@ -253,7 +291,10 @@ def ask_ai_assistant(message, context):
         )
         response.raise_for_status()
         data = response.json()
-        return data['choices'][0]['message']['content'].strip(), True
+        answer = (data['choices'][0]['message']['content'] or '').strip()
+        if not answer:
+            return whatsapp_handoff_reply(context), False
+        return answer, True
     except Exception:
         logger.exception('Falha ao consultar IA do chat')
         return fallback_reply(message, context), False

@@ -1,0 +1,146 @@
+      <div class="ai-chat-window" id="aiChatWindow" data-chat-url="{% url 'loja_ai_chat' %}" data-chat-status-url="{% url 'loja_ai_chat_status' %}" data-chat-messages-url="{% url 'loja_ai_chat_messages' %}" data-csrf-token="{{ csrf_token }}" aria-live="polite">
+         <div class="ai-chat-header">
+            <button class="ai-chat-back" type="button" aria-label="Fechar chat"><i class="lni lni-chevron-left"></i></button>
+            <div class="ai-chat-avatar">IA</div>
+            <div class="ai-chat-title">
+               <strong>Suporte</strong>
+               <span id="aiChatStatusLabel">Online</span>
+            </div>
+            <button class="ai-chat-close" type="button" aria-label="Fechar chat"><i class="lni lni-close"></i></button>
+         </div>
+         <div class="ai-chat-body" id="aiChatBody">
+            <div class="ai-chat-day">Hoje</div>
+            {% now "H" as chat_hour %}
+            <div class="ai-chat-row">
+               <div class="ai-chat-mini-avatar">IA</div>
+               <div class="ai-chat-bubble" id="aiChatGreeting">{% if chat_hour < "12" %}Bom dia{% elif chat_hour < "18" %}Boa tarde{% else %}Boa noite{% endif %}! Sou a assistente virtual{% if config.nome_loja %} da {{ config.nome_loja }}{% endif %}. {% if config.descricao_loja %}{{ config.descricao_loja|striptags|truncatewords:35 }}{% elif config.segmento %}Atuamos no segmento de {{ config.segmento }}.{% endif %} É um prazer receber você! Como posso ajudar hoje?</div>
+            </div>
+            <div class="ai-chat-time">Agora</div>
+         </div>
+         <form class="ai-chat-form" id="aiChatForm">
+            <textarea class="ai-chat-input" id="aiChatInput" rows="2" maxlength="1000" autocomplete="off" placeholder="Escreva uma mensagem..."></textarea>
+            <button class="ai-chat-send" type="submit" aria-label="Enviar mensagem"><i class="lni lni-telegram-original"></i></button>
+         </form>
+      </div>
+      <button class="ai-chat-launcher" id="aiChatLauncher" type="button" aria-label="Abrir chat"><i class="lni lni-support"></i></button>
+      <script>
+         (function () {
+            var launcher = document.getElementById('aiChatLauncher');
+            var windowEl = document.getElementById('aiChatWindow');
+            var form = document.getElementById('aiChatForm');
+            var input = document.getElementById('aiChatInput');
+            var body = document.getElementById('aiChatBody');
+            var closeButtons = windowEl.querySelectorAll('.ai-chat-close, .ai-chat-back');
+            var statusLabel = document.getElementById('aiChatStatusLabel');
+            var sessionId = sessionStorage.getItem('aiChatSessionId');
+            var lastMessageId = 0;
+            if (!sessionId) {
+               sessionId = 'chat-' + Date.now() + '-' + Math.random().toString(16).slice(2, 8);
+               sessionStorage.setItem('aiChatSessionId', sessionId);
+            }
+
+            function nowLabel() {
+               return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function syncStatusText(mode) {
+               if (statusLabel) {
+                  statusLabel.textContent = mode === 'operator' ? 'Atendente online' : 'Online';
+               }
+            }
+
+            function addMessage(text, isUser) {
+               var row = document.createElement('div');
+               row.className = 'ai-chat-row' + (isUser ? ' user' : '');
+
+               if (!isUser) {
+                  var avatar = document.createElement('div');
+                  avatar.className = 'ai-chat-mini-avatar';
+                  avatar.textContent = 'IA';
+                  row.appendChild(avatar);
+               }
+
+               var bubble = document.createElement('div');
+               bubble.className = 'ai-chat-bubble';
+               bubble.textContent = text;
+               row.appendChild(bubble);
+               body.appendChild(row);
+
+               var time = document.createElement('div');
+               time.className = 'ai-chat-time';
+               time.textContent = nowLabel();
+               body.appendChild(time);
+               body.scrollTop = body.scrollHeight;
+               return bubble;
+            }
+
+            function loadOperatorMessages() {
+               fetch(windowEl.dataset.chatMessagesUrl + '?session_id=' + encodeURIComponent(sessionId) + '&after_id=' + lastMessageId)
+                  .then(function (response) { return response.json(); })
+                  .then(function (data) {
+                     if (data.status !== 'ok') return;
+                     data.messages.forEach(function (entry) {
+                        lastMessageId = Math.max(lastMessageId, entry.id);
+                        if (entry.sender === 'operator') addMessage(entry.message, false);
+                     });
+                  }).catch(function () {});
+            }
+
+            launcher.addEventListener('click', function () {
+               windowEl.classList.toggle('is-open');
+               if (windowEl.classList.contains('is-open')) {
+                  input.focus();
+               }
+            });
+
+            closeButtons.forEach(function (button) {
+               button.addEventListener('click', function () {
+                  windowEl.classList.remove('is-open');
+               });
+            });
+
+            form.addEventListener('submit', function (event) {
+               event.preventDefault();
+               var message = input.value.trim();
+               if (!message) {
+                  return;
+               }
+
+               addMessage(message, true);
+               input.value = '';
+               var pending = addMessage('Consultando dados da loja...', false);
+
+               fetch(windowEl.dataset.chatUrl, {
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                     'X-CSRFToken': windowEl.dataset.csrfToken
+                  },
+                  body: JSON.stringify({ message: message, session_id: sessionId })
+               }).then(function (response) {
+                  return response.json();
+               }).then(function (data) {
+                  lastMessageId = Math.max(lastMessageId, data.answer_message_id || data.customer_message_id || 0);
+                  pending.textContent = data.answer || data.message || 'Sua mensagem foi enviada ao atendente.';
+                  if (data.handoff) {
+                     syncStatusText('operator');
+                  }
+               }).catch(function () {
+                  pending.textContent = 'Não consegui conectar ao atendimento agora. Tente novamente em instantes.';
+               });
+            });
+
+            fetch(windowEl.dataset.chatStatusUrl + '?session_id=' + encodeURIComponent(sessionId), { headers: { 'X-CSRFToken': windowEl.dataset.csrfToken }})
+               .then(function (response) {
+                  return response.json();
+               })
+               .then(function (data) {
+                  syncStatusText(data.mode || 'bot');
+                  if (data.introduction_complete) document.getElementById('aiChatGreeting').textContent = 'Como posso ajudar você hoje?';
+               })
+               .catch(function () {
+                  syncStatusText('bot');
+               });
+            window.setInterval(loadOperatorMessages, 2000);
+         })();
+      </script>

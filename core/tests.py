@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase, RequestFactory
 from django.utils import timezone
 
 from .ai_chat import (
@@ -83,35 +83,126 @@ class AIBotFallbackTests(SimpleTestCase):
         self.assertIn('R$ 29,90', resposta)
 
 
-class ChatSessionTests(SimpleTestCase):
-    def test_session_de_chat_pode_ser_assumida_individualmente(self):
-        session_key = 'session-abc-1'
-        state = ensure_chat_session_state(session_key)
+class WhatsAppHandoffTests(SimpleTestCase):
+    def test_missing_address_refers_to_store_contact(self):
+        reply = fallback_reply('Qual o endereço?', {'store': {'nome': 'Seu nome completo', 'endereco': ' ', 'whatsapp': '47999991234'}})
+        self.assertIn('endereço da loja ainda não está cadastrado', reply)
+        self.assertIn('47999991234', reply)
+        self.assertNotIn('Seu nome completo', reply)
 
-        self.assertEqual(state['mode'], 'bot')
-        self.assertIn(session_key, [entry['session_id'] for entry in list_active_chat_sessions()])
+    def test_missing_address_and_phone(self):
+        reply = fallback_reply('Onde fica?', {'store': {}})
+        self.assertIn('confirme com um atendente', reply)
+        self.assertNotIn('WhatsApp:', reply)
 
-        set_chat_session_mode(session_key, 'operator', user_id=42)
-        state = ensure_chat_session_state(session_key)
+    def test_unknown_question_uses_store_whatsapp(self):
+        from .ai_chat import fallback_reply
+        reply = fallback_reply('Uma dúvida sem informação disponível', {'store': {'whatsapp': '47999991234'}})
+        self.assertIn('47999991234', reply)
+        self.assertIn('atendente', reply)
 
+    def test_missing_whatsapp_is_not_invented(self):
+        from .ai_chat import whatsapp_handoff_reply
+        self.assertIn('não está cadastrado', whatsapp_handoff_reply({'store': {}}))
+
+    def test_empty_ai_response_returns_whatsapp(self):
+        from unittest.mock import patch, Mock
+        from django.test import override_settings
+        from .ai_chat import ask_ai_assistant
+        response = Mock()
+        response.json.return_value = {'choices': [{'message': {'content': ' '}}]}
+        with override_settings(AI_CHAT_API_KEY='test'), patch('core.ai_chat.requests.post', return_value=response):
+            reply, enabled = ask_ai_assistant('Dúvida', {'store': {'whatsapp': '47999991234'}})
+        self.assertFalse(enabled)
+        self.assertIn('47999991234', reply)
+
+
+class ChatSessionTests(TestCase):
+    def setUp(self):
+        from tenants.models import Tenant
+        from customers.models import User
+        self.tenant = Tenant.objects.create(name='Loja A', subdomain='chat-a')
+        self.other = Tenant.objects.create(name='Loja B', subdomain='chat-b')
+        self.operator = User.objects.create(tenant=self.tenant, username='chat-a', email='chat-a@example.com', is_staff=True)
+
+    def test_messages_and_handoff_survive_module_reload(self):
+        import importlib
+        from . import ai_chat
+        from .models import ChatMessage, ChatSession
+        first = add_chat_message('abc', 'customer', 'Olá', tenant_id=self.tenant.pk)
+        second = add_chat_message('abc', 'bot', 'Bem-vindo', tenant_id=self.tenant.pk)
+        set_chat_session_mode('abc', 'operator', self.operator.pk, tenant_id=self.tenant.pk)
+        importlib.reload(ai_chat)
+        self.assertEqual(ChatSession.objects.count(), 1)
+        self.assertEqual(ChatMessage.objects.count(), 2)
+        state = ensure_chat_session_state('abc', tenant_id=self.tenant.pk)
         self.assertEqual(state['mode'], 'operator')
-        self.assertEqual(state['assumido_por'], 42)
-        self.assertIn(session_key, [entry['session_id'] for entry in list_active_chat_sessions()])
+        self.assertEqual(state['assumido_por'], self.operator.pk)
+        self.assertEqual(get_chat_messages('abc', first['id'], tenant_id=self.tenant.pk), [second])
+        self.assertEqual(list_active_chat_sessions(self.tenant.pk)[0]['message_count'], 2)
+        set_chat_session_mode('abc', 'bot', tenant_id=self.tenant.pk)
+        self.assertIsNone(ensure_chat_session_state('abc', tenant_id=self.tenant.pk)['assumido_por'])
 
-        set_chat_session_mode(session_key, 'bot', user_id=None)
-        state = ensure_chat_session_state(session_key)
+    def test_same_session_key_is_isolated_between_tenants(self):
+        a = add_chat_message('same', 'customer', 'Loja A', tenant_id=self.tenant.pk)
+        b = add_chat_message('same', 'customer', 'Loja B', tenant_id=self.other.pk)
+        self.assertEqual(get_chat_messages('same', tenant_id=self.tenant.pk), [a])
+        self.assertEqual(get_chat_messages('same', tenant_id=self.other.pk), [b])
+        set_chat_session_mode('same', 'operator', self.operator.pk, tenant_id=self.tenant.pk)
+        self.assertEqual(ensure_chat_session_state('same', tenant_id=self.other.pk)['mode'], 'bot')
+        self.assertEqual(list_active_chat_sessions(self.other.pk)[0]['message_count'], 1)
 
-        self.assertEqual(state['mode'], 'bot')
-        self.assertIsNone(state['assumido_por'])
+    def test_missing_tenant_and_foreign_operator_are_rejected(self):
+        with self.assertRaises(ValueError):
+            ensure_chat_session_state('missing')
+        ensure_chat_session_state('foreign', tenant_id=self.other.pk)
+        with self.assertRaises(ValueError):
+            set_chat_session_mode('foreign', 'operator', self.operator.pk, tenant_id=self.other.pk)
+        self.assertFalse(chat_session_belongs_to_tenant('foreign', self.tenant.pk))
+        self.assertEqual(get_chat_messages('foreign', tenant_id=self.tenant.pk), [])
 
-    def test_mensagens_da_sessao_sao_ordenadas_e_isoladas_por_tenant(self):
-        session_key = 'session-tenant-1'
-        ensure_chat_session_state(session_key, tenant_id=10)
-        primeira = add_chat_message(session_key, 'customer', 'Olá', tenant_id=10)
-        segunda = add_chat_message(session_key, 'operator', 'Olá! Como posso ajudar?', tenant_id=10)
+    def test_panel_cannot_read_or_change_another_tenants_chat(self):
+        from customers.views_auth import painel_bot_mensagens, painel_bot_enviar, painel_bot_alternar_sessao
+        from .models import ChatMessage
+        add_chat_message('private', 'customer', 'Segredo', tenant_id=self.other.pk)
+        factory = RequestFactory()
+        for view, request in [
+            (painel_bot_mensagens, factory.get('/', {'session_id': 'private'})),
+            (painel_bot_enviar, factory.post('/', {'session_id': 'private', 'message': 'Teste'})),
+            (painel_bot_alternar_sessao, factory.post('/', {'session_id': 'private'})),
+        ]:
+            request.user = self.operator
+            self.assertEqual(view(request).status_code, 404)
+        self.assertEqual(ChatMessage.objects.count(), 1)
 
-        self.assertTrue(chat_session_belongs_to_tenant(session_key, 10))
-        self.assertFalse(chat_session_belongs_to_tenant(session_key, 11))
-        self.assertEqual(get_chat_messages(session_key, after_id=primeira['id']), [segunda])
-        self.assertIn(session_key, [entry['session_id'] for entry in list_active_chat_sessions(tenant_id=10)])
-        self.assertNotIn(session_key, [entry['session_id'] for entry in list_active_chat_sessions(tenant_id=11)])
+    def test_store_messages_are_saved_with_request_tenant(self):
+        import json
+        from unittest.mock import patch
+        from .views import loja_ai_chat
+        from .models import ChatMessage
+        request = RequestFactory().post('/', data=json.dumps({'session_id': 'store', 'message': 'Olá'}), content_type='application/json')
+        request.tenant = self.tenant
+        ensure_chat_session_state('store', tenant_id=self.tenant.pk)
+        from .models import ChatSession
+        ChatSession.objects.filter(tenant=self.tenant, session_key='store').update(introduction_complete=True)
+        with patch('core.views.build_store_context', return_value={}), patch('core.views.ask_ai_assistant', return_value=('Resposta de teste', True)):
+            response = loja_ai_chat(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(ChatMessage.objects.filter(session__tenant=self.tenant).values_list('sender', flat=True)), ['customer', 'bot'])
+
+    def test_introduction_collects_phone_once(self):
+        from .ai_chat import chat_introduction
+        from .models import ChatSession
+        ensure_chat_session_state('intro', tenant_id=self.tenant.pk)
+        self.assertIn('telefone com DDD', chat_introduction('intro', 'Oi', tenant_id=self.tenant.pk))
+        self.assertEqual(chat_introduction('intro', '(47) 99999-1234', tenant_id=self.tenant.pk), 'Obrigado! Como posso ajudar você hoje?')
+        self.assertEqual(ChatSession.objects.get(tenant=self.tenant, session_key='intro').customer_phone, '47999991234')
+        self.assertIsNone(chat_introduction('intro', 'Qual o endereço?', tenant_id=self.tenant.pk))
+
+    def test_greetings_follow_local_hour(self):
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        from .ai_chat import chat_greeting
+        for hour, expected in [(8, 'Bom dia'), (12, 'Boa tarde'), (18, 'Boa noite')]:
+            with patch('core.ai_chat.timezone.localtime', return_value=SimpleNamespace(hour=hour)):
+                self.assertEqual(chat_greeting(), expected)

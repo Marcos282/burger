@@ -343,7 +343,7 @@ def painel_bot_mensagens(request):
         after_id = max(0, int(request.GET.get('after_id', 0)))
     except (TypeError, ValueError):
         after_id = 0
-    return JsonResponse({'status': 'ok', 'messages': get_chat_messages(session_id, after_id)})
+    return JsonResponse({'status': 'ok', 'messages': get_chat_messages(session_id, after_id, tenant_id=request.user.tenant_id)})
 
 
 @require_POST
@@ -358,7 +358,7 @@ def painel_bot_enviar(request):
     if len(message) > 1000:
         return JsonResponse({'status': 'error', 'message': 'Mensagem muito longa.'}, status=400)
 
-    state = set_chat_session_mode(session_id, 'operator', request.user.id)
+    state = set_chat_session_mode(session_id, 'operator', request.user.id, tenant_id=request.user.tenant_id)
     entry = add_chat_message(session_id, 'operator', message, tenant_id=request.user.tenant_id)
     return JsonResponse({'status': 'ok', 'message': entry, 'mode': state['mode']})
 
@@ -374,6 +374,7 @@ def painel_bot_alternar_sessao(request):
         session_id,
         'bot' if action == 'liberar' else 'operator',
         None if action == 'liberar' else request.user.id,
+        tenant_id=request.user.tenant_id,
     )
     return JsonResponse({'status': 'ok', 'mode': state['mode'], 'session_id': session_id})
 

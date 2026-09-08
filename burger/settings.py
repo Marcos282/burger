@@ -191,7 +191,7 @@ DATABASES = {
 MERCADOPAGO_WEBHOOK_SECRET = os.getenv('MERCADOPAGO_WEBHOOK_SECRET', '')
 
 ####################  CHAT COM IA =================================
-AI_CHAT_API_KEY = os.getenv('AI_CHAT_API_KEY', '')
+AI_CHAT_API_KEY = os.getenv('AI_CHAT_API_KEY', '').strip() or os.getenv('OPENAI_API_KEY', '').strip()
 AI_CHAT_API_URL = os.getenv('AI_CHAT_API_URL', 'https://api.openai.com/v1/chat/completions')
 AI_CHAT_MODEL = os.getenv('AI_CHAT_MODEL', 'gpt-4o-mini')
 AI_CHAT_TIMEOUT = int(os.getenv('AI_CHAT_TIMEOUT', '20'))

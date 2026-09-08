@@ -14,6 +14,7 @@ from tenants.models import Tenant, TenantSettings, Configuracao
 from core.ai_chat import (
     ask_ai_assistant,
     add_chat_message,
+    chat_introduction,
     build_store_context,
     chat_session_belongs_to_tenant,
     ensure_chat_session_state,
@@ -135,6 +136,7 @@ def loja(request):
 
    context = {
        'configuracao_extra': configuracao_extra,
+       'configuracao': configuracao_extra,
        'settings': configuracao,
        'banners': Banners.objects.filter(
            tenant=request.tenant,
@@ -221,8 +223,11 @@ def loja_ai_chat(request):
             'customer_message_id': customer_message['id'],
         })
 
-    context = build_store_context(request)
-    answer, ai_enabled = ask_ai_assistant(message, context)
+    answer = chat_introduction(session_id, message, tenant_id=tenant_id)
+    ai_enabled = False
+    if answer is None:
+        context = build_store_context(request)
+        answer, ai_enabled = ask_ai_assistant(message, context)
     bot_message = add_chat_message(session_id, 'bot', answer, tenant_id=tenant_id)
 
     return JsonResponse({
@@ -242,6 +247,7 @@ def loja_ai_chat_status(request):
     state = ensure_chat_session_state(session_id, tenant_id=getattr(getattr(request, 'tenant', None), 'id', None))
     return JsonResponse({
         'status': 'ok',
+        'introduction_complete': state['introduction_complete'],
         'handoff': state.get('mode') == 'operator',
         'mode': state.get('mode', 'bot'),
         'session_id': session_id,
@@ -260,7 +266,7 @@ def loja_ai_chat_messages(request):
         after_id = 0
     return JsonResponse({
         'status': 'ok',
-        'messages': get_chat_messages(session_id, after_id),
+        'messages': get_chat_messages(session_id, after_id, tenant_id=tenant_id),
     })
 
 
@@ -271,7 +277,10 @@ def loja_ai_chat_assumir(request):
 
     session_id = str(request.POST.get('session_id') or '').strip() or str(request.session.session_key or 'default')
     action = str(request.POST.get('action', 'assumir')).strip().lower()
-    state = set_chat_session_mode(session_id, 'bot' if action == 'liberar' else 'operator', getattr(request.user, 'id', None))
+    tenant_id = getattr(request.user, 'tenant_id', None)
+    if tenant_id != getattr(request.tenant, 'id', None) or not chat_session_belongs_to_tenant(session_id, tenant_id):
+        return JsonResponse({'status': 'error', 'message': 'Sessão de chat inválida.'}, status=403)
+    state = set_chat_session_mode(session_id, 'bot' if action == 'liberar' else 'operator', request.user.id, tenant_id=tenant_id)
     return JsonResponse({
         'status': 'ok',
         'mode': state.get('mode', 'bot'),
