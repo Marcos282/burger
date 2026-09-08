@@ -206,3 +206,15 @@ class ChatSessionTests(TestCase):
         for hour, expected in [(8, 'Bom dia'), (12, 'Boa tarde'), (18, 'Boa noite')]:
             with patch('core.ai_chat.timezone.localtime', return_value=SimpleNamespace(hour=hour)):
                 self.assertEqual(chat_greeting(), expected)
+
+    def test_close_session_preserves_history_and_blocks_operator_send(self):
+        from customers.views_auth import painel_bot_alternar_sessao, painel_bot_enviar
+        entry = add_chat_message('close-test', 'customer', 'Olá', tenant_id=self.tenant.pk)
+        request = RequestFactory().post('/', {'session_id': 'close-test', 'action': 'encerrar'})
+        request.user = self.operator
+        self.assertEqual(painel_bot_alternar_sessao(request).status_code, 200)
+        self.assertEqual(ensure_chat_session_state('close-test', tenant_id=self.tenant.pk)['mode'], 'closed')
+        request = RequestFactory().post('/', {'session_id': 'close-test', 'message': 'Resposta'})
+        request.user = self.operator
+        self.assertEqual(painel_bot_enviar(request).status_code, 409)
+        self.assertEqual(get_chat_messages('close-test', tenant_id=self.tenant.pk), [entry])

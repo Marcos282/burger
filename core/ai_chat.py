@@ -41,9 +41,12 @@ def ensure_chat_session_state(session_key, tenant_id=None):
     return _session_state(session)
 
 
+@transaction.atomic
 def set_chat_session_mode(session_key, mode='bot', user_id=None, *, tenant_id):
-    session = _tenant_sessions(tenant_id).get(session_key=session_key)
-    session.mode = 'operator' if mode == 'operator' else 'bot'
+    session = _tenant_sessions(tenant_id).select_for_update().get(session_key=session_key)
+    if session.mode == 'closed':
+        return _session_state(session)
+    session.mode = mode if mode in ('operator', 'closed') else 'bot'
     if user_id is not None and session.mode == 'operator':
         from django.contrib.auth import get_user_model
         if not get_user_model().objects.filter(pk=user_id, tenant_id=tenant_id).exists():

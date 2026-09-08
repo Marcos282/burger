@@ -7,7 +7,7 @@ class ChatSession(models.Model):
     session_key = models.CharField(max_length=255)
     introduction_complete = models.BooleanField(default=False)
     customer_phone = models.CharField(max_length=13, blank=True, default='')
-    mode = models.CharField(max_length=10, choices=[('bot', 'Bot'), ('operator', 'Operador')], default='bot')
+    mode = models.CharField(max_length=10, choices=[('bot', 'Bot'), ('operator', 'Operador'), ('closed', 'Encerrada')], default='bot')
     operator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

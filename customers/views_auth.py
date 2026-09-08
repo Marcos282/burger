@@ -359,6 +359,8 @@ def painel_bot_enviar(request):
         return JsonResponse({'status': 'error', 'message': 'Mensagem muito longa.'}, status=400)
 
     state = set_chat_session_mode(session_id, 'operator', request.user.id, tenant_id=request.user.tenant_id)
+    if state['mode'] == 'closed':
+        return JsonResponse({'status': 'error', 'message': 'Esta sessão está encerrada.'}, status=409)
     entry = add_chat_message(session_id, 'operator', message, tenant_id=request.user.tenant_id)
     return JsonResponse({'status': 'ok', 'message': entry, 'mode': state['mode']})
 
@@ -372,7 +374,7 @@ def painel_bot_alternar_sessao(request):
     action = str(request.POST.get('action') or 'assumir').strip().lower()
     state = set_chat_session_mode(
         session_id,
-        'bot' if action == 'liberar' else 'operator',
+        'closed' if action == 'encerrar' else 'bot' if action == 'liberar' else 'operator',
         None if action == 'liberar' else request.user.id,
         tenant_id=request.user.tenant_id,
     )

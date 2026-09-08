@@ -211,6 +211,9 @@ def loja_ai_chat(request):
     if tenant_id is not None and not chat_session_belongs_to_tenant(session_id, tenant_id):
         return JsonResponse({'status': 'error', 'message': 'Sessão de chat inválida.'}, status=403)
 
+    if state['mode'] == 'closed':
+        return JsonResponse({'status': 'error', 'mode': 'closed', 'message': 'Esta sessão foi encerrada. Recarregue a página para iniciar outra conversa.'}, status=409)
+
     customer_message = add_chat_message(session_id, 'customer', message, tenant_id=tenant_id)
     if state.get('mode') == 'operator':
         return JsonResponse({

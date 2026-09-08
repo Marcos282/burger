@@ -121,6 +121,7 @@
                   return response.json();
                }).then(function (data) {
                   lastMessageId = Math.max(lastMessageId, data.answer_message_id || data.customer_message_id || 0);
+                  if(data.mode === 'closed')sessionStorage.removeItem('aiChatSessionId');
                   pending.textContent = data.answer || data.message || 'Sua mensagem foi enviada ao atendente.';
                   if (data.handoff) {
                      syncStatusText('operator');
@@ -135,6 +136,7 @@
                   return response.json();
                })
                .then(function (data) {
+                  if(data.mode === 'closed'){sessionStorage.removeItem('aiChatSessionId');statusLabel.textContent='Atendimento encerrado';input.disabled=true;input.placeholder='Recarregue a pagina para iniciar outra conversa.';return;}
                   syncStatusText(data.mode || 'bot');
                   if (data.introduction_complete) document.getElementById('aiChatGreeting').textContent = 'Como posso ajudar você hoje?';
                })
