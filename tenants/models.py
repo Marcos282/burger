@@ -282,6 +282,7 @@ class TenantSettings(models.Model):
     ai_orientations = models.TextField(
         blank=True,
         default='',
+        null=True,
         verbose_name='Orientações para a IA',
         help_text='Instruções adicionais que a IA deve seguir no atendimento.',
     )
