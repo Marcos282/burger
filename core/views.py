@@ -15,6 +15,8 @@ from core.ai_chat import (
     ask_ai_assistant,
     add_chat_message,
     chat_introduction,
+    matching_products,
+    product_details_reply,
     build_store_context,
     chat_session_belongs_to_tenant,
     ensure_chat_session_state,
@@ -226,11 +228,19 @@ def loja_ai_chat(request):
             'customer_message_id': customer_message['id'],
         })
 
-    answer = chat_introduction(session_id, message, tenant_id=tenant_id)
+    context = build_store_context(request)
+    from .models import ChatSession
+    phone = ChatSession.objects.get(tenant_id=tenant_id, session_key=session_id).customer_phone
+    if phone:
+        context.setdefault('cliente', {})['telefone'] = phone
+    products = matching_products(message, context)
     ai_enabled = False
-    if answer is None:
-        context = build_store_context(request)
-        answer, ai_enabled = ask_ai_assistant(message, context)
+    if products:
+        answer = product_details_reply(products, context)
+    else:
+        answer = chat_introduction(session_id, message, tenant_id=tenant_id)
+        if answer is None:
+            answer, ai_enabled = ask_ai_assistant(message, context)
     bot_message = add_chat_message(session_id, 'bot', answer, tenant_id=tenant_id)
 
     return JsonResponse({

@@ -140,11 +140,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'tenants.middleware.TenantMiddleware',
-    #tenants.middleware.TenantDBMiddleware', # Se você estiver usando banco de dados por tenant
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'tenants.middleware.TenantMiddleware',
+    #tenants.middleware.TenantDBMiddleware', # Se você estiver usando banco de dados por tenant
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

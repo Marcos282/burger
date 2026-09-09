@@ -35,6 +35,25 @@ class TenantSessionContextTests(TestCase):
         self.assertIn('tenant', response.context)
         self.assertEqual(response.context['tenant'].id, self.tenant.id)
 
+    def test_painel_blocks_authenticated_user_from_other_subdomain(self):
+        other_tenant = Tenant.objects.create(name='Outra Loja', subdomain='outra-loja')
+        other_user = User.objects.create_user(
+            email='admin@outra-loja.com',
+            username='outra-loja',
+            password='senha123',
+            tenant=other_tenant,
+        )
+
+        self.client.force_login(other_user)
+        response = self.client.get(
+            reverse('painel_home'),
+            HTTP_HOST='loja-teste.localhost:8000',
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('login'))
+        self.assertNotIn('_auth_user_id', self.client.session)
+
 
 class UserCredentialUniquenessTests(TestCase):
     def setUp(self):

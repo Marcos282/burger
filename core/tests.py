@@ -195,7 +195,9 @@ class ChatSessionTests(TestCase):
         from .models import ChatSession
         ensure_chat_session_state('intro', tenant_id=self.tenant.pk)
         self.assertIn('telefone com DDD', chat_introduction('intro', 'Oi', tenant_id=self.tenant.pk))
-        self.assertEqual(chat_introduction('intro', '(47) 99999-1234', tenant_id=self.tenant.pk), 'Obrigado! Como posso ajudar você hoje?')
+        reply = chat_introduction('intro', '(47) 99999-1234', tenant_id=self.tenant.pk)
+        self.assertIn('Recebemos seu telefone', reply)
+        self.assertIn('logo entraremos em contato', reply)
         self.assertEqual(ChatSession.objects.get(tenant=self.tenant, session_key='intro').customer_phone, '47999991234')
         self.assertIsNone(chat_introduction('intro', 'Qual o endereço?', tenant_id=self.tenant.pk))
 
@@ -218,3 +220,25 @@ class ChatSessionTests(TestCase):
         request.user = self.operator
         self.assertEqual(painel_bot_enviar(request).status_code, 409)
         self.assertEqual(get_chat_messages('close-test', tenant_id=self.tenant.pk), [entry])
+
+    def test_product_details_precede_phone_request(self):
+        from .ai_chat import product_details_reply
+        reply = product_details_reply([{'nome': 'Produto teste', 'preco': 'R$ 25,00'}], {'store': {'formas_pagamento': ['PIX', 'dinheiro']}})
+        self.assertLess(reply.index('R$ 25,00'), reply.index('telefone com DDD'))
+        self.assertLess(reply.index('PIX'), reply.index('telefone com DDD'))
+        self.assertIn('atendente entre em contato', reply)
+
+    def test_panel_rejects_account_on_foreign_tenant_host(self):
+        from customers.views_auth import (painel_bot_atendimento, painel_bot_sessoes,
+            painel_bot_mensagens, painel_bot_enviar, painel_bot_alternar_sessao)
+        add_chat_message('own-session', 'customer', 'Privado', tenant_id=self.tenant.pk)
+        for view in [painel_bot_atendimento, painel_bot_sessoes, painel_bot_mensagens, painel_bot_enviar, painel_bot_alternar_sessao]:
+            request = RequestFactory().post('/', {'session_id': 'own-session', 'message': 'Teste', 'action': 'encerrar'})
+            request.user = self.operator
+            request.tenant = self.other
+            self.assertEqual(view(request).status_code, 403)
+        request = RequestFactory().get('/')
+        request.user = self.operator
+        request.tenant = self.tenant
+        self.assertEqual(painel_bot_sessoes(request).status_code, 200)
+        self.assertEqual(ensure_chat_session_state('own-session', tenant_id=self.tenant.pk)['mode'], 'bot')

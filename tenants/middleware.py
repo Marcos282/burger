@@ -3,10 +3,11 @@ from typing import Iterable
 
 import tldextract
 from django.conf import settings
-from django.http import Http404, HttpResponse
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-from customers.contexto import salvar_tenant_em_sessao
 from .models import Tenant
 
 
@@ -44,6 +45,11 @@ class TenantMiddleware:
 
     def __init__(self, get_response):
         self.get_response = get_response
+
+    PANEL_PREFIXES = (
+        "/painel/",
+        "/painel",
+    )
 
     # Domínios de túnel de teste (ngrok, cloudflare, etc.): tratados sempre como site principal,
     # pois o "subdomínio" nesses hosts é um identificador de sessão do túnel, não um tenant.
@@ -106,6 +112,22 @@ class TenantMiddleware:
         else:
             logger.info("ℹ️ Sem subdomínio (site principal)")
 
+        if self._authenticated_panel_user_on_wrong_tenant(request):
+            logger.warning(
+                "Bloqueando acesso ao painel: usuário tenant=%s em host tenant=%s path=%s",
+                getattr(request.user, "tenant_id", None),
+                getattr(request.tenant, "id", None),
+                request.path,
+            )
+            logout(request)
+            if request.headers.get("x-requested-with") == "XMLHttpRequest" or request.path.endswith("/dados/") or request.path.endswith("/pendentes-count/"):
+                return JsonResponse(
+                    {"detail": "Acesso negado. Entre com a conta da loja deste endereço."},
+                    status=403,
+                )
+            messages.error(request, "Entre com a conta da loja deste endereço.")
+            return redirect("login")
+
         # Continue processing
         response = self.get_response(request)
 
@@ -135,4 +157,16 @@ class TenantMiddleware:
                 return redirect("home_view")
 
         return response
+
+    def _authenticated_panel_user_on_wrong_tenant(self, request):
+        if not request.path.startswith(self.PANEL_PREFIXES):
+            return False
+
+        user = getattr(request, "user", None)
+        if not getattr(user, "is_authenticated", False):
+            return False
+
+        host_tenant = getattr(request, "tenant", None)
+        user_tenant_id = getattr(user, "tenant_id", None)
+        return host_tenant is not None and host_tenant.id != user_tenant_id
 

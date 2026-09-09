@@ -45,6 +45,7 @@ def cadastro_form(request):
         'taxa_entrega': taxa_entrega,
         'total': total,
         'total_itens': total_itens,
+        'color_theme': config.color_theme or '#DD7B0A',
     }
     return render(request, 'loja/pedidodelivery.html', context)
 

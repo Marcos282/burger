@@ -291,11 +291,25 @@ def painel_home(request):
         return redirect('login')
 
 
+def _painel_chat_access_error(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Autenticação necessária.'}, status=403)
+    tenant_id = getattr(request.user, 'tenant_id', None)
+    host_tenant = getattr(request, 'tenant', None)
+    if tenant_id is None or (host_tenant is not None and host_tenant.pk != tenant_id):
+        return JsonResponse({'status': 'error', 'message': 'Acesso negado. Entre com a conta da loja deste endereço.'}, status=403)
+    return None
+
+
 def painel_bot_atendimento(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    error = _painel_chat_access_error(request)
+    if error:
+        return error
 
     user = request.user
+    ai_settings = TenantSettings.load(user.tenant)
     localizacao = [
         {"n1": "Home", "url": "painel_home"},
         {"n2": "Atendimento IA", "url": "painel_bot_atendimento"},
@@ -310,24 +324,41 @@ def painel_bot_atendimento(request):
         'chat_handoff': any(session.get('mode') == 'operator' for session in sessions),
         'chat_assumir_url': '/loja/chat/assumir/',
         'chat_sessions': sessions,
+        'chat_account_tenant': user.tenant,
         'chat_sessions_url': '/painel/atendimento-ia/sessoes/',
         'chat_messages_url': '/painel/atendimento-ia/mensagens/',
         'chat_send_url': '/painel/atendimento-ia/enviar/',
+        'chat_orientations': ai_settings.ai_orientations,
+        'chat_orientations_url': '/painel/atendimento-ia/orientacoes/',
     }
     return render(request, 'painel/atendimento_bots.html', context)
 
 
+@require_POST
+def painel_bot_orientacoes(request):
+    error = _painel_chat_access_error(request)
+    if error:
+        return error
+    orientations = str(request.POST.get('ai_orientations') or '').strip()
+    settings = TenantSettings.load(request.user.tenant)
+    settings.ai_orientations = orientations
+    settings.save(update_fields=['ai_orientations'])
+    return JsonResponse({'status': 'ok', 'message': 'Orientações salvas com sucesso.'})
+
+
 def _painel_chat_session_response(request, session_id):
-    if not request.user.is_authenticated:
-        return JsonResponse({'status': 'error', 'message': 'Autenticação necessária.'}, status=403)
+    error = _painel_chat_access_error(request)
+    if error:
+        return error
     if not chat_session_belongs_to_tenant(session_id, request.user.tenant_id):
         return JsonResponse({'status': 'error', 'message': 'Sessão não encontrada.'}, status=404)
     return None
 
 
 def painel_bot_sessoes(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'status': 'error', 'message': 'Autenticação necessária.'}, status=403)
+    error = _painel_chat_access_error(request)
+    if error:
+        return error
     return JsonResponse({
         'status': 'ok',
         'sessions': list_active_chat_sessions(tenant_id=request.user.tenant_id),

@@ -27,6 +27,20 @@
       <link rel="stylesheet" href="{% static '_core/_cdn/sidr/css/jquery.sidr.light.min.css' %}">
       <link  href="{% static '_core/_cdn/fancybox/css/jquery.fancybox.min.css' %}" rel="stylesheet">
       <link rel="stylesheet" href="{% static 'app/estabelecimento/css/style5aaa.css' %}">
+      <style>
+         :root { --theme-color: {{ color_theme|default:'#DD7B0A' }}; }
+         .colored,
+         .title-icon i,
+         .title-line i,
+         .back-button i,
+         .fake-select i,
+         .sidebar-info i { color: var(--theme-color) !important; }
+         .botao-acao,
+         .footer-info,
+         .sidebar .sidebar-header,
+         .minitop { background-color: var(--theme-color) !important; }
+         .top { border-color: var(--theme-color) !important; }
+      </style>
       <script src="{% static '_core/_cdn/jquery/js/jquery.min.js' %}"></script>
       <script src="{% static '_core/_cdn/fancybox/js/jquery.fancybox.min.js' %}"></script>
       <!-- <script src="https://demo6.lojazap.com/_core/_cdn/instantclick/js/instantclick.min.js' %}"></script> -->

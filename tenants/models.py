@@ -279,6 +279,12 @@ class TenantSettings(models.Model):
     segmento = models.CharField(max_length=50, blank=True, null=True, help_text="Segmento de negócio")
     exibicao_produtos = models.CharField(max_length=20, default="1", help_text="Tipo de exibição dos produtos")
     tipo_chave_pix = models.CharField(max_length=50, blank=True, null=True, help_text="Tipo da chave PIX")
+    ai_orientations = models.TextField(
+        blank=True,
+        default='',
+        verbose_name='Orientações para a IA',
+        help_text='Instruções adicionais que a IA deve seguir no atendimento.',
+    )
     
     # Dados do responsável
     nome_responsavel = models.CharField(max_length=100, blank=True, null=True)
