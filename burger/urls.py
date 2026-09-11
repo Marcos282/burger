@@ -60,7 +60,7 @@ from core.views import (
     loja_ai_chat_assumir,
 )
 
-from orders.views import pedido_delivery, cadastro_form
+from orders.views import pedido_delivery, pedido_balcao, pedido_whatsapp, cadastro_form
 
 
 urlpatterns = [
@@ -78,6 +78,8 @@ urlpatterns = [
     path('carrinho/remover-ajax/', remover_do_carrinho_ajax, name='remover_do_carrinho_ajax'),
     path('atualizar-carrinho/', atualizar_carrinho_ajax, name='atualizar_carrinho_ajax'),
     path('pedido_delivery/', pedido_delivery, name='pedido_delivery'),
+    path('pedido_balcao/', pedido_balcao, name='pedido_balcao'),
+    path('pedido_whatsapp/', pedido_whatsapp, name='pedido_whatsapp'),
     path('cadastro_form',cadastro_form, name='cadastro_form'),
     path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('login/', login_view, name='login'),

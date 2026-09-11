@@ -1,4 +1,5 @@
 import json
+import re
 from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.db.models import Prefetch
@@ -533,13 +534,19 @@ def checkout_sucesso(request):
     config = TenantSettings.load(tenant=request.tenant)
 
     # Monta mensagem para o WhatsApp
-    mensagem = f"*{pedido_info.get('loja', '')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
+    vendedor = pedido_info.get('vendedor', '')
+    mensagem = f"*{pedido_info.get('loja', '')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Vendedor:* {vendedor}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
     for item in pedido_info.get('produtos', []):
-        mensagem += f"*{item['quantidade']} x* #{item['referencia']} {item['nome']}\n*Valor:* R$ {item['valor']:.2f}\n------\n"
+        mensagem += f"*{item['quantidade']} x* #{item['referencia']} {item['nome']}\n*Preço:* R$ {item.get('preco', item['valor']):.2f}\n*Valor:* R$ {item['valor']:.2f}\n*Descrição:* {item.get('descricao', '')}\n*Foto:* {item.get('imagem', 'Não disponível')}\n*Produto:* {item.get('link', '')}\n------\n"
     mensagem += f"*Subtotal:* R$ {pedido_info.get('subtotal',0):.2f}\n*Entrega:* {pedido_info.get('entrega','')}\n------\n*Forma de pagamento:*\n{pedido_info.get('pagamento','')}\n*Total:* R$ {pedido_info.get('total',0):.2f}\n------\nhttps://site.cliente.com"
 
     mensagem_url = urllib.parse.quote(mensagem)
-    telefone = pedido_info.get('telefone_loja','')
+    telefone = re.sub(r'\D', '', str(pedido_info.get('telefone_loja', '') or ''))
+    if len(telefone) in (10, 11) and not telefone.startswith('55'):
+        telefone = f'55{telefone}'
+
+    if not telefone:
+        return HttpResponse('<h1>Pedido registrado</h1><p>O WhatsApp da loja ainda não está cadastrado na etapa 5 de Configurações.</p>')
 
     link_whatsapp = f"https://api.whatsapp.com/send/?phone={telefone}&text={mensagem_url}&type=phone_number&app_absent=0"
 

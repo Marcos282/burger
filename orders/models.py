@@ -14,6 +14,7 @@ class Ordem(models.Model):
     completo = models.BooleanField(default=False)
     transacao_id = models.CharField(max_length=100, null=True)
     formade_pagamento = models.CharField(max_length=100, null=True, blank=True)
+    vendedor = models.CharField(max_length=150, null=True, blank=True)
     tx_entrega = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     
     def __str__(self):

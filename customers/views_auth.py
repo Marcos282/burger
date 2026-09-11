@@ -939,6 +939,8 @@ def painel_configuracao(request):
                 # Delivery config from step 4
                 if 'delivery' in request.POST:
                     settings.delivery = request.POST['delivery'] == 'True'
+                if 'chamar_whatsapp' in request.POST:
+                    settings.chamar_whatsapp = request.POST['chamar_whatsapp'] == 'True'
                 
                 # ==== STEP 5: CONTATOS ====
                 if 'whatsapp' in request.POST:
@@ -1059,6 +1061,8 @@ def painel_configuracao(request):
                 }
 
         # Preparar dados do settings para JavaScript (pre-selecionar campos)
+        configuracao = Configuracao.load()
+        foto_capa = settings.foto_capa or configuracao.front_page
         settings_data = {
             'estado': settings.estado or '',
             'cidade': settings.cidade or '',
@@ -1083,6 +1087,8 @@ def painel_configuracao(request):
             'user': user,
             'tenant': tenant,
             'settings': settings,
+            'configuracao': configuracao,
+            'foto_capa': foto_capa,
             'settings_data': json.dumps(settings_data),
             'horarios_existentes': json.dumps(horarios_existentes),
             'qt_items_cliente': qt_items_cliente(request),

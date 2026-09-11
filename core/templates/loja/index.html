@@ -5,17 +5,17 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>{{ config.nome_loja }}</title>
-      <meta name="description" content="O {{ config.nome_loja|default:settings.nome_loja|default:'Loja' }} í ">
-      <meta name="keywords" content="{{ config.nome_loja }} , loja viazap.net">
-      <meta property="og:title" content="{{ config.nome_loja }}">
+      <title>{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}</title>
+      <meta name="description" content="O {% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}">
+      <meta name="keywords" content="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %} , loja viazap.net">
+      <meta property="og:title" content="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}">
       <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
-      {% if config.logo_url %}
+      {% if config and config.logo_url %}
       <meta property="og:image" content="{{ config.logo_url }}">
-      {% elif settings.logo_url %}
+      {% elif settings and settings.logo_url %}
       <meta property="og:image" content="{{ settings.logo_url }}">
       {% endif %}
-      <link rel="shortcut icon" href="{% if settings.favicon %}{{ settings.favicon.url }}{% else %}{% static 'config.foto_perfil' %}{% endif %}"/>
+      <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
       <link rel="stylesheet" href="{% static '_core/_cdn/bootstrap/css/bootstrap.min.css' %}">
       <link rel="stylesheet" href="{% static '_core/_cdn/app/css/class.css' %}">
@@ -174,9 +174,9 @@
                            {% elif settings and settings.logo_url %}
                               <img src="{{ settings.logo_url }}" alt="{{ settings.nome_loja|default:'Loja' }}"/>
                            {% else %}
-                              <img src="" alt="{{ config.nome_loja|default:settings.nome_loja|default:'Loja' }}"/>
+                              <img src="" alt="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}"/>
                            {% endif %}
-                           <span>{{ config.nome_loja|default:settings.nome_loja|default:'Loja' }} <strong class="colored">.</strong></span>
+                           <span>{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %} <strong class="colored">.</strong></span>
                            </a>
                         </div>
                      </div>
@@ -274,7 +274,9 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/21990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% if config and config.whatsapp %}
+                              <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% endif %}
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -318,7 +320,7 @@
                            <span>Endereço</span>
                         </div>
                         <div class="content">
-                           {{ config.endereco }} <br/>Bairro: {{ config.bairro }}, CEP: {{ config.cep }}, {{ config.cidade }}/{{ config.estado }}<br/>
+                           {% if config %}{{ config.endereco }} <br/>Bairro: {{ config.bairro }}, CEP: {{ config.cep }}, {{ config.cidade }}/{{ config.estado }}<br/>{% else %}Endereço da loja não cadastrado.<br/>{% endif %}
                         </div>
                      </div>
                      <div class="sidebar-info">
@@ -329,15 +331,15 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>{{ config.whatsapp }}</span>
+                              <span>{% if config %}{{ config.whatsapp }}{% else %}Não informado{% endif %}</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
-                          <span><a href="mailto:{{ config.support_email }}">{{ config.support_email }}</a></span>
+                          {% if config %}<span><a href="mailto:{{ config.support_email }}">{{ config.support_email }}</a></span>{% endif %}
                            </div>
                         </div>
                         <div class="social">
-                           <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% if config and config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -379,7 +381,7 @@
                         {% elif config and config.logo_url %}
                            <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}" title="{{ config.nome_loja }}"/>
                         {% else %}
-                           <img src="" alt="{{ settings.nome_loja|default:config.nome_loja|default:'Loja' }}" title="{{ settings.nome_loja|default:config.nome_loja|default:'Loja' }}"/>
+                           <img src="" alt="{% if settings %}{{ settings.nome_loja }}{% elif config %}{{ config.nome_loja }}{% else %}Loja{% endif %}" title="{% if settings %}{{ settings.nome_loja }}{% elif config %}{{ config.nome_loja }}{% else %}Loja{% endif %}"/>
                         {% endif %}
                         </a>
                      </div>
@@ -388,7 +390,7 @@
                <div class="app-infos">
                   <div class="row">
                      <div class="col-md-12">
-                        <span class="title">{{ settings.nome_loja }}</span>
+                        <span class="title">{% if settings %}{{ settings.nome_loja }}{% elif config %}{{ config.nome_loja }}{% else %}Loja{% endif %}</span>
                      </div>
                   </div>
                   <div class="row">
@@ -400,25 +402,25 @@
                      <div class="col-md-12">
                         <div align="center">
                            <span>
-                           <button class="btn btn-success btn-sm"><i class="lni lni-restaurant" style="color:#FFFFFF"></i> {% if aberto %} Aberto para Pedidos {% else %} Fechado para Pedidos {% endif %}  </button>
+                           <button class="btn btn-success btn-sm"><i class="lni lni-restaurant" style="color:#FFFFFF"></i> {% if config and config.aberto %} Aberto para Pedidos {% else %} Fechado para Pedidos {% endif %}  </button>
                            </span>
                         </div>
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-md-12">
+          <div class="col-md-12">
                         <div class="info-badges flex">
                            <div class="info-badge">
                               <i class="lni lni-money-protection"></i> 
                               <span>
                               Pedido minímo:<br/>
-                              R$ 20,00							</span>
+                              {% if config %}{{ config.pedido_minimo }}{% else %}Não informado{% endif %}	</span>
                               <div class="clear"></div>
                            </div>
                            <div class="info-badge">
                               <i class="lni lni-whatsapp"></i>
                               <span><br/>
-                              no WhatsAPP {{ settings.whatsapp }}
+                              no WhatsAPP {% if settings %}{{ settings.whatsapp }}{% elif config %}{{ config.whatsapp }}{% else %}Não informado{% endif %}
                               </span>
                               <div class="clear"></div>
                            </div>
@@ -455,8 +457,7 @@
                         <div class="carousel-inner">
                            <div class="item active">
                               {% if configuracao.front_page %}
-                              <img class="hidden-xs hidden-sm" src="{{ configuracao.front_page.url }}" alt="Capa de {{ settings.nome_loja }}"/>
-                              <img class="visible-xs visible-sm" src="{{ configuracao.front_page.url }}" alt="Capa de {{ settings.nome_loja }}"/>
+                              {% if configuracao.front_page %}<img class="hidden-xs hidden-sm" src="{{ configuracao.front_page.url }}" alt="Capa da loja"/><img class="visible-xs visible-sm" src="{{ configuracao.front_page.url }}" alt="Capa da loja"/>{% endif %}
                               {% else %}
                               <img class="hidden-xs hidden-sm" src="{% static '_core/_uploads/68/2024/01/1808020124b1ejh3j177.webp' %}" alt="Capa da loja"/>
                               <img class="visible-xs visible-sm" src="{% static '_core/_uploads/68/2024/01/1808020124abhehifk0c.webp' %}" alt="Capa da loja"/>
@@ -627,7 +628,9 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/21990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                                             {% if config and config.whatsapp %}
+                                             <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                                             {% endif %}
                         </div>
                      </div>
                   </div>

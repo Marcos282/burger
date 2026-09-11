@@ -270,6 +270,7 @@ class TenantSettings(models.Model):
     chave_pix = models.CharField(max_length=100, blank=True, null=True)
     nome_pix = models.CharField(max_length=100, blank=True, null=True)
     delivery = models.BooleanField(default=True)
+    chamar_whatsapp = models.BooleanField(default=True, help_text="Exibe o botão para enviar a sacola pelo WhatsApp")
     googleanalytics = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Google Analytics")
     facebook_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Facebook Pixel")
     instagram_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Instagram Pixel")

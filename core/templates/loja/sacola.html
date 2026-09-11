@@ -5,11 +5,11 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>Tiger Burger  - lojazap</title>
-      <meta name="description" content="O melhor hambúrguer de Itajaí ">
-      <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="Tiger Burger  - lojazap">
-      <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
+      <title>{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %} - viazap</title>
+      <meta name="description" content="{% if config and config.descricao_loja %}{{ config.descricao_loja }}{% else %}Confira os produtos da loja{% endif %}">
+      <meta name="keywords" content="{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %}, viazap">
+      <meta property="og:title" content="{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %}">
+      <meta property="og:description" content="{% if config and config.descricao_loja %}{{ config.descricao_loja }}{% else %}Confira os produtos da loja{% endif %}">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
       <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
@@ -27,6 +27,7 @@
       <link rel="stylesheet" href="{% static '_core/_cdn/sidr/css/jquery.sidr.light.min.css' %}">
       <link  href="{% static '_core/_cdn/fancybox/css/jquery.fancybox.min.css' %}" rel="stylesheet">
       <link rel="stylesheet" href="{% static 'app/estabelecimento/css/style5aaa.css' %}">
+      {% include "loja/includes/ai_chat_styles.html" %}
       <script src="{% static '_core/_cdn/jquery/js/jquery.min.js' %}"></script>
       <script src="{% static '_core/_cdn/fancybox/js/jquery.fancybox.min.js' %}"></script>
       <!-- <script src="https://demo6.lojazap.com/_core/_cdn/instantclick/js/instantclick.min.js' %}"></script> -->
@@ -394,15 +395,17 @@
                                        <tr class="sacola-alterar sacola-6839" sacola-eid="68" sacola-pid="6839" valor="0.01" valor-adicional="0" valor-somado="">
                                           <td class="td-foto">
                                              <div class="imagem">
-                                                {% if item.produto.imagem %}
-                                                <img src="{{ item.produto.imagem.url }}" width="50">
+                                                {% if item.produto.image %}
+                                                <img src="{{ item.produto.image.url }}" width="50" alt="{{ item.produto.nome }}">
+                                                {% elif item.produto.imagem_extra %}
+                                                <img src="{{ item.produto.imagem_extra.url }}" width="50" alt="{{ item.produto.nome }}">
                                                 {% else %}
-                                                <img src="https://demo6.lojazap.com/_core/_uploads/68/2023/11/09582411232ga0bj59df.webp"/>
+                                                <span class="sem-imagem">Sem imagem</span>
                                                 {% endif %}
                                              </div>
                                           </td>
                                           <td class="td-nome">
-                                             <a href="https://demo6.lojazap.com/produto/196964">
+                                             <a href="{% url 'detalhe' item.produto.id %}">
                                              <span class="nome">{{ item.produto.nome }}</span>
                                              </a>
                                           </td>
@@ -414,7 +417,7 @@
                                              <div class="clear"></div>
                                              <div class="holder-acao">
                                                 <div class="item-acao visible-xs visible-sm">
-                                                   <a class="sacola-change" href="https://demo6.lojazap.com/produto/196964">
+                                                   <a class="sacola-change" href="{% url 'detalhe' item.produto.id %}">
                                                    <i class="lni lni-pencil"></i> 
                                                    </a>
                                                 </div>
@@ -445,7 +448,7 @@
                                           </td>
                                           <td class="td-detalhes hidden-xs hidden-sm">
                                              <div class="line detalhes">
-                                                {{ intem.produto.description}}
+                                                {{ item.produto.description }}
                                              </div>
                                           </td>
                                           <td class="td-acoes hidden-xs hidden-sm">
@@ -484,25 +487,21 @@
                         <div class="clear visible-xs visible-sm"><br/></div>
                         
                         <div class="col-md-4">
-                        <form id="the_form" method="POST" action="{% url 'cadastro_form' %}">
-                        {% csrf_token %}
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></button>
-                        </form>
+                        {% if config.delivery %}
+                        <a class="botao-acao" href="{% url 'cadastro_form' %}"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></a>
+                        {% endif %}
                         </div>
                         <div class="clear visible-xs visible-sm"><br/></div>
-                        <div class="col-md-4">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_balcao">
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-map-marker" style="font-size: 18px"></i> <span>Retirar no Local</span></button>
-                        </form>
-                        </div>
+                        {% if config.chamar_whatsapp %}
                         <div class="col-md-3">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_outros">
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-consulting"></i> <span>Mesas</span></button>
+                        <form id="whatsappForm" method="POST" action="{% url 'pedido_whatsapp' %}">
+                        {% csrf_token %}
+                        <label for="whatsappVendedor">Vendedor</label>
+                        <input name="vendedor" type="text" class="form-control" placeholder="Nome do vendedor" id="whatsappVendedor" required>
+                        <button class="botao-acao" type="submit" form="whatsappForm"><i class="lni lni-whatsapp"></i> <span>Chamar no WhatsApp</span></button>
                         </form>
                         </div>
+                        {% endif %}
                         </div>
                         </div>
                         </form>
@@ -542,6 +541,7 @@
             </div>
          </div>
          <!-- FIM FOOTER -->
+         {% include "loja/includes/ai_chat.html" %}
       </div>
       <!--	<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script> -->
       <script src="{% static '_core/_cdn/bootstrap/js/bootstrap.min.js' %}"></script>

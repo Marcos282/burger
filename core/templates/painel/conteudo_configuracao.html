@@ -807,16 +807,29 @@
                            <label class="form-label fw-bold">A loja faz delivery?</label>
                            <div class="radio-inline">
                               <label class="radio radio-square">
-                                 <input type="radio" name="delivery" value="True" checked> 
+                                 <input type="radio" name="delivery" value="True" {% if settings.delivery %}checked{% endif %}> 
                                  <span></span> Sim
                               </label>
                               <label class="radio radio-square">
-                                 <input type="radio" name="delivery" value="False"> 
+                                 <input type="radio" name="delivery" value="False" {% if not settings.delivery %}checked{% endif %}> 
                                  <span></span> Não
                               </label>
                            </div>
                         </div>
                         <!--end::Delivery config-->
+                        <div class="form-group mt-8 fv-plugins-icon-container">
+                           <label class="form-label fw-bold">Exibir botão Chamar no WhatsApp?</label>
+                           <div class="radio-inline">
+                              <label class="radio radio-square">
+                                 <input type="radio" name="chamar_whatsapp" value="True" {% if settings.chamar_whatsapp %}checked{% endif %}>
+                                 <span></span> Sim
+                              </label>
+                              <label class="radio radio-square">
+                                 <input type="radio" name="chamar_whatsapp" value="False" {% if not settings.chamar_whatsapp %}checked{% endif %}>
+                                 <span></span> Não
+                              </label>
+                           </div>
+                        </div>
                      </div>
                   </div>
                   
@@ -825,12 +838,11 @@
                   <div class="pb-5" data-wizard-type="step-content">
                      <input type="hidden" name="dummy_field_step5" value="valid">
                      <h4 class="mb-10 font-weight-bold text-dark">Contatos</h4>
-                      <div class="form-group fv-plugins-icon-container">
+                     <div class="form-group fv-plugins-icon-container">
                         <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Será o número no qual você receberá os pedidos.</p>
-                        <label>WhatsAPP:</label>
+                        <label>WhatsApp:</label>
                         <input type="text" class="form-control maskcel" name="whatsapp" value="{{ settings.whatsapp|default:'' }}">
-                        <!-- <span class="form-text text-muted">Valor mínimo para pagamento</span> -->
-                     </div>                     
+                     </div>
                      <!--begin::Section-->
                      <h6 class="font-weight-bolder mb-3">
                         Redes sociais:

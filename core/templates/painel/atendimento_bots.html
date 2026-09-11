@@ -4,9 +4,11 @@
 {% block content %}
 {% include 'painel/subheader.html' %}
 <div class="container-fluid mb-3">
-  <div class="d-flex justify-content-between align-items-center flex-wrap">
+  <div class="d-flex justify-content-between align-items-center flex-wrap p-4 bg-white border rounded">
     <p class="text-muted mb-2">Conversas da loja: <strong>{{ chat_account_tenant.name }}</strong> ({{ chat_account_tenant.subdomain }})</p>
-    <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="openAiOrientations">Orientações da IA</button>
+    <button type="button" class="btn btn-primary btn-lg mb-2" id="openAiOrientations">
+      <i class="fas fa-cog mr-2"></i> Configurar orientações da IA
+    </button>
   </div>
 </div>
 <div id="aiOrientationsModal" class="ai-orientations-modal" hidden>
@@ -50,11 +52,14 @@
 <script>
 document.addEventListener('DOMContentLoaded',function(){
 const orientationsModal=document.getElementById('aiOrientationsModal'), orientationsForm=document.getElementById('aiOrientationsForm'), orientationsStatus=document.getElementById('aiOrientationsStatus'), saveOrientations=document.getElementById('saveAiOrientations');
-document.getElementById('openAiOrientations').onclick=()=>{orientationsModal.hidden=false;document.getElementById('aiOrientations').focus()};
+function openAiOrientations(){orientationsModal.hidden=false;document.getElementById('aiOrientations').focus()}
+const topOrientationsButton=document.getElementById('openAiOrientations');
+if(topOrientationsButton)topOrientationsButton.onclick=openAiOrientations;
 document.getElementById('closeAiOrientations').onclick=()=>{orientationsModal.hidden=true};
 orientationsModal.onclick=e=>{if(e.target===orientationsModal)orientationsModal.hidden=true};
 orientationsForm.onsubmit=e=>{e.preventDefault();saveOrientations.disabled=true;orientationsStatus.textContent='';fetch('{{ chat_orientations_url|escapejs }}',{method:'POST',headers:{'X-CSRFToken':'{{ csrf_token }}','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(orientationsForm))}).then(r=>r.json()).then(data=>{if(data.status!=='ok')throw new Error();orientationsStatus.textContent=data.message}).catch(()=>{orientationsStatus.className='text-danger mr-3';orientationsStatus.textContent='Não foi possível salvar as orientações.'}).finally(()=>saveOrientations.disabled=false)};
 const sessionsEl=document.getElementById('chatSessions'), messagesEl=document.getElementById('chatMessages'), countEl=document.getElementById('sessionCount'), titleEl=document.getElementById('conversationTitle'), statusEl=document.getElementById('conversationStatus'), inputEl=document.getElementById('operatorMessage'), sendEl=document.getElementById('sendMessage'), toggleEl=document.getElementById('toggleSession');
+if(toggleEl){const orientationButton=document.createElement('button');orientationButton.type='button';orientationButton.className='btn btn-primary btn-sm ml-2';orientationButton.id='openAiOrientationsSession';orientationButton.innerHTML='<i class="fas fa-cog mr-1"></i> Orientações da IA';orientationButton.addEventListener('click',openAiOrientations);toggleEl.parentElement.appendChild(orientationButton)}
 const urls={sessions:'{{ chat_sessions_url|escapejs }}',messages:'{{ chat_messages_url|escapejs }}',send:'{{ chat_send_url|escapejs }}',toggle:'{% url "painel_bot_alternar_sessao" %}'}, csrf='{{ csrf_token }}'; let selected=null, mode='bot', lastId=0;
 const closeEl=document.getElementById('closeSession');
 const sessionSelect=document.getElementById('chatSessionSelect');

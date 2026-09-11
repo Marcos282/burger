@@ -5,11 +5,11 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>Tiger Burger  - lojazap</title>
-      <meta name="description" content="O melhor hambúrguer de Itajaí ">
-      <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="Tiger Burger  - lojazap">
-      <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
+      <title>{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %} - viazap</title>
+      <meta name="description" content="{% if config and config.descricao_loja %}{{ config.descricao_loja }}{% else %}Confira os produtos da loja{% endif %}">
+      <meta name="keywords" content="{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %}, viazap">
+      <meta property="og:title" content="{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %}">
+      <meta property="og:description" content="{% if config and config.descricao_loja %}{{ config.descricao_loja }}{% else %}Confira os produtos da loja{% endif %}">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
       <link rel="shortcut icon" href="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
       <link rel="manifest" href="manifest.json">
@@ -357,24 +357,21 @@
                         </div>
                         <div class="clear visible-xs visible-sm"><br/></div>
                         <div class="col-md-4">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_delivery">
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></button>
-                        </form>
+                        {% if config.delivery %}
+                        <a class="botao-acao" href="{% url 'cadastro_form' %}"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></a>
+                        {% endif %}
                         </div>
                         <div class="clear visible-xs visible-sm"><br/></div>
-                        <div class="col-md-4">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_balcao">
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-map-marker" style="font-size: 18px"></i> <span>Retirar no Local</span></button>
-                        </form>
-                        </div>
+                        {% if config.chamar_whatsapp %}
                         <div class="col-md-3">
-                        <form id="the_form" method="POST" action="https://demo6.lojazap.com/pedido_outros">
-                        <input class="fake-hidden" name="pedido_minimo" value=""/>
-                        <button class="botao-acao"><i class="lni lni-consulting"></i> <span>Mesas</span></button>
+                        <form id="whatsappForm" method="POST" action="{% url 'pedido_whatsapp' %}">
+                        {% csrf_token %}
+                        <label for="whatsappVendedor">Vendedor</label>
+                        <input name="vendedor" type="text" class="form-control" placeholder="Nome do vendedor" id="whatsappVendedor" required>
+                        <button class="botao-acao" type="submit" form="whatsappForm"><i class="lni lni-whatsapp"></i> <span>Chamar no WhatsApp</span></button>
                         </form>
                         </div>
+                        {% endif %}
                         </div>
                         </div>
                         </form>

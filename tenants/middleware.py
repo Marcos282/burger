@@ -65,14 +65,19 @@ class TenantMiddleware:
     def __call__(self, request):
         # Normalize host and extract subdomain
         host = (request.get_host() or "").split(":")[0].strip().lower().strip(".")
-        try:
-            extracted = tldextract.extract(host)
-            subdomain = (extracted.subdomain or "").lower()
-            registered_domain = extracted.registered_domain.lower()
-        except Exception:
-            logger.exception("Erro ao extrair subdomínio do host: %s", host)
-            subdomain = ""
-            registered_domain = ""
+        if host.endswith(".localhost"):
+            # tldextract trata localhost como domínio sem registro e perde o prefixo.
+            subdomain = host[: -len(".localhost")]
+            registered_domain = "localhost"
+        else:
+            try:
+                extracted = tldextract.extract(host)
+                subdomain = (extracted.subdomain or "").lower()
+                registered_domain = extracted.registered_domain.lower()
+            except Exception:
+                logger.exception("Erro ao extrair subdomínio do host: %s", host)
+                subdomain = ""
+                registered_domain = ""
 
         if registered_domain in self.TUNNEL_REGISTERED_DOMAINS:
             logger.debug("Host de túnel de teste detectado (%s); ignorando subdomínio.", host)

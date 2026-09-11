@@ -364,9 +364,9 @@ $(document).ready(function() {
                         console.log("Arquivo de capa removido:", file.name);
                     });
 
-                    {% if configuracao.front_page %}
+                    {% if foto_capa %}
                     const mockFile = {
-                        name: "{{ configuracao.front_page.name|default:'foto_capa.jpg'|escapejs }}",
+                        name: "{{ foto_capa.name|default:'foto_capa.jpg'|escapejs }}",
                         size: 1024,
                         type: "image/jpeg",
                         status: Dropzone.ADDED,
@@ -374,7 +374,7 @@ $(document).ready(function() {
                     };
                     this.files.push(mockFile);
                     this.emit("addedfile", mockFile);
-                    this.emit("thumbnail", mockFile, "{{ configuracao.front_page.url|escapejs }}");
+                    this.emit("thumbnail", mockFile, "{{ foto_capa.url|escapejs }}");
                     this.emit("complete", mockFile);
                     {% endif %}
                 }
