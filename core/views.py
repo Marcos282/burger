@@ -4,7 +4,7 @@ from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.db.models import Prefetch
 from menu.models import Banners, Produto, Category
-from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta
+from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta, get_tenant_url
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -533,12 +533,48 @@ def checkout_sucesso(request):
 
     config = TenantSettings.load(tenant=request.tenant)
 
-    # Monta mensagem para o WhatsApp
-    vendedor = pedido_info.get('vendedor', '')
-    mensagem = f"*{pedido_info.get('loja', '')}*\n------\n*Pedido {pedido_info.get('pedido_id','')}*\n------\n{pedido_info.get('datahora','')}\n------\n*Nome:* {pedido_info.get('nome','')}\n*Vendedor:* {vendedor}\n*Whatsapp:* {pedido_info.get('whatsapp','')}\n*Endereços:* CEP: {pedido_info.get('cep','')}, Bairro: {pedido_info.get('bairro','')}, Rua: {pedido_info.get('rua','')}, Complemento: {pedido_info.get('complemento','')}, Referência: {pedido_info.get('referencia','')}\n------\n*PRODUTOS*\n------\n"
+    vendedor = pedido_info.get('vendedor', '') or 'Não informado'
+    mensagem_linhas = [
+        'NOVO PEDIDO',
+        f"Loja: {pedido_info.get('loja', '')}",
+        f"Pedido: {pedido_info.get('pedido_id', '')}",
+        f"Data: {pedido_info.get('datahora', '')}",
+        '',
+        'CLIENTE',
+        f"Nome: {pedido_info.get('nome', '')}",
+        f"WhatsApp: {pedido_info.get('whatsapp', '') or 'Não informado'}",
+        f"Vendedor: {vendedor}",
+    ]
+    endereco = ', '.join(filter(None, [
+        f"CEP {pedido_info.get('cep', '')}" if pedido_info.get('cep') else '',
+        f"Bairro {pedido_info.get('bairro', '')}" if pedido_info.get('bairro') else '',
+        f"Rua {pedido_info.get('rua', '')}" if pedido_info.get('rua') else '',
+        f"Complemento {pedido_info.get('complemento', '')}" if pedido_info.get('complemento') else '',
+        f"Referência {pedido_info.get('referencia', '')}" if pedido_info.get('referencia') else '',
+    ]))
+    if endereco:
+        mensagem_linhas.extend(['', 'ENDEREÇO', endereco])
+    mensagem_linhas.extend(['', 'PRODUTOS'])
     for item in pedido_info.get('produtos', []):
-        mensagem += f"*{item['quantidade']} x* #{item['referencia']} {item['nome']}\n*Preço:* R$ {item.get('preco', item['valor']):.2f}\n*Valor:* R$ {item['valor']:.2f}\n*Descrição:* {item.get('descricao', '')}\n*Foto:* {item.get('imagem', 'Não disponível')}\n*Produto:* {item.get('link', '')}\n------\n"
-    mensagem += f"*Subtotal:* R$ {pedido_info.get('subtotal',0):.2f}\n*Entrega:* {pedido_info.get('entrega','')}\n------\n*Forma de pagamento:*\n{pedido_info.get('pagamento','')}\n*Total:* R$ {pedido_info.get('total',0):.2f}\n------\nhttps://site.cliente.com"
+        mensagem_linhas.extend([
+            f"{item['quantidade']} x {item['nome']} (ref. {item.get('referencia', '')})",
+            f"Preço: R$ {item.get('preco', item['valor']):.2f}",
+            f"Subtotal: R$ {item['valor']:.2f}",
+            f"Descrição: {item.get('descricao', '') or 'Não informada'}",
+            f"Foto: {item.get('imagem', '') or 'Não disponível'}",
+            f"Produto: {item.get('link', '') or 'Não disponível'}",
+            '',
+        ])
+    loja_url = get_tenant_url(request, '/loja/')
+    mensagem_linhas.extend([
+        f"Subtotal geral: R$ {pedido_info.get('subtotal', 0):.2f}",
+        f"Entrega: {pedido_info.get('entrega', '') or 'A combinar'}",
+        f"Forma de pagamento: {pedido_info.get('pagamento', '') or 'A combinar'}",
+        f"Total: R$ {pedido_info.get('total', 0):.2f}",
+        '',
+        f"Loja: {loja_url}",
+    ])
+    mensagem = '\n'.join(mensagem_linhas)
 
     mensagem_url = urllib.parse.quote(mensagem)
     telefone = re.sub(r'\D', '', str(pedido_info.get('telefone_loja', '') or ''))

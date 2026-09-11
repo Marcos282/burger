@@ -105,7 +105,7 @@ def pedido_delivery(request):
         'rua': endereco.endereco,
         'complemento': endereco.endereco_complemento,
         'referencia': endereco.referencia,
-        'produtos': _order_products(itens),
+        'produtos': _order_products(request, itens),
         'subtotal': subtotal,
         'entrega': endereco.cidade,
         'pagamento': request.POST.get('forma_pagamento', ''),
@@ -118,12 +118,20 @@ def pedido_delivery(request):
     return response
 
 
-def _order_products(items):
+def _order_products(request, items):
     return [{
         'nome': item.produto.nome if item.produto else '',
         'referencia': item.produto.referencia if item.produto else '',
         'quantidade': item.quantidade,
-        'valor': item.get_total,
+        'valor': float(item.get_total or 0),
+        'preco': float(item.preco_unitario or 0),
+        'descricao': item.produto.description if item.produto else '',
+        'imagem': request.build_absolute_uri(
+            (item.produto.image or item.produto.imagem_extra).url
+        ) if item.produto and (item.produto.image or item.produto.imagem_extra) else '',
+        'link': request.build_absolute_uri(
+            reverse('detalhe', args=[item.produto.id])
+        ) if item.produto else '',
     } for item in items]
 
 
