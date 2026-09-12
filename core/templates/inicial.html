@@ -77,39 +77,114 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.85);
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.88);
+            z-index: 99999;
+            padding: 1rem;
+            box-sizing: border-box;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .modal-overlay.aberto { display: block; }
+        .modal-overlay.aberto {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            position: relative;
+            width: 92%;
+            max-width: 500px;
+            margin: auto;
+            background: #ffffff !important;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+            text-align: center;
+            z-index: 100000;
+            box-sizing: border-box;
+        }
 
         .modal-fechar {
             position: absolute;
-            top: 1rem;
-            right: 1.25rem;
-            background: transparent;
+            top: 0.75rem;
+            right: 0.85rem;
+            background: rgba(0, 0, 0, 0.2);
             border: none;
-            color: #fff;
-            font-size: 2rem;
+            color: #ffffff;
+            font-size: 1.6rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 10;
         }
 
-        .modal-iframe {
+        .modal-header {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #fff;
+            padding: 1.2rem 2.8rem 1.2rem 1.2rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 1.4rem 1.2rem;
+        }
+
+        .modal-body img {
             width: 100%;
-            height: 100%;
-            border: none;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 14px;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .modal-body p {
+            color: #4b5563;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-actions .btn {
+            padding: 0.75rem 1.4rem;
+            border-radius: 10px;
+            font-weight: 700;
         }
 
         @media(max-width:768px){
-            .hero { grid-template-columns: 1fr; text-align: center; }
+            header { padding: 0.75rem 0; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding: 2rem 0; gap: 1.5rem; }
+            .hero h1 { font-size: 1.8rem; line-height: 1.25; margin-bottom: 0.8rem; }
+            .hero p { font-size: 0.98rem; margin-bottom: 1.2rem; }
             .nav-links li:not(.botoes-cabecalho) { display: none; }
-            .hero h1 { font-size: 2rem; }
-            .btn { padding: 0.6rem 1rem; font-size: 0.9rem; }
-            .oferta-box { justify-content: center; }
-            .preco-card { align-items: center; }
+            .btn { padding: 0.7rem 1.1rem; font-size: 0.9rem; }
+            .botoes-cabecalho { width: 100%; justify-content: center; }
+            .oferta-box { justify-content: center; margin-top: 1rem; gap: 0.8rem; }
+            .preco-card { align-items: center; width: 100%; max-width: 280px; padding: 0.75rem 1rem; }
+            .imagem-exemplo { height: 230px !important; }
+            .modal-card { width: 95%; border-radius: 18px; margin: auto; }
+            .secao-titulo { font-size: 1.5rem; margin-bottom: 1.8rem; }
+            .grade { gap: 1rem; }
+            .card { padding: 1.2rem 1rem; }
         }
     </style>
 </head>
@@ -123,6 +198,7 @@
                 <li><a href="#como-funciona">Como Funciona</a></li>
                 <li><a href="#recursos">Recursos</a></li>
                 <li><a href="#planos">Planos</a></li>
+                <li><a href="#exemplos">Exemplos</a></li>
                 <li><a href="#duvidas">Dúvidas</a></li>
                 <li class="botoes-cabecalho">
                     <a href="{% url 'login' %}" class="btn btn-secundario">Entrar</a>
@@ -137,7 +213,7 @@
     <div class="container">
         <div>
             <h1>Monte seu Catálogo Online e <span class="destaque">Venda pelo WhatsApp</span></h1>
-            <p>Seus clientes acessam, escolhem e fazem pedidos — e tudo chega organizado no seu WhatsApp. Sem confusão, sem taxas extras, pronto em minutos.</p>
+            <p>Perfeito para <strong>Calçados, Rasteirinhas, Moda e Gastronomia</strong>. Seus clientes acessam, escolhem variações e enviam o pedido pronto no seu WhatsApp.</p>
             <a href="{% url 'register' %}" class="btn btn-principal">Começar Gratuitamente →</a>
             <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • 30 dias grátis • Cancelamento fácil</p>
             <div class="oferta-box">
@@ -149,29 +225,89 @@
             </div>
         </div>
         <div>
-            <img src="https://via.placeholder.com/500x400?text=Imagem+do+Catálogo" alt="Exemplo do catálogo" class="imagem-exemplo" onclick="abrirModalExemplo()" style="width:100%; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1);">
+            <!-- Banner Exemplo de Rasteirinhas / Moda em HTML/CSS Puro (Zero Risco de Erro de Imagem) -->
+            <div onclick="abrirModalExemplo()" style="cursor: pointer; background: linear-gradient(135deg, #075E54 0%, #128C7E 50%, #25D366 100%); border-radius: 20px; padding: 2rem 1.6rem; color: #ffffff; box-shadow: 0 15px 35px rgba(18, 140, 126, 0.22); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; background: rgba(255,255,255,0.12); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -40px; left: -20px; width: 140px; height: 140px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+                
+                <div style="display: inline-block; background: rgba(255,255,255,0.22); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 1rem; backdrop-filter: blur(4px);">
+                    ✨ Exemplo de Catálogo Ativo
+                </div>
+
+                <div style="font-size: 2.8rem; margin-bottom: 0.4rem;">👡</div>
+
+                <h2 style="font-size: 1.55rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.6rem; color: #ffffff;">
+                    Coleção Sandálias Rasteirinhas 2026
+                </h2>
+
+                <p style="font-size: 0.95rem; opacity: 0.95; line-height: 1.5; margin-bottom: 1.4rem; font-weight: 500;">
+                    Catálogo completo para Calçados e Moda. Seleção de tamanhos (34 ao 40), cores e pedido enviado pronto no WhatsApp.
+                </p>
+
+                <div style="background: rgba(255,255,255,0.96); color: #1f2937; padding: 0.85rem 1.1rem; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.12);">
+                    <div>
+                        <span style="display: block; font-size: 0.72rem; color: #6b7280; font-weight: 700; text-transform: uppercase;">Demonstração</span>
+                        <strong style="font-size: 0.95rem; color: #075E54;">Ver Loja Exemplo Demo</strong>
+                    </div>
+                    <span class="btn btn-principal" style="padding: 0.5rem 0.9rem; font-size: 0.82rem; border-radius: 10px; background: #25D366; color: #ffffff;">
+                        Testar agora →
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <div class="modal-overlay" id="modal-exemplo">
-    <button type="button" class="modal-fechar" onclick="fecharModalExemplo()" aria-label="Fechar">&times;</button>
-    <iframe class="modal-iframe" id="modal-exemplo-iframe" src="" title="Exemplo do catálogo"></iframe>
+    <div class="modal-card" role="dialog" aria-modal="true">
+        <button type="button" class="modal-fechar" onclick="fecharModalExemplo()" aria-label="Fechar">&times;</button>
+        <div class="modal-header">
+            ✨ Exemplo de Catálogo — Sandálias Rasteirinhas & Moda
+        </div>
+        <div class="modal-body">
+            <div style="background: linear-gradient(135deg, #075E54, #128C7E); border-radius: 16px; padding: 1.8rem 1.2rem; color: #ffffff; margin-bottom: 1.2rem; text-align: center;">
+                <div style="font-size: 2.8rem; margin-bottom: 0.3rem;">👡</div>
+                <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.4rem; color: #ffffff;">Coleção Rasteirinhas 2026</h3>
+                <p style="font-size: 0.9rem; opacity: 0.95; color: #ffffff; margin: 0; font-weight: 500;">Fotos em alta resolução • Escolha de numeração (34 ao 40) • Pedido direto no WhatsApp</p>
+            </div>
+            <p style="color: #4b5563; font-size: 0.95rem; margin-bottom: 1.2rem;">Conheça a experiência real do cliente: navegação ultra-rápida, sacola dinâmica com variações e envio do pedido totalmente organizado.</p>
+            <div class="modal-actions" style="display: flex; flex-direction: column; gap: 0.6rem;">
+                <a class="btn btn-principal" href="https://andreia.viazap.net/loja/" target="_blank" rel="noopener noreferrer" style="width: 100%; display: block; text-align: center; text-decoration: none; padding: 0.85rem; font-size: 0.95rem; font-weight: 700;">
+                    🚀 Abrir Catálogo Demo
+                </a>
+                <button type="button" class="btn btn-secundario" onclick="fecharModalExemplo()" style="width: 100%; display: block; padding: 0.75rem; font-size: 0.9rem; font-weight: 700;">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+    function tratarErroImagem(img) {
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500"><rect width="800" height="500" fill="%23128C7E"/><circle cx="680" cy="100" r="160" fill="%2325D366" opacity="0.3"/><text x="400" y="230" font-family="Segoe UI, sans-serif" font-size="40" font-weight="bold" fill="%23ffffff" text-anchor="middle">👡 Coleção Rasteirinhas</text><text x="400" y="280" font-family="Segoe UI, sans-serif" font-size="22" fill="%23ffffff" opacity="0.9" text-anchor="middle">Catálogo Online - ViaZap</text></svg>`;
+        img.onerror = null;
+        img.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+    }
+
+    const modalExemplo = document.getElementById('modal-exemplo');
+
     function abrirModalExemplo() {
-        document.getElementById('modal-exemplo-iframe').src = 'https://andre.dominioatual.net/loja';
-        document.getElementById('modal-exemplo').classList.add('aberto');
+        modalExemplo.classList.add('aberto');
+        document.body.style.overflow = 'hidden';
     }
 
     function fecharModalExemplo() {
-        document.getElementById('modal-exemplo').classList.remove('aberto');
-        document.getElementById('modal-exemplo-iframe').src = '';
+        modalExemplo.classList.remove('aberto');
+        document.body.style.overflow = '';
     }
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') fecharModalExemplo();
+    });
+
+    modalExemplo.addEventListener('click', function (e) {
+        if (e.target === modalExemplo) fecharModalExemplo();
     });
 </script>
 
@@ -203,12 +339,100 @@
     <div class="container">
         <h2 class="secao-titulo">Tudo que você precisa</h2>
         <div class="grade">
-            <div class="card"><h3>📦 Produtos Ilimitados</h3><p>Cadastre quanto precisar, com fotos, vídeos e variações.</p></div>
+            <div class="card"><h3>📦 Produtos Ilimitados</h3><p>Cadastre quanto precisar, com fotos, descrições e variações.</p></div>
             <div class="card"><h3>💰 Sem Comissão</h3><p>Você fica com 100% do valor das vendas. Sem taxas por pedido.</p></div>
-            <div class="card"><h3>🏷️ Cupons</h3><p>Crie descontos e promoções em poucos cliques.</p></div>
-            <div class="card"><h3>📊 Relatórios</h3><p>Acompanhe acessos, pedidos e desempenho em tempo real.</p></div>
-            <div class="card"><h3>📱 100% Celular</h3><p>Seus clientes compram de qualquer tela, com facilidade.</p></div>
-            <div class="card"><h3>🔗 QR Code</h3><p>Gere um código para os clientes acessarem direto.</p></div>
+            <div class="card"><h3>🏷️ Cupons & Promoções</h3><p>Crie descontos e ofertas especiais em poucos cliques.</p></div>
+            <div class="card"><h3>📊 Relatórios Inteligentes</h3><p>Acompanhe acessos, pedidos e desempenho em tempo real.</p></div>
+            <div class="card"><h3>📱 100% Celular</h3><p>Seus clientes compram de qualquer tela com facilidade e rapidez.</p></div>
+            <div class="card"><h3>🤖 Bot Online com IA 24h</h3><p>Todos os clientes contam com um bot online ligado diretamente à Inteligência Artificial (IA), que vai conversando, tirando dúvidas e conduzindo até o pedido final — e a qualquer momento você pode assumir o atendimento para si!</p></div>
+            <div class="card" style="grid-column: 1 / -1; background: #ffffff; border: 2px dashed var(--destaque); margin-top: 1rem;"><h3>📱 QR Code: Seu Grande Aliado na Divulgação</h3><p>O QR Code exclusivo do seu catálogo é o seu maior aliado para atrair e fidelizar clientes! Imprima e aplique em balcões, cartões de visita, embalagens, mesas, panfletos ou adesivos. O cliente aponta a câmera do celular e acessa seu catálogo na hora sem precisar digitar nada.</p></div>
+        </div>
+    </div>
+    </section>
+
+<section class="planos" id="planos" style="padding: 4rem 0;">
+    <div class="container">
+        <h2 class="secao-titulo">Escolha o plano ideal para vender melhor</h2>
+        <div class="grade" style="max-width: 500px; margin: 0 auto;">
+            <div class="card" style="border: 2px solid var(--destaque); transform: translateY(-6px); text-align: center; padding: 2.5rem 2rem;">
+                <h3 style="font-size: 1.5rem; color: var(--escuro);">Plano Único</h3>
+                <div class="preco" style="font-size: 2.8rem; font-weight: 800; margin: 1rem 0; color: var(--escuro);">R$ 30 <small style="font-size: 1rem; color: #6b7280;">/mês</small></div>
+                <ul style="list-style: none; margin: 1.5rem 0; text-align: left; padding: 0 0.5rem;">
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Catálogo online completo</li>
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Pedidos diretos no WhatsApp</li>
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Produtos e categorias ilimitados</li>
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Atendimento por bot com inteligência artificial</li>
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Cupons de desconto e promoções</li>
+                    <li style="margin-bottom: 0.8rem; color: #374151;">✓ Relatórios e gestão simples</li>
+                </ul>
+                <a href="{% url 'register' %}" class="btn btn-principal" style="width: 100%; padding: 0.9rem;">Começar agora (30 dias grátis)</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="exemplos" id="exemplos" style="padding: 4rem 0; background: #fafafa;">
+    <div class="container">
+        <h2 class="secao-titulo">Exemplos de catálogos site.viazap.net que você pode criar</h2>
+        <p style="text-align: center; color: #6b7280; margin-top: -2rem; margin-bottom: 2.5rem; font-size: 1.05rem;">
+            O ViaZap funciona perfeitamente para moda, calçados, alimentação e qualquer segmento.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+            <!-- Exemplo Sandálias Rasteirinhas -->
+            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="height: 180px; background: linear-gradient(135deg, #128C7E, #075E54); position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; color: #fff;">
+                    <div style="font-size: 2.5rem;">👡</div>
+                    <div>
+                        <span style="background: rgba(255,255,255,0.22); color: #fff; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Calçados & Moda</span>
+                    </div>
+                </div>
+                <div style="padding: 1.2rem; text-align: left;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--escuro);">Sandálias Rasteirinhas</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem;">Catálogo elegante com variações de numeração (34 ao 40), cores e pedido direto no WhatsApp.</p>
+                </div>
+            </div>
+
+            <!-- Exemplo Hambúrguer -->
+            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="height: 180px; background: linear-gradient(135deg, #ea580c, #c2410c); position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; color: #fff;">
+                    <div style="font-size: 2.5rem;">🍔</div>
+                    <div>
+                        <span style="background: rgba(255,255,255,0.22); color: #fff; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Gastronomia</span>
+                    </div>
+                </div>
+                <div style="padding: 1.2rem; text-align: left;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--escuro);">Loja de Hambúrguer</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem;">Visual atraente com opção de adicionais, combos e taxa de entrega calculada.</p>
+                </div>
+            </div>
+
+            <!-- Exemplo Cafeteria -->
+            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="height: 180px; background: linear-gradient(135deg, #7c3aed, #6d28d9); position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; color: #fff;">
+                    <div style="font-size: 2.5rem;">☕</div>
+                    <div>
+                        <span style="background: rgba(255,255,255,0.22); color: #fff; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Cafeteria</span>
+                    </div>
+                </div>
+                <div style="padding: 1.2rem; text-align: left;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--escuro);">Cafeteria & Doceria</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem;">Design acolhedor e sofisticado para café expresso, bebidas e doces finos.</p>
+                </div>
+            </div>
+
+            <!-- Exemplo Moda & Acessórios -->
+            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="height: 180px; background: linear-gradient(135deg, #0284c7, #0369a1); position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; color: #fff;">
+                    <div style="font-size: 2.5rem;">👜</div>
+                    <div>
+                        <span style="background: rgba(255,255,255,0.22); color: #fff; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Moda Feminina</span>
+                    </div>
+                </div>
+                <div style="padding: 1.2rem; text-align: left;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--escuro);">Boutique & Acessórios</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem;">Exibição limpa para bolsas, roupas e acessórios com sacola de compras direta.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -216,6 +440,10 @@
 <section id="duvidas" style="padding:4rem 0;">
     <div class="container">
         <h2 class="secao-titulo">Dúvidas Frequentes</h2>
+        <div class="pergunta">
+            <h4>🤖 Como funciona o Bot com Inteligência Artificial?</h4>
+            <p>O bot interage e atende seus clientes 24h por dia, respondendo perguntas e conduzindo a compra. Se necessário, você pode assumir a conversa e o atendimento no painel a qualquer momento!</p>
+        </div>
         <div class="pergunta">
             <h4>✅ Preciso ter CNPJ?</h4>
             <p>Pode começar com seu CPF e migrar quando quiser.</p>
