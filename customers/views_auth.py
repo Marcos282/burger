@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from PIL import Image
+from io import BytesIO
+import base64
 from itertools import count
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, HttpResponse
@@ -1233,6 +1236,83 @@ def painel_qrcode(request):
         return render(request, 'painel/qrcode.html', context)
     else:
         return redirect('login')
+
+
+def painel_reduzir_imagens(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    resultados = []
+    erro = None
+    if request.method == 'POST':
+        try:
+            limite_mb = float(request.POST.get('limite_mb', '1'))
+            if not 0.05 <= limite_mb <= 20:
+                raise ValueError
+        except (TypeError, ValueError):
+            limite_mb = 1.0
+            erro = 'Informe um limite entre 0,05 MB e 20 MB.'
+
+        if not erro:
+            limite_bytes = int(limite_mb * 1024 * 1024)
+            try:
+                largura_max = int(request.POST.get('largura', '0') or 0)
+                altura_max = int(request.POST.get('altura', '0') or 0)
+                if largura_max < 0 or altura_max < 0:
+                    raise ValueError
+            except ValueError:
+                largura_max = altura_max = 0
+            for arquivo in request.FILES.getlist('imagens'):
+                try:
+                    imagem = Image.open(arquivo)
+                    imagem.load()
+                    if imagem.mode not in ('RGB', 'RGBA'):
+                        imagem = imagem.convert('RGBA' if 'A' in imagem.getbands() else 'RGB')
+
+                    largura, altura = imagem.size
+                    if largura_max or altura_max:
+                        escala_largura = largura_max / largura if largura_max else float('inf')
+                        escala_altura = altura_max / altura if altura_max else float('inf')
+                        escala = min(escala_largura, escala_altura)
+                        if escala < 1:
+                            imagem = imagem.resize(
+                                (max(1, int(largura * escala)), max(1, int(altura * escala))),
+                                Image.Resampling.LANCZOS,
+                            )
+                            largura, altura = imagem.size
+                    qualidade = 88
+                    dados = b''
+                    for tentativa in range(12):
+                        buffer = BytesIO()
+                        imagem.save(buffer, format='WEBP', quality=qualidade, method=6)
+                        dados = buffer.getvalue()
+                        if len(dados) <= limite_bytes:
+                            break
+                        qualidade = max(35, qualidade - 5)
+                        if tentativa in (4, 8):
+                            imagem = imagem.resize((max(1, int(largura * 0.85)), max(1, int(altura * 0.85))), Image.Resampling.LANCZOS)
+                            largura, altura = imagem.size
+
+                    nome = f'{arquivo.name.rsplit(".", 1)[0]}.webp'
+                    resultados.append({
+                        'nome': nome,
+                        'tamanho_kb': round(len(dados) / 1024, 1),
+                        'limite_mb': limite_mb,
+                        'data_url': 'data:image/webp;base64,' + base64.b64encode(dados).decode('ascii'),
+                    })
+                except Exception:
+                    resultados.append({'nome': arquivo.name, 'erro': 'Arquivo de imagem inválido.'})
+
+    return render(request, 'painel/reduzir_imagens.html', {
+        'resultados': resultados,
+        'erro': erro,
+        'limite_mb': request.POST.get('limite_mb', '1'),
+        'largura': request.POST.get('largura', ''),
+        'altura': request.POST.get('altura', ''),
+        'localizacao': [{'n1': 'Reduzir imagens', 'url': 'painel_reduzir_imagens'}],
+        'qt_items_cliente': qt_items_cliente(request),
+        'url_marketplace': get_tenant_url(request, '/loja/'),
+    })
 
 
 def painel_banners(request):
