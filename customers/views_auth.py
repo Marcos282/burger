@@ -53,6 +53,9 @@ def get_qt_ordem_cliente(request):
     return 0
 
 def login_view(request):
+    configuracao = Configuracao.objects.first()
+    if configuracao.aberto is False:
+        raise Http404("Loja fechada no momento.")
 
     form = UserLoginForm(request.POST or None)
     error = None

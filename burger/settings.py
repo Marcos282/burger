@@ -12,9 +12,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import logging
 from pathlib import Path
 
 import os
+from venv import logger
 
 from dotenv import load_dotenv
 
@@ -32,7 +34,9 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
+#DEBUG = os.getenv('DJANGO_DEBUG', 'True).lower() in ('1', 'true', 'yes')
+
+DEBUG = True
 
 ####################  MERCADO PAGO ==============================
 MERCADO_PAGO_ACCESS_KEY = os.getenv('MERCADO_PAGO_ACCESS_KEY', '')
@@ -261,3 +265,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ADICIONAR_RUIDO_EM_FOTOS = True   # muda aqui e afeta tudo
 ##############################END WHITENOISE###########################
+
+logger = logging.getLogger(__name__)
+logger.debug("loja fechada")

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nome_loja|default:'Loja' }} — Voltaremos em breve</title>
+    {% if settings.foto_perfil %}
+        <link rel="icon" href="{{ settings.foto_perfil.url }}">
+    {% endif %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #F8FAFC;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .closed-card {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            max-width: 520px;
+            width: 100%;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .store-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 3px solid #25D366;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.25);
+            display: block;
+        }
+        .store-avatar-fallback {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        .badge-closed {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 0.4rem 1.1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .badge-closed span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #EF4444;
+            display: inline-block;
+            box-shadow: 0 0 10px #EF4444;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+        p {
+            color: #94A3B8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .store-name {
+            color: #25D366;
+            font-weight: 700;
+        }
+        .actions-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.95rem 1.6rem;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-whatsapp {
+            background: #25D366;
+            color: #FFFFFF;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover {
+            background: #20bd5a;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #CBD5E1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+        }
+        .footer-info {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+        .footer-info a {
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-info a:hover {
+            color: #25D366;
+        }
+    </style>
+</head>
+<body>
+
+<div class="closed-card">
+    {% if settings and settings.foto_perfil %}
+        <img src="{{ settings.foto_perfil.url }}" alt="{{ nome_loja }}" class="store-logo">
+    {% else %}
+        <div class="store-avatar-fallback">
+            {{ nome_loja|slice:":1"|upper }}
+        </div>
+    {% endif %}
+
+    <div class="badge-closed">
+        <span></span> Loja Temporariamente Fechada
+    </div>
+
+    <h1>Voltaremos em breve!</h1>
+
+    <p>
+        A loja <span class="store-name">{{ nome_loja }}</span> está preparando novidades e não está aceitando pedidos no momento. Volte em breve!
+    </p>
+
+    <div class="actions-group">
+        {% if settings and settings.whatsapp %}
+            <a href="https://wa.me/55{{ settings.whatsapp|slugify }}?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20a%20loja." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                💬 Falar no WhatsApp
+            </a>
+        {% endif %}
+
+        {% if settings and settings.instagram %}
+            <a href="{{ settings.instagram }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                📸 Acompanhar no Instagram
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="footer-info">
+        <p>© 2026 {{ nome_loja }} • Desenvolvido via <a href="https://viazap.net" target="_blank">ViaZap</a></p>
+        <p style="margin-top: 0.5rem;">
+            <a href="{% url 'login' %}">Área Administrativa (Lojista)</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

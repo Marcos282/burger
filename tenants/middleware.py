@@ -6,9 +6,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from .models import Tenant
+from .models import Tenant, TenantSettings
 
 
 logger = logging.getLogger(__name__)
@@ -117,21 +117,37 @@ class TenantMiddleware:
         else:
             logger.info("ℹ️ Sem subdomínio (site principal)")
 
-        # Se o tenant da requisição estiver desabilitado (aberto == False), bloqueia o acesso público (loja)
-        # permitindo apenas login, logout e a tela de pagamentos do painel
+        # Se o tenant da requisição estiver desabilitado (aberto == False), exibe a página "Voltaremos em breve"
+        # para acessos públicos (loja), permitindo que o gestor acesse o painel, login, logout e admin
         if request.tenant and not getattr(request.tenant, 'aberto', True):
             path = request.path
             is_allowed_path = (
-                path.startswith('/painel/pagamento/') or
+                path.startswith('/painel') or
                 path.startswith('/login') or
                 path.startswith('/logout') or
-                path.startswith('/admin')
+                path.startswith('/admin') or
+                path.startswith('/static') or
+                path.startswith('/media')
             )
             if not is_allowed_path:
-                if request.user.is_authenticated:
-                    return redirect('pagamento:index')
-                else:
-                    return redirect('login')
+                try:
+                    config = TenantSettings.objects.filter(tenant=request.tenant).first()
+                except Exception:
+                    config = None
+                
+                nome_loja = "Loja"
+                if config and config.nome_loja:
+                    nome_loja = config.nome_loja
+                elif request.tenant and request.tenant.name:
+                    nome_loja = request.tenant.name
+
+                context = {
+                    'tenant': request.tenant,
+                    'settings': config,
+                    'configuracao': config,
+                    'nome_loja': nome_loja,
+                }
+                return render(request, 'loja_fechada.html', context)
 
         if self._authenticated_panel_user_on_wrong_tenant(request):
             logger.warning(
