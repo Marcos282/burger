@@ -1499,12 +1499,27 @@ def painel_banners_edit(request, banner_id):
             {"n1": "Banners", "url": "painel_banners"},
             {"n2": "Editar Banner", "url": "painel_banners_edit", "id": banner.id}
         ]
+
+        banner_pc_exists = bool(
+            banner.banner_pc and banner.banner_pc.name and
+            banner.banner_pc.storage.exists(banner.banner_pc.name)
+        )
+        banner_mobile_exists = bool(
+            banner.banner_mobile and banner.banner_mobile.name and
+            banner.banner_mobile.storage.exists(banner.banner_mobile.name)
+        )
+        banner_pc_size = banner.banner_pc.size if banner_pc_exists else 0
+        banner_mobile_size = banner.banner_mobile.size if banner_mobile_exists else 0
         
         context = {
             'localizacao': localizacao,
             'banner': banner,
             'user': user,
             'show_success_modal': show_success_modal,
+            'banner_pc_exists': banner_pc_exists,
+            'banner_mobile_exists': banner_mobile_exists,
+            'banner_pc_size': banner_pc_size,
+            'banner_mobile_size': banner_mobile_size,
             'url_marketplace': get_tenant_url(request, '/loja/'),
         }
         return render(request, 'painel/banners_edit.html', context)

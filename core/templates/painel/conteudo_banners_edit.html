@@ -178,10 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
             var dropzone = this;
             
             // Carrega imagem existente se houver
-            {% if banner.banner_pc %}
+            {% if banner_pc_exists %}
             var existingFile = {
                 name: "{{ banner.banner_pc.name|basename }}",
-                size: {{ banner.banner_pc.size|default:0 }},
+               size: {{ banner_pc_size }},
                 accepted: true,
                 kind: 'image'
             };
@@ -242,10 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
             var dropzone = this;
             
             // Carrega imagem existente se houver
-            {% if banner.banner_mobile %}
+            {% if banner_mobile_exists %}
             var existingFile = {
                 name: "{{ banner.banner_mobile.name|basename }}",
-                size: {{ banner.banner_mobile.size|default:0 }},
+               size: {{ banner_mobile_size }},
                 accepted: true,
                 kind: 'image'
             };

@@ -1,0 +1,52 @@
+<script>
+(function () {
+    var form = document.getElementById('{{ form_id|escapejs }}');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var zones = [imagemDropzone, imagemExtraDropzone];
+        var invalid = zones.some(function (zone) {
+            return zone.files.some(function (file) {
+                return !file.existing && !file.galeriaId && file.accepted !== true;
+            });
+        });
+        if (invalid) {
+            window.alert('Remova as imagens inválidas ou aguarde a validação dos arquivos antes de salvar. Use PNG ou JPG de até 5 MB.');
+            return;
+        }
+
+        // Inclui os arquivos selecionados no mesmo POST multipart do produto.
+        form.querySelectorAll('[data-produto-upload]').forEach(function (input) {
+            input.remove();
+        });
+        function attachFile(name, file) {
+            var transfer = new DataTransfer();
+            transfer.items.add(file);
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.name = name;
+            input.files = transfer.files;
+            input.hidden = true;
+            input.setAttribute('data-produto-upload', '');
+            form.appendChild(input);
+        }
+        imagemDropzone.getQueuedFiles().forEach(function (file, index) {
+            attachFile('imagens[' + index + ']', file);
+        });
+        imagemExtraDropzone.getQueuedFiles().forEach(function (file) {
+            attachFile('imagem_extra', file);
+        });
+        if (typeof imagensRemovidasDropzone !== 'undefined') {
+            form.elements.imagens_removidas_dropzone.value = imagensRemovidasDropzone.join(',');
+        }
+        if (typeof imagemPrincipalRemovida !== 'undefined' && imagemPrincipalRemovida) {
+            var removed = document.createElement('input');
+            removed.type = 'hidden';
+            removed.name = 'remover_imagem_extra';
+            removed.value = 'true';
+            removed.setAttribute('data-produto-upload', '');
+            form.appendChild(removed);
+        }
+        HTMLFormElement.prototype.submit.call(form);
+    });
+}());
+</script>
