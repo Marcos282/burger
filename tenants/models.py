@@ -65,6 +65,8 @@ class Tenant(models.Model):
     cpf_ou_cnpj = models.CharField(max_length=20, blank=True, null=True)
     nome_responsavel = models.CharField(max_length=100, blank=True, null=True)
     aberto = models.BooleanField(default=False)
+    google_analytics_id = models.CharField(max_length=20, blank=True, null=True)
+    facebook_pixel_id = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -240,7 +242,7 @@ class TenantSettings(models.Model):
     )
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE, related_name='settings')
     theme_color = models.CharField(max_length=7, default='#FFFFFF')  # Hex color code
-    logo_url = models.URLField(blank=True, null=True)
+    logo_url = models.ImageField(upload_to='logos/', blank=True, null=True)
     support_email = models.EmailField(blank=True, null=True)
     nome_loja = models.CharField(max_length=100, default='Seu nome completo')
     descricao_loja = models.TextField(blank=True, null=True)
@@ -274,6 +276,7 @@ class TenantSettings(models.Model):
     googleanalytics = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Google Analytics")
     facebook_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Facebook Pixel")
     instagram_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Instagram Pixel")
+    codigo_do_fluxo = models.CharField(max_length=100, blank=True, null=True)
     
     # Campos adicionais para o formulário
     subdomain = models.CharField(max_length=50, blank=True, null=True, help_text="Subdomínio da loja")

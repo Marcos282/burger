@@ -117,6 +117,22 @@ class TenantMiddleware:
         else:
             logger.info("ℹ️ Sem subdomínio (site principal)")
 
+        # Se o tenant da requisição estiver desabilitado (aberto == False), bloqueia o acesso público (loja)
+        # permitindo apenas login, logout e a tela de pagamentos do painel
+        if request.tenant and not getattr(request.tenant, 'aberto', True):
+            path = request.path
+            is_allowed_path = (
+                path.startswith('/painel/pagamento/') or
+                path.startswith('/login') or
+                path.startswith('/logout') or
+                path.startswith('/admin')
+            )
+            if not is_allowed_path:
+                if request.user.is_authenticated:
+                    return redirect('pagamento:index')
+                else:
+                    return redirect('login')
+
         if self._authenticated_panel_user_on_wrong_tenant(request):
             logger.warning(
                 "Bloqueando acesso ao painel: usuário tenant=%s em host tenant=%s path=%s",

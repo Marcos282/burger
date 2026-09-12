@@ -261,8 +261,15 @@ def painel_home(request):
 
         if request.method == 'POST' and request.POST.get('toggle_aberto'):
             settings = TenantSettings.load(user.tenant)
-            settings.aberto = not settings.aberto
+            novo_status = not settings.aberto
+            settings.aberto = novo_status
             settings.save()
+            
+            tenant = user.tenant
+            if tenant:
+                tenant.aberto = novo_status
+                tenant.save(update_fields=['aberto'])
+                
             return JsonResponse({'success': True, 'aberto': settings.aberto})
 
         localizacao = [
@@ -1236,6 +1243,35 @@ def painel_qrcode(request):
         return render(request, 'painel/qrcode.html', context)
     else:
         return redirect('login')
+
+
+def painel_analytics(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    user = request.user
+    tenant = user.tenant
+    settings = TenantSettings.load(tenant)
+    
+    if request.method == 'POST':
+        googleanalytics = request.POST.get('googleanalytics', '').strip()
+        settings.googleanalytics = googleanalytics
+        settings.save()
+        messages.success(request, 'Configuração do Google Analytics / Looker Studio atualizada!')
+        return redirect('painel_analytics')
+
+    localizacao = [
+        {"n1": "Análise & Gráficos", "url": "painel_analytics"}
+    ]
+
+    context = {
+        'localizacao': localizacao,
+        'user': user,
+        'settings': settings,
+        'qt_items_cliente': qt_items_cliente(request),
+        'url_marketplace': get_tenant_url(request, '/loja/'),
+    }
+    return render(request, 'painel/analytics.html', context)
 
 
 def painel_reduzir_imagens(request):

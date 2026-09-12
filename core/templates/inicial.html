@@ -27,7 +27,7 @@
         .passos, .recursos { padding: 4rem 0; }
         .secao-titulo { text-align: center; font-size: 2rem; margin-bottom: 3rem; }
         .grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-        .card { background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); text-align: center; }
+        .card { background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); text-align: center; margin: 10px; }
         .card h3 { margin: 1rem 0; color: var(--destaque); }
         .pergunta { max-width: 800px; margin: 1rem auto; border-bottom: 1px solid #eee; padding: 1rem; }
         footer { background: var(--escuro); color: #fff; padding: 3rem 0; text-align: center; margin-top: 4rem; }
@@ -47,13 +47,14 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            padding: 0.6rem 1.1rem;
+            padding: 0.65rem 1.2rem;
             border-radius: 999px;
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            color: var(--destaque);
-            font-weight: 600;
-            font-size: 0.95rem;
+            background: #FEF2F2;
+            border: 1.5px solid #FCA5A5;
+            color: #DC2626;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
         }
 
         .preco-card {
@@ -61,16 +62,16 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 0.15rem;
-            padding: 0.85rem 1.4rem;
-            border-radius: 14px;
+            padding: 0.95rem 1.6rem;
+            border-radius: 16px;
             background: #fff;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            border: 2px solid #FCA5A5;
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.08);
         }
 
-        .preco-card span { font-size: 0.85rem; color: #6b7280; }
-        .preco-card strong { font-size: 2rem; color: var(--escuro); line-height: 1.1; }
-        .preco-card strong small { font-size: 1rem; font-weight: 500; color: #6b7280; }
+        .preco-card span { font-size: 0.85rem; color: #6b7280; font-weight: 600; }
+        .preco-card strong { font-size: 2.2rem; color: #DC2626; line-height: 1.1; font-weight: 800; }
+        .preco-card strong small { font-size: 1rem; font-weight: 600; color: #6b7280; }
 
         .imagem-exemplo { cursor: pointer; }
 
@@ -215,7 +216,7 @@
             <h1>Monte seu Catálogo Online e <span class="destaque">Venda pelo WhatsApp</span></h1>
             <p>Perfeito para <strong>Calçados, Rasteirinhas, Moda e Gastronomia</strong>. Seus clientes acessam, escolhem variações e enviam o pedido pronto no seu WhatsApp.</p>
             <a href="{% url 'register' %}" class="btn btn-principal">Começar Gratuitamente →</a>
-            <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • 30 dias grátis • Cancelamento fácil</p>
+            <p style="margin-top:1rem; font-size:0.95rem; color:#6b7280;">Sem cartão de crédito • <strong style="color:#DC2626;">30 dias grátis</strong> • Cancelamento fácil</p>
             <div class="oferta-box">
                 <div class="badge-gratis">✨ 30 dias grátis</div>
                 <div class="preco-card">
@@ -225,31 +226,33 @@
             </div>
         </div>
         <div>
-            <!-- Banner Exemplo de Rasteirinhas / Moda em HTML/CSS Puro (Zero Risco de Erro de Imagem) -->
-            <div onclick="abrirModalExemplo()" style="cursor: pointer; background: linear-gradient(135deg, #075E54 0%, #128C7E 50%, #25D366 100%); border-radius: 20px; padding: 2rem 1.6rem; color: #ffffff; box-shadow: 0 15px 35px rgba(18, 140, 126, 0.22); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                <div style="position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; background: rgba(255,255,255,0.12); border-radius: 50%;"></div>
-                <div style="position: absolute; bottom: -40px; left: -20px; width: 140px; height: 140px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <!-- Banner Exemplo de Rasteirinhas / Moda em HTML/CSS Puro Ampliado (Maior Destaque Visual) -->
+            <div onclick="abrirModalExemplo()" style="cursor: pointer; background: linear-gradient(135deg, #075E54 0%, #128C7E 50%, #25D366 100%); border-radius: 24px; padding: 2.8rem 2.2rem; color: #ffffff; box-shadow: 0 20px 45px rgba(18, 140, 126, 0.3); position: relative; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.3); transition: transform 0.3s; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between; margin-top: 10px;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position: absolute; top: -30px; right: -30px; width: 180px; height: 180px; background: rgba(255,255,255,0.14); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -40px; left: -20px; width: 160px; height: 160px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
                 
-                <div style="display: inline-block; background: rgba(255,255,255,0.22); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 1rem; backdrop-filter: blur(4px);">
-                    ✨ Exemplo de Catálogo Ativo
+                <div>
+                    <div style="display: inline-block; background: rgba(255,255,255,0.25); padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 1.2rem; backdrop-filter: blur(6px);">
+                        ✨ Exemplo de Catálogo Ativo
+                    </div>
+
+                    <div style="font-size: 3.5rem; margin-bottom: 0.6rem;">👡</div>
+
+                    <h2 style="font-size: 1.85rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem; color: #ffffff;">
+                        Coleção Sandálias Rasteirinhas 2026
+                    </h2>
+
+                    <p style="font-size: 1.05rem; opacity: 0.95; line-height: 1.55; margin-bottom: 1.6rem; font-weight: 500;">
+                        Catálogo completo para Calçados e Moda. Seleção de tamanhos (34 ao 40), cores e pedido enviado pronto no WhatsApp.
+                    </p>
                 </div>
 
-                <div style="font-size: 2.8rem; margin-bottom: 0.4rem;">👡</div>
-
-                <h2 style="font-size: 1.55rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.6rem; color: #ffffff;">
-                    Coleção Sandálias Rasteirinhas 2026
-                </h2>
-
-                <p style="font-size: 0.95rem; opacity: 0.95; line-height: 1.5; margin-bottom: 1.4rem; font-weight: 500;">
-                    Catálogo completo para Calçados e Moda. Seleção de tamanhos (34 ao 40), cores e pedido enviado pronto no WhatsApp.
-                </p>
-
-                <div style="background: rgba(255,255,255,0.96); color: #1f2937; padding: 0.85rem 1.1rem; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.12);">
+                <div style="background: rgba(255,255,255,0.96); color: #1f2937; padding: 1rem 1.3rem; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
                     <div>
-                        <span style="display: block; font-size: 0.72rem; color: #6b7280; font-weight: 700; text-transform: uppercase;">Demonstração</span>
-                        <strong style="font-size: 0.95rem; color: #075E54;">Ver Loja Exemplo Demo</strong>
+                        <span style="display: block; font-size: 0.75rem; color: #6b7280; font-weight: 800; text-transform: uppercase;">Demonstração</span>
+                        <strong style="font-size: 1.05rem; color: #075E54;">Ver Loja Exemplo Demo</strong>
                     </div>
-                    <span class="btn btn-principal" style="padding: 0.5rem 0.9rem; font-size: 0.82rem; border-radius: 10px; background: #25D366; color: #ffffff;">
+                    <span class="btn btn-principal" style="padding: 0.6rem 1.1rem; font-size: 0.9rem; border-radius: 12px; background: #25D366; color: #ffffff; font-weight: 800;">
                         Testar agora →
                     </span>
                 </div>
@@ -354,9 +357,9 @@
     <div class="container">
         <h2 class="secao-titulo">Escolha o plano ideal para vender melhor</h2>
         <div class="grade" style="max-width: 500px; margin: 0 auto;">
-            <div class="card" style="border: 2px solid var(--destaque); transform: translateY(-6px); text-align: center; padding: 2.5rem 2rem;">
+            <div class="card" style="border: 2px solid #FCA5A5; transform: translateY(-6px); text-align: center; padding: 2.5rem 2rem; box-shadow: 0 10px 30px rgba(220, 38, 38, 0.08);">
                 <h3 style="font-size: 1.5rem; color: var(--escuro);">Plano Único</h3>
-                <div class="preco" style="font-size: 2.8rem; font-weight: 800; margin: 1rem 0; color: var(--escuro);">R$ 30 <small style="font-size: 1rem; color: #6b7280;">/mês</small></div>
+                <div class="preco" style="font-size: 3rem; font-weight: 800; margin: 1rem 0; color: #DC2626;">R$ 30 <small style="font-size: 1.1rem; color: #6b7280;">/mês</small></div>
                 <ul style="list-style: none; margin: 1.5rem 0; text-align: left; padding: 0 0.5rem;">
                     <li style="margin-bottom: 0.8rem; color: #374151;">✓ Catálogo online completo</li>
                     <li style="margin-bottom: 0.8rem; color: #374151;">✓ Pedidos diretos no WhatsApp</li>
@@ -365,7 +368,7 @@
                     <li style="margin-bottom: 0.8rem; color: #374151;">✓ Cupons de desconto e promoções</li>
                     <li style="margin-bottom: 0.8rem; color: #374151;">✓ Relatórios e gestão simples</li>
                 </ul>
-                <a href="{% url 'register' %}" class="btn btn-principal" style="width: 100%; padding: 0.9rem;">Começar agora (30 dias grátis)</a>
+                <a href="{% url 'register' %}" class="btn btn-principal" style="width: 100%; padding: 0.9rem; font-weight: 800;">Começar agora (<span style="color:#ffffff;">30 dias grátis</span>)</a>
             </div>
         </div>
     </div>
@@ -379,7 +382,7 @@
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
             <!-- Exemplo Sandálias Rasteirinhas -->
-            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.08); border: 1px solid #edf2f7; transition: transform 0.3s; margin-top: 10px;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                 <div style="height: 180px; background: linear-gradient(135deg, #128C7E, #075E54); position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.2rem; color: #fff;">
                     <div style="font-size: 2.5rem;">👡</div>
                     <div>
