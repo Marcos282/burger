@@ -177,7 +177,7 @@ class TenantMiddleware:
 
 
 class RootStoreRedirectMiddleware:
-    """Redireciona o dono autenticado do tenant para a loja na raiz."""
+    """Redireciona a raiz de subdomínios de lojas para /loja/."""
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -191,7 +191,7 @@ class RootStoreRedirectMiddleware:
         if (
             request.method == "GET"
             and request.path == "/"
-            and host.endswith(".localhost")
+            and (host_tenant is not None or host.endswith(".localhost"))
         ):
             if host_tenant is None:
                 raise Http404("Tenant não cadastrado")

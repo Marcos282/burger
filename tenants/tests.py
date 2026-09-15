@@ -47,3 +47,36 @@ class RootStoreRedirectMiddlewareTests(SimpleTestCase):
 
 		with self.assertRaises(Http404):
 			self.middleware(request)
+
+
+class ProductionTenantRoutingTests(SimpleTestCase):
+    def test_valid_production_subdomain_redirects_to_store(self):
+        from unittest.mock import patch
+        from .middleware import TenantMiddleware
+        for authenticated in (False, True):
+            with self.subTest(authenticated=authenticated):
+                request = RequestFactory().get('/', HTTP_HOST='andreia.viazap.net')
+                request.user = SimpleNamespace(is_authenticated=authenticated, tenant_id=7)
+                middleware = TenantMiddleware(RootStoreRedirectMiddleware(lambda request: HttpResponse('home')))
+                with patch('tenants.middleware.Tenant.objects.get', return_value=SimpleNamespace(id=7)):
+                    response = middleware(request)
+                self.assertEqual(response.status_code, 302)
+                self.assertEqual(response['Location'], '/loja/')
+
+    def test_unknown_production_subdomain_is_404(self):
+        from unittest.mock import patch
+        from .middleware import TenantMiddleware
+        from .models import Tenant
+        request = RequestFactory().get('/', HTTP_HOST='inexistente.viazap.net')
+        middleware = TenantMiddleware(lambda request: HttpResponse('home'))
+        with patch('tenants.middleware.Tenant.objects.get', side_effect=Tenant.DoesNotExist):
+            with self.assertRaises(Http404):
+                middleware(request)
+
+    def test_main_domain_and_store_path_are_not_redirected(self):
+        for host, path, tenant in (('viazap.net', '/', None), ('andreia.viazap.net', '/loja/', SimpleNamespace(id=7))):
+            with self.subTest(host=host, path=path):
+                request = RequestFactory().get(path, HTTP_HOST=host)
+                request.tenant = tenant
+                response = RootStoreRedirectMiddleware(lambda request: HttpResponse('ok'))(request)
+                self.assertEqual(response.status_code, 200)

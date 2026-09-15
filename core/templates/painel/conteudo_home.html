@@ -11,7 +11,7 @@
 </style>
 <!--Begin::Row-->
 <div class="row">
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 16-->
       <a href="{% url 'painel_pedidos' %}" class="card card-custom card-stretch gutter-b pedidos-hover" style="cursor: pointer;">
          <!--begin::Body-->
@@ -37,7 +37,7 @@
       </a>
       <!--end::Stats Widget 16-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 17-->
       <a href="{% url 'painel_configuracao' %}" class="card card-custom bg-info bg-hover-state-info card-stretch card-stretch gutter-b">
          <!--begin::Body-->
@@ -60,7 +60,7 @@
       </a>
       <!--end::Stats Widget 17-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'painel_categorias' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -87,7 +87,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'painel_produtos' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -114,7 +114,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'painel_banners' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -141,7 +141,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'painel_qrcode' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -168,7 +168,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'pagamento' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -197,7 +197,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 18-->
       <a href="{% url 'painel_reduzir_imagens' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b">
          <!--begin::Body-->
@@ -226,7 +226,7 @@
       </a>
       <!--end::Stats Widget 18-->
    </div>
-   <div class="col-xl-4">
+   <div class="col-12 col-md-6 col-xl-4">
       <a href="{% url 'painel_bot_atendimento' %}" class="card card-custom bg-warning bg-hover-state-warning card-stretch gutter-b" style="overflow: hidden; text-decoration: none;">
          <div class="card-body" style="padding: 1.25rem 1.25rem 1rem 1.25rem;">
             <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
@@ -246,5 +246,23 @@
       </a>
    </div>
 
+   <div class="col-12 col-md-6 col-xl-4">
+      <a href="{% url 'relatorio_acessos' %}" class="card card-custom bg-info bg-hover-state-info card-stretch gutter-b" aria-label="Ver acessos da minha loja">
+         <div class="card-body" style="padding: 1.25rem 1.25rem 1rem 1.25rem;">
+            <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="4" y="13" width="4" height="7" rx="1" fill="white" opacity="0.3"/>
+                  <rect x="10" y="8" width="4" height="12" rx="1" fill="white" opacity="0.6"/>
+                  <rect x="16" y="3" width="4" height="17" rx="1" fill="white"/>
+               </svg>
+            </span>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 0.7rem;">
+               <div class="text-inverse-info font-weight-bolder font-size-h5 mb-2">Relatório de acessos</div>
+            </div>
+         </div>
+      </a>
+   </div>
+
    <!--End::Row-->
+</div>
 </div>

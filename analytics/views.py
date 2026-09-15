@@ -11,7 +11,9 @@ from .models import AcessoSite
 
 @login_required
 def relatorio_acessos(request):
-    if not getattr(request, 'tenant', None) or request.user.tenant_id != request.tenant.id:
+    host_tenant = getattr(request, 'tenant', None)
+    user_tenant_id = getattr(request.user, 'tenant_id', None)
+    if user_tenant_id is None or (host_tenant is not None and user_tenant_id != host_tenant.id):
         from django.http import Http404
         raise Http404('Tenant inválido.')
 

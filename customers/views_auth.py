@@ -290,6 +290,7 @@ def painel_home(request):
             'chat_handoff': request.session.get('ai_chat_handoff') == 'operator',
             'chat_assumir_url': '/loja/chat/assumir/',
             'google_analytics_url': (settings.googleanalytics or '').strip(),
+            'google_analytics_tag': (settings.tag_google_analytics or '').strip(),
         }
         return render(request, 'painel/home.html', context)
     else:

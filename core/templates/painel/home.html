@@ -31,17 +31,7 @@
     {% include 'painel/subheader.html' %}
 <!--end::Subheader-->
 
-<a href="{% url 'relatorio_acessos' %}" class="analytics-report-banner" aria-label="Abrir relatórios de acesso">
-    <span class="analytics-report-banner__icon"><i class="fas fa-chart-line" aria-hidden="true"></i></span>
-    <span class="analytics-report-banner__copy">
-        <strong>Relatórios de acesso</strong>
-        <small>Veja visitantes, visualizações e páginas mais acessadas da sua loja.</small>
-    </span>
-    <i class="fas fa-arrow-right analytics-report-banner__arrow" aria-hidden="true"></i>
-</a>
-<style>
-.analytics-report-banner{display:flex;align-items:center;gap:1rem;width:100%;margin-bottom:1.5rem;padding:1.15rem 1.4rem;border-radius:8px;background:linear-gradient(110deg,#153f5b,#1d7890);box-shadow:0 8px 24px rgba(21,63,91,.18);color:#fff;text-decoration:none}.analytics-report-banner:hover{color:#fff;text-decoration:none;filter:brightness(1.06)}.analytics-report-banner__icon{display:grid;place-items:center;width:3rem;height:3rem;flex:0 0 3rem;border-radius:50%;background:rgba(255,255,255,.16);font-size:1.25rem}.analytics-report-banner__copy{display:flex;flex:1;flex-direction:column;min-width:0}.analytics-report-banner__copy strong{font-size:1.1rem}.analytics-report-banner__copy small{margin-top:.25rem;color:rgba(255,255,255,.78)}.analytics-report-banner__arrow{font-size:1.1rem}@media(max-width:575px){.analytics-report-banner{align-items:flex-start}.analytics-report-banner__arrow{margin-left:auto;margin-top:.35rem}}
-</style>
+
 
 <!--begin:: Conteudo home-->
     {% include 'painel/conteudo_home.html' %}

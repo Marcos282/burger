@@ -10,9 +10,9 @@
     <div class="access-report__header">
         <div><h1>Relatórios de acesso</h1><p>Dados anônimos das páginas públicas da sua loja.</p></div>
         <nav class="access-report__periods" aria-label="Período do relatório">
-            <a href="?dias=7" class="{% if period_days == 7 %}active{% endif %}">7 dias</a>
-            <a href="?dias=30" class="{% if period_days == 30 %}active{% endif %}">30 dias</a>
-            <a href="?dias=90" class="{% if period_days == 90 %}active{% endif %}">90 dias</a>
+            <a href="{% url 'relatorio_acessos' %}?dias=7" class="{% if period_days == 7 %}active{% endif %}">7 dias</a>
+            <a href="{% url 'relatorio_acessos' %}?dias=30" class="{% if period_days == 30 %}active{% endif %}">30 dias</a>
+            <a href="{% url 'relatorio_acessos' %}?dias=90" class="{% if period_days == 90 %}active{% endif %}">90 dias</a>
         </nav>
     </div>
     <div class="access-report__stats">
