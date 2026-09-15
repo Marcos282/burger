@@ -1,7 +1,7 @@
 import json
 import re
 from urllib import request
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.db.models import Prefetch
 from menu.models import Banners, Produto, Category
 from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta, get_tenant_url
@@ -40,7 +40,8 @@ def inicial(request):
     return render(request, 'inicial.html')
 
 def home_view(request):
-
+    if getattr(request, 'tenant', None) is not None:
+        return redirect('/loja/')
     return render(request, 'inicial.html')
 
 # Funções utilitárias de sessão

@@ -80,3 +80,20 @@ class ProductionTenantRoutingTests(SimpleTestCase):
                 request.tenant = tenant
                 response = RootStoreRedirectMiddleware(lambda request: HttpResponse('ok'))(request)
                 self.assertEqual(response.status_code, 200)
+
+    def test_unknown_tenant_returns_http_404_on_public_and_panel_paths(self):
+        from unittest.mock import patch
+        from .models import Tenant
+        with self.settings(
+            DEBUG=False,
+            ALLOWED_HOSTS=['.viazap.net'],
+            MIDDLEWARE=['tenants.middleware.TenantMiddleware'],
+            TEMPLATES=[{'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                        'OPTIONS': {'loaders': [('django.template.loaders.locmem.Loader',
+                                                 {'404.html': 'Página não encontrada'})]}}],
+        ):
+            with patch('tenants.middleware.Tenant.objects.get', side_effect=Tenant.DoesNotExist):
+                for path in ('/', '/loja/', '/painel/home/'):
+                    with self.subTest(path=path):
+                        response = self.client.get(path, HTTP_HOST='rafae.viazap.net')
+                        self.assertEqual(response.status_code, 404)

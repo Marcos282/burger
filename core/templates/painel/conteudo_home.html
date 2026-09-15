@@ -2,6 +2,30 @@
 {% load static %}
 <div class=" container ">
 <style>
+   .home-shortcuts {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 1.75rem;
+      margin: 0;
+   }
+   .home-shortcuts > div {
+      width: 100%;
+      max-width: none;
+      min-width: 0;
+      padding: 0;
+   }
+   .home-shortcuts > div > .card {
+      height: 100%;
+      margin-bottom: 0;
+      overflow-wrap: anywhere;
+   }
+   @media (min-width: 768px) {
+      .home-shortcuts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+   }
+   @media (min-width: 1200px) {
+      .home-shortcuts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+   }
    .pedidos-hover:hover {
    box-shadow: 0 0 0 0.2rem #3699ff33, 0 4px 20px 0 #3699ff33;
    transform: translateY(-2px) scale(1.03);
@@ -10,7 +34,7 @@
    }
 </style>
 <!--Begin::Row-->
-<div class="row">
+<div class="row home-shortcuts">
    <div class="col-12 col-md-6 col-xl-4">
       <!--begin::Stats Widget 16-->
       <a href="{% url 'painel_pedidos' %}" class="card card-custom card-stretch gutter-b pedidos-hover" style="cursor: pointer;">
@@ -247,7 +271,7 @@
    </div>
 
    <div class="col-12 col-md-6 col-xl-4">
-      <a href="{% url 'relatorio_acessos' %}" class="card card-custom bg-info bg-hover-state-info card-stretch gutter-b" aria-label="Ver acessos da minha loja">
+      <a href="{% url 'relatorio_acessos' %}" class="card card-custom bg-dark bg-hover-state-dark card-stretch gutter-b" aria-label="Ver acessos da minha loja">
          <div class="card-body" style="padding: 1.25rem 1.25rem 1rem 1.25rem;">
             <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -257,7 +281,10 @@
                </svg>
             </span>
             <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 0.7rem;">
-               <div class="text-inverse-info font-weight-bolder font-size-h5 mb-2">Relatório de acessos</div>
+               <div>
+                  <div class="text-inverse-dark font-weight-bolder font-size-h5 mb-2">Relatório de acessos</div>
+                  <div class="font-weight-bold text-inverse-dark font-size-sm">Veja os visitantes, as visualizações e as páginas mais acessadas da sua loja.</div>
+               </div>
             </div>
          </div>
       </a>

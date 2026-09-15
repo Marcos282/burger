@@ -258,3 +258,25 @@ class ChatSessionTests(TestCase):
         request.tenant = self.tenant
         self.assertEqual(painel_bot_sessoes(request).status_code, 200)
         self.assertEqual(ensure_chat_session_state('own-session', tenant_id=self.tenant.pk)['mode'], 'bot')
+
+
+class HomeTenantRedirectTests(SimpleTestCase):
+    def test_root_route_redirects_identified_tenant_without_redirect_middleware(self):
+        from types import SimpleNamespace
+        from django.urls import resolve
+        request = RequestFactory().get('/', HTTP_HOST='andreia.viazap.net')
+        request.tenant = SimpleNamespace(id=7, subdomain='andreia')
+        response = resolve('/').func(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], '/loja/')
+
+    def test_main_domain_keeps_landing_page(self):
+        from unittest.mock import patch
+        from django.http import HttpResponse
+        from django.urls import resolve
+        request = RequestFactory().get('/', HTTP_HOST='viazap.net')
+        request.tenant = None
+        with patch('core.views.render', return_value=HttpResponse('home')) as render:
+            response = resolve('/').func(request)
+        self.assertEqual(response.status_code, 200)
+        render.assert_called_once_with(request, 'inicial.html')
