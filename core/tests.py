@@ -10,6 +10,7 @@ from .ai_chat import (
     ensure_chat_session_state,
     get_chat_messages,
     list_active_chat_sessions,
+    reset_idle_operator_session,
     set_chat_session_mode,
 )
 from .utils import calcular_dias_restantes, gravar_os_dias, normalizar_datetime
@@ -151,6 +152,21 @@ class ChatSessionTests(TestCase):
         set_chat_session_mode('same', 'operator', self.operator.pk, tenant_id=self.tenant.pk)
         self.assertEqual(ensure_chat_session_state('same', tenant_id=self.other.pk)['mode'], 'bot')
         self.assertEqual(list_active_chat_sessions(self.other.pk)[0]['message_count'], 1)
+
+    def test_operator_idle_for_five_minutes_returns_to_bot(self):
+        from .models import ChatMessage
+
+        add_chat_message('idle', 'customer', 'Preciso de ajuda', tenant_id=self.tenant.pk)
+        set_chat_session_mode('idle', 'operator', self.operator.pk, tenant_id=self.tenant.pk)
+        operator_message = add_chat_message('idle', 'operator', 'Vou verificar', tenant_id=self.tenant.pk)
+        ChatMessage.objects.filter(pk=operator_message['id']).update(
+            created_at=timezone.now() - timedelta(minutes=6)
+        )
+
+        state = reset_idle_operator_session('idle', tenant_id=self.tenant.pk)
+
+        self.assertEqual(state['mode'], 'bot')
+        self.assertIsNone(state['assumido_por'])
 
     def test_missing_tenant_and_foreign_operator_are_rejected(self):
         with self.assertRaises(ValueError):

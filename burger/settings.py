@@ -144,6 +144,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'tenants.middleware.TenantMiddleware',
+    'tenants.middleware.RootStoreRedirectMiddleware',
     #tenants.middleware.TenantDBMiddleware', # Se você estiver usando banco de dados por tenant
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

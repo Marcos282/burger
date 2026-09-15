@@ -1,5 +1,6 @@
 import logging
 import re
+from datetime import timedelta
 from django.db import transaction
 from django.db.models import Count
 from django.utils import timezone
@@ -53,6 +54,21 @@ def set_chat_session_mode(session_key, mode='bot', user_id=None, *, tenant_id):
             raise ValueError('Operador não pertence ao tenant.')
     session.operator_id = user_id if session.mode == 'operator' else None
     session.save(update_fields=['mode', 'operator', 'updated_at'])
+    return _session_state(session)
+
+
+@transaction.atomic
+def reset_idle_operator_session(session_key, *, tenant_id, timeout_minutes=5):
+    session = _tenant_sessions(tenant_id).select_for_update().filter(session_key=session_key).first()
+    if not session or session.mode != 'operator':
+        return _session_state(session) if session else None
+
+    last_operator_message = session.messages.filter(sender='operator').order_by('-created_at').first()
+    last_activity = last_operator_message.created_at if last_operator_message else session.updated_at
+    if timezone.now() - last_activity >= timedelta(minutes=timeout_minutes):
+        session.mode = 'bot'
+        session.operator_id = None
+        session.save(update_fields=['mode', 'operator', 'updated_at'])
     return _session_state(session)
 
 

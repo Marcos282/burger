@@ -20,6 +20,7 @@ from core.ai_chat import (
     chat_session_belongs_to_tenant,
     get_chat_messages,
     list_active_chat_sessions,
+    reset_idle_operator_session,
     set_chat_session_mode,
 )
 from django.contrib import messages
@@ -362,6 +363,9 @@ def painel_bot_sessoes(request):
     error = _painel_chat_access_error(request)
     if error:
         return error
+    for session in list_active_chat_sessions(tenant_id=request.user.tenant_id):
+        if session.get('mode') == 'operator':
+            reset_idle_operator_session(session['session_id'], tenant_id=request.user.tenant_id)
     return JsonResponse({
         'status': 'ok',
         'sessions': list_active_chat_sessions(tenant_id=request.user.tenant_id),
@@ -373,6 +377,7 @@ def painel_bot_mensagens(request):
     error = _painel_chat_session_response(request, session_id)
     if error:
         return error
+    reset_idle_operator_session(session_id, tenant_id=request.user.tenant_id)
     try:
         after_id = max(0, int(request.GET.get('after_id', 0)))
     except (TypeError, ValueError):

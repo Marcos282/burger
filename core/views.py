@@ -23,6 +23,7 @@ from core.ai_chat import (
     ensure_chat_session_state,
     get_chat_messages,
     list_active_chat_sessions,
+    reset_idle_operator_session,
     set_chat_session_mode,
 )
 from PIL import Image, ImageDraw, ImageFont
@@ -211,6 +212,7 @@ def loja_ai_chat(request):
 
     tenant_id = getattr(getattr(request, 'tenant', None), 'id', None)
     state = ensure_chat_session_state(session_id, tenant_id=tenant_id)
+    state = reset_idle_operator_session(session_id, tenant_id=tenant_id) or state
     if tenant_id is not None and not chat_session_belongs_to_tenant(session_id, tenant_id):
         return JsonResponse({'status': 'error', 'message': 'Sessão de chat inválida.'}, status=403)
 

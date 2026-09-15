@@ -175,3 +175,30 @@ class TenantMiddleware:
         user_tenant_id = getattr(user, "tenant_id", None)
         return host_tenant is not None and host_tenant.id != user_tenant_id
 
+
+class RootStoreRedirectMiddleware:
+    """Redireciona o dono autenticado do tenant para a loja na raiz."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        host = (request.get_host() or "").split(":")[0].strip().lower().strip(".")
+        user = getattr(request, "user", None)
+        host_tenant = getattr(request, "tenant", None)
+        user_tenant_id = getattr(user, "tenant_id", None)
+
+        if (
+            request.method == "GET"
+            and request.path == "/"
+            and host.endswith(".localhost")
+        ):
+            if host_tenant is None:
+                raise Http404("Tenant não cadastrado")
+            if host_tenant.id != user_tenant_id:
+                if getattr(user, "is_authenticated", False):
+                    raise Http404("Usuário não pertence a este tenant")
+            return redirect("/loja/")
+
+        return self.get_response(request)
+
