@@ -289,6 +289,7 @@ def painel_home(request):
             'dias_restantes': dias_restantes,
             'chat_handoff': request.session.get('ai_chat_handoff') == 'operator',
             'chat_assumir_url': '/loja/chat/assumir/',
+            'google_analytics_url': (settings.googleanalytics or '').strip(),
         }
         return render(request, 'painel/home.html', context)
     else:
@@ -959,6 +960,8 @@ def painel_configuracao(request):
                     settings.instagram = request.POST['instagram']
                 if 'googleanalytics' in request.POST:
                     settings.googleanalytics = request.POST['googleanalytics']
+                if 'tag_google_analytics' in request.POST:
+                    settings.tag_google_analytics = request.POST['tag_google_analytics'].strip()
                 if 'facebook_pixel' in request.POST:
                     settings.facebook_pixel = request.POST['facebook_pixel']
                 if 'instagram_pixel' in request.POST:

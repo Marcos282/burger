@@ -133,6 +133,7 @@ INSTALLED_APPS = [
     'customers',
     'core',
     'pagamento',
+    'analytics',
 ]
 
 MIDDLEWARE = [
@@ -145,6 +146,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'tenants.middleware.TenantMiddleware',
     'tenants.middleware.RootStoreRedirectMiddleware',
+    'analytics.middleware.AnalyticsMiddleware',
     #tenants.middleware.TenantDBMiddleware', # Se você estiver usando banco de dados por tenant
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

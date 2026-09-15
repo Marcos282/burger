@@ -31,6 +31,55 @@
     {% include 'painel/subheader.html' %}
 <!--end::Subheader-->
 
+<section class="analytics-banner" aria-labelledby="analyticsBannerTitle">
+    <div class="analytics-banner__content">
+        <span class="analytics-banner__icon" aria-hidden="true"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <h2 id="analyticsBannerTitle">Google Analytics</h2>
+            <p>Acompanhe os dados de acesso da sua loja.</p>
+        </div>
+    </div>
+    <button type="button" class="analytics-banner__button" id="openAnalytics" aria-controls="analyticsModal" aria-haspopup="dialog">
+        Ver dados <i class="fas fa-arrow-right" aria-hidden="true"></i>
+    </button>
+</section>
+
+<div class="analytics-modal" id="analyticsModal" hidden>
+    <div class="analytics-modal__backdrop" data-close-analytics></div>
+    <section class="analytics-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="analyticsModalTitle">
+        <button type="button" class="analytics-modal__close" data-close-analytics aria-label="Fechar">&times;</button>
+        <span class="analytics-modal__eyebrow">Painel de dados</span>
+        <h2 id="analyticsModalTitle">Google Analytics</h2>
+        {% if google_analytics_url %}
+            <p class="text-muted">O endereço configurado para esta loja está pronto para consulta.</p>
+            <a class="btn btn-primary" href="{{ google_analytics_url }}" target="_blank" rel="noopener noreferrer">
+                Abrir Google Analytics <i class="fas fa-external-link-alt ml-2" aria-hidden="true"></i>
+            </a>
+        {% else %}
+            <p class="text-muted">Nenhum endereço do Google Analytics foi configurado no item 6.</p>
+            <a class="btn btn-light-primary" href="{% url 'painel_configuracao' %}">Configurar Analytics</a>
+        {% endif %}
+    </section>
+</div>
+
+<style>
+.analytics-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;margin:0 0 1.5rem;padding:1.25rem 1.5rem;border-radius:8px;background:linear-gradient(110deg,#153f5b,#1d7890);box-shadow:0 8px 24px rgba(21,63,91,.18);color:#fff}
+.analytics-banner__content{display:flex;align-items:center;gap:1rem;min-width:0}.analytics-banner__icon{display:grid;place-items:center;width:3rem;height:3rem;flex:0 0 3rem;border-radius:50%;background:rgba(255,255,255,.16);font-size:1.25rem}.analytics-banner h2{margin:0;font-size:1.15rem;font-weight:700}.analytics-banner p{margin:.25rem 0 0;color:rgba(255,255,255,.78)}.analytics-banner__button{border:1px solid rgba(255,255,255,.45);border-radius:6px;background:#fff;color:#153f5b;padding:.7rem 1rem;font-weight:700;white-space:nowrap}.analytics-banner__button:hover{background:#e8f6f7}.analytics-modal[hidden]{display:none}.analytics-modal{position:fixed;inset:0;z-index:1050;display:grid;place-items:center;padding:1rem}.analytics-modal__backdrop{position:absolute;inset:0;background:rgba(7,24,35,.58)}.analytics-modal__dialog{position:relative;width:min(100%,30rem);padding:2rem;border-radius:8px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.25)}.analytics-modal__close{position:absolute;top:.75rem;right:.9rem;border:0;background:transparent;color:#64748b;font-size:1.75rem;line-height:1}.analytics-modal__eyebrow{color:#1d7890;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.analytics-modal h2{margin:.5rem 0 1rem}.analytics-modal__dialog .btn{display:inline-flex;align-items:center}
+@media (max-width:575px){.analytics-banner{align-items:flex-start;flex-direction:column}.analytics-banner__button{width:100%}}
+</style>
+
+<script>
+(function(){
+    var openButton=document.getElementById('openAnalytics');
+    var modal=document.getElementById('analyticsModal');
+    if(!openButton||!modal)return;
+    var close=function(){modal.hidden=true;document.body.style.overflow='';openButton.focus()};
+    openButton.addEventListener('click',function(){modal.hidden=false;document.body.style.overflow='hidden'});
+    modal.querySelectorAll('[data-close-analytics]').forEach(function(button){button.addEventListener('click',close)});
+    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!modal.hidden)close()});
+})();
+</script>
+
 <!--begin::Card_pedidos-->
 <div id="card-pedidos-container">
     {% include 'painel/card_pedidos.html' %}

@@ -921,6 +921,11 @@
                      <input type="hidden" name="dummy_field_step6" value="valid">
                      <!--begin::Section-->
                      <h4 class="mb-10 font-weight-bold text-dark">Responsável e autenticação</h4>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>Tag Google Analytics</label>
+                        <input type="text" class="form-control" name="tag_google_analytics" value="{{ settings.tag_google_analytics|default:'' }}" placeholder="G-XXXXXXXXXX ou GTM-XXXXXXXX">
+                        <span class="form-text text-muted">Tag usada para medir os acessos desta loja.</span>
+                     </div>
                      <h6 class="font-weight-bolder mb-3">
                         Dados do responsável:
                      </h6>
