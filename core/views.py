@@ -21,6 +21,7 @@ from core.ai_chat import (
     build_store_context,
     chat_session_belongs_to_tenant,
     ensure_chat_session_state,
+    get_chat_session,
     get_chat_messages,
     list_active_chat_sessions,
     reset_idle_operator_session,
@@ -261,13 +262,30 @@ def loja_ai_chat(request):
 
 def loja_ai_chat_status(request):
     session_id = str(request.GET.get('session_id') or request.POST.get('session_id') or '').strip() or str(request.session.session_key or 'default')
-    state = ensure_chat_session_state(session_id, tenant_id=getattr(getattr(request, 'tenant', None), 'id', None))
+    tenant_id = getattr(getattr(request, 'tenant', None), 'id', None)
+    create_session = str(request.GET.get('create') or request.POST.get('create') or '').lower() in ('1', 'true', 'yes')
+    if create_session:
+        state = ensure_chat_session_state(session_id, tenant_id=tenant_id)
+    else:
+        state = get_chat_session(session_id, tenant_id=tenant_id)
+
+    if state is None:
+        return JsonResponse({
+            'status': 'ok',
+            'introduction_complete': False,
+            'handoff': False,
+            'mode': 'bot',
+            'session_id': session_id,
+            'exists': False,
+        })
+
     return JsonResponse({
         'status': 'ok',
         'introduction_complete': state['introduction_complete'],
         'handoff': state.get('mode') == 'operator',
         'mode': state.get('mode', 'bot'),
         'session_id': session_id,
+        'exists': True,
     })
 
 
