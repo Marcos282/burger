@@ -117,6 +117,9 @@ class TenantMiddleware:
         else:
             logger.info("ℹ️ Sem subdomínio (site principal)")
 
+        if request.tenant is not None and request.path == '/' and request.method in ('GET', 'HEAD'):
+            return redirect('/loja/')
+
         if self._authenticated_panel_user_on_wrong_tenant(request):
             logger.warning(
                 "Bloqueando acesso ao painel: usuário tenant=%s em host tenant=%s path=%s",
@@ -201,4 +204,3 @@ class RootStoreRedirectMiddleware:
             return redirect("/loja/")
 
         return self.get_response(request)
-

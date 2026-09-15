@@ -57,7 +57,7 @@ class ProductionTenantRoutingTests(SimpleTestCase):
             with self.subTest(authenticated=authenticated):
                 request = RequestFactory().get('/', HTTP_HOST='andreia.viazap.net')
                 request.user = SimpleNamespace(is_authenticated=authenticated, tenant_id=7)
-                middleware = TenantMiddleware(RootStoreRedirectMiddleware(lambda request: HttpResponse('home')))
+                middleware = TenantMiddleware(lambda request: HttpResponse('home'))
                 with patch('tenants.middleware.Tenant.objects.get', return_value=SimpleNamespace(id=7)):
                     response = middleware(request)
                 self.assertEqual(response.status_code, 302)
