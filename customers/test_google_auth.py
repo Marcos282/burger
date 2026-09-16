@@ -78,7 +78,9 @@ class GoogleAuthTests(TestCase):
         self.assertFalse(User.objects.filter(tenant=tenant).exists())
 
     def test_login_does_not_create_account_without_registration(self):
-        self.assertEqual(self.post(data={**self.data, 'mode': 'login'}).status_code, 409)
+        response = self.post(data={**self.data, 'mode': 'login'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['requires_registration'])
         self.assertFalse(User.objects.exists())
 
     def test_logout_disables_automatic_login(self):
@@ -103,3 +105,48 @@ class GoogleAuthTests(TestCase):
     def test_disabled_when_not_configured(self):
         self.assertEqual(self.client.post(reverse('google_login'), self.data).status_code, 503)
         self.assertNotContains(self.client.get(reverse('login')), 'accounts.google.com/gsi/client')
+
+    def test_google_name_fills_empty_responsible_name(self):
+        from tenants.models import TenantSettings
+        self.assertEqual(self.post({**self.claims, 'name': 'Maria da Silva'}).status_code, 200)
+        user = User.objects.get(google_sub=self.claims['sub'])
+        self.assertEqual(TenantSettings.load(user.tenant).nome_responsavel, 'Maria da Silva')
+
+    def test_google_name_preserves_personalized_name(self):
+        from tenants.models import TenantSettings
+        user = User.objects.create_user(email=self.claims['email'], username='personalized',
+                                        google_sub=self.claims['sub'])
+        profile = TenantSettings.load(user.tenant)
+        profile.nome_responsavel = 'Nome escolhido'
+        profile.save()
+        self.assertEqual(self.post({**self.claims, 'name': 'Nome Google'}).status_code, 200)
+        profile.refresh_from_db()
+        self.assertEqual(profile.nome_responsavel, 'Nome escolhido')
+
+    def test_successful_google_login_redirects_to_panel_on_return_to_login(self):
+        response = self.post()
+        self.assertEqual(response.json()['redirect'], reverse('painel_configuracao'))
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse('painel_home'))
+
+    def test_verified_google_email_is_returned_for_existing_account(self):
+        User.objects.create_user(email=self.claims['email'], username='email-fill',
+                                 password='Forest!12389')
+        response = self.post()
+        self.assertTrue(response.json()['requires_password'])
+        self.assertEqual(response.json()['email'], self.claims['email'])
+
+    def test_new_google_user_completes_next_step_without_selecting_google_again(self):
+        response = self.post(data={'credential': 'signed-token', 'mode': 'login'})
+        self.assertTrue(response.json()['requires_registration'])
+        self.assertFalse(User.objects.exists())
+        response = self.post(data={**self.data, 'username': 'next-step'})
+        self.assertEqual(response.json()['redirect'], reverse('painel_configuracao'))
+        self.assertTrue(User.objects.filter(username='next-step').exists())
+        self.assertIn('_auth_user_id', self.client.session)
+
+    def test_google_registration_without_site_name_advances_to_name_step(self):
+        response = self.post(data={**self.data, 'username': ''})
+        self.assertTrue(response.json()['requires_registration'])
+        self.assertFalse(User.objects.exists())

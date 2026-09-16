@@ -1,13 +1,27 @@
 {% if google_client_id %}
 <div id="google-button"></div>
 <p id="google-message" role="status" aria-live="polite"></p>
+<style>
+    #google-registration-form[hidden], #google-link-form[hidden] { display: none !important; }
+</style>
 <form id="google-link-form" hidden>
     {% csrf_token %}
     <div class="field">
-        <label for="google-link-password">Senha atual do ViaZap</label>
+        <label for="google-link-password">Conferir senha</label>
         <input id="google-link-password" type="password" autocomplete="current-password" required>
     </div>
-    <button type="submit" class="primary-btn">Vincular e entrar</button>
+    <button type="submit" class="primary-btn">Conferir senha</button>
+</form>
+<form id="google-registration-form" hidden>
+    <div class="field">
+        <label for="google-site-name">Nome do seu site</label>
+        <input id="google-site-name" type="text" required maxlength="50"
+               pattern="[a-zA-Z0-9]([a-zA-Z0-9-]{0,48}[a-zA-Z0-9])?"
+               autocomplete="off" autocapitalize="none" aria-describedby="google-site-status">
+        <small>.viazap.net</small>
+        <p id="google-site-status" role="status" aria-live="polite"></p>
+    </div>
+    <button type="submit" class="primary-btn">Criar meu site e continuar</button>
 </form>
 {{ google_client_id|json_script:'google-client-id' }}
 {{ google_nonce|json_script:'google-nonce' }}
@@ -17,6 +31,8 @@
     let busy = false;
     const message = document.getElementById('google-message');
     const linkForm = document.getElementById('google-link-form');
+    const registrationForm = document.getElementById('google-registration-form');
+    const siteName = document.getElementById('google-site-name');
     async function submitGoogle(password = '') {
         if (busy) return;
         busy = true;
@@ -24,6 +40,10 @@
         const data = new URLSearchParams({credential, password, mode: '{{ google_mode }}'});
         const username = document.getElementById('id_username');
         if (username) data.set('username', username.value);
+        if (!registrationForm.hidden) {
+            data.set('mode', 'register');
+            data.set('username', siteName.value);
+        }
         try {
             const response = await fetch('{% url "google_login" %}', {
                 method: 'POST', credentials: 'same-origin',
@@ -31,16 +51,60 @@
                 body: data
             });
             const result = await response.json();
+            if (result.email) {
+                const emailField = document.getElementById('id_email');
+                if (emailField) emailField.value = result.email;
+            }
             if (response.ok && result.redirect) {
-                window.location.assign(result.redirect);
+                message.textContent = 'Continuando…';
+                window.location.replace(result.redirect);
                 return;
             }
             message.textContent = result.message || 'Não foi possível entrar com Google.';
+            if (result.requires_registration || result.requires_password) {
+                const emailField = document.getElementById('id_email');
+                const initialForm = emailField && emailField.closest('form');
+                if (initialForm) initialForm.style.display = 'none';
+            }
+            if (result.requires_registration) {
+                registrationForm.hidden = false;
+                if (username) siteName.value = username.value;
+                registrationForm.scrollIntoView({behavior: 'smooth', block: 'center'});
+                siteName.focus({preventScroll: true});
+            }
             linkForm.hidden = !result.requires_password;
+            if (result.requires_password) {
+                linkForm.scrollIntoView({behavior: 'smooth', block: 'center'});
+                document.getElementById('google-link-password').focus({preventScroll: true});
+            }
         } catch (error) {
             message.textContent = 'Não foi possível conectar. Tente novamente.';
         } finally { busy = false; }
     }
+    registrationForm.addEventListener('submit', event => {
+        event.preventDefault();
+        submitGoogle();
+    });
+    let availabilityVersion = 0;
+    let availabilityTimer;
+    siteName.addEventListener('input', () => {
+        const version = ++availabilityVersion;
+        clearTimeout(availabilityTimer);
+        siteName.setCustomValidity('');
+        const status = document.getElementById('google-site-status');
+        status.textContent = '';
+        if (!siteName.value.trim()) return;
+        availabilityTimer = setTimeout(async () => {
+            try {
+                const response = await fetch('{% url "subdomain_availability" %}?subdomain=' + encodeURIComponent(siteName.value), {cache: 'no-store'});
+                if (!response.ok) return;
+                const result = await response.json();
+                if (version !== availabilityVersion) return;
+                status.textContent = result.message;
+                siteName.setCustomValidity(result.available ? '' : result.message);
+            } catch (error) { /* O servidor valida novamente ao enviar. */ }
+        }, 350);
+    });
     linkForm.addEventListener('submit', event => {
         event.preventDefault();
         const password = document.getElementById('google-link-password');

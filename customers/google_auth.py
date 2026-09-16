@@ -16,7 +16,7 @@ from google.auth.exceptions import GoogleAuthError
 from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 
-from tenants.models import Tenant
+from tenants.models import Tenant, TenantSettings
 from .contexto import salvar_tenant_em_sessao
 from .models import User
 from .subdomains import validate_subdomain
@@ -84,10 +84,10 @@ def google_login(request):
                     if user.google_sub:
                         return error('Esta conta já está vinculada a outra identidade Google.', 409)
                     if not request.POST.get('password'):
-                        return error('Confirme a senha atual do ViaZap para vincular sua conta Google.',
-                                     409, requires_password=True)
+                        return error('Esta conta já existe. Confira sua senha para continuar com o Google.',
+                                     409, requires_password=True, email=email)
                     if not user.check_password(request.POST['password']):
-                        return error('Senha incorreta. Tente novamente.', 403, requires_password=True)
+                        return error('Senha incorreta. Tente novamente.', 403, requires_password=True, email=email)
                     if not user.is_active:
                         return error('Confirme seu e-mail ou solicite suporte para ativar sua conta.', 403)
                     host_tenant = getattr(request, 'tenant', None)
@@ -96,8 +96,11 @@ def google_login(request):
                     user.google_sub = subject
                     user.save(update_fields=['google_sub'])
                 else:
-                    if request.POST.get('mode') != 'register':
-                        return error('Sua conta ainda não existe. Acesse Criar conta e escolha o nome do site.', 409)
+                    if request.POST.get('mode') != 'register' or not request.POST.get('username', '').strip():
+                        return JsonResponse({
+                            'requires_registration': True, 'email': email,
+                            'message': 'Conta Google confirmada. Escolha o nome do seu site para continuar.',
+                        })
                     name = validate_subdomain(request.POST.get('username', ''))
                     tenant = Tenant.objects.create(name=name, subdomain=name)
                     user = User.objects.create_user(email=email, username=name, tenant=tenant,
@@ -120,8 +123,15 @@ def google_login(request):
     host_tenant = getattr(request, 'tenant', None)
     if host_tenant and host_tenant.pk != user.tenant_id:
         return error('Entre pelo endereço da sua loja ou pelo site principal.', 403)
+    google_name = claims.get('name')
+    if isinstance(google_name, str) and google_name.strip():
+        profile = TenantSettings.load(user.tenant)
+        if not (profile.nome_responsavel or '').strip():
+            profile.nome_responsavel = google_name.strip()[:100]
+            profile.save(update_fields=['nome_responsavel'])
+
     request.session.pop('google_nonce', None)
     request.session.pop('google_signed_out', None)
     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     salvar_tenant_em_sessao(request, email=user.email)
-    return JsonResponse({'redirect': reverse('painel_home')})
+    return JsonResponse({'redirect': reverse('painel_configuracao')})

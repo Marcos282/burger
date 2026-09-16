@@ -119,6 +119,16 @@ def build_full_url(request, path='', user=None):
         protocol = 'http' if (domain and domain.startswith(('localhost', '127.0.0.1'))) else ('https' if domain else ('http' if settings.DEBUG else 'https'))
         host = domain if domain else request.get_host()
     
+    # Cadastros locais pertencem ao banco local, mesmo com domínio público configurado.
+    from urllib.parse import urlsplit
+    request_url = urlsplit('//' + request.get_host())
+    request_hostname = (request_url.hostname or '').lower()
+    if (request_hostname in ('localhost', '127.0.0.1', '::1')
+            or request_hostname.endswith('.localhost')):
+        port = f':{request_url.port}' if request_url.port else ''
+        host = f'{subdomain}.localhost{port}' if subdomain else request.get_host()
+        protocol = request.scheme
+
     # Constrói a URL completa
     full_url = f"{protocol}://{host}/{path}"
     

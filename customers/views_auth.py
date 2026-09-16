@@ -56,6 +56,11 @@ def get_qt_ordem_cliente(request):
 
 @google_page
 def login_view(request):
+    host_tenant = getattr(request, 'tenant', None)
+    if request.user.is_authenticated and (
+        host_tenant is None or host_tenant.pk == request.user.tenant_id
+    ):
+        return redirect('painel_home')
 
     form = UserLoginForm(request.POST or None)
     error = None
