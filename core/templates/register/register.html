@@ -418,9 +418,13 @@
                     <div class="field">
                         <label for="id_username">Nome do site</label>
                         <div class="input-with-suffix">
-                            <input type="text" name="username" id="id_username" required>
-                            <span class="input-suffix">viazap.net</span>
+                            <input type="text" name="username" id="id_username" required maxlength="50"
+                                   value="{{ form.username.value|default_if_none:'' }}"
+                                   autocomplete="off" autocapitalize="none" spellcheck="false"
+                                   aria-describedby="subdomain-status">
+                            <span class="input-suffix">.viazap.net</span>
                         </div>
+                        <p id="subdomain-status" role="status" aria-live="polite" style="font-size: 0.9rem; margin: 8px 0 0;"></p>
                     </div>
 
                     <div class="field">
@@ -443,9 +447,7 @@
 
                 <div class="divider">ou</div>
 
-                <button type="button" class="google-btn" aria-label="Cadastrar com Google">
-                    <span>G</span> Cadastrar com Google
-                </button>
+                {% include 'login/google_button.html' with google_mode='register' %}
 
                 <div class="footer-text">
                     Já possui uma conta? <a href="{% url 'login' %}">Entrar</a>
@@ -453,5 +455,46 @@
             </section>
         </main>
     </div>
+<script>
+(() => {
+    const input = document.getElementById('id_username');
+    const status = document.getElementById('subdomain-status');
+    let timer;
+    let controller;
+    let revision = 0;
+    async function check(value, version) {
+        controller = new AbortController();
+        status.textContent = 'Verificando disponibilidade…';
+        status.style.color = '#4b5563';
+        try {
+            const response = await fetch('{% url "subdomain_availability" %}?subdomain=' + encodeURIComponent(value), {
+                signal: controller.signal, cache: 'no-store'
+            });
+            if (!response.ok) throw new Error('Falha na consulta');
+            const data = await response.json();
+            if (version !== revision) return;
+            status.textContent = data.message;
+            status.style.color = data.available ? '#15803d' : '#b91c1c';
+            input.setCustomValidity(data.available ? '' : data.message);
+        } catch (error) {
+            if (error.name === 'AbortError' || version !== revision) return;
+            status.textContent = 'Não foi possível consultar agora. Verificaremos ao enviar o cadastro.';
+            status.style.color = '#4b5563';
+        }
+    }
+    function schedule() {
+        clearTimeout(timer);
+        if (controller) controller.abort();
+        const version = ++revision;
+        const value = input.value.trim().toLowerCase();
+        input.setCustomValidity('');
+        status.textContent = '';
+        if (!value) return;
+        timer = setTimeout(() => check(value, version), 350);
+    }
+    input.addEventListener('input', schedule);
+    if (input.value) schedule();
+})();
+</script>
 </body>
 </html>

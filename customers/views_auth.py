@@ -1,3 +1,4 @@
+from .google_auth import google_context, google_page
 from menu.models import Produto, ProdutoImagem, Category, Banners
 from tenants.models import Tenant, TenantSettings
 from django.views.decorators.csrf import csrf_exempt
@@ -53,6 +54,7 @@ def get_qt_ordem_cliente(request):
         return count
     return 0
 
+@google_page
 def login_view(request):
 
     form = UserLoginForm(request.POST or None)
@@ -72,8 +74,14 @@ def login_view(request):
         else:
             print(f"❌ Falha no login para: {email}")
             error = 'Email ou senha incorretos. Tente novamente.'
+            from .models import User
+            pending = User.objects.filter(
+                email__iexact=email, email_confirmation_pending=True, is_active=False,
+            ).first()
+            if pending and pending.check_password(password):
+                error = 'Confirme seu e-mail antes de entrar. Use a opção Reenviar confirmação.'
 
-    return render(request, 'login/login.html', {'form': form, 'error': error})
+    return render(request, 'login/login.html', {'form': form, 'error': error, **google_context(request)})
 
 
 def password_reset_request_view(request):
@@ -140,13 +148,23 @@ def password_reset_confirm_view(request, uidb64, token):
     return render(request, 'login/reset_password_confirm.html', {'valid_link': True, 'form': form})
 
 
+@google_page
 def register_view(request):
     form = UserCreationForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
-            return redirect('login')
-    return render(request, 'register/register.html', {'form': form})
+            from django.db import transaction
+            from .email_confirmation import send_confirmation
+            with transaction.atomic():
+                user = form.save(commit=False)
+                user.is_active = False
+                user.email_confirmation_pending = True
+                user.save()
+            sent = send_confirmation(request, user)
+            request.session['email_confirmation_registered'] = True
+            request.session['email_confirmation_delivery_failed'] = not sent
+            return redirect('email_confirmation_request')
+    return render(request, 'register/register.html', {'form': form, **google_context(request)})
 
 
 def novocadastro_view(request):
@@ -1495,4 +1513,5 @@ def painel_banners_edit(request, banner_id):
 
 def logout_view(request):
     logout(request)
+    request.session['google_signed_out'] = True
     return redirect('login')

@@ -1,3 +1,6 @@
+from customers.google_auth import google_login
+from customers.subdomains import subdomain_availability
+from customers.email_confirmation import email_confirm, email_confirmation_request
 from customers.views_auth import (
     login_view,
     register_view,
@@ -85,6 +88,9 @@ urlpatterns = [
     path('cadastro_form',cadastro_form, name='cadastro_form'),
     path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('login/', login_view, name='login'),
+    path('login/google/', google_login, name='google_login'),
+    path('confirmar-email/', email_confirmation_request, name='email_confirmation_request'),
+    path('confirmar-email/<str:token>/', email_confirm, name='email_confirm'),
     path('password-reset/', password_reset_request_view, name='password_reset_request'),
     path('password-reset/<uidb64>/<token>/', password_reset_confirm_view, name='password_reset_confirm'),
     path('painel/pedidos', painel_view, name='painel_pedidos'),
@@ -118,6 +124,7 @@ urlpatterns = [
     path('painel/pagamento/', include('pagamento.urls')),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
+    path('register/subdomain/', subdomain_availability, name='subdomain_availability'),
     path('novocadastro/', novocadastro_view, name='novocadastro'),
     path('manifest.json', manifest_json, name='manifest'),
     path('loja/manifest.json', manifest_json, name='loja_manifest'),  # Para rotas dentro de /loja/

@@ -50,6 +50,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)  # Agora obrigatório e único para login
     is_active = models.BooleanField(default=True)
+    email_confirmation_pending = models.BooleanField(default=False)
+    email_verified_at = models.DateTimeField(null=True, blank=True)
+    google_sub = models.CharField(max_length=255, unique=True, null=True, blank=True, editable=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     data_expiracao = models.DateTimeField(null=True, blank=True, help_text="Data limite de acesso (trial ou assinatura)")

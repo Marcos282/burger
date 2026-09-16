@@ -13,10 +13,8 @@ class UserCreationForm(forms.ModelForm):
         fields = ('username', 'email')
 
     def clean_username(self):
-        username = self.cleaned_data['username'].strip()
-        if User.objects.filter(username__iexact=username).exists():
-            raise forms.ValidationError('Este username já está em uso.')
-        return username
+        from .subdomains import validate_subdomain
+        return validate_subdomain(self.cleaned_data['username'])
 
     def clean_email(self):
         email = User.objects.normalize_email(self.cleaned_data['email']).strip()

@@ -1,0 +1,65 @@
+{% if google_client_id %}
+<div id="google-button"></div>
+<p id="google-message" role="status" aria-live="polite"></p>
+<form id="google-link-form" hidden>
+    {% csrf_token %}
+    <div class="field">
+        <label for="google-link-password">Senha atual do ViaZap</label>
+        <input id="google-link-password" type="password" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="primary-btn">Vincular e entrar</button>
+</form>
+{{ google_client_id|json_script:'google-client-id' }}
+{{ google_nonce|json_script:'google-nonce' }}
+<script>
+(() => {
+    let credential = '';
+    let busy = false;
+    const message = document.getElementById('google-message');
+    const linkForm = document.getElementById('google-link-form');
+    async function submitGoogle(password = '') {
+        if (busy) return;
+        busy = true;
+        message.textContent = 'Validando sua conta Google…';
+        const data = new URLSearchParams({credential, password, mode: '{{ google_mode }}'});
+        const username = document.getElementById('id_username');
+        if (username) data.set('username', username.value);
+        try {
+            const response = await fetch('{% url "google_login" %}', {
+                method: 'POST', credentials: 'same-origin',
+                headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
+                body: data
+            });
+            const result = await response.json();
+            if (response.ok && result.redirect) {
+                window.location.assign(result.redirect);
+                return;
+            }
+            message.textContent = result.message || 'Não foi possível entrar com Google.';
+            linkForm.hidden = !result.requires_password;
+        } catch (error) {
+            message.textContent = 'Não foi possível conectar. Tente novamente.';
+        } finally { busy = false; }
+    }
+    linkForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const password = document.getElementById('google-link-password');
+        submitGoogle(password.value);
+        password.value = '';
+    });
+    window.initializeViaZapGoogle = () => {
+        google.accounts.id.initialize({
+            client_id: JSON.parse(document.getElementById('google-client-id').textContent),
+            nonce: JSON.parse(document.getElementById('google-nonce').textContent),
+            auto_select: {% if google_auto_select and google_mode == 'login' %}true{% else %}false{% endif %},
+            callback: response => { credential = response.credential; submitGoogle(); }
+        });
+        google.accounts.id.renderButton(document.getElementById('google-button'), {
+            theme: 'outline', size: 'large', text: '{% if google_mode == "register" %}signup_with{% else %}signin_with{% endif %}'
+        });
+        {% if google_auto_select and google_mode == 'login' %}google.accounts.id.prompt();{% endif %}
+    };
+})();
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="initializeViaZapGoogle()"></script>
+{% endif %}

@@ -213,10 +213,13 @@ EMAIL_BACKEND = os.getenv(
     'django.core.mail.backends.smtp.EmailBackend' if EMAIL_HOST else 'django.core.mail.backends.console.EmailBackend',
 )
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('1', 'true', 'yes')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ('1', 'true', 'yes')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False' if EMAIL_USE_SSL else 'True').lower() in ('1', 'true', 'yes')
+EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', '20'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+EMAIL_CONFIRMATION_BASE_URL = os.getenv('EMAIL_CONFIRMATION_BASE_URL', '')
 ##################################################################
 
 # Password validation
@@ -269,3 +272,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ADICIONAR_RUIDO_EM_FOTOS = True   # muda aqui e afeta tudo
 ##############################END WHITENOISE###########################
+
+# Google Identity Services (Client ID público de aplicação Web).
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+GOOGLE_AUTO_SELECT = os.getenv("GOOGLE_AUTO_SELECT", "True").lower() in ("1", "true", "yes")

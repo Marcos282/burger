@@ -420,11 +420,12 @@
                     <button type="submit" class="primary-btn">Entrar</button>
                 </form>
 
+                <div class="footer-text">
+                    <a href="{% url 'email_confirmation_request' %}">Reenviar confirmação de e-mail</a>
+                </div>
                 <div class="divider">ou</div>
 
-                <button type="button" class="google-btn" aria-label="Entrar com Google">
-                    <span>G</span> Entrar com Google
-                </button>
+                {% include 'login/google_button.html' with google_mode='login' %}
 
                 <div class="footer-text">
                     Ainda não tem conta? <a href="{% url 'register' %}">Criar conta</a>
