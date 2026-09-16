@@ -106,3 +106,75 @@ class UserCredentialUniquenessTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['username'], ['Este username já está em uso.'])
         self.assertEqual(form.errors['email'], ['Este email já está em uso.'])
+
+
+class PasswordFlowTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email='password-test@example.com', username='password-test',
+            password='Original!8392Forest',
+        )
+
+    def test_registration_rejects_weak_password(self):
+        form = UserCreationForm(data={
+            'username': 'new-shop', 'email': 'new@example.com',
+            'password1': 'a', 'password2': 'a',
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn('password2', form.errors)
+
+    def test_reset_form_rejects_weak_mismatched_and_similar_passwords(self):
+        from .forms import SetNewPasswordForm
+        for first, second in [('a', 'a'), ('Forest!82934', 'different'),
+                              ('password-test', 'password-test')]:
+            with self.subTest(password=first):
+                form = SetNewPasswordForm(
+                    {'password1': first, 'password2': second}, user=self.user,
+                )
+                self.assertFalse(form.is_valid())
+
+    def test_reset_changes_password_and_invalidates_token(self):
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        token = default_token_generator.make_token(self.user)
+        url = reverse('password_reset_confirm', args=[
+            urlsafe_base64_encode(force_bytes(self.user.pk)), token,
+        ])
+        response = self.client.post(url, {'password1': 'a', 'password2': 'a'})
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('Original!8392Forest'))
+        response = self.client.post(url, {
+            'password1': 'Changed!9823Forest', 'password2': 'Changed!9823Forest',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('Changed!9823Forest'))
+        self.assertFalse(default_token_generator.check_token(self.user, token))
+
+    def test_panel_rejects_password_before_saving_email(self):
+        from django.test import RequestFactory
+        from .views_auth import painel_configuracao
+        request = RequestFactory().post('/configuracao/', {
+            'password': 'a', 'confirm_password': 'a', 'email': 'changed@example.com',
+        })
+        request.user = self.user
+        response = painel_configuracao(request)
+        self.assertEqual(response.status_code, 400)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, 'password-test@example.com')
+        self.assertTrue(self.user.check_password('Original!8392Forest'))
+
+    def test_reset_email_uses_https_behind_trusted_proxy(self):
+        from django.core import mail
+        with self.settings(
+            EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+            SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTO', 'https'),
+        ):
+            response = self.client.post(reverse('password_reset_request'),
+                {'email': self.user.email}, HTTP_X_FORWARDED_PROTO='https',
+                HTTP_HOST='testserver')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('https://testserver/password-reset/', mail.outbox[0].body)

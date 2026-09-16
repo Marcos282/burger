@@ -130,7 +130,7 @@ def password_reset_confirm_view(request, uidb64, token):
     if not valid_link:
         return render(request, 'login/reset_password_confirm.html', {'valid_link': False})
 
-    form = SetNewPasswordForm(request.POST or None)
+    form = SetNewPasswordForm(request.POST or None, user=user)
     if request.method == 'POST' and form.is_valid():
         user.set_password(form.cleaned_data['password1'])
         user.save()
@@ -830,7 +830,20 @@ def painel_configuracao(request):
                         'message': UPLOAD_SIZE_ERROR,
                     }, status=400)
 
-                print(f"POST data received: {dict(request.POST)}")  # Debug
+                password_form = None
+                if request.POST.get('password') or request.POST.get('confirm_password'):
+                    password_form = SetNewPasswordForm({
+                        'password1': request.POST.get('password', ''),
+                        'password2': request.POST.get('confirm_password', ''),
+                    }, user=user)
+                    if not password_form.is_valid():
+                        return JsonResponse({
+                            'success': False,
+                            'message': ' '.join(
+                                message for errors in password_form.errors.values()
+                                for message in errors
+                            ),
+                        }, status=400)
                 
                 # ==== STEP 1: DADOS GERAIS ====
                 if 'name' in request.POST:
@@ -985,51 +998,11 @@ def painel_configuracao(request):
                     user.save()
                     print(f"🔄 Email do usuário atualizado para: {user.email}")
                 
-                # ATUALIZAR SENHA DO USUÁRIO (CRIPTOGRAFADA)
-                if 'password' in request.POST and request.POST['password']:
-                    password = request.POST['password']
-                    confirm_password = request.POST.get('confirm_password', '')
-                    
-                    print(f"🔐 Processando atualização de senha...")
-                    print(f"    Senha fornecida: {'*' * len(password)} (tamanho: {len(password)})")
-                    print(f"    Confirmação: {'*' * len(confirm_password)} (tamanho: {len(confirm_password)})")
-                    
-                    # Validação das senhas (redundante com frontend, mas importante para segurança)
-                    if password != confirm_password:
-                        print(f"❌ Erro: Senhas não coincidem")
-                        return JsonResponse({
-                            'success': False,
-                            'message': 'As senhas não coincidem!'
-                        }, status=400)
-                    
-                    # Validação de força mínima da senha
-                    if len(password) < 6:
-                        print(f"⚠️ Aviso: Senha muito fraca (menos de 6 caracteres)")
-                        # Permitir, mas avisar (pode ser mudado para bloquear se necessário)
-                    
-                    # Obter hash da senha antes da atualização (para comparação)
-                    old_password_hash = user.password
-                    print(f"    Hash anterior: {old_password_hash[:50]}...")
-                    
-                    # SALVAR SENHA CRIPTOGRAFADA NO MODELO USER
-                    user.set_password(password)  # Este método já criptografa a senha
+                if password_form is not None:
+                    user.set_password(password_form.cleaned_data['password1'])
                     user.save()
-                    
-                    # 🔄 MANTER USUÁRIO LOGADO APÓS MUDANÇA DE SENHA
-                    # Atualiza o hash de autenticação da sessão para evitar logout automático
                     update_session_auth_hash(request, user)
-                    
-                    # Verificar se o hash mudou
-                    new_password_hash = user.password
-                    print(f"    Hash novo: {new_password_hash[:50]}...")
-                    print(f"🔒 Senha do usuário atualizada e criptografada com sucesso")
-                    print(f"    Hash alterado: {old_password_hash != new_password_hash}")
-                    print(f"🔐 Sessão mantida ativa após mudança de senha")
-                    
-                    # Verificar se a senha funciona
-                    senha_verifica = user.check_password(password)
-                    print(f"    Verificação da senha: {senha_verifica}")
-                
+
                 # Atualiza logo_url se houver foto_perfil
                 if settings.foto_perfil:
                     settings.logo_url = settings.foto_perfil.url

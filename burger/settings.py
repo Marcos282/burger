@@ -59,6 +59,11 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
+# Habilite somente quando o proxy confiável sobrescreve X-Forwarded-Proto
+# e o servidor de origem não aceita conexões diretas de clientes.
+if os.getenv('DJANGO_TRUST_PROXY_HEADERS', 'False').lower() in ('1', 'true', 'yes'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Configuração de Logs para aparecer no terminal e gravar em arquivo físico.
 # Em produção, o diretório pode não ser gravável pelo usuário do processo. Nesse caso,
 # o sistema usa apenas o console para evitar falha na inicialização do Django.

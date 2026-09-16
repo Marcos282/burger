@@ -1,5 +1,6 @@
 #customers/forms.py
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 from customers.models import User
 from menu.models import Category    
 
@@ -28,6 +29,11 @@ class UserCreationForm(forms.ModelForm):
         password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("As senhas não coincidem.")
+        if password2:
+            validate_password(password2, user=User(
+                username=self.cleaned_data.get("username", ""),
+                email=self.cleaned_data.get("email", ""),
+            ))
         return password2
 
     def save(self, commit=True):
@@ -62,11 +68,17 @@ class SetNewPasswordForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme a nova senha'})
     )
 
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("As senhas não coincidem.")
+        if password2:
+            validate_password(password2, user=self.user)
         return password2
 
 
