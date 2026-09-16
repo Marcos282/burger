@@ -158,9 +158,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                      </div>
                      <div class="col-md-6">
                         <div class="funcionamento">
-                           <div class="aberto">
+                           <div class="aberto" style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                               <i class="lni lni-checkmark-circle"></i>
                               <span>Estabelecimento {{ aberto|yesno:"aberto,fechado" }}</span>
+                              <a href="/painel/home" title="Painel de Controle" style="color: inherit; text-decoration: none; font-size: 1.1rem; display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.2);"><i class="lni lni-cog" style="margin-right: 0;"></i></a>
                            </div>
                         </div>
                      </div>
@@ -414,10 +415,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
-                        <div align="center">
+                        <div align="center" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                            <span>
                            <button class="btn btn-success btn-sm"><i class="lni lni-restaurant" style="color:#FFFFFF"></i> {% if config and config.aberto %} Aberto para Pedidos {% else %} Fechado para Pedidos {% endif %}  </button>
                            </span>
+                           <a href="/painel/home" class="btn btn-success btn-sm" title="Painel de Controle" style="display: inline-flex; align-items: center; justify-content: center; padding: 6px 10px; color:#FFFFFF;"><i class="lni lni-cog" style="color:#FFFFFF; font-size: 16px; margin-right: 0;"></i></a>
                         </div>
                      </div>
                   </div>
