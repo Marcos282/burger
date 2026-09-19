@@ -1,5 +1,6 @@
-from django.db import models
+from django.db import models, router, transaction
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import timedelta
 from tenants.models import Tenant
@@ -24,14 +25,9 @@ class UserManager(BaseUserManager):
         if self.filter(username__iexact=username).exists():
             raise ValueError('Já existe um usuário com este username.')
 
-        # Reutiliza um tenant informado ou cria um para o novo username.
-        tenant = extra_fields.pop('tenant', None)
-        if tenant is None:
-            tenant, _ = Tenant.objects.get_or_create(
-                subdomain=username,
-                defaults={'name': username},
-            )
-        user = self.model(email=email, username=username, tenant=tenant, **extra_fields)
+        # A criação da loja fica no save, junto com a criação do usuário.
+        # Um tenant explícito continua permitido para operações administrativas.
+        user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -63,20 +59,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def save(self, *args, **kwargs):
-        # Garante que o Tenant existe e está sincronizado
-        if not self.tenant_id:
-            tenant, _ = Tenant.objects.get_or_create(subdomain=self.username, defaults={'name': self.username})
-            self.tenant = tenant
-        else:
-            # Atualiza o subdomain do tenant se username mudar 
-            if self.tenant.subdomain != self.username:
+        database = kwargs.get('using') or router.db_for_write(type(self), instance=self)
+        with transaction.atomic(using=database):
+            if not self.tenant_id:
+                tenants = Tenant.objects.using(database)
+                if tenants.filter(subdomain__iexact=self.username).exists():
+                    raise ValidationError({'username': 'Este subdomínio já está em uso.'})
+                self.tenant = tenants.create(subdomain=self.username, name=self.username)
+            elif self.tenant.subdomain != self.username:
                 self.tenant.subdomain = self.username
                 self.tenant.name = self.username
-                self.tenant.save()
-        # Novo usuário: concede 30 dias de trial a partir de agora
-        if not self.pk and not self.data_expiracao:
-            self.data_expiracao = timezone.now() + timedelta(days=30)
-        super().save(*args, **kwargs)
+                self.tenant.save(using=database)
+            if not self.pk and not self.data_expiracao:
+                self.data_expiracao = timezone.now() + timedelta(days=30)
+            super().save(*args, **kwargs)
 
     def estender_expiracao(self, dias=30):
         """Soma `dias` à data de expiração, chamado quando o cliente realiza um pagamento."""

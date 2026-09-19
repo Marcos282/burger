@@ -227,3 +227,52 @@ class PasswordFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('https://testserver/password-reset/', mail.outbox[0].body)
+
+
+class NewRegistrationTenantIsolationTests(TestCase):
+    def setUp(self):
+        from tenants.models import TenantSettings
+        self.old_tenant = Tenant.objects.create(name='Loja antiga', subdomain='reservada')
+        self.old_settings = TenantSettings.objects.create(
+            tenant=self.old_tenant, foto_perfil='fotoperfil/antiga.jpg')
+
+    def test_form_rejects_orphan_tenant_case_insensitively(self):
+        form = UserCreationForm(data={
+            'username': 'RESERVADA', 'email': 'nova@example.com',
+            'password1': 'Senha-Forte-83746!', 'password2': 'Senha-Forte-83746!',
+        })
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['username'], ['Este subdomínio já está em uso.'])
+
+    def test_manager_and_direct_save_do_not_adopt_old_tenant(self):
+        from django.core.exceptions import ValidationError
+        for username in ('reservada', 'RESERVADA'):
+            with self.subTest(username=username):
+                with self.assertRaises(ValidationError):
+                    User.objects.create_user(email='nova@example.com', username=username)
+                with self.assertRaises(ValidationError):
+                    User(email='nova@example.com', username=username).save()
+        self.assertFalse(User.objects.exists())
+        self.old_settings.refresh_from_db()
+        self.assertEqual(self.old_settings.foto_perfil.name, 'fotoperfil/antiga.jpg')
+
+    def test_new_registration_gets_new_tenant_and_empty_photos(self):
+        from tenants.models import TenantSettings
+        form = UserCreationForm(data={
+            'username': 'nova', 'email': 'nova@example.com',
+            'password1': 'Senha-Forte-83746!', 'password2': 'Senha-Forte-83746!',
+        })
+        self.assertTrue(form.is_valid(), form.errors)
+        user = form.save(commit=False)
+        user.save()
+        settings = TenantSettings.load(user.tenant)
+        self.assertNotEqual(user.tenant_id, self.old_tenant.pk)
+        self.assertFalse(settings.foto_perfil)
+        self.assertFalse(settings.foto_capa)
+
+    def test_failed_user_save_does_not_leave_new_tenant(self):
+        from django.db import IntegrityError
+        User.objects.create_user(email='igual@example.com', username='primeira')
+        with self.assertRaises(IntegrityError):
+            User(email='igual@example.com', username='segunda').save()
+        self.assertFalse(Tenant.objects.filter(subdomain='segunda').exists())

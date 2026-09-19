@@ -286,9 +286,9 @@ $(document).ready(function() {
                     console.log("Arquivo removido:", file.name);
                 });
 
-                {% if configuracao.logo %}
+                {% if settings.foto_perfil %}
                 const mockFile = {
-                    name: "{{ configuracao.logo.name|default:'foto_perfil.jpg'|escapejs }}",
+                    name: "{{ settings.foto_perfil.name|default:'foto_perfil.jpg'|escapejs }}",
                     size: 1024,
                     type: "image/jpeg",
                     status: Dropzone.ADDED,
@@ -296,7 +296,7 @@ $(document).ready(function() {
                 };
                 this.files.push(mockFile);
                 this.emit("addedfile", mockFile);
-                this.emit("thumbnail", mockFile, "{{ configuracao.logo.url|escapejs }}");
+                this.emit("thumbnail", mockFile, "{{ settings.foto_perfil.url|escapejs }}");
                 this.emit("complete", mockFile);
                 {% endif %}
             }

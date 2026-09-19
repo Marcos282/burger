@@ -64,6 +64,15 @@ def formatar_brl_to_float(valor_str):
     except ValueError:
         return 0.0
 
+
+def build_public_url(request, path=''):
+    """Monta links públicos usando o domínio configurado em produção."""
+    from django.conf import settings
+
+    if settings.PUBLIC_SITE_URL:
+        return f'{settings.PUBLIC_SITE_URL}/{path.lstrip("/")}'
+    return request.build_absolute_uri(path)
+
 def build_full_url(request, path='', user=None):
     """
     Constrói uma URL completa incluindo o subdomínio do tenant

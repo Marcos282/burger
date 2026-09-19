@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from customers.models import User
+from tenants.models import Tenant
 from menu.models import Category    
 
 class UserCreationForm(forms.ModelForm):
@@ -16,6 +17,8 @@ class UserCreationForm(forms.ModelForm):
         username = self.cleaned_data['username'].strip()
         if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError('Este username já está em uso.')
+        if Tenant.objects.filter(subdomain__iexact=username).exists():
+            raise forms.ValidationError('Este subdomínio já está em uso.')
         return username
 
     def clean_email(self):

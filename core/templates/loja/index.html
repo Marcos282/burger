@@ -182,12 +182,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                               <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
                            {% elif settings and settings.logo_url %}
                               <img src="{{ settings.logo_url }}" alt="{{ settings.nome_loja }}"/>
-                           {% elif configuracao and configuracao.logo %}
-                              <img src="{{ configuracao.logo.url }}" alt="{{ config.nome_loja|default:configuracao.nome_empresa }}"/>
-                           {% elif config and config.logo_url %}
-                              <img src="{{ config.logo_url }}" alt="{{ config.nome_loja|default:'Loja' }}"/>
-                           {% elif settings and settings.logo_url %}
-                              <img src="{{ settings.logo_url }}" alt="{{ settings.nome_loja|default:'Loja' }}"/>
                            {% else %}
                               <img src="" alt="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}"/>
                            {% endif %}
@@ -472,8 +466,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                      <div id="carouselbanners" class="carousel slide">
                         <div class="carousel-inner">
                            <div class="item active">
-                              {% if configuracao.front_page %}
-                              {% if configuracao.front_page %}<img class="hidden-xs hidden-sm" src="{{ configuracao.front_page.url }}" alt="Capa da loja"/><img class="visible-xs visible-sm" src="{{ configuracao.front_page.url }}" alt="Capa da loja"/>{% endif %}
+                              {% if config.foto_capa %}
+                              {% if config.foto_capa %}<img class="hidden-xs hidden-sm" src="{{ config.foto_capa.url }}" alt="Capa da loja"/><img class="visible-xs visible-sm" src="{{ config.foto_capa.url }}" alt="Capa da loja"/>{% endif %}
                               {% else %}
                               <img class="hidden-xs hidden-sm" src="{% static '_core/_uploads/68/2024/01/1808020124b1ejh3j177.webp' %}" alt="Capa da loja"/>
                               <img class="visible-xs visible-sm" src="{% static '_core/_uploads/68/2024/01/1808020124abhehifk0c.webp' %}" alt="Capa da loja"/>

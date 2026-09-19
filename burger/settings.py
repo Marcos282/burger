@@ -45,7 +45,15 @@ MERCADO_PAGO_TOKEN = os.getenv('MERCADO_PAGO_TOKEN', '')
 #     if host.strip()
 # ]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1').split(',')
+    if host.strip()
+]
+if DEBUG and '.localhost' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.localhost')
+
+PUBLIC_SITE_URL = os.getenv('PUBLIC_SITE_URL', '').strip().rstrip('/')
 
 
 # Necessário para hosts externos (ex.: ngrok) que fazem POST via HTTPS.

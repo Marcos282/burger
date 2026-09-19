@@ -14,7 +14,7 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm, PasswordR
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
+from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, build_public_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from core.ai_chat import (
     add_chat_message,
     chat_session_belongs_to_tenant,
@@ -94,7 +94,7 @@ def password_reset_request_view(request):
         if user is not None:
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            reset_url = request.build_absolute_uri(
+            reset_url = build_public_url(request,
                 f'/password-reset/{uidb64}/{token}/'
             )
             send_mail(
@@ -158,7 +158,7 @@ def register_view(request):
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            confirmation_url = request.build_absolute_uri(
+            confirmation_url = build_public_url(request,
                 f'/register/confirm/{uidb64}/{token}/'
             )
             send_mail(
@@ -925,11 +925,9 @@ def painel_configuracao(request):
                 configuracao = Configuracao.load()
                 if 'foto_perfil' in request.FILES:
                     foto = request.FILES['foto_perfil']
-                    configuracao.logo = foto
                     settings.foto_perfil = foto
                 if 'foto_capa' in request.FILES:
                     capa = request.FILES['foto_capa']
-                    configuracao.front_page = capa
                     settings.foto_capa = capa
                 if 'color_theme' in request.POST:
                     settings.color_theme = request.POST['color_theme']
@@ -1097,7 +1095,7 @@ def painel_configuracao(request):
 
         # Preparar dados do settings para JavaScript (pre-selecionar campos)
         configuracao = Configuracao.load()
-        foto_capa = settings.foto_capa or configuracao.front_page
+        foto_capa = settings.foto_capa
         settings_data = {
             'estado': settings.estado or '',
             'cidade': settings.cidade or '',
@@ -1154,15 +1152,11 @@ def upload_foto_perfil(request):
                 settings.logo_url = settings.foto_perfil.url
                 settings.save(update_fields=['logo_url'])
 
-            # Também salva na Configuracao global
-            configuracao = Configuracao.load()
-            configuracao.logo = foto_perfil
-            configuracao.save()
             
             return JsonResponse({
                 'success': True,
                 'message': 'Foto de perfil atualizada com sucesso!',
-                'url': settings.foto_perfil.url if settings.foto_perfil else configuracao.logo.url
+                'url': settings.foto_perfil.url
             })
         except Exception as e:
             return JsonResponse({
@@ -1196,17 +1190,13 @@ def upload_foto_capa(request):
                 settings.foto_capa = foto_capa
                 settings.save()
 
-                # Também salva na Configuracao global
-                configuracao = Configuracao.load()
-                configuracao.front_page = foto_capa
-                configuracao.save()
                 
-                print(f"Foto de capa salva com sucesso: {configuracao.front_page.url}")
+                print(f"Foto de capa salva com sucesso: {settings.foto_capa.url}")
                 
                 return JsonResponse({
                     'success': True,
                     'message': 'Foto de capa atualizada com sucesso!',
-                    'url': settings.foto_capa.url if settings.foto_capa else configuracao.front_page.url
+                    'url': settings.foto_capa.url
                 })
             except Exception as e:
                 print(f"Erro ao salvar foto de capa: {str(e)}")
