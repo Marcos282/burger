@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)  # Mantido para subdomain do tenant
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)  # Agora obrigatório e único para login
+    email_confirmation_pending = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,7 @@
 from customers.views_auth import (
     login_view,
     register_view,
+    confirm_registration_view,
     novocadastro_view,
     painel_view,
     painel_pedidos_pendentes_count,
@@ -85,6 +86,7 @@ urlpatterns = [
     path('cadastro_form',cadastro_form, name='cadastro_form'),
     path('checkout_sucesso/',checkout_sucesso, name='checkout_sucesso'),
     path('login/', login_view, name='login'),
+    path('register/confirm/<uidb64>/<token>/', confirm_registration_view, name='confirm_registration'),
     path('password-reset/', password_reset_request_view, name='password_reset_request'),
     path('password-reset/<uidb64>/<token>/', password_reset_confirm_view, name='password_reset_confirm'),
     path('painel/pedidos', painel_view, name='painel_pedidos'),

@@ -123,6 +123,55 @@ class PasswordFlowTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('password2', form.errors)
 
+    def test_registration_creates_user_with_confirmation_flag(self):
+        from django.core import mail
+        with self.settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'):
+            response = self.client.post(reverse('register'), {
+                'username': 'new-shop',
+                'email': 'new@example.com',
+                'password1': 'Strong!8392Forest',
+                'password2': 'Strong!8392Forest',
+            })
+
+        self.assertRedirects(response, reverse('login'))
+        user = User.objects.get(email='new@example.com')
+        self.assertTrue(user.email_confirmation_pending)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('/register/confirm/', mail.outbox[0].body)
+
+    def test_registration_confirmation_activates_account_and_redirects_to_login(self):
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.encoding import force_bytes
+        from django.utils.http import urlsafe_base64_encode
+
+        user = User.objects.create_user(
+            email='pending@example.com', username='pending', password='Original!8392Forest',
+            email_confirmation_pending=True,
+        )
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        response = self.client.get(reverse(
+            'confirm_registration', args=[uidb64, token],
+        ))
+
+        self.assertRedirects(response, reverse('login'))
+        user.refresh_from_db()
+        self.assertFalse(user.email_confirmation_pending)
+
+    def test_login_blocks_unconfirmed_account(self):
+        User.objects.create_user(
+            email='blocked@example.com', username='blocked', password='Original!8392Forest',
+            email_confirmation_pending=True,
+        )
+
+        response = self.client.post(reverse('login'), {
+            'email': 'blocked@example.com', 'password': 'Original!8392Forest',
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Confirme seu e-mail antes de entrar')
+
     def test_reset_form_rejects_weak_mismatched_and_similar_passwords(self):
         from .forms import SetNewPasswordForm
         for first, second in [('a', 'a'), ('Forest!82934', 'different'),
