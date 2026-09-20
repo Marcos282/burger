@@ -817,6 +817,20 @@
                            </div>
                         </div>
                         <!--end::Delivery config-->
+                        <div class="form-group mt-8">
+                           <label class="form-label fw-bold">Quer o bot ativo com IA?</label>
+                           <div class="radio-inline">
+                              <label class="radio radio-square">
+                                 <input type="radio" name="bot_ativo_ia" value="True" {% if settings.bot_ativo_ia %}checked{% endif %}>
+                                 <span></span> Sim
+                              </label>
+                              <label class="radio radio-square">
+                                 <input type="radio" name="bot_ativo_ia" value="False" {% if not settings.bot_ativo_ia %}checked{% endif %}>
+                                 <span></span> Não
+                              </label>
+                           </div>
+                           <span class="form-text text-muted">Sim: o chat abre automaticamente com uma saudação ao entrar na loja. Não: abre somente quando o cliente clicar.</span>
+                        </div>
                         <div class="form-group mt-8 fv-plugins-icon-container">
                            <label class="form-label fw-bold">Exibir botão Chamar no WhatsApp?</label>
                            <div class="radio-inline">

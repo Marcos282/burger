@@ -1,3 +1,4 @@
+from django.urls import reverse
 import json
 import re
 from urllib import request
@@ -178,9 +179,20 @@ def detalhe(request,produto_id):
 
     categorias = get_categorias(request)
     imagens_galeria = list(produto.imagens.all().order_by('ordem'))
+    from urllib.parse import urlencode
+    share_url = request.build_absolute_uri(reverse('detalhe', args=[produto.pk]))
+    share_image = produto.image or (imagens_galeria[0].imagem if imagens_galeria else produto.imagem_extra)
+    share_image_url = request.build_absolute_uri(share_image.url) if share_image else ''
+    share_text = f'{produto.nome} — {valor_br}'
+    share_whatsapp_url = 'https://wa.me/?' + urlencode({
+        'text': share_text + '\n' + share_url + ('\nFoto: ' + share_image_url if share_image_url else ''),
+    })
+
     config = TenantSettings.objects.filter(tenant=request.tenant).first()
     configuracao = Configuracao.load()
     context = {
+        'product_share': {'title': produto.nome, 'text': share_text, 'url': share_url, 'image': share_image_url},
+        'share_whatsapp_url': share_whatsapp_url,
         'valor_sem_S': valor_br_semS,
         'valor_br': valor_br,
         'produto': produto,
@@ -243,9 +255,9 @@ def loja_ai_chat(request):
     if products:
         answer = product_details_reply(products, context)
     else:
-        answer = chat_introduction(session_id, message, tenant_id=tenant_id)
+        answer = chat_introduction(session_id, message, tenant_id=tenant_id, context=context)
         if answer is None:
-            answer, ai_enabled = ask_ai_assistant(message, context)
+            answer, ai_enabled = ask_ai_assistant(message, context, tenant_id=tenant_id)
     bot_message = add_chat_message(session_id, 'bot', answer, tenant_id=tenant_id)
 
     return JsonResponse({

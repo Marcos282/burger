@@ -37,6 +37,7 @@ def cadastro_form(request):
 
     taxa_entrega = config.taxa_entrega or 0.0
     return render(request, 'loja/pedidodelivery.html', {
+        'config': config,
         'produtos_carrinho': produtos_carrinho,
         'subtotal': subtotal,
         'taxa_entrega': taxa_entrega,
@@ -89,8 +90,9 @@ def pedido_delivery(request):
         endereco=request.POST.get('endereco_rua'),
         referencia=request.POST.get('endereco_referencia'),
         cidade=request.POST.get('cidade'),
+        estado=request.POST.get('estado', ''),
         cep=request.POST.get('endereco_cep'),
-        endereco_bairro=request.POST.get('forma_entrega'),
+        endereco_bairro=request.POST.get('endereco_bairro'),
         endereco_numero=request.POST.get('endereco_numero'),
         endereco_complemento=request.POST.get('endereco_complemento'),
     )

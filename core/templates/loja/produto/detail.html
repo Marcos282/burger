@@ -3,6 +3,11 @@
 <html>
    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
    <head>
+      <meta property="og:title" content="{{ product_share.title }}">
+      <meta property="og:description" content="{{ product_share.text }}">
+      <meta property="og:url" content="{{ product_share.url }}">
+      {% if product_share.image %}<meta property="og:image" content="{{ product_share.image }}">{% endif %}
+
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
       <title>{{ configuracao_extra.nome }}</title>
@@ -310,7 +315,7 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -365,7 +370,7 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>47997277362</span>
+                              <span>{{ config.whatsapp|default:'WhatsApp não cadastrado' }}</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
@@ -373,7 +378,7 @@
                            </div>
                         </div>
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -463,13 +468,11 @@
                         </div>
                         <div class="bread-box">
                            <div class="bread">
-                              <a href="{% url 'loja' %}"><i class="lni lni-home"></i></a>
+                              <a href="{% url 'loja' %}" aria-label="Início"><i class="lni lni-home"></i></a>
+                              {% if produto.category %}
                               <span>/</span>
-                              <a href="../categoria/65699.html">Categorias</a>
-                              <span>/</span>
-                              <a href="../categoria/65699.html">Lanches</a>
-                              <span>/</span>
-                              <a href="196962.html">Veloz</a>
+                              <a href="{% url 'loja' %}?categoria_id={{ produto.category_id }}">{{ produto.category.name }}</a>
+                              {% endif %}
                            </div>
                         </div>
                      </div>
@@ -551,7 +554,7 @@
                                        <div class="row">
                                           <div class="col-md-12">
                                              <div class="ref">
-                                                <span><a href="https://api.whatsapp.com/send?text=https://demo6.lojazap.com/produto/196962" target="_blank" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhe no WhatsApp</a></span>
+                                                <span><a id="shareProductWhatsApp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhe no WhatsApp</a></span>
                                              </div>
                                           </div>
                                        </div>
@@ -734,7 +737,7 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/5521990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -865,7 +868,7 @@
     });
 
     // preço unitário vindo do Django
-    var precoUnitario = parseFloat("{{ produto.price }}");
+    var precoUnitario = Number("{{ produto.price|floatformat:"2u" }}");
 
     // sempre que a quantidade mudar
     $('#quantidade').on('input change', function() {
@@ -892,15 +895,24 @@
     $.post("{% url 'add_to_cart' %}", { produto_id: produto_id, quantidade: quantidade, csrfmiddlewaretoken: '{{ csrf_token }}' })
         .done(function(data) {
             if(data.status === "ok"){
-                // Atualiza modal
-                $("#modalcarrinho .modal-body").html(
-                    `<p>${data.produto.nome} adicionado!!!</p>
-                     <p>Quantidade: ${data.produto.quantidade}</p>
-                     <p>Subtotal: R$ ${data.produto.subtotal}</p>
-                     <a href="{% url 'sacola' %}">
-                      <button class="botao-acao"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></button>
-                     </a>`
-                );
+                const body = $("#modalcarrinho .modal-body").empty();
+                $("<h4>").text("Produto adicionado à sacola!").appendTo(body);
+                const summary = $("<div>").css({display: "flex", gap: "16px", alignItems: "center", margin: "20px 0"}).appendTo(body);
+                const photo = document.querySelector("#carouselgaleria .item.active img");
+                if (photo) {
+                    $("<img>").attr({src: photo.src, alt: data.produto.nome})
+                        .css({width: "96px", height: "96px", objectFit: "contain", borderRadius: "8px"}).appendTo(summary);
+                }
+                const details = $("<div>").appendTo(summary);
+                $("<strong>").text(data.produto.nome).appendTo(details);
+                $("<p>").text("Quantidade na sacola: " + data.produto.quantidade).appendTo(details);
+                const subtotal = Number(data.produto.subtotal).toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
+                $("<p>").text("Subtotal do item: " + subtotal).appendTo(details);
+                const actions = $("<div>").css({display: "flex", flexWrap: "wrap", gap: "12px"}).appendTo(body);
+                $("<button>").attr({type: "button", "data-dismiss": "modal"})
+                    .addClass("btn btn-default").text("Continuar comprando").appendTo(actions);
+                $("<a>").attr("href", "{% url 'sacola' %}")
+                    .addClass("btn btn-success").text("Ver sacola").appendTo(actions);
 
                 // Atualiza contador da sacola
                 $(".shop-bag .counter").text(data.cart_count);
@@ -919,6 +931,36 @@
 
 
 
+
+{{ product_share|json_script:"productShareData" }}
+<script>
+(function () {
+    const button = document.getElementById('shareProductWhatsApp');
+    const data = JSON.parse(document.getElementById('productShareData').textContent);
+    let photo = null;
+    // Prepara a foto antes do clique para preservar a autorização de compartilhamento.
+    if (data.image && navigator.share && navigator.canShare) {
+        fetch(data.image).then(response => {
+            if (!response.ok) throw new Error('Foto indisponível');
+            return response.blob();
+        }).then(blob => {
+            if (!blob.type.startsWith('image/')) return;
+            const extension = blob.type.split('/')[1].replace(/[^a-z0-9]/gi, '') || 'jpg';
+            const file = new File([blob], 'produto.' + extension, {type: blob.type});
+            if (navigator.canShare({files: [file]})) photo = file;
+        }).catch(() => {});
+    }
+    button.addEventListener('click', function (event) {
+        if (!photo) return;
+        const payload = {files: [photo], title: data.title, text: data.text + '\n' + data.url};
+        if (!navigator.canShare(payload)) return;
+        event.preventDefault();
+        navigator.share(payload).catch(error => {
+            if (error.name !== 'AbortError') window.location.assign(button.href);
+        });
+    });
+})();
+</script>
 </html>
 
 <div class="releaseclick"></div>

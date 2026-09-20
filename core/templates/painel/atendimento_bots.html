@@ -11,6 +11,17 @@
     </button>
   </div>
 </div>
+<div class="container-fluid mb-3">
+  <div class="p-4 bg-white border rounded">
+    <h5>Consumo de tokens da IA</h5>
+    <div class="d-flex flex-wrap">
+      <div class="mr-8">Entrada: <strong id="aiInputTokens">{{ chat_token_usage.input_tokens }}</strong></div>
+      <div class="mr-8">Saída: <strong id="aiOutputTokens">{{ chat_token_usage.output_tokens }}</strong></div>
+      <div>Total: <strong id="aiTotalTokens">{{ chat_token_usage.total_tokens }}</strong></div>
+    </div>
+    <small class="text-muted">Acumulado desta loja desde a ativação da contagem, conforme informado pela API. Conversas anteriores e respostas locais não entram no total.</small>
+  </div>
+</div>
 <div id="aiOrientationsModal" class="ai-orientations-modal" hidden>
   <div class="ai-orientations-dialog" role="dialog" aria-modal="true" aria-labelledby="aiOrientationsTitle">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -59,7 +70,6 @@ document.getElementById('closeAiOrientations').onclick=()=>{orientationsModal.hi
 orientationsModal.onclick=e=>{if(e.target===orientationsModal)orientationsModal.hidden=true};
 orientationsForm.onsubmit=e=>{e.preventDefault();saveOrientations.disabled=true;orientationsStatus.textContent='';fetch('{{ chat_orientations_url|escapejs }}',{method:'POST',headers:{'X-CSRFToken':'{{ csrf_token }}','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(orientationsForm))}).then(r=>r.json()).then(data=>{if(data.status!=='ok')throw new Error();orientationsStatus.textContent=data.message}).catch(()=>{orientationsStatus.className='text-danger mr-3';orientationsStatus.textContent='Não foi possível salvar as orientações.'}).finally(()=>saveOrientations.disabled=false)};
 const sessionsEl=document.getElementById('chatSessions'), messagesEl=document.getElementById('chatMessages'), countEl=document.getElementById('sessionCount'), titleEl=document.getElementById('conversationTitle'), statusEl=document.getElementById('conversationStatus'), inputEl=document.getElementById('operatorMessage'), sendEl=document.getElementById('sendMessage'), toggleEl=document.getElementById('toggleSession');
-if(toggleEl){const orientationButton=document.createElement('button');orientationButton.type='button';orientationButton.className='btn btn-primary btn-sm ml-2';orientationButton.id='openAiOrientationsSession';orientationButton.innerHTML='<i class="fas fa-cog mr-1"></i> Orientações da IA';orientationButton.addEventListener('click',openAiOrientations);toggleEl.parentElement.appendChild(orientationButton)}
 const urls={sessions:'{{ chat_sessions_url|escapejs }}',messages:'{{ chat_messages_url|escapejs }}',send:'{{ chat_send_url|escapejs }}',toggle:'{% url "painel_bot_alternar_sessao" %}'}, csrf='{{ csrf_token }}'; let selected=null, mode='bot', lastId=0, messagesTimer=null;
 const closeEl=document.getElementById('closeSession');
 const sessionSelect=document.getElementById('chatSessionSelect');
@@ -104,6 +114,11 @@ function loadSessions(){
     api(urls.sessions).then(d=>{
         if(d.status!=='ok')throw new Error('Falha ao atualizar sessões');
         sessions(d.sessions);
+        if(d.token_usage){
+            document.getElementById('aiInputTokens').textContent=d.token_usage.input_tokens.toLocaleString('pt-BR');
+            document.getElementById('aiOutputTokens').textContent=d.token_usage.output_tokens.toLocaleString('pt-BR');
+            document.getElementById('aiTotalTokens').textContent=d.token_usage.total_tokens.toLocaleString('pt-BR');
+        }
         document.getElementById('sessionLoadError').hidden=true;
     }).catch(()=>{
         const error=document.getElementById('sessionLoadError');

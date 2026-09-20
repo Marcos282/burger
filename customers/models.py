@@ -121,6 +121,7 @@ class EnderecoEntrega(models.Model):
     
     endereco = models.CharField(max_length=200, null=False)
     referencia = models.CharField(max_length=200, null=False)
+    estado = models.CharField(max_length=2, blank=True, default='')
     cidade = models.CharField(max_length=200, null=False)
     dataHora = models.DateTimeField(auto_now_add=True)
     cep = models.CharField(

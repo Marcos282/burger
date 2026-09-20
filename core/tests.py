@@ -210,7 +210,11 @@ class ChatSessionTests(TestCase):
         from .ai_chat import chat_introduction
         from .models import ChatSession
         ensure_chat_session_state('intro', tenant_id=self.tenant.pk)
-        self.assertIn('telefone com DDD', chat_introduction('intro', 'Oi', tenant_id=self.tenant.pk))
+        context = {'produtos': [{'nome': 'Produto da loja', 'preco': 'R$ 25,00', 'descricao': 'Descrição cadastrada'}]}
+        offer = chat_introduction('intro', 'Oi', tenant_id=self.tenant.pk, context=context)
+        self.assertIn('Produto da loja por R$ 25,00', offer)
+        self.assertNotIn('telefone', offer)
+        self.assertIsNone(chat_introduction('intro', 'Outra dúvida', tenant_id=self.tenant.pk, context=context))
         reply = chat_introduction('intro', '(47) 99999-1234', tenant_id=self.tenant.pk)
         self.assertIn('Recebemos seu telefone', reply)
         self.assertIn('logo entraremos em contato', reply)
@@ -240,9 +244,9 @@ class ChatSessionTests(TestCase):
     def test_product_details_precede_phone_request(self):
         from .ai_chat import product_details_reply
         reply = product_details_reply([{'nome': 'Produto teste', 'preco': 'R$ 25,00'}], {'store': {'formas_pagamento': ['PIX', 'dinheiro']}})
-        self.assertLess(reply.index('R$ 25,00'), reply.index('telefone com DDD'))
-        self.assertLess(reply.index('PIX'), reply.index('telefone com DDD'))
-        self.assertIn('atendente entre em contato', reply)
+        self.assertIn('R$ 25,00', reply)
+        self.assertIn('PIX', reply)
+        self.assertNotIn('telefone', reply)
 
     def test_panel_rejects_account_on_foreign_tenant_host(self):
         from customers.views_auth import (painel_bot_atendimento, painel_bot_sessoes,
@@ -280,3 +284,79 @@ class HomeTenantRedirectTests(SimpleTestCase):
             response = resolve('/').func(request)
         self.assertEqual(response.status_code, 200)
         render.assert_called_once_with(request, 'inicial.html')
+
+
+class AITokenUsageTests(TestCase):
+    def test_usage_is_accumulated_and_isolated_by_tenant(self):
+        from unittest.mock import Mock, patch
+        from django.test import override_settings
+        from tenants.models import Tenant
+        from .ai_chat import ask_ai_assistant, get_ai_token_usage
+        first = Tenant.objects.create(name='Tokens A', subdomain='tokens-a')
+        second = Tenant.objects.create(name='Tokens B', subdomain='tokens-b')
+        response = Mock()
+        response.json.return_value = {
+            'model': 'test-model',
+            'choices': [{'message': {'content': 'Olá'}}],
+            'usage': {'prompt_tokens': 100, 'completion_tokens': 20, 'total_tokens': 120},
+        }
+        with override_settings(AI_CHAT_API_KEY='test'), patch('core.ai_chat.requests.post', return_value=response):
+            ask_ai_assistant('Oi', {}, tenant_id=first.pk)
+            ask_ai_assistant('Oi', {}, tenant_id=first.pk)
+            ask_ai_assistant('Oi', {}, tenant_id=second.pk)
+        self.assertEqual(get_ai_token_usage(first.pk), {
+            'input_tokens': 200, 'output_tokens': 40, 'total_tokens': 240,
+        })
+        self.assertEqual(get_ai_token_usage(second.pk)['total_tokens'], 120)
+
+    def test_empty_answer_still_counts_reported_usage(self):
+        from unittest.mock import Mock, patch
+        from django.test import override_settings
+        from tenants.models import Tenant
+        from .ai_chat import ask_ai_assistant, get_ai_token_usage
+        tenant = Tenant.objects.create(name='Tokens', subdomain='tokens')
+        response = Mock()
+        response.json.return_value = {
+            'choices': [{'message': {'content': ''}}],
+            'usage': {'prompt_tokens': 8, 'completion_tokens': 2, 'total_tokens': 10},
+        }
+        with override_settings(AI_CHAT_API_KEY='test'), patch('core.ai_chat.requests.post', return_value=response):
+            ask_ai_assistant('Oi', {}, tenant_id=tenant.pk)
+        self.assertEqual(get_ai_token_usage(tenant.pk)['total_tokens'], 10)
+
+    def test_local_fallback_does_not_count_tokens(self):
+        from django.test import override_settings
+        from tenants.models import Tenant
+        from .ai_chat import ask_ai_assistant, get_ai_token_usage
+        tenant = Tenant.objects.create(name='Tokens', subdomain='tokens')
+        with override_settings(AI_CHAT_API_KEY=''):
+            ask_ai_assistant('Oi', {}, tenant_id=tenant.pk)
+        self.assertEqual(get_ai_token_usage(tenant.pk)['total_tokens'], 0)
+
+
+class StoreSegmentTests(SimpleTestCase):
+    def test_segment_code_is_translated(self):
+        from tenants.models import TenantSettings
+        self.assertEqual(TenantSettings(segmento='28').segmento_nome, 'Pet shop')
+        self.assertEqual(TenantSettings(segmento='1').segmento_nome, 'Alimentação e Bebidas')
+
+    def test_missing_segment_does_not_assume_food_business(self):
+        from tenants.models import TenantSettings
+        for value in (None, '', '999'):
+            self.assertEqual(TenantSettings(segmento=value).segmento_nome, 'Não informado')
+
+    def test_legacy_text_segment_is_preserved(self):
+        from tenants.models import TenantSettings
+        self.assertEqual(TenantSettings(segmento='Floricultura').segmento_nome, 'Floricultura')
+
+
+class HandoffPhoneTests(SimpleTestCase):
+    def test_unknown_answer_requests_phone(self):
+        from .ai_chat import whatsapp_handoff_reply
+        self.assertIn('telefone com DDD', whatsapp_handoff_reply({'store': {}}))
+
+    def test_known_phone_is_not_requested_again(self):
+        from .ai_chat import whatsapp_handoff_reply
+        reply = whatsapp_handoff_reply({'store': {}, 'cliente': {'telefone': '47999991234'}})
+        self.assertNotIn('deixe seu telefone', reply)
+        self.assertIn('já está registrado', reply)

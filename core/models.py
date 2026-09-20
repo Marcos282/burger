@@ -24,3 +24,16 @@ class ChatMessage(models.Model):
 
     class Meta:
         ordering = ['id']
+
+
+class AITokenUsage(models.Model):
+    tenant = models.ForeignKey('tenants.Tenant', on_delete=models.CASCADE, related_name='ai_token_usage')
+    model = models.CharField(max_length=255, blank=True)
+    input_tokens = models.PositiveBigIntegerField(default=0)
+    output_tokens = models.PositiveBigIntegerField(default=0)
+    total_tokens = models.PositiveBigIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Consumo de tokens da IA'
+        verbose_name_plural = 'Consumo de tokens da IA'

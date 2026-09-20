@@ -2,10 +2,10 @@ import logging
 import re
 from datetime import timedelta
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.utils import timezone
 
-from .models import ChatSession, ChatMessage
+from .models import ChatSession, ChatMessage, AITokenUsage
 
 import requests
 from django.conf import settings
@@ -151,7 +151,7 @@ def build_store_context(request):
         'store': {
             'nome': config.nome_loja,
             'descricao': config.descricao_loja or '',
-            'segmento': config.segmento or 'alimentacao/delivery',
+            'segmento': config.segmento_nome,
             'whatsapp': config.whatsapp,
             'orientacoes_ia': config.ai_orientations or '',
             'chave_pix': config.chave_pix or '',
@@ -187,9 +187,9 @@ def chat_greeting():
 
 
 @transaction.atomic
-def chat_introduction(session_key, message, *, tenant_id):
+def chat_introduction(session_key, message, *, tenant_id, context=None):
     session = _tenant_sessions(tenant_id).select_for_update().get(session_key=session_key)
-    if session.introduction_complete or session.customer_phone:
+    if session.customer_phone:
         return None
     match = re.fullmatch(r'\s*(?:meu (?:telefone|número|numero) (?:é|e)\s*)?([+\d() .-]+)\s*', message, re.IGNORECASE)
     phone = re.sub(r'\D', '', match.group(1)) if match else ''
@@ -198,11 +198,25 @@ def chat_introduction(session_key, message, *, tenant_id):
         session.introduction_complete = True
         session.save(update_fields=['customer_phone', 'introduction_complete', 'updated_at'])
         return 'Obrigado! Recebemos seu telefone e logo entraremos em contato. Como posso ajudar você hoje?'
+    if session.introduction_complete:
+        return None
     if message.strip().lower() in ('prefiro não informar', 'prefiro nao informar', 'não quero informar', 'nao quero informar'):
         session.introduction_complete = True
         session.save(update_fields=['introduction_complete', 'updated_at'])
         return 'Tudo bem! Como posso ajudar você hoje?'
-    return 'Claro, será um prazer ajudar! Por gentileza, qual é o seu telefone com DDD?'
+    session.introduction_complete = True
+    session.save(update_fields=['introduction_complete', 'updated_at'])
+    products = (context or {}).get('produtos') or []
+    if not products:
+        return None
+    product = products[0]
+    from django.utils.html import strip_tags
+    description = strip_tags(product.get('descricao') or '').strip()
+    description = description[:300]
+    offer = f"Posso sugerir {product['nome']} por {product['preco']}."
+    if description:
+        offer += f" {description}"
+    return offer + ' Você se interessa por esse produto ou procura algo diferente?'
 
 
 def product_contact_reply(context):
@@ -224,14 +238,14 @@ def product_details_reply(products, context):
     lines = [f"{p['nome']} — {p['preco']}" for p in products[:5]]
     methods = context.get('store', {}).get('formas_pagamento') or []
     payment = 'Formas de pagamento: ' + ', '.join(methods) + '.' if methods else 'As formas de pagamento ainda não estão cadastradas.'
-    return 'Temos estes produtos cadastrados:\n' + '\n'.join(lines) + '\n' + payment + '\n\n' + product_contact_reply(context)
+    return 'Temos estes produtos cadastrados:\n' + '\n'.join(lines) + '\n' + payment
 
 
 def whatsapp_handoff_reply(context):
     whatsapp = str(context.get('store', {}).get('whatsapp') or '').strip()
     if whatsapp:
-        return f'Não consegui esclarecer essa dúvida. Por favor, fale com um atendente pelo WhatsApp da loja: {whatsapp}.'
-    return 'Não consegui esclarecer essa dúvida. Por favor, procure um atendente da loja. O WhatsApp ainda não está cadastrado.'
+        return 'Não consegui esclarecer essa dúvida. ' + product_contact_reply(context) + f' Você também pode falar com a loja pelo WhatsApp: {whatsapp}.'
+    return 'Não consegui esclarecer essa dúvida. ' + product_contact_reply(context) + ' O WhatsApp da loja ainda não está cadastrado.'
 
 
 def fallback_reply(message, context):
@@ -302,7 +316,11 @@ REGRAS PRINCIPAIS
 - Nunca invente produtos, preços, características, estoque, prazos ou informações.
 - Não fale sobre assuntos sem relação com a empresa.
 - Use somente os dados presentes no contexto da loja.
-- O cumprimento e a coleta do telefone são feitos pelo sistema. Não repita essas etapas.
+- O segmento e a descrição vêm do cadastro desta loja. Adapte o vocabulário e
+    as perguntas ao ramo de atividade informado, sem presumir que toda loja vende comida.
+- Se o segmento não estiver informado, não invente um ramo de atividade.
+- O ramo de atividade não comprova a oferta de produtos ou serviços: use o cadastro.
+- Não peça telefone ao cumprimentar, oferecer produtos ou responder dúvidas que consiga esclarecer.
 
 PRODUTOS E PAGAMENTO
 - Consulte a lista de produtos do contexto antes de responder sobre qualquer produto.
@@ -317,7 +335,10 @@ HORÁRIO E CONTATO
 - Use o número exato de store.whatsapp: {store.get('whatsapp') or 'não cadastrado'}.
 - Se cliente.telefone já estiver preenchido, diga que o telefone está registrado e
     não peça novamente.
-- Para contratação, solicite nome, telefone e endereço e informe o WhatsApp da loja.
+- Peça o telefone com DDD somente quando não souber responder ou faltarem informações
+    para esclarecer a dúvida e for necessário encaminhar para atendimento humano.
+- Se já houver telefone cadastrado, não peça novamente. Não prometa prazo de retorno.
+- Esta regra de solicitação de telefone prevalece sobre orientações personalizadas conflitantes.
 
 DICAS DE CONVERSA
 - Ao iniciar um atendimento, use: "Como posso ajudar você hoje?"
@@ -330,7 +351,18 @@ ORIENTAÇÕES PERSONALIZADAS DO FRONT-END
 """.strip()
 
 
-def ask_ai_assistant(message, context):
+def get_ai_token_usage(tenant_id):
+    if tenant_id is None:
+        raise ValueError('Tenant obrigatório para consultar consumo.')
+    totals = AITokenUsage.objects.filter(tenant_id=tenant_id).aggregate(
+        input_tokens=Sum('input_tokens'),
+        output_tokens=Sum('output_tokens'),
+        total_tokens=Sum('total_tokens'),
+    )
+    return {key: value or 0 for key, value in totals.items()}
+
+
+def ask_ai_assistant(message, context, *, tenant_id=None):
     api_key = getattr(settings, 'AI_CHAT_API_KEY', '')
     if not api_key:
         return fallback_reply(message, context), False
@@ -461,6 +493,25 @@ def ask_ai_assistant(message, context):
         )
         response.raise_for_status()
         data = response.json()
+        usage = data.get('usage')
+        if tenant_id is not None and isinstance(usage, dict):
+            input_tokens = usage.get('prompt_tokens')
+            output_tokens = usage.get('completion_tokens')
+            if all(type(value) is int and value >= 0 for value in (input_tokens, output_tokens)):
+                total_tokens = usage.get('total_tokens', input_tokens + output_tokens)
+                if type(total_tokens) is not int or total_tokens < 0:
+                    total_tokens = input_tokens + output_tokens
+                AITokenUsage.objects.create(
+                    tenant_id=tenant_id,
+                    model=data.get('model') or payload['model'],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                    total_tokens=total_tokens,
+                )
+            else:
+                logger.warning('API de IA retornou consumo inválido para tenant %s', tenant_id)
+        elif tenant_id is not None:
+            logger.warning('API de IA não informou consumo para tenant %s', tenant_id)
         answer = (data['choices'][0]['message']['content'] or '').strip()
         if not answer:
             return whatsapp_handoff_reply(context), False

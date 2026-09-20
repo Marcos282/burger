@@ -202,7 +202,7 @@
                            <span>Endereço</span>
                         </div>
                         <div class="content">
-                           1250, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/>					
+                           {{ config.endereco|default:'1250' }}, Nº {{ config.numero_endereco|default:'1000' }}, <br/>Bairro: {{ config.bairro|default:'SV' }}, CEP: {{ config.cep|default:'88300-000' }}, {{ config.cidade|default:'São Paulo' }}/{{ config.estado|default:'São Paulo' }}<br/>
                         </div>
                      </div>
                      <div class="sidebar-info">
@@ -386,7 +386,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>1250, Nº 1000, <br/>Bairro: SV, CEP: 88300-000, São Paulo/São Paulo<br/></span>
+                        <span>{{ config.endereco|default:'1250' }}, Nº {{ config.numero_endereco|default:'1000' }}, <br/>Bairro: {{ config.bairro|default:'SV' }}, CEP: {{ config.cep|default:'88300-000' }}, {{ config.cidade|default:'São Paulo' }}/{{ config.estado|default:'São Paulo' }}<br/></span>
                      </div>
                   </div>
                   <div class="row">

@@ -1,11 +1,38 @@
 from django.contrib import admin
 from django import forms
+from django.db.models import Sum
+from django.urls import reverse
+from django.utils.html import format_html
 from .models import Tenant, TenantSettings, HorarioFuncionamento,Configuracao
 
 @admin.register(Tenant)
 class TenantAdmin(admin.ModelAdmin):
-    list_display = ("name", "subdomain", "created_at")
+    list_display = ("name", "subdomain", "created_at", "tokens_entrada", "tokens_saida", "tokens_total", "consumo_ia")
     search_fields = ("name", "subdomain")
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            total_entrada=Sum('ai_token_usage__input_tokens', default=0),
+            total_saida=Sum('ai_token_usage__output_tokens', default=0),
+            total_consumo=Sum('ai_token_usage__total_tokens', default=0),
+        )
+
+    @admin.display(description='Tokens de entrada', ordering='total_entrada')
+    def tokens_entrada(self, obj):
+        return obj.total_entrada
+
+    @admin.display(description='Tokens de saída', ordering='total_saida')
+    def tokens_saida(self, obj):
+        return obj.total_saida
+
+    @admin.display(description='Total de tokens', ordering='total_consumo')
+    def tokens_total(self, obj):
+        return obj.total_consumo
+
+    @admin.display(description='Consumo de IA')
+    def consumo_ia(self, obj):
+        url = reverse('admin:core_aitokenusage_changelist')
+        return format_html('<a href="{}?tenant__id__exact={}">Ver relatório</a>', url, obj.pk)
 
 @admin.register(TenantSettings)
 class TenantSettingsAdmin(admin.ModelAdmin):

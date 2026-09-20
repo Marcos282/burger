@@ -147,7 +147,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="info-badges-desktop">
                            <div class="info-badge">
                               <i class="lni lni-money-protection"></i> 
-                              <span>Pedido minímo: R$ 0,01</span>
+                              <span>Pedido mínimo: {% if config %}R$ {{ config.pagamento_minimo|floatformat:"2g" }}{% else %}Não informado{% endif %}</span>
                            </div>
                            <div class="info-badge">
                               <i class="lni lni-user"></i> 
@@ -423,8 +423,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                            <div class="info-badge">
                               <i class="lni lni-money-protection"></i> 
                               <span>
-                              Pedido minímo:<br/>
-                              {% if config %}{{ config.pedido_minimo }}{% else %}Não informado{% endif %}	</span>
+                              Pedido mínimo:<br/>
+                              {% if config %}R$ {{ config.pagamento_minimo|floatformat:"2g" }}{% else %}Não informado{% endif %}	</span>
                               <div class="clear"></div>
                            </div>
                            <div class="info-badge">

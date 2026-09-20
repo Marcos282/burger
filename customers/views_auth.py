@@ -16,6 +16,7 @@ from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
 from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, build_public_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from core.ai_chat import (
+    get_ai_token_usage,
     add_chat_message,
     chat_session_belongs_to_tenant,
     get_chat_messages,
@@ -381,6 +382,7 @@ def painel_bot_atendimento(request):
         'chat_assumir_url': '/loja/chat/assumir/',
         'chat_sessions': sessions,
         'chat_account_tenant': user.tenant,
+        'chat_token_usage': get_ai_token_usage(user.tenant_id),
         'chat_sessions_url': '/painel/atendimento-ia/sessoes/',
         'chat_messages_url': '/painel/atendimento-ia/mensagens/',
         'chat_send_url': '/painel/atendimento-ia/enviar/',
@@ -421,6 +423,7 @@ def painel_bot_sessoes(request):
     return JsonResponse({
         'status': 'ok',
         'sessions': list_active_chat_sessions(tenant_id=request.user.tenant_id),
+        'token_usage': get_ai_token_usage(request.user.tenant_id),
     })
 
 
@@ -1010,6 +1013,8 @@ def painel_configuracao(request):
                 # Delivery config from step 4
                 if 'delivery' in request.POST:
                     settings.delivery = request.POST['delivery'] == 'True'
+                if 'bot_ativo_ia' in request.POST:
+                    settings.bot_ativo_ia = request.POST['bot_ativo_ia'] == 'True'
                 if 'chamar_whatsapp' in request.POST:
                     settings.chamar_whatsapp = request.POST['chamar_whatsapp'] == 'True'
                 

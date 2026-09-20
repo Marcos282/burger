@@ -13,7 +13,7 @@
             {% now "H" as chat_hour %}
             <div class="ai-chat-row">
                <div class="ai-chat-mini-avatar">IA</div>
-               <div class="ai-chat-bubble" id="aiChatGreeting">{% if chat_hour < "12" %}Bom dia{% elif chat_hour < "18" %}Boa tarde{% else %}Boa noite{% endif %}! Sou a assistente virtual{% if config.nome_loja %} da {{ config.nome_loja }}{% endif %}. {% if config.descricao_loja %}{{ config.descricao_loja|striptags|truncatewords:35 }}{% elif config.segmento %}Atuamos no segmento de {{ config.segmento }}.{% endif %} É um prazer receber você! Como posso ajudar hoje?</div>
+               <div class="ai-chat-bubble" id="aiChatGreeting">{% if chat_hour < "12" %}Bom dia{% elif chat_hour < "18" %}Boa tarde{% else %}Boa noite{% endif %}! Sou a assistente virtual{% if config.nome_loja %} da {{ config.nome_loja }}{% endif %}. {% if config.descricao_loja %}{{ config.descricao_loja|striptags|truncatewords:35 }}{% elif config.segmento %}Atuamos no segmento de {{ config.segmento_nome }}.{% endif %} É um prazer receber você! Como posso ajudar hoje?</div>
             </div>
             <div class="ai-chat-time">Agora</div>
          </div>
@@ -128,6 +128,20 @@
                   windowEl.classList.remove('is-open');
                });
             });
+
+            {% if config.bot_ativo_ia %}
+            var welcomeKey = 'aiChatWelcomeShown:{{ config.tenant_id }}';
+            var showWelcome = true;
+            try {
+               showWelcome = !sessionStorage.getItem(welcomeKey);
+               sessionStorage.setItem(welcomeKey, '1');
+            } catch (error) {}
+            if (showWelcome) {
+               windowEl.classList.add('is-open');
+               loadChatStatus(true);
+               startOperatorMessagesPolling();
+            }
+            {% endif %}
 
             form.addEventListener('submit', function (event) {
                event.preventDefault();

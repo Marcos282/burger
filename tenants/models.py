@@ -225,6 +225,13 @@ class Tenant(models.Model):
 
 # Configurações específicas do Tenant, como tema, cores, etc. É um Singleton por Tenant.
 class TenantSettings(models.Model):
+    SEGMENTOS = {'18': 'Academia e esportes', '1': 'Alimentação e Bebidas', '22': 'Artes e cultura', '14': 'Automotivo', '8': 'Beleza, estética e cuidados', '25': 'Calçados', '7': 'Comércio em Geral', '19': 'Construção civil', '24': 'Educação', '9': 'Eletrônicos e importados', '10': 'Farmácia', '11': 'Imobiliário', '27': 'Infantil', '12': 'Móveis, decorações e utilidades', '13': 'Outros', '28': 'Pet shop', '23': 'Publicidade e marketing', '20': 'Saúde', '21': 'Serviços', '16': 'Sexshop', '26': 'Supermercados', '29': 'Transportadora', '17': 'Turismo e hotelaria', '15': 'Vestuário'}
+
+    @property
+    def segmento_nome(self):
+        segmento = (self.segmento or '').strip()
+        return self.SEGMENTOS.get(segmento, segmento if segmento and not segmento.isdigit() else 'Não informado')
+
     
     # OBSOLETO: Horários de funcionamento agora são gerenciados pela tabela HorarioFuncionamento
     # TODO: Remover esses campos em uma migração futura
@@ -281,6 +288,7 @@ class TenantSettings(models.Model):
     segmento = models.CharField(max_length=50, blank=True, null=True, help_text="Segmento de negócio")
     exibicao_produtos = models.CharField(max_length=20, default="1", help_text="Tipo de exibição dos produtos")
     tipo_chave_pix = models.CharField(max_length=50, blank=True, null=True, help_text="Tipo da chave PIX")
+    bot_ativo_ia = models.BooleanField(default=False, verbose_name='Bot ativo com IA', help_text='Abre o chat automaticamente ao entrar na loja.')
     ai_orientations = models.TextField(
         blank=True,
         default='',
