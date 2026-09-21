@@ -1,4 +1,37 @@
 {% load static %}
+{% include 'painel/pedido_indicadores.html' %}
+<style>
+.label-light-purple{background:#eee4ff;color:#7041ad}
+.order-new{box-shadow:inset 4px 0 #e6b000}
+.order-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 210px;
+  margin: 0 auto;
+}
+.order-actions > form { width: 100%; margin: 0 !important; }
+.order-actions > .btn,
+.order-actions > form > .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 44px;
+  margin: 0 !important;
+  padding: 6px 12px;
+  line-height: 1.2;
+  white-space: normal;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+@media (max-width: 575.98px) {
+  .order-actions { width: 180px; }
+}
+</style>
 <div class="card card-custom gutter-b">
    <div class="card-body">
       <!--begin: Datatable-->
@@ -8,6 +41,7 @@
                <tr class="text-left text-uppercase thead-dark" style="left: 0px;">
                   <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 70px;">Nr</span></th>
                   <th data-field="OrderID" class="datatable-cell datatable-cell-sort"><span style="width: 230px;">Cliente</span></th>
+                  <th class="datatable-cell">Status do pedido</th>
                   <th data-field="Country" class="datatable-cell datatable-cell-sort"><span style="width: 110px;">Valor total</span></th>
                   <th data-field="ShipDate" class="datatable-cell datatable-cell-sort" style="display: none;"><span style="width: 110px;">Ship Date</span></th>
                   <th data-field="CompanyName" class="datatable-cell datatable-cell-sort" style="display: none;"><span style="width: 110px;">Company Name</span></th>
@@ -35,202 +69,19 @@
             </thead>
             <tbody  class="datatable-body">
                {% for info in ordens_info %}
-                    <tr data-row="0" class="datatable-row align-middle" style="left: 0px;">
+                    <tr data-row="0" data-order-id="{{ info.ordem.pk }}" class="datatable-row align-middle {% if info.ordem.status == 'novo' %}order-new{% endif %}" style="left: 0px;">
                         <td class="datatable-cell-sorted datatable-cell-left datatable-cell" data-field="RecordID" aria-label="1">
-                     <!-- Abrir modal -->
-                     <a href="#" data-toggle="modal" data-target="#modalPedido{{ info.ordem.id }}" style="text-decoration: none; color: inherit;">
                      <span style="width: 60px; display: flex; flex-direction: column; align-items: center;">
-                     <span class="font-weight-bolder">{{ info.ordem.id }}</span>
-                     <span class="label label-lg label-light-primary label-inline">Aberto</span>
+                       <span class="font-weight-bolder">{{ info.ordem.id }}</span>
+                       <small>{{ info.ordem.get_tipo_entrega_display }}</small>
                      </span>
-                     </a>
-                     <!-- Modal Bootstrap -->
-                     <div class="modal fade" id="modalPedido{{ info.ordem.id }}" tabindex="-1" role="dialog" aria-labelledby="modalPedidoLabel{{ info.ordem.id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="width: 70%; max-width: none; margin: 30px auto 30px auto; display: flex; align-items: center; justify-content: center;">
-                           <div class="modal-content" style="width: 100%;">
-                              <style>
-                                 @media (max-width: 768px) {
-                                 #modalPedido{{ info.ordem.id }} .modal-dialog {
-                                 width: 90% !important;
-                                 margin-top: 30px !important;
-                                 margin-bottom: 30px !important;
-                                 display: flex !important;
-                                 align-items: center !important;
-                                 justify-content: center !important;
-                                 }
-                                 }
-                              </style>
-                              <div class="modal-header">
-                                 <h5 class="modal-title" id="modalPedidoLabel{{ info.ordem.id }}">Detalhes do Pedido # {{ info.ordem.id }}</h5>
-                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                                 </button>
-                              </div>
-                              <div class="modal-body">
-                                 <div class="d-flex flex-row">
-                                    <!--begin::Layout-->
-                                    <div class="flex-row-fluid ml-lg-8">
-                                       <!--begin::Card-->
-                                       <div class="card card-custom gutter-b">
-                                          <div class="card-body p-0">
-                                             <!-- begin: Invoice-->
-                                             <!-- begin: Invoice header-->
-                                             <div class="row justify-content-center py-4 px-8 py-md-27 px-md-0">
-                                                <div class="col-md-10">
-                                                   <div class="d-flex justify-content-between pb-10 pb-md-20 flex-column flex-md-row">
-                                                      <div class="d-flex flex-column align-items-md-end px-0">
-                                                         <!--begin::Logo-->
-                                                         <a href="#" class="mb-5">
-                                                         <img src="{% static 'assets/imagens/logos/logo-dark.png' %}" alt="">
-                                                         </a>
-                                                         <!--end::Logo-->
-                                                         <h1 class="font-weight-boldest mb-2" style="font-size: 1.8rem; line-height: 1.1;">{{ info.nome_cliente }}</h1>
-                                                         <span class="d-flex flex-column align-items-md-end opacity-70">
-                                                            <!-- <span>Cecilia Chapman, 711-2880 Nulla St, Mankato</span> -->
-                                                            <span style="padding-top: 0; margin-top: -0.5em;">Telefone: {{ info.dados_cliente.telefone }}</span>
-                                                         </span>
-                                                      </div>
-                                                   </div>
-                                                   <div class="border-bottom w-100"></div>
-                                                   <div class="d-flex justify-content-between pt-6">
-                                                      <div class="d-flex flex-column flex-root">
-                                                         <span class="font-weight-bolder mb-2">DATA PEDIDO</span>
-                                                         <span class="opacity-70">{{ info.ordem.dataHora|date:"d/m/Y H:i" }}</span>
-                                                      </div>
-                                                      <div class="d-flex flex-column flex-root">
-                                                         <span class="font-weight-bolder mb-2">NR. PEDIDO</span>
-                                                         <span class="opacity-70">{{ info.ordem.id }}</span>
-                                                      </div>
-                                                      <div class="d-flex flex-column flex-root">
-                                                         <span class="font-weight-bolder mb-2">ENTREGAR EM:</span>
-                                                         <span class="opacity-70">{{ info.endereco_entrega.endereco }}, {{ info.endereco_entrega.endereco_numero}}<br>{{ info.endereco_entrega.endereco_bairro }}  {{ info.endereco_entrega.cidade }} - {{ info.endereco_entrega.estado }} <br>{{ info.endereco_entrega.cep }} <br> {{info.endereco_entrega.endereco_complemento}} <br> <b>Referencia</b>: {{info.endereco_entrega.referencia}}</span>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <!-- end: Invoice header-->
-                                             <!-- begin: Invoice body-->
-                                             <style>
-                                                @media (max-width: 576px) {
-                                                .table tbody, .table thead, .table td, .table th, .table tr {
-                                                font-size: 0.75rem !important;
-                                                }
-                                                }
-                                             </style>
-                                             <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
-                                                <div class="col-md-10">
-                                                   <div class="table-responsive">
-                                                      <table class="table">
-                                                         <thead>
-                                                            <tr>
-                                                               <th class="pl-0 font-weight-bold text-muted  text-uppercase">Itens do Pedido</th>
-                                                               <th class="text-right font-weight-bold text-muted text-uppercase">Qtd</th>
-                                                               <th class="text-right font-weight-bold text-muted text-uppercase">Preço</th>
-                                                               <th class="text-right pr-0 font-weight-bold text-muted text-uppercase">Total</th>
-                                                            </tr>
-                                                         </thead>
-                                                         <tbody class="small">
-                                                            {% for item in info.itens_ordem %}
-                                                            <tr class="font-weight-boldest border-bottom-0">
-                                                               <td class="border-top-0 pl-0 py-4 d-flex align-items-center">
-                                                                  <!--begin::Symbol-->
-                                                                  <div class="symbol symbol-40 flex-shrink-0 mr-4 bg-light">
-                                                                     {% if item.produto and item.produto.imagem %}
-                                                                     <div class="symbol-label" style="background-image: url('{{ item.produto.imagem.url }}')"></div>
-                                                                     {% else %}
-                                                                     <div class="symbol-label bg-secondary"></div>
-                                                                     {% endif %}
-                                                                  </div>
-                                                                  <!--end::Symbol-->
-                                                                  {% if item.produto %}
-                                                                  {{ item.produto.nome }}
-                                                                  {% else %}
-                                                                  Produto removido
-                                                                  {% endif %}
-                                                               </td>
-                                                               <td class="border-top-0 text-right py-4 align-middle">{{ item.quantidade }}</td>
-                                                               <td class="border-top-0 text-right py-4 align-middle">R${{ item.preco_unitario|floatformat:2 }}</td>
-                                                               <td class="text-primary border-top-0 pr-0 py-4 text-right align-middle">R${{ item.amount|floatformat:2 }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                            <tr class="font-weight-boldest border-bottom-0">
-                                                               <td class="border-top text-right" colspan="4">Taxa de Entrega: {{ info.taxa_entrega_formatado }}</td>
-                                                            </tr>
-                                                         </tbody>
-                                                      </table>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <!-- end: Invoice body-->
-                                             <!-- begin: Invoice footer-->
-                                             <!-- <div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0 mx-0 w-100 mx-auto"> -->
-                                             <div class="row justify-content-center  py-8 px-8 py-md-10 px-md-0">
-                                                <div class="col-12 col-md-10">
-                                                   <div class="table-responsive">
-                                                      <table class="table">
-                                                         <thead>
-                                                            <tr>
-                                                               <th class="font-weight-bold text-muted  text-uppercase">Forma Pagamento</th>
-                                                               <th class="font-weight-bold text-muted  text-uppercase">Status</th>
-                                                               <th class="font-weight-bold text-muted  text-uppercase">Dt Pag</th>
-                                                               <th class="font-weight-bold text-muted  text-uppercase text-right">TOTAL PAGAMENTO</th>
-                                                            </tr>
-                                                         </thead>
-                                                         <tbody class="small">
-                                                            <tr class="font-weight-bolder">
-                                                               <td>Credit Card</td>
-                                                               <td>Success</td>
-                                                               <td>Jan 07, 2020</td>
-                                                               <td class="text-primary font-weight-boldest text-right">{{ info.total_geral }}</td>
-                                                            </tr>
-                                                         </tbody>
-                                                      </table>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <!-- end: Invoice footer-->
-                                             <!-- begin: Invoice action-->
-                                             <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
-                                                <div class="col-md-10">
-                                                   <div class="d-flex justify-content-between">
-                                                      <button type="button" class="btn btn-light-primary font-weight-bold btn-action-mobile" onclick="window.print();">Baixar Pedido</button>
-                                                      <button type="button" class="btn btn-primary font-weight-bold btn-action-mobile" onclick="window.print();">Imprimir Pedido</button>
-                                                   </div>
-                                                </div>
-                                                <style>
-                                                   @media (max-width: 576px) {
-                                                   .btn-action-mobile {
-                                                   padding: 0.25rem 0.5rem !important;
-                                                   font-size: 0.85rem !important;
-                                                   height: 2rem !important;
-                                                   min-width: 0 !important;
-                                                   }
-                                                   }
-                                                </style>
-                                             </div>
-                                             <!-- end: Invoice action-->
-                                             <!-- end: Invoice-->
-                                          </div>
-                                       </div>
-                                       <!--end::Card-->
-                                    </div>
-                                    <!--end::Layout-->
-                                 </div>
-                              </div>
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
                   </td>
                   <td data-field="OrderID" aria-label="64616-103" class="datatable-cell align-middle">
                      <span style="width: 250px;">
                         <div class="d-flex align-items-center">
-                           <div class="symbol symbol-50 symbol-sm flex-shrink-0">
-                            
-                              <div class="symbol-label"><img title="{{ info.ordem.dataHora|date:'d/m/Y H:i' }}" class="h-75 align-self-end" src="{% static 'assets/imagens/svg/avatars/048-boy-21.svg' %}" alt="photo">                            </div>
-                           </div>
+                           <button type="button" class="symbol symbol-50 symbol-sm flex-shrink-0 border-0 p-0" data-toggle="modal" data-target="#modalCliente{{ info.ordem.pk }}" aria-label="Editar cliente do pedido {{ info.ordem.pk }}" title="Preencher nome, WhatsApp e observações">
+                              <span class="symbol-label"><img class="h-75 align-self-end" src="{% static 'assets/imagens/svg/avatars/048-boy-21.svg' %}" alt=""></span>
+                           </button>
                            <div class="ml-2">
                               <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ info.nome_cliente }} </div>
                               <a href="#" class="font-weight-bold text-success text-hover-primary" style="display: flex; align-items: center; gap: 0.3em;">
@@ -242,7 +93,7 @@
                               </a>
                               <div class="font-weight-bold text-muted">{{ info.data_hora }}</div>
                               </a>
-                                                            <a href="#" class="text-muted font-weight-bold text-hover-primary status-pg-mobile" style="margin-top: 0.1em; display: inline-block;">Status Pg: <span class="label label-lg label-light-warning label-inline">Pendente</span> </a><br>
+                                                            <a href="#" class="text-muted font-weight-bold text-hover-primary status-pg-mobile" style="margin-top: 0.1em; display: inline-block;">Status Pg: <span class="label label-lg label-light-warning label-inline">{{ info.ordem.get_status_pagamento_display }}</span> </a><br>
                                                             <style>
                                                                 @media (min-width: 577px) {
                                                                     .status-pg-mobile {
@@ -258,6 +109,11 @@
                            </div>
                         </div>
                      </span>
+                  </td>
+                  <td class="datatable-cell align-middle">
+                     {% include 'painel/pedido_cliente_modal.html' %}
+                     <span class="label label-lg label-light-{{ info.status_color }} label-inline">{{ info.status_label }}</span>
+                     <small class="d-block text-muted">{{ info.ordem.get_tipo_operacao_display }}</small>
                   </td>
                   <td data-field="Country" aria-label="Brazil" class="datatable-cell  align-middle">
                      <span style="width: 110px;" class="align-middle">
@@ -278,32 +134,36 @@
                   </td>
                                     <td data-field="Status" aria-label="5" class="datatable-cell status-desktop-td align-middle" style="display: none;">
                                         <span style="width: 110px;">
-                                            <span class="label label-lg font-weight-bold label-light-info label-inline">Pendente</span>
+                                            <span class="label label-lg font-weight-bold label-light-info label-inline">{{ info.ordem.get_status_pagamento_display }}</span>
                                         </span>
                                     </td>
-                             <td colspan="3" class="pt-2 pb-3 text-center align-middle">
-                              <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm">
-                              <span class="svg-icon svg-icon-md svg-icon-primary">
-                           <img src="{% static 'assets/imagens/svg/icons/Communication/Share.svg' %}"/>      <!-- SVG Settings -->
-                              </span>
-                           </a>
-                           <a href="" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
-                              <span class="svg-icon svg-icon-md svg-icon-primary">
-                                 <img src="{% static 'assets/imagens/svg/icons/Communication/Write.svg' %}"/>
-                              </span>
-                           </a>
-                            <!-- Botão Trash abre modal -->
-                              <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm" data-toggle="modal" data-target="#modalExcluirCategoria{{ cat.id }}">
-                              <span class="svg-icon svg-icon-md svg-icon-primary">
-                                 <img src="{% static 'assets/imagens/svg/icons/General/Trash.svg' %}"/>
-                              </span>
-                           </a>
-                           <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
-                              <span class="svg-icon svg-icon-md svg-icon-primary">
-                                 <img src="{% static 'assets/imagens/svg/icons/Navigation/Check.svg' %}"/>
-                              </span>
-                           </a>
-                        </td>
+                  <td class="pt-2 pb-3 align-middle">
+                    <div class="order-actions">
+                    {% if info.next_action %}
+                    <form class="order-action-form mb-2" method="post" action="{% url 'pedido_status' info.ordem.pk %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="status" value="{{ info.next_action.status }}">
+                      <input type="hidden" name="status_atual" value="{{ info.ordem.status }}">
+                      <button type="submit" class="btn btn-primary btn-sm">{{ info.next_action.label }}</button>
+                    </form>
+                    {% endif %}
+                    {% if info.can_set_delivery %}
+                    <button type="button" class="btn btn-light-primary btn-sm mb-2" data-toggle="modal" data-target="#modalEntrega{{ info.ordem.pk }}">{% if info.ordem.tipo_entrega == 'a_combinar' %}Definir entrega/retirada{% else %}Alterar entrega/retirada{% endif %}</button>
+                    {% include 'painel/pedido_entrega_modal.html' %}
+                    {% endif %}
+                    {% if info.ordem.status_pagamento != 'pago' %}
+                    <button type="button" class="btn btn-light-success btn-sm mb-2" data-toggle="modal" data-target="#modalPagamento{{ info.ordem.pk }}"><i class="fas fa-money-bill-wave" aria-hidden="true"></i> Pagamento</button>
+                    {% include 'painel/pedido_pagamento_modal.html' %}
+                    {% endif %}
+                    {% if info.whatsapp_url %}<a class="btn btn-light-success btn-sm mb-2" href="{{ info.whatsapp_url }}" target="_blank" rel="noopener noreferrer">Avisar no WhatsApp</a>{% endif %}
+                    {% if info.can_cancel %}
+                    <form class="order-action-form" method="post" action="{% url 'pedido_cancelar' info.ordem.pk %}" data-confirm="Cancelar este pedido? O registro será mantido no histórico.">
+                      {% csrf_token %}<input type="hidden" name="status_atual" value="{{ info.ordem.status }}">
+                      <button type="submit" class="btn btn-light-danger btn-sm">Cancelar pedido</button>
+                    </form>
+                    {% endif %}
+                    </div>
+                  </td>
                </tr>
                {% empty %}
                <p>Nenhuma ordem encontrada.</p>

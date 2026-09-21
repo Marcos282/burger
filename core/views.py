@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.urls import reverse
 import json
 import re
@@ -519,15 +520,19 @@ def atualizar_carrinho_ajax(request):
 
 
 # Checkout ===================================================================
+@transaction.atomic
 def checkout(request):
     if request.method == 'POST':
-        tenant_id = request.POST.get('tenant_id')
-        tenant = get_object_or_404(Tenant, id=tenant_id)
+        tenant = getattr(request, 'tenant', None)
+        if tenant is None:
+            return JsonResponse({'status': 'error', 'message': 'Loja não identificada.'}, status=400)
         cart = get_cart(request)
 
         if not cart:
             return JsonResponse({'status': 'error', 'message': 'Carrinho vazio'}, status=400)
 
+        if any(type(qty) is not int or qty < 1 for qty in cart.values()):
+            return JsonResponse({'status': 'error', 'message': 'Quantidade inválida.'}, status=400)
         # Criar ordem temporária
         ordem = Ordem.objects.create(
             tenant=tenant,
@@ -535,13 +540,17 @@ def checkout(request):
         )
 
         for produto_id, qtd in cart.items():
-            produto = get_object_or_404(Produto, id=produto_id)
+            produto = get_object_or_404(Produto, id=produto_id, tenant=tenant)
             OrdemItem.objects.create(
                 tenant=tenant,
                 ordem=ordem,
                 produto=produto,
-                quantidade=qtd
+                quantidade=qtd,
+                preco_unitario=produto.price,
             )
+
+        ordem.valor_total = ordem.get_car_total
+        ordem.save(update_fields=['valor_total'])
 
         # Limpa o carrinho da sessão
         save_cart(request, {})
@@ -564,6 +573,8 @@ def checkout_sucesso(request):
     if not pedido_info:
         return HttpResponse("<h1>Pedido finalizado</h1><p>Não foi possível montar o link do WhatsApp.</p>")
 
+    if not Ordem.objects.filter(pk=pedido_info.get('pedido_id'), tenant=request.tenant).exists():
+        return HttpResponse('Pedido não encontrado nesta loja.', status=404)
     config = TenantSettings.load(tenant=request.tenant)
 
     vendedor = pedido_info.get('vendedor', '') or 'Não informado'

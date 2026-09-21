@@ -1,3 +1,6 @@
+from orders.panel_views import access_error as order_access_error
+from orders.services.status import get_status_label, get_next_action, get_whatsapp_url, COLORS, TERMINAIS
+from orders.services.dashboard import get_indicators
 from menu.models import Produto, ProdutoImagem, Category, Banners
 from tenants.models import Tenant, TenantSettings
 from django.views.decorators.csrf import csrf_exempt
@@ -206,21 +209,21 @@ def novocadastro_view(request):
 
 def montar_ordens_info(tenant):
     """Monta a lista de pedidos (ordens_info) usada nas telas do painel."""
-    ordens = Ordem.objects.filter(tenant=tenant).select_related('cliente')
-    ordens_pendentes_count = ordens.filter(completo=False).count()
+    ordens = Ordem.objects.filter(tenant=tenant).select_related('cliente').order_by('-id')
+    ordens_pendentes_count = ordens.exclude(status__in=TERMINAIS).count()
 
     ordens_info = []
     for ordem in ordens:
-        qt_itens = OrdemItem.objects.filter(ordem=ordem).count()
-        nome_cliente = ordem.cliente.nome if ordem.cliente else "-"
-        telefone_cliente = ordem.cliente.telefone if ordem.cliente and hasattr(ordem.cliente, 'telefone') else "-"
+        qt_itens = OrdemItem.objects.filter(ordem=ordem, tenant=tenant).count()
+        nome_cliente = ordem.cliente.nome if ordem.cliente and ordem.cliente.tenant_id == tenant.pk else "-"
+        telefone_cliente = ordem.cliente.telefone if ordem.cliente and ordem.cliente.tenant_id == tenant.pk and hasattr(ordem.cliente, 'telefone') else "-"
         import re
         telefone_cliente_wa = re.sub(r'\D', '', telefone_cliente)
         valor = ordem.valor_total if ordem.valor_total is not None else 0
         tx_entrega = ordem.tx_entrega if ordem.tx_entrega is not None else 0
         valor_total_formatado = f"R${valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         taxa_entrega_formatado = f"R${tx_entrega:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-        itens_ordem_objs = OrdemItem.objects.filter(ordem=ordem)
+        itens_ordem_objs = OrdemItem.objects.filter(ordem=ordem, tenant=tenant).select_related('produto')
         itens_ordem = []
         total_geral = 0
         for item in itens_ordem_objs:
@@ -229,7 +232,7 @@ def montar_ordens_info(tenant):
             amount = preco_unitario * quantidade
             itens_ordem.append({
                 'id': item.id,
-                'produto': item.produto,
+                'produto': item.produto if item.produto and item.produto.tenant_id == tenant.pk else None,
                 'preco_unitario': preco_unitario,
                 'quantidade': quantidade,
                 'amount': amount,
@@ -237,10 +240,16 @@ def montar_ordens_info(tenant):
             })
             total_geral = amount + total_geral
 
-        endereco_entrega = EnderecoEntrega.objects.filter(ordem=ordem).first()
-        dados_cliente = Cliente.objects.filter(id=ordem.cliente_id).first()
+        endereco_entrega = EnderecoEntrega.objects.filter(ordem=ordem, tenant=tenant).first()
+        dados_cliente = Cliente.objects.filter(id=ordem.cliente_id, tenant=tenant).first()
         ordens_info.append({
             'ordem': ordem,
+            'status_label': get_status_label(ordem),
+            'status_color': COLORS[ordem.status],
+            'next_action': get_next_action(ordem),
+            'can_cancel': ordem.status not in TERMINAIS,
+            'can_set_delivery': ordem.status in ('novo', 'confirmado', 'processando'),
+            'whatsapp_url': get_whatsapp_url(ordem),
             'qt_itens': qt_itens,
             'nome_cliente': nome_cliente,
             'telefone_cliente': telefone_cliente,
@@ -258,6 +267,9 @@ def montar_ordens_info(tenant):
 
 
 def painel_view(request):
+    error = order_access_error(request)
+    if error:
+        return error
     if request.user.is_authenticated:
 
         user = request.user
@@ -272,6 +284,9 @@ def painel_view(request):
         context = {
             'localizacao': localizacao,
             'ordens_info': ordens_info,
+            'indicadores': get_indicators(user.tenant),
+            'novos_count': Ordem.objects.filter(tenant=user.tenant, status='novo').count(),
+            'tipo_operacao': TenantSettings.load(user.tenant).tipo_operacao,
             'ordens_pendentes_count': ordens_pendentes_count,
             'url_marketplace': get_tenant_url(request, '/loja/'),
             
@@ -282,6 +297,9 @@ def painel_view(request):
 
 
 def painel_pedidos_dados(request):
+    error = order_access_error(request)
+    if error:
+        return error
     """Retorna em JSON o HTML atualizado da tabela de pedidos, para atualização em tempo real."""
     if not request.user.is_authenticated:
         return JsonResponse({'detail': 'unauthorized'}, status=401)
@@ -290,20 +308,24 @@ def painel_pedidos_dados(request):
     ordens_info, ordens_pendentes_count = montar_ordens_info(user.tenant)
 
     from django.template.loader import render_to_string
-    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info}, request=request)
+    html = render_to_string('painel/card_pedidos.html', {'ordens_info': ordens_info, 'indicadores': get_indicators(user.tenant), 'tipo_operacao': TenantSettings.load(user.tenant).tipo_operacao}, request=request)
 
     return JsonResponse({
         'html': html,
+        'novos_count': Ordem.objects.filter(tenant=user.tenant, status='novo').count(),
         'ordens_pendentes_count': ordens_pendentes_count,
     })
 
 
 def painel_pedidos_pendentes_count(request):
+    error = order_access_error(request)
+    if error:
+        return error
     if not request.user.is_authenticated:
         return JsonResponse({'detail': 'unauthorized'}, status=401)
 
     user = request.user
-    pendentes = Ordem.objects.filter(tenant=user.tenant, completo=False).count()
+    pendentes = Ordem.objects.filter(tenant=user.tenant).exclude(status__in=TERMINAIS).count()
     return JsonResponse({'pendentes': pendentes})
 
 
@@ -862,6 +884,10 @@ def painel_produtos_edit(request, produto_id):
 
 def painel_configuracao(request):
     if request.user.is_authenticated:
+        error = order_access_error(request)
+        if error:
+            return error
+    if request.user.is_authenticated:
         user = request.user
         
         # Obter configurações do tenant
@@ -898,6 +924,11 @@ def painel_configuracao(request):
                             ),
                         }, status=400)
                 
+                if 'tipo_operacao' in request.POST:
+                    if request.POST['tipo_operacao'] not in TenantSettings.TipoOperacao.values:
+                        return JsonResponse({'success': False, 'message': 'Fluxo de pedidos inválido.'}, status=400)
+                    settings.tipo_operacao = request.POST['tipo_operacao']
+
                 # ==== STEP 1: DADOS GERAIS ====
                 if 'name' in request.POST:
                     settings.nome_loja = request.POST['name']

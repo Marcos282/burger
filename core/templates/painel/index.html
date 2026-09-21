@@ -31,57 +31,16 @@
     {% include 'painel/subheader.html' %}
 <!--end::Subheader-->
 
-<section class="analytics-banner" aria-labelledby="analyticsBannerTitle">
-    <div class="analytics-banner__content">
-        <span class="analytics-banner__icon" aria-hidden="true"><i class="fas fa-chart-line"></i></span>
-        <div>
-            <h2 id="analyticsBannerTitle">Google Analytics</h2>
-            <p>Acompanhe os dados de acesso da sua loja.</p>
-        </div>
-    </div>
-    <button type="button" class="analytics-banner__button" id="openAnalytics" aria-controls="analyticsModal" aria-haspopup="dialog">
-        Ver dados <i class="fas fa-arrow-right" aria-hidden="true"></i>
-    </button>
-</section>
-
-<div class="analytics-modal" id="analyticsModal" hidden>
-    <div class="analytics-modal__backdrop" data-close-analytics></div>
-    <section class="analytics-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="analyticsModalTitle">
-        <button type="button" class="analytics-modal__close" data-close-analytics aria-label="Fechar">&times;</button>
-        <span class="analytics-modal__eyebrow">Painel de dados</span>
-        <h2 id="analyticsModalTitle">Google Analytics</h2>
-        {% if google_analytics_url %}
-            <p class="text-muted">O endereço configurado para esta loja está pronto para consulta.</p>
-            <a class="btn btn-primary" href="{{ google_analytics_url }}" target="_blank" rel="noopener noreferrer">
-                Abrir Google Analytics <i class="fas fa-external-link-alt ml-2" aria-hidden="true"></i>
-            </a>
-        {% else %}
-            <p class="text-muted">Nenhum endereço do Google Analytics foi configurado no item 6.</p>
-            <a class="btn btn-light-primary" href="{% url 'painel_configuracao' %}">Configurar Analytics</a>
-        {% endif %}
-    </section>
-</div>
-
-<style>
-.analytics-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;margin:0 0 1.5rem;padding:1.25rem 1.5rem;border-radius:8px;background:linear-gradient(110deg,#153f5b,#1d7890);box-shadow:0 8px 24px rgba(21,63,91,.18);color:#fff}
-.analytics-banner__content{display:flex;align-items:center;gap:1rem;min-width:0}.analytics-banner__icon{display:grid;place-items:center;width:3rem;height:3rem;flex:0 0 3rem;border-radius:50%;background:rgba(255,255,255,.16);font-size:1.25rem}.analytics-banner h2{margin:0;font-size:1.15rem;font-weight:700}.analytics-banner p{margin:.25rem 0 0;color:rgba(255,255,255,.78)}.analytics-banner__button{border:1px solid rgba(255,255,255,.45);border-radius:6px;background:#fff;color:#153f5b;padding:.7rem 1rem;font-weight:700;white-space:nowrap}.analytics-banner__button:hover{background:#e8f6f7}.analytics-modal[hidden]{display:none}.analytics-modal{position:fixed;inset:0;z-index:1050;display:grid;place-items:center;padding:1rem}.analytics-modal__backdrop{position:absolute;inset:0;background:rgba(7,24,35,.58)}.analytics-modal__dialog{position:relative;width:min(100%,30rem);padding:2rem;border-radius:8px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.25)}.analytics-modal__close{position:absolute;top:.75rem;right:.9rem;border:0;background:transparent;color:#64748b;font-size:1.75rem;line-height:1}.analytics-modal__eyebrow{color:#1d7890;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.analytics-modal h2{margin:.5rem 0 1rem}.analytics-modal__dialog .btn{display:inline-flex;align-items:center}
-@media (max-width:575px){.analytics-banner{align-items:flex-start;flex-direction:column}.analytics-banner__button{width:100%}}
-</style>
-
-<script>
-(function(){
-    var openButton=document.getElementById('openAnalytics');
-    var modal=document.getElementById('analyticsModal');
-    if(!openButton||!modal)return;
-    var close=function(){modal.hidden=true;document.body.style.overflow='';openButton.focus()};
-    openButton.addEventListener('click',function(){modal.hidden=false;document.body.style.overflow='hidden'});
-    modal.querySelectorAll('[data-close-analytics]').forEach(function(button){button.addEventListener('click',close)});
-    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!modal.hidden)close()});
-})();
-</script>
-
 <!--begin::Card_pedidos-->
+<div id="order-feedback" class="alert mx-4" role="status" hidden></div>
 <div id="card-pedidos-container">
+    <script>
+        try {
+            if (localStorage.getItem('viazap:hideRevenue:{{ user.tenant_id|escapejs }}') === '1') {
+                document.getElementById('card-pedidos-container').classList.add('revenue-hidden');
+            }
+        } catch (error) {}
+    </script>
     {% include 'painel/card_pedidos.html' %}
 </div>
 <!--end::Card_pedidos-->
@@ -94,7 +53,7 @@
 
 <script>
     (function () {
-        var pendingCount = Number("{{ ordens_pendentes_count|default:0 }}") || 0;
+        var pendingCount = Number("{{ novos_count|default:0 }}") || 0;
         var audioContext = null;
         var beepTimer = null;
         var audioMuted = false;
@@ -226,10 +185,40 @@
             document.addEventListener(evt, unlockAudioOnInteraction, { passive: true });
         });
 
-        function fetchPedidos() {
+        function syncRevenueVisibility() {
+            const container = document.getElementById('card-pedidos-container');
+            const button = container.querySelector('.order-revenue-toggle');
+            if (!button) return;
+            const hidden = container.classList.contains('revenue-hidden');
+            const label = hidden ? 'Mostrar faturamento de hoje' : 'Ocultar faturamento de hoje';
+            button.setAttribute('aria-label', label);
+            button.setAttribute('title', label);
+            button.setAttribute('aria-pressed', String(hidden));
+        }
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.order-revenue-toggle')) return;
+            const container = document.getElementById('card-pedidos-container');
+            const hidden = container.classList.toggle('revenue-hidden');
+            try { localStorage.setItem('viazap:hideRevenue:{{ user.tenant_id|escapejs }}', hidden ? '1' : '0'); } catch(error) {}
+            syncRevenueVisibility();
+        });
+        syncRevenueVisibility();
+
+        var fetching = false;
+        var mutating = false;
+        var refreshAfterFetch = false;
+        var orderVersion = 0;
+        function fetchPedidos(force) {
+            if (fetching) {
+                if (force) refreshAfterFetch = true;
+                return Promise.resolve();
+            }
+            if (mutating || (!force && document.hidden)) return Promise.resolve();
+            const version = orderVersion;
+            fetching = true;
             // URL absoluta (origin + path) para evitar que a tag <base> do layout resolva o caminho errado.
             var url = window.location.origin + "{% url 'painel_pedidos_dados' %}";
-            fetch(url, {
+            return fetch(url, {
                 method: 'GET',
                 credentials: 'same-origin',
                 headers: {
@@ -243,7 +232,8 @@
                 return response.json();
             })
             .then(function (data) {
-                pendingCount = Number(data.ordens_pendentes_count || 0);
+                if (version !== orderVersion || mutating) return;
+                pendingCount = Number(data.novos_count || 0);
                 syncSoundState();
 
                 // Evita substituir o HTML se o usuário estiver com algum modal aberto (para não fechar o modal na cara dele e travar o fundo escuro)
@@ -252,10 +242,17 @@
                 var container = document.getElementById('card-pedidos-container');
                 if (container && typeof data.html === 'string' && !isModalOpen) {
                     container.innerHTML = data.html;
+                    syncRevenueVisibility();
                 }
             })
             .catch(function () {
-                // Silencia erros de polling para não impactar a tela.
+                // Mantém a tabela atual se houver falha temporária.
+            }).finally(function () {
+                fetching = false;
+                if (refreshAfterFetch) {
+                    refreshAfterFetch = false;
+                    fetchPedidos(true);
+                }
             });
         }
 
@@ -270,8 +267,61 @@
             });
         }
 
+        document.addEventListener('submit', async function(event) {
+            const form = event.target.closest('.order-action-form');
+            if (!form) return;
+            event.preventDefault();
+            if (mutating) return;
+            if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) return;
+            const feedback = document.getElementById('order-feedback');
+            const formError = form.querySelector('.order-form-error');
+            if (formError) formError.hidden = true;
+            const payload = new FormData(form);
+            if (event.submitter && event.submitter.name) payload.set(event.submitter.name, event.submitter.value);
+            const buttons = form.querySelectorAll('button');
+            buttons.forEach(button => button.disabled = true);
+            mutating = true;
+            orderVersion++;
+            try {
+                const response = await fetch(form.action, {method:'POST', body:payload, credentials:'same-origin'});
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Não foi possível atualizar o pedido.');
+                feedback.className = 'alert alert-success mx-4';
+                feedback.textContent = 'Pedido atualizado.';
+                feedback.hidden = false;
+                if (typeof $ !== 'undefined') $('.modal.show').modal('hide');
+            } catch (error) {
+                feedback.className = 'alert alert-danger mx-4';
+                feedback.textContent = error.message;
+                feedback.hidden = false;
+                if (formError) { formError.textContent = error.message; formError.hidden = false; }
+            } finally {
+                mutating = false;
+                buttons.forEach(button => button.disabled = false);
+                await fetchPedidos(true);
+            }
+        });
+        document.addEventListener('click', async function(event) {
+            const button = event.target.closest('.order-history');
+            if (!button) return;
+            const target = document.getElementById(button.dataset.target);
+            target.textContent = 'Carregando histórico...';
+            try {
+                const response = await fetch(button.dataset.url, {credentials:'same-origin'});
+                if (!response.ok) throw new Error();
+                const data = await response.json();
+                target.replaceChildren();
+                if (!data.history.length) target.textContent = 'Nenhuma mudança registrada. Pedidos antigos não possuem histórico anterior à implantação.';
+                data.history.forEach(entry => {
+                    const line = document.createElement('p');
+                    line.textContent = new Date(entry.data).toLocaleString('pt-BR') + ' — ' + entry.anterior + ' → ' + entry.novo + ' — ' + entry.usuario;
+                    target.appendChild(line);
+                });
+            } catch(error) { target.textContent = 'Não foi possível carregar o histórico.'; }
+        });
+
         syncSoundState();
-        setInterval(fetchPedidos, 7000);
+        setInterval(fetchPedidos, 10000);
     })();
 </script>
 {% endblock %}

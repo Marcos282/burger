@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
@@ -47,13 +49,21 @@ def cadastro_form(request):
     })
 
 
-@csrf_exempt
+@transaction.atomic
 def pedido_delivery(request):
+    if request.method == 'POST' and any(
+        type(qty) is not int or qty < 1 for qty in request.session.get('cart', {}).values()
+    ):
+        return JsonResponse({'message': 'Quantidade inválida na sacola.'}, status=400)
     if request.method != 'POST':
         return redirect('cadastro_form')
 
     tenant = request.tenant
     config = TenantSettings.load(tenant=tenant)
+    if not config.delivery:
+        return redirect('sacola')
+    if not request.session.get('cart'):
+        return redirect('sacola')
     cliente = Cliente.objects.create(
         tenant=tenant,
         telefone=request.POST.get('whatsapp') or '0000000000',
@@ -64,6 +74,8 @@ def pedido_delivery(request):
     ordem = Ordem.objects.create(
         tenant=tenant,
         cliente=cliente,
+        tipo_entrega=Ordem.TipoEntrega.ENTREGA,
+        formade_pagamento={'1': 'Dinheiro', '2': 'Cartão de Débito', '3': 'Cartão de Crédito'}.get(request.POST.get('forma_pagamento'), 'Não informado'),
         completo=False,
         tx_entrega=config.taxa_entrega or 0.00,
         valor_total=0.00,
@@ -108,7 +120,7 @@ def pedido_delivery(request):
         'complemento': endereco.endereco_complemento,
         'referencia': endereco.referencia,
         'produtos': _order_products(request, itens),
-        'subtotal': subtotal,
+        'subtotal': float(subtotal),
         'entrega': endereco.cidade,
         'pagamento': request.POST.get('forma_pagamento', ''),
         'total': float(subtotal) + float(config.taxa_entrega or 0),
@@ -142,8 +154,12 @@ def pedido_balcao(request):
     return redirect('sacola')
 
 
-@csrf_exempt
+@transaction.atomic
 def pedido_whatsapp(request):
+    if request.method == 'POST' and any(
+        type(qty) is not int or qty < 1 for qty in request.session.get('cart', {}).values()
+    ):
+        return JsonResponse({'message': 'Quantidade inválida na sacola.'}, status=400)
     if request.method != 'POST':
         return redirect('sacola')
 
@@ -159,6 +175,7 @@ def pedido_whatsapp(request):
         completo=False,
         tx_entrega=0.00,
         valor_total=0.00,
+        tipo_entrega=Ordem.TipoEntrega.A_COMBINAR,
         formade_pagamento='Contato pelo WhatsApp',
         vendedor=vendedor,
     )
@@ -178,8 +195,8 @@ def pedido_whatsapp(request):
             'nome': produto.nome,
             'referencia': produto.referencia,
             'quantidade': quantidade,
-            'valor': item.get_total,
-            'preco': produto.price,
+            'valor': float(item.get_total),
+            'preco': float(produto.price),
             'descricao': produto.description or '',
             'imagem': request.build_absolute_uri(
                 (produto.image or produto.imagem_extra).url
@@ -197,10 +214,10 @@ def pedido_whatsapp(request):
         'whatsapp': '',
         'vendedor': vendedor,
         'produtos': produtos,
-        'subtotal': subtotal,
+        'subtotal': float(subtotal),
         'entrega': 'A combinar',
         'pagamento': 'A combinar pelo WhatsApp',
-        'total': subtotal,
+        'total': float(subtotal),
         'telefone_loja': config.whatsapp,
     }
     request.session['cart'] = {}

@@ -1,3 +1,4 @@
+from orders import panel_views as order_panel
 from customers.views_auth import (
     login_view,
     register_view,
@@ -90,6 +91,12 @@ urlpatterns = [
     path('password-reset/', password_reset_request_view, name='password_reset_request'),
     path('password-reset/<uidb64>/<token>/', password_reset_confirm_view, name='password_reset_confirm'),
     path('painel/pedidos', painel_view, name='painel_pedidos'),
+    path('painel/pedidos/<int:ordem_id>/cliente/', order_panel.customer, name='pedido_cliente'),
+    path('painel/pedidos/<int:ordem_id>/status/', order_panel.status, name='pedido_status'),
+    path('painel/pedidos/<int:ordem_id>/cancelar/', order_panel.cancel, name='pedido_cancelar'),
+    path('painel/pedidos/<int:ordem_id>/entrega/', order_panel.delivery, name='pedido_tipo_entrega'),
+    path('painel/pedidos/<int:ordem_id>/pagamento/', order_panel.payment, name='pedido_pagamento'),
+    path('painel/pedidos/<int:ordem_id>/historico/', order_panel.history, name='pedido_historico'),
     path('painel/pedidos/pendentes-count/', painel_pedidos_pendentes_count, name='painel_pedidos_pendentes_count'),
     path('painel/pedidos/dados/', painel_pedidos_dados, name='painel_pedidos_dados'),
     path('painel/home/', painel_home, name='painel_home'),

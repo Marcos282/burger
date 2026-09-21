@@ -225,6 +225,12 @@ class Tenant(models.Model):
 
 # Configurações específicas do Tenant, como tema, cores, etc. É um Singleton por Tenant.
 class TenantSettings(models.Model):
+    class TipoOperacao(models.TextChoices):
+        DELIVERY = 'delivery', 'Alimentação / Delivery'
+        VAREJO = 'varejo', 'Comércio / Venda de produtos'
+
+    tipo_operacao = models.CharField(max_length=20, choices=TipoOperacao.choices, default=TipoOperacao.VAREJO, verbose_name='Fluxo de pedidos')
+
     SEGMENTOS = {'18': 'Academia e esportes', '1': 'Alimentação e Bebidas', '22': 'Artes e cultura', '14': 'Automotivo', '8': 'Beleza, estética e cuidados', '25': 'Calçados', '7': 'Comércio em Geral', '19': 'Construção civil', '24': 'Educação', '9': 'Eletrônicos e importados', '10': 'Farmácia', '11': 'Imobiliário', '27': 'Infantil', '12': 'Móveis, decorações e utilidades', '13': 'Outros', '28': 'Pet shop', '23': 'Publicidade e marketing', '20': 'Saúde', '21': 'Serviços', '16': 'Sexshop', '26': 'Supermercados', '29': 'Transportadora', '17': 'Turismo e hotelaria', '15': 'Vestuário'}
 
     @property
