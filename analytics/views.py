@@ -10,8 +10,6 @@ from django.utils import timezone
 
 from .models import AcessoSite
 from .google_analytics import GoogleAnalyticsError, get_google_analytics_report
-from orders.models import Ordem
-from tenants.models import TenantSettings
 
 
 @login_required
@@ -60,15 +58,14 @@ def relatorio_acessos(request):
     return render(request, 'painel/relatorio_acessos.html', context)
 
 
-@login_required
 def google_stats(request):
-    host_tenant = getattr(request, 'tenant', None)
-    tenant = getattr(request.user, 'tenant', None)
-    if tenant is None or (host_tenant is not None and tenant.pk != host_tenant.pk):
-        from django.http import Http404
-        raise Http404('Loja não encontrada.')
+    from django.http import Http404
 
-    session_key = f'google_stats_pin_ok_{tenant.pk}'
+    host = request.get_host().split(':')[0].lower().strip('.')
+    if host not in ('viazap.net', 'www.viazap.net', 'localhost', '127.0.0.1'):
+        raise Http404('Página não encontrada.')
+
+    session_key = 'viazap_google_stats_pin_ok'
     pin_error = ''
     if request.method == 'POST' and request.POST.get('stats_pin') is not None:
         supplied_pin = request.POST.get('stats_pin', '').strip()
@@ -82,7 +79,6 @@ def google_stats(request):
     if not request.session.get(session_key):
         return render(request, 'painel/google_stats_pin.html', {
             'pin_error': pin_error,
-            'tenant': tenant,
         }, status=403 if pin_error else 200)
 
     try:
@@ -90,26 +86,24 @@ def google_stats(request):
     except (TypeError, ValueError):
         days = 30
     days = days if days in (7, 30, 90) else 30
-    settings = TenantSettings.load(tenant)
     report = None
     error = ''
-    try:
-        report = get_google_analytics_report(
-            tenant_id=tenant.pk,
-            property_id=(settings.google_analytics_property_id or '').strip(),
-            days=days,
-        )
-    except GoogleAnalyticsError as exc:
-        error = str(exc)
+    property_id = django_settings.VIAZAP_GOOGLE_ANALYTICS_PROPERTY_ID
+    if not property_id:
+        error = 'Configure VIAZAP_GOOGLE_ANALYTICS_PROPERTY_ID no servidor.'
+    else:
+        try:
+            report = get_google_analytics_report(
+                tenant_id='viazap',
+                property_id=property_id,
+                days=days,
+            )
+        except GoogleAnalyticsError as exc:
+            error = str(exc)
 
     return render(request, 'painel/google_stats.html', {
-        'localizacao': [
-            {'n1': 'Home', 'url': 'painel_home'},
-            {'n2': 'Google Analytics', 'url': 'google_stats'},
-        ],
-        'qt_items_cliente': Ordem.objects.filter(tenant=tenant).count(),
         'period_days': days,
         'report': report,
         'stats_error': error,
-        'property_id': settings.google_analytics_property_id,
+        'property_id': property_id,
     })

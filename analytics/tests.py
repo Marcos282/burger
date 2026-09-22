@@ -2,7 +2,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.http import Http404, HttpResponse
-from django.test import RequestFactory, SimpleTestCase, TestCase
+from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
 
 from .views import relatorio_acessos
 
@@ -53,17 +53,6 @@ class RelatorioAcessosTests(SimpleTestCase):
 
 
 class GoogleStatsTests(TestCase):
-    def setUp(self):
-        from customers.models import User
-        from tenants.models import Tenant, TenantSettings
-
-        self.tenant = Tenant.objects.create(name='Stats', subdomain='stats-loja')
-        self.settings = TenantSettings.objects.create(tenant=self.tenant, tag_google_analytics='G-TESTE123')
-        self.user = User.objects.create_user(
-            email='stats@example.com', username='stats-loja', password='senha', tenant=self.tenant,
-        )
-        self.client.force_login(self.user)
-
     def unlock(self):
         return self.client.post('/stats/', {'stats_pin': '1234'}, HTTP_HOST='localhost')
 
@@ -77,18 +66,17 @@ class GoogleStatsTests(TestCase):
         accepted = self.unlock()
         self.assertRedirects(accepted, '/stats/', fetch_redirect_response=False)
 
-    def test_requires_numeric_property_id(self):
+    def test_requires_global_property_id(self):
         self.unlock()
         response = self.client.get('/stats/', HTTP_HOST='localhost')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Cadastre o ID numérico da propriedade GA4')
+        self.assertContains(response, 'VIAZAP_GOOGLE_ANALYTICS_PROPERTY_ID')
 
+    @override_settings(VIAZAP_GOOGLE_ANALYTICS_PROPERTY_ID='123456789')
     @patch('analytics.views.get_google_analytics_report')
-    def test_displays_report_for_authenticated_tenant(self, report):
+    def test_displays_global_viazap_report(self, report):
         from analytics.google_analytics import GoogleAnalyticsReport
 
-        self.settings.google_analytics_property_id = '123456789'
-        self.settings.save(update_fields=['google_analytics_property_id'])
         self.unlock()
         report.return_value = GoogleAnalyticsReport(
             totals={'activeUsers': 12, 'sessions': 18, 'screenPageViews': 30, 'eventCount': 50},
@@ -97,9 +85,13 @@ class GoogleStatsTests(TestCase):
         response = self.client.get('/stats/?dias=7', HTTP_HOST='localhost')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Usuários ativos')
-        report.assert_called_once_with(tenant_id=self.tenant.pk, property_id='123456789', days=7)
+        report.assert_called_once_with(tenant_id='viazap', property_id='123456789', days=7)
 
-    def test_anonymous_user_is_redirected(self):
-        self.client.logout()
+    def test_anonymous_user_only_needs_pin(self):
         response = self.client.get('/stats/', HTTP_HOST='localhost')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Relatórios protegidos')
+
+    def test_tenant_subdomain_cannot_access_global_stats(self):
+        response = self.client.get('/stats/', HTTP_HOST='qualquer.localhost')
+        self.assertEqual(response.status_code, 404)

@@ -1,15 +1,10 @@
-{% extends 'painel/base.html' %}
-{% block title %}Google Analytics | ViaZap{% endblock %}
-{% block content4 %}{% include 'painel/hearder_mobile.html' %}{% include 'painel/aside.html' %}{% endblock %}
-{% block content3 %}{% include 'painel/menu_wrapper.html' %}{% include 'painel/top_bar.html' %}{% endblock %}
-{% block content %}
-{% include 'painel/subheader.html' %}
+{% load static %}
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Estatísticas ViaZap</title><link rel="stylesheet" href="{% static 'assets/plugins/global/plugins.bundle.css' %}"><link rel="stylesheet" href="{% static 'assets/css/style.bundle.css' %}">
 <style>
-.ga-card{border:0;border-radius:12px;box-shadow:0 3px 14px rgba(0,0,0,.06)}.ga-value{font-size:2rem;font-weight:700;color:#202124}.ga-label{color:#5f6368}.ga-table{background:#fff;border-radius:12px;overflow:hidden}.ga-bar{height:8px;border-radius:5px;background:#e8f0fe;overflow:hidden}.ga-bar span{display:block;height:100%;background:#4285f4}.ga-empty{background:#fff;border:1px solid #e4e6ef;border-radius:12px;padding:36px;text-align:center}
-</style>
-<div class="container-fluid">
+.ga-card{border:0;border-radius:12px;box-shadow:0 3px 14px rgba(0,0,0,.06)}.ga-value{font-size:2rem;font-weight:700;color:#202124}.ga-label{color:#5f6368}.ga-empty{background:#fff;border:1px solid #e4e6ef;border-radius:12px;padding:36px;text-align:center}body{background:#f5f7fa}.ga-page{max-width:1180px;margin:0 auto;padding:35px 20px}
+</style></head><body><main class="ga-page">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-6">
-    <div><h2 class="font-weight-bolder mb-1">Google Analytics</h2><p class="text-muted mb-0">Dados da propriedade desta loja.</p></div>
+    <div><h2 class="font-weight-bolder mb-1">Estatísticas ViaZap</h2><p class="text-muted mb-0">Dados do site institucional viazap.net.</p></div>
     <div class="btn-group mt-3 mt-md-0">
       <a class="btn {% if period_days == 7 %}btn-primary{% else %}btn-light-primary{% endif %}" href="?dias=7">7 dias</a>
       <a class="btn {% if period_days == 30 %}btn-primary{% else %}btn-light-primary{% endif %}" href="?dias=30">30 dias</a>
@@ -17,7 +12,7 @@
     </div>
   </div>
   {% if stats_error %}
-    <div class="ga-empty"><i class="fab fa-google fa-3x text-primary mb-4"></i><h4 class="font-weight-bolder">Relatório ainda não disponível</h4><p class="text-muted mb-4">{{ stats_error }}</p><a href="{% url 'painel_configuracao' %}" class="btn btn-primary">Abrir configurações</a></div>
+    <div class="ga-empty"><i class="fab fa-google fa-3x text-primary mb-4"></i><h4 class="font-weight-bolder">Relatório ainda não disponível</h4><p class="text-muted mb-0">{{ stats_error }}</p></div>
   {% elif report %}
     <div class="row">
       <div class="col-6 col-xl-3"><div class="card ga-card mb-5"><div class="card-body"><div class="ga-label">Usuários ativos</div><div class="ga-value">{{ report.totals.activeUsers }}</div></div></div></div>
@@ -30,6 +25,4 @@
       <div class="col-xl-5"><div class="card ga-card mb-5"><div class="card-header"><h4 class="card-title font-weight-bolder">Páginas mais acessadas</h4></div><div class="card-body">{% for page in report.pages %}<div class="mb-5"><div class="d-flex justify-content-between"><span class="text-truncate mr-3" title="{{ page.path }}">{{ page.path }}</span><strong>{{ page.screenPageViews }}</strong></div><small class="text-muted">{{ page.activeUsers }} usuários</small></div>{% empty %}<p class="text-muted">Sem páginas no período.</p>{% endfor %}</div></div></div>
     </div>
   {% endif %}
-</div>
-{% endblock %}
-{% block footer %}{% include 'painel/footer.html' %}{% endblock %}
+</main></body></html>
