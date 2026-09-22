@@ -67,6 +67,11 @@ def loja(request):
    categoria_id = request.GET.get("categoria_id")
    termo_busca = request.GET.get("busca", "").strip()
    configuracao = TenantSettings.objects.filter(tenant=request.tenant).first()
+   analytics_tag = (configuracao.tag_google_analytics or '').strip().upper() if configuracao else ''
+   if not analytics_tag and configuracao:
+       analytics_tag = (configuracao.googleanalytics or '').strip().upper()
+   ga_measurement_id = analytics_tag if re.fullmatch(r'G-[A-Z0-9]+', analytics_tag) else ''
+   gtm_container_id = analytics_tag if re.fullmatch(r'GTM-[A-Z0-9]+', analytics_tag) else ''
    configuracao_extra = Configuracao.load()
    categorias = Category.objects.filter(
        tenant=request.tenant,
@@ -146,6 +151,8 @@ def loja(request):
        'configuracao_extra': configuracao_extra,
        'configuracao': configuracao_extra,
        'settings': configuracao,
+       'ga_measurement_id': ga_measurement_id,
+       'gtm_container_id': gtm_container_id,
        'banners': Banners.objects.filter(
            tenant=request.tenant,
            ativo=True,
