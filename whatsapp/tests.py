@@ -43,6 +43,11 @@ class WhatsAppTenantTests(TestCase):
         self.assertEqual(_tenant(request), self.tenant)
         self.assertEqual(request.tenant, self.tenant)
 
+    def test_main_domain_derives_tenant_from_authenticated_user(self):
+        request = self.request('get', '/', tenant=None, host='viazap.net')
+        self.assertEqual(_tenant(request), self.tenant)
+        self.assertEqual(request.tenant, self.tenant)
+
     def test_connect_requires_authentication(self):
         response = conectar(self.request('post', '/', user=AnonymousUser()))
         self.assertEqual(response.status_code, 403)

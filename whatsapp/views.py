@@ -23,9 +23,10 @@ def _tenant(request):
         return None
     tenant = getattr(request, 'tenant', None)
     user_tenant = getattr(request.user, 'tenant', None)
-    # O domínio principal é usado no desenvolvimento local; nele, deriva o tenant
-    # somente do usuário já autenticado e o grava no request antes de prosseguir.
-    if tenant is None and request.get_host().split(':')[0] in ('localhost', '127.0.0.1'):
+    # No domínio principal (viazap.net, localhost ou túnel), o middleware deixa
+    # request.tenant vazio. O painel pode então usar apenas o tenant do usuário
+    # autenticado. Em um subdomínio de loja, a igualdade abaixo continua obrigatória.
+    if tenant is None and user_tenant is not None:
         tenant = user_tenant
         request.tenant = tenant
     if tenant is None or user_tenant is None or tenant.pk != user_tenant.pk:
