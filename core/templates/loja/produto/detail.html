@@ -315,7 +315,7 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
+                              {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -378,7 +378,7 @@
                            </div>
                         </div>
                         <div class="social">
-                           {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
+                           {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -415,8 +415,8 @@
                      <button type="button" class="close" data-dismiss="modal"><i class="lni lni-close"></i></button>
                   </div>
                   <div class="modal-body">
-                     {% if config.whatsapp %}
-                     <p>Prefere WhatsApp? Fale direto: <a href="https://wa.me/{{ config.whatsapp }}" target="_blank">{{ config.whatsapp }}</a></p>
+                     {% if config.whatsapp_numero %}
+                     <p>Prefere WhatsApp? Fale direto: <a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer">{{ config.whatsapp }}</a></p>
                      {% endif %}
                      <form id="formSuporte">
                         <div class="line">
@@ -731,13 +731,13 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>{{ configuracao.endereco }}, Nº {{ configuracao.numero }} <br/>Bairro: {{ configuracao.bairro }}, CEP: {{ configuracao.cep }}, {{ configuracao.cidade }}/{{ configuracao.estado }}<br/></span>
+                        <span>{% include "loja/includes/endereco_rodape.html" %}</span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           {% if config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
+                           {% include "loja/includes/whatsapp_rodape.html" %}
                         </div>
                      </div>
                   </div>

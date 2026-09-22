@@ -5,11 +5,11 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>Tiger Burger  - lojazap</title>
-      <meta name="description" content="O melhor hambúrguer de Itajaí ">
-      <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="Tiger Burger  - lojazap">
-      <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
+      <title>{{ config.nome_loja|default:'Loja' }} - viazap</title>
+      <meta name="description" content="{{ config.descricao_loja|default:'Confira os produtos da loja' }}">
+      <meta name="keywords" content="{{ config.nome_loja|default:'Loja' }}, viazap">
+      <meta property="og:title" content="{{ config.nome_loja|default:'Loja' }} - viazap">
+      <meta property="og:description" content="{{ config.descricao_loja|default:'Confira os produtos da loja' }}">
       <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
       <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
@@ -30,6 +30,12 @@
       <style>
          :root { --theme-color: {{ color_theme|default:'#DD7B0A' }}; }
          .colored,
+         .shop-bag i,
+         .naver .navbar a i,
+         .header .naver .navbar .social a:hover i,
+         .naver .navbar a:hover,
+         .user-menu i,
+         .search-bar-mobile button i,
          .title-icon i,
          .title-line i,
          .back-button i,
@@ -38,8 +44,21 @@
          .botao-acao,
          .footer-info,
          .sidebar .sidebar-header,
-         .minitop { background-color: var(--theme-color) !important; }
+         .minitop,
+         .floatbar { background: var(--theme-color) !important; }
          .top { border-color: var(--theme-color) !important; }
+
+         @media (max-width: 991px) {
+            .top {
+               border-top: 0;
+               background: var(--theme-color) !important;
+            }
+
+            .user-menu i,
+            .shop-bag i {
+               color: #fff !important;
+            }
+         }
       </style>
       <script src="{% static '_core/_cdn/jquery/js/jquery.min.js' %}"></script>
       <script src="{% static '_core/_cdn/fancybox/js/jquery.fancybox.min.js' %}"></script>
@@ -86,8 +105,14 @@
                   <div class="row align-middle hidden-sm hidden-xs">
                      <div class="col-md-3">
                         <div class="brand">
-                           <a href="https://vaidezap.com">
-                           <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                           <a href="{% url 'loja' %}">
+                           {% if config.foto_perfil %}
+                              <img src="{{ config.foto_perfil.url }}" alt="{{ config.nome_loja }}"/>
+                           {% elif config.logo_url %}
+                              <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                           {% else %}
+                              <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ config.nome_loja }}"/>
+                           {% endif %}
                            <span>{{ config.nome_loja }} <strong class="colored">.</strong></span>
                            </a>
                         </div>
@@ -170,7 +195,7 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/5521990921092" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -233,7 +258,7 @@
                            </div>
                         </div>
                         <div class="social">
-                           <a href="https://wa.me/" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -266,8 +291,14 @@
             <div class="locked-bar visible-xs visible-sm">
                <div class="avatar">
                   <div class="holder">
-                     <a href="https://x.lojazap.com/loja">
-                     <img src="https://demo6.lojazap.com/_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg"/>
+                     <a href="{% url 'loja' %}">
+                     {% if config.foto_perfil %}
+                        <img src="{{ config.foto_perfil.url }}" alt="{{ config.nome_loja }}"/>
+                     {% elif config.logo_url %}
+                        <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                     {% else %}
+                        <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ config.nome_loja }}"/>
+                     {% endif %}
                      </a>
                   </div>
                </div>
@@ -545,13 +576,13 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>{{ configuracao.endereco }}, Nº {{ configuracao.numero }}, <br/>Bairro: {{ configuracao.bairro }}, CEP: {{ configuracao.cep }}, {{ configuracao.cidade }}/{{ configuracao.estado }}<br/></span>
+                        <span>{% include "loja/includes/endereco_rodape.html" %}</span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% include "loja/includes/whatsapp_rodape.html" %}
                         </div>
                      </div>
                   </div>

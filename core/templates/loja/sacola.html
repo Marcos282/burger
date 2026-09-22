@@ -117,6 +117,34 @@
                border-top: 0;
                background: var(--theme-color) !important;
             }
+
+            .sacola-acoes .sacola-acao {
+               margin-top: 12px;
+               width: 100%;
+            }
+         }
+
+         @media (min-width: 992px) {
+            .sacola-acoes {
+               display: flex;
+               align-items: flex-end;
+            }
+         }
+
+         .sacola-acoes .botao-acao {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 48px;
+            padding: 10px 14px;
+            border: 0;
+            box-sizing: border-box;
+         }
+
+         .sacola-acoes .botao-acao span,
+         .sacola-acoes .botao-acao i {
+            transform: none;
          }
       </style>
       <!-- / FIM CSS DINÂMICO -->
@@ -251,7 +279,7 @@
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                            </div>
                         </nav>
                         <div class="clear"></div>
@@ -306,7 +334,7 @@
                         <div class="content">
                            <div class="listitem">
                               <i class="lni lni-whatsapp"></i>
-                              <span>47997277362</span>
+                              <span>{{ config.whatsapp|default:'Não informado' }}</span>
                            </div>
                            <div class="listitem">
                               <i class="lni lni-envelope"></i>
@@ -314,7 +342,7 @@
                            </div>
                         </div>
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -349,7 +377,13 @@
                   <div class="avatar">
                      <div class="holder">
                         <a href="{% url 'loja' %}">
-                        <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}"/>
+                        {% if config.foto_perfil %}
+                           <img src="{{ config.foto_perfil.url }}" alt="{{ config.nome_loja }}"/>
+                        {% elif config.logo_url %}
+                           <img src="{{ config.logo_url }}" alt="{{ config.nome_loja }}"/>
+                        {% else %}
+                           <img src="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}" alt="{{ config.nome_loja }}"/>
+                        {% endif %}
                         </a>
                      </div>
                   </div>
@@ -481,31 +515,27 @@
                                  </div>
                               </div>
                         </form>
-                        <div class="row">
-                        <div class="col-md-4">
-                        <div class="subtotal"><strong>Subtotal:</strong> <span>{{ total }}</span></div>
-                        </div>
-                        <div class="clear visible-xs visible-sm"><br/></div>
-                        
-                        <div class="col-md-4">
-                        {% if config.delivery %}
-                        <a class="botao-acao" href="{% url 'cadastro_form' %}"><i class="lni lni-bi-cycle"></i> <span>Delivery</span></a>
-                        {% endif %}
-                        </div>
-                        <div class="clear visible-xs visible-sm"><br/></div>
-                        {% if config.chamar_whatsapp %}
-                        <div class="col-md-3">
-                        <form id="whatsappForm" method="POST" action="{% url 'pedido_whatsapp' %}">
-                        {% csrf_token %}
-                        <label for="whatsappVendedor">Vendedor</label>
-                        <input name="vendedor" type="text" class="form-control" placeholder="Nome do vendedor" id="whatsappVendedor" required>
-                        <button class="botao-acao" type="submit" form="whatsappForm"><i class="lni lni-whatsapp"></i> <span>Chamar no WhatsApp</span></button>
-                        </form>
-                        </div>
-                        {% endif %}
+                        <div class="row sacola-acoes">
+                           <div class="col-md-4">
+                              <div class="subtotal"><strong>Subtotal:</strong> <span>{{ total }}</span></div>
+                           </div>
+                           {% if config.delivery %}
+                           <div class="col-md-4 sacola-acao">
+                              <a class="botao-acao" href="{% url 'cadastro_form' %}"><i class="lni lni-cart-full"></i> <span>Comprar</span></a>
+                           </div>
+                           {% endif %}
+                           {% if config.chamar_whatsapp %}
+                           <div class="col-md-4 sacola-acao">
+                              <form id="whatsappForm" method="POST" action="{% url 'pedido_whatsapp' %}">
+                                 {% csrf_token %}
+                                 <label for="whatsappVendedor">Vendedor</label>
+                                 <input name="vendedor" type="text" class="form-control" placeholder="Nome do vendedor" id="whatsappVendedor" required>
+                                 <button class="botao-acao" type="submit"><i class="lni lni-whatsapp"></i> <span>Chamar no WhatsApp</span></button>
+                              </form>
+                           </div>
+                           {% endif %}
                         </div>
                         </div>
-                        </form>
                      </div>
                   </div>
                </div>
@@ -517,13 +547,13 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>{{ config.endereco|default:'1250' }}, Nº {{ config.numero_endereco|default:'1000' }}, <br/>Bairro: {{ config.bairro|default:'SV' }}, CEP: {{ config.cep|default:'88300-000' }}, {{ config.cidade|default:'São Paulo' }}/{{ config.estado|default:'São Paulo' }}<br/></span>
+                        <span>{% include "loja/includes/endereco_rodape.html" %}</span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                           <a href="https://wa.me/5547997277362" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                           {% include "loja/includes/whatsapp_rodape.html" %}
                         </div>
                      </div>
                   </div>

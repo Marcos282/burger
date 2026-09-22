@@ -286,8 +286,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </nav>
                         <nav class="navbar pull-right hidden-xs hidden-sm">
                            <div class="social">
-                              {% if config and config.whatsapp %}
-                              <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
+                              {% if config.whatsapp_numero %}
+                              <a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>
                               {% endif %}
                            </div>
                         </nav>
@@ -351,7 +351,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                            </div>
                         </div>
                         <div class="social">
-                           {% if config and config.whatsapp %}<a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>{% endif %}
+                           {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
                         </div>
                      </div>
                   </div>
@@ -635,15 +635,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <span>, Nº {{ configuracao.numero }}, <br/>Bairro: {{ configuracao.bairro }}, CEP: {{ configuracao.cep }}, {{ configuracao.cidade }}/{{ configuracao.estado }}<br/></span>
+                        <span>{% include "loja/includes/endereco_rodape.html" %}</span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-12">
                         <div class="social">
-                                             {% if config and config.whatsapp %}
-                                             <a href="https://wa.me/{{ config.whatsapp }}" target="_blank"><i class="lni lni-whatsapp"></i></a>
-                                             {% endif %}
+                           {% include "loja/includes/whatsapp_rodape.html" %}
                         </div>
                      </div>
                   </div>

@@ -1,0 +1,6 @@
+{% if configuracao.telefone_numero %}
+<a href="https://wa.me/{{ configuracao.telefone_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp {{ configuracao.telefone }}">
+   <i class="lni lni-whatsapp"></i>
+   <span>{{ configuracao.telefone }}</span>
+</a>
+{% endif %}

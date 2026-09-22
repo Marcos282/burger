@@ -863,8 +863,7 @@
                      <div class="form-group fv-plugins-icon-container">
                         <p class="text-dark-50 bg-gray-100 font-size-sm" style="padding-left: 14px; border-left: 3px solid #070c3f;">Será o número no qual você receberá os pedidos.</p>
                         <label>WhatsApp:</label>
-                        <!-- <input type="text" class="form-control maskcel" name="whatsapp" value="{{ settings.whatsapp|default:'' }}"> -->
-                        <input type="text" class="form-control maskcel" name="whatsapp" value="">
+                        <input type="text" class="form-control maskcel" name="whatsapp" value="{{ settings.whatsapp|default:'' }}">
                      </div>
                      <!--begin::Section-->
                      <h6 class="font-weight-bolder mb-3">
@@ -1186,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Adiciona as opções de cidade
                 cidades.forEach(cidade => {
                     const option = document.createElement('option');
-                    option.value = cidade.id;
+                    option.value = cidade.nome;
                     option.text = cidade.nome;
                     cidadeSelect.appendChild(option);
                 });

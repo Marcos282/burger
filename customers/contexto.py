@@ -1,9 +1,19 @@
+import re
+
 from tenants.models import Tenant, Configuracao, TenantSettings
 
 
 def configuracao_context(request):
-    """Expõe a Configuracao (singleton) em todos os templates."""
-    return {'configuracao': Configuracao.load()}
+    """Expõe configurações gerais e o WhatsApp normalizado da loja."""
+    tenant = getattr(request, 'tenant', None)
+    loja_settings = TenantSettings.objects.filter(tenant=tenant).first() if tenant else None
+    whatsapp_numero = re.sub(r'\D', '', loja_settings.whatsapp or '') if loja_settings else ''
+    if len(whatsapp_numero) in (10, 11):
+        whatsapp_numero = f'55{whatsapp_numero}'
+    return {
+        'configuracao': Configuracao.load(),
+        'loja_whatsapp_numero': whatsapp_numero,
+    }
 
 
 def loja_aberta_context(request):

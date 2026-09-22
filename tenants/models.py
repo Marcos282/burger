@@ -29,6 +29,14 @@ class Configuracao(SingletonModel):
     nome_empresa = models.CharField(max_length=100, default="Minha Empresa")
     email_contato = models.EmailField(default="contato@empresa.com")
     telefone = models.CharField(max_length=20, blank=True, null=True)
+
+    @property
+    def telefone_numero(self):
+        """Telefone geral somente com dígitos, pronto para links wa.me."""
+        numero = ''.join(char for char in (self.telefone or '') if char.isdigit())
+        if len(numero) in (10, 11):
+            numero = f'55{numero}'
+        return numero
     logo = models.ImageField(upload_to="logos/", blank=True, null=True)
     dominio= models.CharField(max_length=100, default="meusite.com")
     favicon = models.ImageField(upload_to="favicons/", blank=True, null=True)
@@ -237,6 +245,14 @@ class TenantSettings(models.Model):
     def segmento_nome(self):
         segmento = (self.segmento or '').strip()
         return self.SEGMENTOS.get(segmento, segmento if segmento and not segmento.isdigit() else 'Não informado')
+
+    @property
+    def whatsapp_numero(self):
+        """Número da loja somente com dígitos, pronto para links wa.me."""
+        numero = ''.join(char for char in (self.whatsapp or '') if char.isdigit())
+        if len(numero) in (10, 11):
+            numero = f'55{numero}'
+        return numero
 
     
     # OBSOLETO: Horários de funcionamento agora são gerenciados pela tabela HorarioFuncionamento
