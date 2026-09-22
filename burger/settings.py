@@ -218,6 +218,8 @@ AI_CHAT_TIMEOUT = int(os.getenv('AI_CHAT_TIMEOUT', '20'))
 EVOLUTION_API_URL = os.getenv('EVOLUTION_API_URL', 'http://127.0.0.1:8080').strip().rstrip('/')
 EVOLUTION_API_KEY = os.getenv('EVOLUTION_API_KEY', '').strip()
 EVOLUTION_API_TIMEOUT = int(os.getenv('EVOLUTION_API_TIMEOUT', '10'))
+
+GOOGLE_STATS_PIN = os.getenv('GOOGLE_STATS_PIN', '1234').strip()
 ##################################################################
 
 ####################  E-MAIL (recuperação de senha, etc.) =======

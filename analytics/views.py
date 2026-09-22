@@ -1,9 +1,11 @@
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.conf import settings as django_settings
+from django.contrib.auth.hashers import constant_time_compare
 from django.db.models import Count
 from django.db.models.functions import TruncDate
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from .models import AcessoSite
@@ -65,6 +67,23 @@ def google_stats(request):
     if tenant is None or (host_tenant is not None and tenant.pk != host_tenant.pk):
         from django.http import Http404
         raise Http404('Loja não encontrada.')
+
+    session_key = f'google_stats_pin_ok_{tenant.pk}'
+    pin_error = ''
+    if request.method == 'POST' and request.POST.get('stats_pin') is not None:
+        supplied_pin = request.POST.get('stats_pin', '').strip()
+        if len(supplied_pin) == 4 and supplied_pin.isdigit() and constant_time_compare(
+            supplied_pin, django_settings.GOOGLE_STATS_PIN,
+        ):
+            request.session[session_key] = True
+            request.session.set_expiry(0)
+            return redirect('google_stats')
+        pin_error = 'PIN incorreto.'
+    if not request.session.get(session_key):
+        return render(request, 'painel/google_stats_pin.html', {
+            'pin_error': pin_error,
+            'tenant': tenant,
+        }, status=403 if pin_error else 200)
 
     try:
         days = int(request.GET.get('dias', 30))

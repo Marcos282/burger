@@ -64,7 +64,21 @@ class GoogleStatsTests(TestCase):
         )
         self.client.force_login(self.user)
 
+    def unlock(self):
+        return self.client.post('/stats/', {'stats_pin': '1234'}, HTTP_HOST='localhost')
+
+    def test_requests_four_digit_pin(self):
+        response = self.client.get('/stats/', HTTP_HOST='localhost')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Digite o PIN de quatro dígitos')
+        denied = self.client.post('/stats/', {'stats_pin': '9999'}, HTTP_HOST='localhost')
+        self.assertEqual(denied.status_code, 403)
+        self.assertContains(denied, 'PIN incorreto', status_code=403)
+        accepted = self.unlock()
+        self.assertRedirects(accepted, '/stats/', fetch_redirect_response=False)
+
     def test_requires_numeric_property_id(self):
+        self.unlock()
         response = self.client.get('/stats/', HTTP_HOST='localhost')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Cadastre o ID numérico da propriedade GA4')
@@ -75,6 +89,7 @@ class GoogleStatsTests(TestCase):
 
         self.settings.google_analytics_property_id = '123456789'
         self.settings.save(update_fields=['google_analytics_property_id'])
+        self.unlock()
         report.return_value = GoogleAnalyticsReport(
             totals={'activeUsers': 12, 'sessions': 18, 'screenPageViews': 30, 'eventCount': 50},
             daily=[], pages=[],
