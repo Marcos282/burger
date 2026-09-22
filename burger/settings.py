@@ -147,6 +147,7 @@ INSTALLED_APPS = [
     'core',
     'pagamento',
     'analytics',
+    'whatsapp',
 ]
 
 MIDDLEWARE = [

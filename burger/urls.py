@@ -120,6 +120,7 @@ urlpatterns = [
     path('painel/upload-foto-capa/', upload_foto_capa, name='upload_foto_capa'),
     path('painel/qrcode', painel_qrcode, name='painel_qrcode'),
     path('painel/reduzir-imagens/', painel_reduzir_imagens, name='painel_reduzir_imagens'),
+    path('painel/whatsapp-api/', include('whatsapp.urls')),
     path('painel/banners', painel_banners, name='painel_banners'),
     path('painel/banners/adicionar/', painel_banners_add, name='painel_banners_add'),
     path('painel/banners/deletar/<int:banner_id>/', painel_banners_delete, name='painel_banners_delete'),

@@ -1,0 +1,73 @@
+{% extends 'painel/base.html' %}
+
+{% block content4 %}{% include 'painel/hearder_mobile.html' %}{% include 'painel/aside.html' %}{% endblock %}
+{% block content3 %}{% include 'painel/menu_wrapper.html' %}{% include 'painel/top_bar.html' %}{% endblock %}
+
+{% block content %}
+{% include 'painel/subheader.html' %}
+<style>
+  .wa-shell{--wa:#25d366;--wa-dark:#128c7e}.wa-hero{background:linear-gradient(135deg,#075e54 0%,#128c7e 55%,#25d366 100%);border-radius:12px;color:#fff;padding:28px;position:relative;overflow:hidden}.wa-hero:after{content:"";position:absolute;width:220px;height:220px;border:40px solid rgba(255,255,255,.08);border-radius:50%;right:-70px;top:-95px}.wa-variable-bar{background:#fff;border:1px solid #e5e9f2;border-radius:10px;padding:16px}.wa-chip{border:1px solid #bce9cc;background:#edfff4;color:#08783c;border-radius:20px;padding:6px 10px;margin:3px;cursor:pointer;font-weight:600;font-size:12px}.wa-chip:hover,.wa-chip:focus{background:#25d366;color:#fff;border-color:#25d366;outline:0}.wa-stage{border:1px solid #e5e9f2;border-radius:12px;background:#fff;height:100%;overflow:hidden;transition:.2s}.wa-stage:hover{box-shadow:0 8px 24px rgba(34,54,87,.09);transform:translateY(-2px)}.wa-stage__head{display:flex;gap:12px;align-items:flex-start;padding:18px;border-bottom:1px solid #edf0f5}.wa-stage__icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 42px}.wa-stage__body{padding:18px}.wa-message{min-height:118px;resize:vertical}.wa-preview{background:#e7ffdb;border-radius:10px 10px 2px 10px;padding:11px 13px;color:#223;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 1px 1px rgba(0,0,0,.08)}.wa-counter{font-size:11px;color:#7e8299}.wa-switch{margin-left:auto}.wa-stage.is-disabled{opacity:.62}.wa-savebar{position:sticky;bottom:12px;z-index:5;background:rgba(255,255,255,.96);border:1px solid #e5e9f2;border-radius:10px;padding:12px 16px;box-shadow:0 8px 25px rgba(0,0,0,.12)}
+</style>
+<div class="container-fluid">
+  <div class="wa-shell">
+    <div class="wa-hero gutter-b">
+      <div style="position:relative;z-index:1;max-width:720px">
+        <div class="d-flex align-items-center mb-3"><i class="fab fa-whatsapp fa-2x mr-3"></i><span class="label label-light-success label-pill">AUTOMAÇÃO</span></div>
+        <h2 class="font-weight-bolder text-white">Cada etapa, uma mensagem com a cara da sua loja</h2>
+        <p class="mb-0 text-white opacity-80">Escolha quais mudanças do pedido avisam o cliente e personalize os textos usando dados reais do atendimento.</p>
+      </div>
+    </div>
+
+    {% if messages %}{% for message in messages %}<div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">{{ message }}</div>{% endfor %}{% endif %}
+
+    <div class="wa-variable-bar gutter-b">
+      <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+        <div><strong>Variáveis disponíveis</strong><div class="text-muted font-size-sm">Clique para inserir no campo que estiver editando.</div></div>
+        <span class="label label-light-success label-inline">Dados preenchidos no envio</span>
+      </div>
+      <div>{% for variavel, descricao in variaveis %}<button type="button" class="wa-chip" data-variable="{{ variavel }}" title="{{ descricao }}">{{ variavel }}</button>{% endfor %}</div>
+    </div>
+
+    <form method="post" id="waMessagesForm">
+      {% csrf_token %}
+      <div class="row">
+        {% for etapa in etapas %}
+        <div class="col-12 col-xl-6 mb-6">
+          <section class="wa-stage{% if not etapa.ativa %} is-disabled{% endif %}" data-stage="{{ etapa.status }}">
+            <div class="wa-stage__head">
+              <span class="wa-stage__icon bg-light-{{ etapa.cor }} text-{{ etapa.cor }}"><i class="fas {{ etapa.icone }}"></i></span>
+              <div><h5 class="font-weight-bolder mb-1">{{ etapa.titulo }}</h5><span class="text-muted font-size-sm">{{ etapa.gatilho }}</span></div>
+              <div class="wa-switch"><span class="switch switch-sm switch-icon"><label><input class="wa-active" type="checkbox" name="ativa_{{ etapa.status }}" {% if etapa.ativa %}checked{% endif %}><span></span></label></span></div>
+            </div>
+            <div class="wa-stage__body">
+              <label class="font-weight-bold" for="mensagem_{{ etapa.status }}">Mensagem enviada</label>
+              <textarea class="form-control wa-message" id="mensagem_{{ etapa.status }}" name="mensagem_{{ etapa.status }}" maxlength="1000" data-default="{{ etapa.mensagem }}">{{ etapa.mensagem_atual }}</textarea>
+              <div class="d-flex justify-content-between align-items-center mt-2 mb-4"><button type="button" class="btn btn-sm btn-light-success wa-restore">Restaurar padrão</button><span class="wa-counter"><strong>0</strong>/1000</span></div>
+              <div class="text-muted font-size-xs font-weight-bold mb-2">PRÉVIA PARA O CLIENTE</div>
+              <div class="wa-preview"></div>
+            </div>
+          </section>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="wa-savebar d-flex flex-wrap align-items-center justify-content-between">
+        <div><strong>Mensagens por tenant</strong><div class="text-muted font-size-sm">Estas configurações pertencem somente à sua loja.</div></div>
+        <button class="btn btn-success font-weight-bolder mt-2 mt-sm-0" type="submit"><i class="fas fa-save mr-2"></i>Salvar mensagens</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  const sample={cliente:'Mariana',telefone:'(21) 99999-0000',pedido:'1048',loja:'Loja Exemplo',status:'Em preparação',total:'R$ 89,90',tipo_entrega:'Entrega',endereco:'Rua das Flores, 120',pagamento:'PIX',data:'22/09/2026',hora:'15:30',whatsapp_loja:'(21) 98888-0000'};
+  let activeField=null;
+  const render=(field)=>{const stage=field.closest('.wa-stage'),preview=stage.querySelector('.wa-preview'),counter=stage.querySelector('.wa-counter strong');let text=field.value;Object.keys(sample).forEach(key=>{text=text.split('{'+key+'}').join(sample[key])});preview.textContent=text||'A prévia aparecerá aqui.';counter.textContent=field.value.length};
+  document.querySelectorAll('.wa-message').forEach(field=>{field.addEventListener('focus',()=>activeField=field);field.addEventListener('input',()=>render(field));render(field)});
+  document.querySelectorAll('.wa-chip').forEach(chip=>chip.addEventListener('click',()=>{if(!activeField)activeField=document.querySelector('.wa-message');if(!activeField)return;const start=activeField.selectionStart,end=activeField.selectionEnd,value=activeField.value,token=chip.dataset.variable;activeField.value=value.slice(0,start)+token+value.slice(end);activeField.focus();activeField.setSelectionRange(start+token.length,start+token.length);render(activeField)}));
+  document.querySelectorAll('.wa-restore').forEach(button=>button.addEventListener('click',()=>{const field=button.closest('.wa-stage').querySelector('.wa-message');field.value=field.dataset.default;activeField=field;render(field)}));
+  document.querySelectorAll('.wa-active').forEach(toggle=>toggle.addEventListener('change',()=>toggle.closest('.wa-stage').classList.toggle('is-disabled',!toggle.checked)));
+})();
+</script>
+{% endblock %}
+
+{% block footer %}{% include 'painel/footer.html' %}{% endblock %}
