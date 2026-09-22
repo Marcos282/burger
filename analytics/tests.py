@@ -2,7 +2,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.http import Http404, HttpResponse
-from django.test import RequestFactory, SimpleTestCase
+from django.test import RequestFactory, SimpleTestCase, TestCase
 
 from .views import relatorio_acessos
 
@@ -50,3 +50,41 @@ class RelatorioAcessosTests(SimpleTestCase):
                     relatorio_acessos(request)
                 self.assertEqual(query.call_args.kwargs['data_hora__date__gte'], timezone.localdate() - timedelta(days=days - 1))
                 self.assertEqual(render.call_args.args[2]['period_days'], days)
+
+
+class GoogleStatsTests(TestCase):
+    def setUp(self):
+        from customers.models import User
+        from tenants.models import Tenant, TenantSettings
+
+        self.tenant = Tenant.objects.create(name='Stats', subdomain='stats-loja')
+        self.settings = TenantSettings.objects.create(tenant=self.tenant, tag_google_analytics='G-TESTE123')
+        self.user = User.objects.create_user(
+            email='stats@example.com', username='stats-loja', password='senha', tenant=self.tenant,
+        )
+        self.client.force_login(self.user)
+
+    def test_requires_numeric_property_id(self):
+        response = self.client.get('/stats/', HTTP_HOST='localhost')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Cadastre o ID numérico da propriedade GA4')
+
+    @patch('analytics.views.get_google_analytics_report')
+    def test_displays_report_for_authenticated_tenant(self, report):
+        from analytics.google_analytics import GoogleAnalyticsReport
+
+        self.settings.google_analytics_property_id = '123456789'
+        self.settings.save(update_fields=['google_analytics_property_id'])
+        report.return_value = GoogleAnalyticsReport(
+            totals={'activeUsers': 12, 'sessions': 18, 'screenPageViews': 30, 'eventCount': 50},
+            daily=[], pages=[],
+        )
+        response = self.client.get('/stats/?dias=7', HTTP_HOST='localhost')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Usuários ativos')
+        report.assert_called_once_with(tenant_id=self.tenant.pk, property_id='123456789', days=7)
+
+    def test_anonymous_user_is_redirected(self):
+        self.client.logout()
+        response = self.client.get('/stats/', HTTP_HOST='localhost')
+        self.assertEqual(response.status_code, 302)

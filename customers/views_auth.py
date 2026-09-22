@@ -1060,6 +1060,9 @@ def painel_configuracao(request):
                     settings.googleanalytics = request.POST['googleanalytics']
                 if 'tag_google_analytics' in request.POST:
                     settings.tag_google_analytics = request.POST['tag_google_analytics'].strip()
+                if 'google_analytics_property_id' in request.POST:
+                    property_id = request.POST['google_analytics_property_id'].strip()
+                    settings.google_analytics_property_id = property_id if property_id.isdigit() else ''
                 if 'facebook_pixel' in request.POST:
                     settings.facebook_pixel = request.POST['facebook_pixel']
                 if 'instagram_pixel' in request.POST:

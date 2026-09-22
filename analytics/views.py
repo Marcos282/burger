@@ -7,6 +7,9 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from .models import AcessoSite
+from .google_analytics import GoogleAnalyticsError, get_google_analytics_report
+from orders.models import Ordem
+from tenants.models import TenantSettings
 
 
 @login_required
@@ -53,3 +56,41 @@ def relatorio_acessos(request):
         'max_daily_views': max((item['views'] for item in daily), default=1),
     }
     return render(request, 'painel/relatorio_acessos.html', context)
+
+
+@login_required
+def google_stats(request):
+    host_tenant = getattr(request, 'tenant', None)
+    tenant = getattr(request.user, 'tenant', None)
+    if tenant is None or (host_tenant is not None and tenant.pk != host_tenant.pk):
+        from django.http import Http404
+        raise Http404('Loja não encontrada.')
+
+    try:
+        days = int(request.GET.get('dias', 30))
+    except (TypeError, ValueError):
+        days = 30
+    days = days if days in (7, 30, 90) else 30
+    settings = TenantSettings.load(tenant)
+    report = None
+    error = ''
+    try:
+        report = get_google_analytics_report(
+            tenant_id=tenant.pk,
+            property_id=(settings.google_analytics_property_id or '').strip(),
+            days=days,
+        )
+    except GoogleAnalyticsError as exc:
+        error = str(exc)
+
+    return render(request, 'painel/google_stats.html', {
+        'localizacao': [
+            {'n1': 'Home', 'url': 'painel_home'},
+            {'n2': 'Google Analytics', 'url': 'google_stats'},
+        ],
+        'qt_items_cliente': Ordem.objects.filter(tenant=tenant).count(),
+        'period_days': days,
+        'report': report,
+        'stats_error': error,
+        'property_id': settings.google_analytics_property_id,
+    })
