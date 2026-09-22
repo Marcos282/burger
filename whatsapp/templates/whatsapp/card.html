@@ -10,7 +10,7 @@
    }
 </style>
 <div class="col-12 col-md-6 col-xl-4">
-   <a href="{% url 'painel_whatsapp_api' %}" class="card card-custom card-stretch gutter-b whatsapp-api-card" style="text-decoration: none;">
+   <a href="{% url 'painel_whatsapp' %}" class="card card-custom card-stretch gutter-b whatsapp-api-card" style="text-decoration: none;">
       <span class="card-body" style="padding: 1.25rem 1.25rem 1rem 1.25rem;">
          <span class="svg-icon svg-icon-white svg-icon-3x ml-n1" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -19,10 +19,12 @@
             </svg>
          </span>
          <span class="d-flex align-items-baseline justify-content-between mt-3">
-            <span class="text-white font-weight-bolder font-size-h5 mb-2">WhatsApp API</span>
-            <span class="label label-light-success label-pill font-weight-bold">Configurar</span>
+            <span class="text-white font-weight-bolder font-size-h5 mb-2">WhatsApp</span>
+            {% with wa=user.tenant.whatsapp_configuracao %}
+            <span class="label label-light-{% if wa.status == 'conectado' %}success{% else %}danger{% endif %} label-pill font-weight-bold">{% if wa.status == 'conectado' %}🟢 Conectado{% else %}🔴 Não conectado{% endif %}</span>
+            {% endwith %}
          </span>
-         <span class="d-block text-white font-weight-bold font-size-sm">Automatize as mensagens das etapas do pedido.</span>
+         <span class="d-block text-white font-weight-bold font-size-sm">Conecte o WhatsApp da sua loja</span>
       </span>
    </a>
 </div>

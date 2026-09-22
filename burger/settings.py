@@ -214,6 +214,12 @@ AI_CHAT_MODEL = os.getenv('AI_CHAT_MODEL', 'gpt-4o-mini')
 AI_CHAT_TIMEOUT = int(os.getenv('AI_CHAT_TIMEOUT', '20'))
 ##################################################################
 
+####################  EVOLUTION API ==============================
+EVOLUTION_API_URL = os.getenv('EVOLUTION_API_URL', 'http://127.0.0.1:8080').strip().rstrip('/')
+EVOLUTION_API_KEY = os.getenv('EVOLUTION_API_KEY', '').strip()
+EVOLUTION_API_TIMEOUT = int(os.getenv('EVOLUTION_API_TIMEOUT', '10'))
+##################################################################
+
 ####################  E-MAIL (recuperação de senha, etc.) =======
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 # Só usa o backend de console (sem envio real) se nenhum EMAIL_HOST foi configurado.
