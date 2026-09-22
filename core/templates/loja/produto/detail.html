@@ -3,6 +3,7 @@
 <html>
    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
    <head>
+      {% include "loja/includes/google_tag_head.html" %}
       <meta property="og:title" content="{{ product_share.title }}">
       <meta property="og:description" content="{{ product_share.text }}">
       <meta property="og:url" content="{{ product_share.url }}">
@@ -188,6 +189,7 @@
    {% include "loja/includes/ai_chat_styles.html" %}
    </head>
    <body>
+      {% include "loja/includes/google_tag_body.html" %}
       <div id="main" class="body-estabelecimento">
          <div class="header">
             <div class="minitop hidden-xs hidden-sm">

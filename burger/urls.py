@@ -64,7 +64,7 @@ from core.views import (
 )
 
 from orders.views import pedido_delivery, pedido_balcao, pedido_whatsapp, cadastro_form
-from analytics.views import relatorio_acessos
+from analytics.views import google_stats, relatorio_acessos
 
 
 urlpatterns = [
@@ -101,6 +101,7 @@ urlpatterns = [
     path('painel/pedidos/dados/', painel_pedidos_dados, name='painel_pedidos_dados'),
     path('painel/home/', painel_home, name='painel_home'),
     path('painel/relatorios/acessos/', relatorio_acessos, name='relatorio_acessos'),
+    path('stats/', google_stats, name='google_stats'),
     path('painel/atendimento-ia/', painel_bot_atendimento, name='painel_bot_atendimento'),
     path('painel/atendimento-ia/sessoes/', painel_bot_sessoes, name='painel_bot_sessoes'),
     path('painel/atendimento-ia/mensagens/', painel_bot_mensagens, name='painel_bot_mensagens'),

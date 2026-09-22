@@ -302,6 +302,12 @@ class TenantSettings(models.Model):
     chamar_whatsapp = models.BooleanField(default=True, help_text="Exibe o botão para enviar a sacola pelo WhatsApp")
     googleanalytics = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Google Analytics")
     tag_google_analytics = models.CharField(max_length=100, blank=True, null=True, help_text="Tag do Google Analytics")
+    google_analytics_property_id = models.CharField(
+        max_length=30,
+        blank=True,
+        default='',
+        help_text="ID numérico da propriedade GA4 usado para consultar relatórios.",
+    )
     facebook_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Facebook Pixel")
     instagram_pixel = models.CharField(max_length=100, blank=True, null=True, help_text="ID do Instagram Pixel")
     

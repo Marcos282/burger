@@ -948,6 +948,11 @@
                         <input type="text" class="form-control" name="tag_google_analytics" value="{{ settings.tag_google_analytics|default:'' }}" placeholder="G-XXXXXXXXXX ou GTM-XXXXXXXX">
                         <span class="form-text text-muted">Informe um ID G-XXXXXXXXXX (Google Analytics 4) ou GTM-XXXXXXXX (Google Tag Manager) para enviar novos acessos da loja ao Google. O Relatório de acessos do painel é gerado pelo próprio sistema e continua disponível sem esta tag.</span>
                      </div>
+                     <div class="form-group fv-plugins-icon-container">
+                        <label>ID da propriedade GA4</label>
+                        <input type="text" inputmode="numeric" pattern="[0-9]+" class="form-control" name="google_analytics_property_id" value="{{ settings.google_analytics_property_id|default:'' }}" placeholder="Ex.: 123456789">
+                        <span class="form-text text-muted">ID numérico encontrado em Administrador → Detalhes da propriedade. Ele permite exibir os relatórios na rota /stats/.</span>
+                     </div>
                      <h6 class="font-weight-bolder mb-3">
                         Dados do responsável:
                      </h6>
