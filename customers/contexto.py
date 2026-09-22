@@ -10,9 +10,14 @@ def configuracao_context(request):
     whatsapp_numero = re.sub(r'\D', '', loja_settings.whatsapp or '') if loja_settings else ''
     if len(whatsapp_numero) in (10, 11):
         whatsapp_numero = f'55{whatsapp_numero}'
+    analytics_tag = (loja_settings.tag_google_analytics or '').strip().upper() if loja_settings else ''
+    if not analytics_tag and loja_settings:
+        analytics_tag = (loja_settings.googleanalytics or '').strip().upper()
     return {
         'configuracao': Configuracao.load(),
         'loja_whatsapp_numero': whatsapp_numero,
+        'ga_measurement_id': analytics_tag if re.fullmatch(r'G-[A-Z0-9]+', analytics_tag) else '',
+        'gtm_container_id': analytics_tag if re.fullmatch(r'GTM-[A-Z0-9]+', analytics_tag) else '',
     }
 
 

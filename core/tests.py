@@ -286,6 +286,35 @@ class HomeTenantRedirectTests(SimpleTestCase):
         render.assert_called_once_with(request, 'inicial.html')
 
 
+class GoogleTagTenantTests(TestCase):
+    def setUp(self):
+        from tenants.models import Tenant, TenantSettings
+
+        self.first = Tenant.objects.create(name='Analytics A', subdomain='analytics-a')
+        self.second = Tenant.objects.create(name='Analytics B', subdomain='analytics-b')
+        TenantSettings.objects.create(tenant=self.first, tag_google_analytics='g-1j1vwebse3')
+        TenantSettings.objects.create(tenant=self.second, tag_google_analytics='G-OUTRALOJA1')
+
+    def test_context_exposes_only_current_tenant_tag(self):
+        from customers.contexto import configuracao_context
+
+        request = RequestFactory().get('/loja/', HTTP_HOST='analytics-a.localhost')
+        request.tenant = self.first
+        context = configuracao_context(request)
+        self.assertEqual(context['ga_measurement_id'], 'G-1J1VWEBSE3')
+        self.assertEqual(context['gtm_container_id'], '')
+
+    def test_google_tag_partial_renders_tag_once(self):
+        from django.template.loader import render_to_string
+
+        html = render_to_string('loja/includes/google_tag_head.html', {
+            'ga_measurement_id': 'G-1J1VWEBSE3',
+            'gtm_container_id': '',
+        })
+        self.assertEqual(html.count('gtag/js?id=G-1J1VWEBSE3'), 1)
+        self.assertEqual(html.count("gtag('config', 'G-1J1VWEBSE3')"), 1)
+
+
 class AITokenUsageTests(TestCase):
     def test_usage_is_accumulated_and_isolated_by_tenant(self):
         from unittest.mock import Mock, patch

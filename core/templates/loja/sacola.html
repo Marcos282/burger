@@ -3,6 +3,7 @@
 <html>
    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
    <head>
+      {% include "loja/includes/google_tag_head.html" %}
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
       <title>{% if config %}{{ config.nome_loja }}{% else %}Loja{% endif %} - viazap</title>
@@ -150,6 +151,7 @@
       <!-- / FIM CSS DINÂMICO -->
    </head>
    <body>
+      {% include "loja/includes/google_tag_body.html" %}
       <div id="main" class="body-estabelecimento">
          <div class="header">
             <div class="minitop hidden-xs hidden-sm">
