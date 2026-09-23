@@ -1,4 +1,4 @@
-"""Regras compartilhadas pelo painel, AJAX e mensagens. Sem envio automático."""
+"""Regras compartilhadas pelo painel, AJAX e mensagens."""
 import re
 from urllib.parse import urlencode
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -78,6 +78,13 @@ def change_status(*, ordem_id, tenant_id, novo_status, usuario, expected_status)
     ordem.save(update_fields=['status', 'completo', 'concluido_em'])
     HistoricoStatusPedido.objects.create(ordem=ordem, status_anterior=anterior,
                                         status_novo=novo_status, usuario=usuario)
+    # O pedido precisa estar confirmado no banco antes de chamar um serviço externo.
+    # A função de envio trata as falhas sem desfazer a mudança de status.
+    from whatsapp.services.notifications import send_order_status_message
+    transaction.on_commit(
+        lambda order_id=ordem.pk: send_order_status_message(order_id),
+        robust=True,
+    )
     return ordem
 
 
@@ -102,8 +109,15 @@ def change_payment(*, ordem_id, tenant_id, status_pagamento, usuario):
                'cancelado': {'pendente'}, 'estornado': set()}
     if status_pagamento != ordem.status_pagamento and status_pagamento not in allowed[ordem.status_pagamento]:
         raise ValidationError('Esta alteração de pagamento não é permitida.')
+    if status_pagamento == ordem.status_pagamento:
+        return ordem
     ordem.status_pagamento = status_pagamento
     ordem.save(update_fields=['status_pagamento'])
+    from whatsapp.services.notifications import send_payment_status_message
+    transaction.on_commit(
+        lambda order_id=ordem.pk: send_payment_status_message(order_id),
+        robust=True,
+    )
     return ordem
 
 

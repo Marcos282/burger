@@ -16,9 +16,18 @@ PROCESSOS = {
         ('concluido', 'Entregue ou retirado', 'check-double', 'Pedido #{pedido} concluído com sucesso. Obrigado pela compra, {cliente}!'),
         ('cancelado', 'Pedido cancelado', 'times-circle', 'Olá, {cliente}. O pedido #{pedido} foi cancelado. Fale conosco se precisar de ajuda.'),
     ],
+    'pagamento': [
+        ('pendente', 'Pagamento pendente', 'clock', 'Olá, {cliente}. O pagamento do pedido #{pedido} está pendente. Forma de pagamento: {forma_pagamento}.'),
+        ('pago', 'Pagamento confirmado', 'check-circle', 'Pagamento do pedido #{pedido} confirmado! Valor: {total}. Obrigado, {cliente}!'),
+        ('cancelado', 'Pagamento cancelado', 'times-circle', 'Olá, {cliente}. O pagamento do pedido #{pedido} foi cancelado. Entre em contato com a {loja} se precisar de ajuda.'),
+        ('estornado', 'Pagamento estornado', 'undo', 'O pagamento do pedido #{pedido} foi estornado. Consulte sua instituição financeira para acompanhar o crédito.'),
+    ],
 }
 
-VARIAVEIS = ('cliente', 'pedido', 'telefone', 'total', 'loja', 'status', 'entrega')
+VARIAVEIS = (
+    'cliente', 'pedido', 'telefone', 'total', 'loja', 'status', 'entrega',
+    'forma_pagamento', 'status_pagamento',
+)
 
 
 def mensagens_do_tenant(tenant):

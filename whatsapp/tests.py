@@ -1,11 +1,15 @@
 from unittest.mock import patch
 
+from decimal import Decimal
+
 from django.contrib.auth.models import AnonymousUser
 from django.http import Http404
 from django.test import RequestFactory, TestCase
 
-from customers.models import User
-from tenants.models import Tenant
+from customers.models import Cliente, User
+from orders.models import Ordem
+from orders.services.status import change_payment, change_status
+from tenants.models import Tenant, TenantSettings
 
 from .models import MensagemProcesso, WhatsAppConfiguracao
 from .services.evolution import EvolutionState
@@ -65,7 +69,7 @@ class WhatsAppTenantTests(TestCase):
         response = salvar_mensagens(request)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(MensagemProcesso.objects.filter(tenant=self.tenant).count(), 13)
+        self.assertEqual(MensagemProcesso.objects.filter(tenant=self.tenant).count(), 17)
         delivery = MensagemProcesso.objects.get(
             tenant=self.tenant, cenario='delivery', status_pedido='novo',
         )
@@ -137,3 +141,127 @@ class EvolutionPayloadIsolationTests(TestCase):
         ]
         found = EvolutionService().find_instance(tenant)
         self.assertEqual(found['instance']['instanceName'], f'viazap_tenant_{tenant.pk}')
+
+
+class AutomaticOrderMessageTests(TestCase):
+    def setUp(self):
+        self.tenant = Tenant.objects.create(name='Loja Teste', subdomain='mensagens')
+        self.settings = TenantSettings.load(self.tenant)
+        self.settings.nome_loja = 'Mercado Teste'
+        self.settings.save()
+        self.user = User.objects.create_user(
+            email='mensagens@example.com', username='mensagens', password='senha', tenant=self.tenant,
+        )
+        self.customer = Cliente.objects.create(
+            tenant=self.tenant, nome='Maria', telefone='(11) 99999-8888', senha='x',
+        )
+
+    @patch('whatsapp.services.notifications.EvolutionService')
+    def test_status_change_sends_configured_message_after_commit(self, service_class):
+        service = service_class.return_value
+        service.connection_state.return_value = EvolutionState('open')
+        service._request.return_value = {'key': {'id': 'message-id'}, 'status': 'PENDING'}
+        MensagemProcesso.objects.create(
+            tenant=self.tenant,
+            cenario='varejo',
+            status_pedido='confirmado',
+            ativa=True,
+            mensagem='Olá, {cliente}! Pedido {pedido} confirmado na {loja}. Total: {total}.',
+        )
+        order = Ordem.objects.create(
+            tenant=self.tenant,
+            cliente=self.customer,
+            tipo_operacao='varejo',
+            tipo_entrega='entrega',
+            valor_total=Decimal('25.50'),
+            tx_entrega=Decimal('4.50'),
+        )
+
+        with self.captureOnCommitCallbacks(execute=True):
+            change_status(
+                ordem_id=order.pk,
+                tenant_id=self.tenant.pk,
+                novo_status='confirmado',
+                expected_status='novo',
+                usuario=self.user,
+            )
+
+        service._request.assert_called_once_with(
+            'POST',
+            f'/message/sendText/viazap_tenant_{self.tenant.pk}',
+            json={
+                'number': '5511999998888',
+                'text': f'Olá, Maria! Pedido {order.pk} confirmado na Mercado Teste. Total: R$ 30,00.',
+            },
+        )
+
+    @patch('whatsapp.services.notifications.EvolutionService')
+    def test_inactive_process_does_not_contact_evolution(self, service_class):
+        MensagemProcesso.objects.create(
+            tenant=self.tenant,
+            cenario='delivery',
+            status_pedido='processando',
+            ativa=False,
+            mensagem='Pedido aceito.',
+        )
+        order = Ordem.objects.create(
+            tenant=self.tenant,
+            cliente=self.customer,
+            tipo_operacao='delivery',
+            tipo_entrega='entrega',
+        )
+
+        with self.captureOnCommitCallbacks(execute=True):
+            change_status(
+                ordem_id=order.pk,
+                tenant_id=self.tenant.pk,
+                novo_status='processando',
+                expected_status='novo',
+                usuario=self.user,
+            )
+
+        service_class.assert_not_called()
+
+    @patch('whatsapp.services.notifications.EvolutionService')
+    def test_payment_change_sends_configured_message_once(self, service_class):
+        service = service_class.return_value
+        service.connection_state.return_value = EvolutionState('open')
+        service._request.return_value = {'key': {'id': 'payment-message-id'}, 'status': 'PENDING'}
+        MensagemProcesso.objects.create(
+            tenant=self.tenant,
+            cenario='pagamento',
+            status_pedido='pago',
+            ativa=True,
+            mensagem='Pagamento {status_pagamento} do pedido {pedido}: {total} via {forma_pagamento}.',
+        )
+        order = Ordem.objects.create(
+            tenant=self.tenant,
+            cliente=self.customer,
+            tipo_operacao='varejo',
+            valor_total=Decimal('45.00'),
+            formade_pagamento='Pix',
+        )
+
+        with self.captureOnCommitCallbacks(execute=True):
+            change_payment(
+                ordem_id=order.pk,
+                tenant_id=self.tenant.pk,
+                status_pagamento='pago',
+                usuario=self.user,
+            )
+        with self.captureOnCommitCallbacks(execute=True):
+            change_payment(
+                ordem_id=order.pk,
+                tenant_id=self.tenant.pk,
+                status_pagamento='pago',
+                usuario=self.user,
+            )
+
+        service._request.assert_called_once_with(
+            'POST',
+            f'/message/sendText/viazap_tenant_{self.tenant.pk}',
+            json={
+                'number': '5511999998888',
+                'text': f'Pagamento Pago do pedido {order.pk}: R$ 45,00 via Pix.',
+            },
+        )

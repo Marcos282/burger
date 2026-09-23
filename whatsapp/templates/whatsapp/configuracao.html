@@ -54,8 +54,8 @@
     <section class="mt-8" id="mensagens-processos">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div>
-          <h2 class="font-weight-bolder mb-1">Mensagens dos pedidos</h2>
-          <p class="text-muted mb-0">Personalize o que o cliente receberá quando o pedido mudar de etapa.</p>
+          <h2 class="font-weight-bolder mb-1">Mensagens dos pedidos e pagamentos</h2>
+          <p class="text-muted mb-0">Personalize o que o cliente receberá quando o pedido ou o pagamento mudar de etapa.</p>
         </div>
         <span class="label label-lg label-light-success mt-3 mt-md-0">Fluxo atual: {% if cenario_atual == 'delivery' %}Delivery{% else %}Comércio{% endif %}</span>
       </div>
@@ -71,6 +71,7 @@
       <div class="wa-tabs mb-5">
         <button type="button" class="wa-tab {% if cenario_atual == 'delivery' %}active{% endif %}" data-wa-tab="delivery"><i class="fas fa-utensils mr-2"></i>Alimentação / Delivery</button>
         <button type="button" class="wa-tab {% if cenario_atual != 'delivery' %}active{% endif %}" data-wa-tab="varejo"><i class="fas fa-shopping-bag mr-2"></i>Comércio / Produtos</button>
+        <button type="button" class="wa-tab" data-wa-tab="pagamento"><i class="fas fa-credit-card mr-2"></i>Pagamento</button>
       </div>
 
       <form method="post" action="{% url 'painel_whatsapp_salvar_mensagens' %}">

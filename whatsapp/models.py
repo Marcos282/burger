@@ -42,6 +42,7 @@ class MensagemProcesso(models.Model):
     class Cenario(models.TextChoices):
         DELIVERY = 'delivery', 'Alimentação / Delivery'
         VAREJO = 'varejo', 'Comércio / Venda de produtos'
+        PAGAMENTO = 'pagamento', 'Pagamento'
 
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='mensagens_processo_whatsapp')
     cenario = models.CharField(max_length=20, choices=Cenario.choices)
