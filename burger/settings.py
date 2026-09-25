@@ -203,7 +203,7 @@ DATABASES = {
         "HOST": os.getenv('DB_HOST', 'localhost'),
         "PORT": os.getenv('DB_PORT', '5432'),
     }
-}   
+}
 
 MERCADOPAGO_WEBHOOK_SECRET = os.getenv('MERCADOPAGO_WEBHOOK_SECRET', '')
 
