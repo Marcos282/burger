@@ -1,3 +1,6 @@
+from core.institutional import home_context
+from analytics.commerce import cart_data, ecommerce_data, order_data
+from core.product_metadata import product_item
 from django.db import transaction
 from django.urls import reverse
 import json
@@ -37,15 +40,12 @@ from django.conf import settings
 
 
 def inicial(request):
-    """
-    Renderiza a página inicial do site.
-    """
-    return render(request, 'inicial.html')
+    return home_view(request)
 
 def home_view(request):
     if getattr(request, 'tenant', None) is not None:
         return redirect('/loja/')
-    return render(request, 'inicial.html')
+    return render(request, 'inicial.html', home_context())
 
 # Funções utilitárias de sessão
 def get_cart(request):
@@ -74,11 +74,11 @@ def loja(request):
    gtm_container_id = analytics_tag if re.fullmatch(r'GTM-[A-Z0-9]+', analytics_tag) else ''
    configuracao_extra = Configuracao.load()
    categorias = Category.objects.filter(
-       tenant=request.tenant,
+       tenant=request.tenant, status=True, exibir=True,
    ).order_by('ordem', 'name')
    categoria_selecionada = categorias.filter(id=categoria_id).first() if categoria_id else None
    produtos = Produto.objects.filter(
-       tenant=request.tenant,
+       tenant=request.tenant, status=True, exibir=True,
    ).order_by('ordem_exibicao', 'nome')
 
    if termo_busca:
@@ -168,7 +168,7 @@ def loja(request):
 
 #detalhe =====================================================================
 def detalhe(request,produto_id):
-    produto = get_object_or_404(Produto, tenant=request.tenant, id=produto_id)
+    produto = get_object_or_404(Produto, tenant=request.tenant, id=produto_id, status=True, exibir=True)
     valor_br = formatar_brl(produto.price)
     valor_br_semS = formatar_brl_noS(produto.price)
     cart = get_cart(request)
@@ -364,7 +364,14 @@ def add_to_cart(request):
     if request.method == 'POST':
         
         produto_id = request.POST.get('produto_id')
-        quantidade = int(request.POST.get('quantidade', 1))
+        try:
+            quantidade = int(request.POST.get('quantidade', 1))
+        except (ValueError, TypeError):
+            return JsonResponse({'status': 'error'}, status=400)
+        if quantidade < 1:
+            return JsonResponse({'status': 'error'}, status=400)
+        produto = get_object_or_404(Produto, pk=produto_id, tenant=request.tenant, status=True, exibir=True)
+
 
         # Pega o carrinho da sessão
         cart = cart = get_cart(request)
@@ -379,21 +386,6 @@ def add_to_cart(request):
         request.session['cart'] = cart
         request.session.modified = True
 
-        # Debug: imprime tudo do carrinho
-        print("=== DEBUG CARRINHO ===")
-        #print(request.session.get('cart', {}))
-        print(cart)
-
-        for pid, qty in cart.items():
-            try:
-                produto = Produto.objects.get(id=pid)
-                print(f"Produto: {produto.nome} (ID: {pid}), Quantidade: {qty}, Subtotal: R${produto.price * qty:.2f}")
-            except Produto.DoesNotExist:
-                print(f"Produto ID {pid} não existe mais! Quantidade: {qty}")
-        print("=======================")
-
-        # Retorna info do produto e total
-        produto = Produto.objects.get(id=produto_id)
         subtotal = produto.price * cart[produto_id]
 
         qtd_pedidos = len(cart)         
@@ -407,6 +399,7 @@ def add_to_cart(request):
                 'subtotal': f"{subtotal:.2f}"
             },
             'cart_count': sum(cart.values()),
+            'analytics': ecommerce_data(request.tenant, [product_item(produto, request.tenant, quantidade)]),
             'qtd_pedidos' : qtd_pedidos
         })
     return JsonResponse({'status': 'error'}, status=400)
@@ -445,7 +438,7 @@ def sacola(request):
     produtos = []
     total = 0
     for produto_id, qtd in cart.items():
-        produto = get_object_or_404(Produto, id=produto_id)
+        produto = get_object_or_404(Produto, id=produto_id, tenant=request.tenant)
         subtotal = produto.price * qtd
         total += subtotal
         produtos.append({
@@ -458,6 +451,7 @@ def sacola(request):
     settings = TenantSettings.load(tenant=request.tenant)
 
     context = {
+        'checkout_analytics': cart_data(request),
         'produtos': produtos,
         'total': formatar_brl(total),
         'categorias': categorias,
@@ -616,21 +610,16 @@ def checkout_sucesso(request):
         telefone = f'55{telefone}'
 
     if not telefone:
-        return HttpResponse('<h1>Pedido registrado</h1><p>O WhatsApp da loja ainda não está cadastrado na etapa 5 de Configurações.</p>')
+        order = get_object_or_404(Ordem, pk=pedido_info['pedido_id'], tenant=request.tenant)
+        return render(request, 'loja/checkout_sucesso.html', {'purchase_analytics': order_data(order)})
 
     link_whatsapp = f"https://api.whatsapp.com/send/?phone={telefone}&text={mensagem_url}&type=phone_number&app_absent=0"
 
-    html = f"""
-    <html><head>
-    <meta http-equiv='refresh' content='5;url={link_whatsapp}' />
-    <style>body{{text-align:center;font-family:sans-serif;}}</style>
-    </head><body>
-    <h1>Pedido finalizado com sucesso!</h1>
-    <p>Você será redirecionado para o WhatsApp em 5 segundos...</p>
-    <a href='{link_whatsapp}' target='_blank'>Clique aqui se não for redirecionado automaticamente</a>
-    </body></html>
-    """
-    return HttpResponse(html)
+    order = get_object_or_404(Ordem, pk=pedido_info['pedido_id'], tenant=request.tenant)
+    return render(request, 'loja/checkout_sucesso.html', {
+        'link_whatsapp': link_whatsapp,
+        'purchase_analytics': order_data(order),
+    })
 
 
 def manifest_json(request):

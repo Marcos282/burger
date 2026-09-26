@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    {% include 'loja/includes/google_tag_head.html' %}
+    {% if link_whatsapp %}<meta http-equiv="refresh" content="5;url={{ link_whatsapp }}">{% endif %}
+    <title>Pedido finalizado</title>
+    <style>body{text-align:center;font-family:sans-serif;}</style>
+</head>
+<body>
+    {% include 'loja/includes/google_tag_body.html' %}
+    <h1>Pedido finalizado com sucesso!</h1>
+    {% if link_whatsapp %}
+    <p>Você será redirecionado para o WhatsApp em 5 segundos...</p>
+    <a href="{{ link_whatsapp }}" target="_blank" rel="noopener noreferrer">Clique aqui se não for redirecionado automaticamente</a>
+    {% else %}<p>O WhatsApp da loja ainda não está cadastrado na etapa 5 de Configurações.</p>{% endif %}
+    {{ purchase_analytics|json_script:'purchaseAnalyticsData' }}
+</body>
+</html>

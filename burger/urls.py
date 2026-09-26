@@ -1,3 +1,4 @@
+from core.discovery import sitemap as tenant_sitemap, robots as tenant_robots
 from orders import panel_views as order_panel
 from customers.views_auth import (
     login_view,
@@ -68,6 +69,8 @@ from analytics.views import google_stats, relatorio_acessos
 
 
 urlpatterns = [
+    path('sitemap.xml', tenant_sitemap, name='tenant_sitemap'),
+    path('robots.txt', tenant_robots, name='tenant_robots'),
     path('admin/', admin.site.urls),
     path('loja/', loja, name='loja'),
     path('loja/datail/<int:produto_id>', detalhe, name='detalhe'),

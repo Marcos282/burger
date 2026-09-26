@@ -282,39 +282,9 @@ def verificar_loja_aberta(request, user=None):
 
 
 def product_share_data(request, produto, imagens_galeria, config, configuracao):
-    """Dados públicos de compartilhamento; receber produto filtrado pelo tenant."""
-    from html import unescape
-    from urllib.parse import urlencode, urlsplit, urlunsplit
-    from django.templatetags.static import static
-    from django.urls import reverse
-    from django.utils.html import strip_tags
-    from django.utils.text import Truncator
-
-    def clean(value):
-        return ' '.join(strip_tags(unescape(value or '')).split())
-
-    def https_url(path):
-        parts = urlsplit(request.build_absolute_uri(path))
-        return urlunsplit(parts._replace(scheme='https', fragment=''))
-
-    title = clean(produto.nome)
-    price = f"R$ {produto.price:,.2f}".translate(str.maketrans(',.', '.,'))
-    description = clean(produto.description) or title
-    description = f'{Truncator(description).chars(180)} — {price}.'
-    image = produto.image or next((item.imagem for item in imagens_galeria if item.imagem), None) or produto.imagem_extra
-    image_path = image.url if image else None
-    if not image_path and config:
-        image_path = config.foto_perfil.url if config.foto_perfil else config.logo_url
-    if not image_path:
-        image_path = configuracao.logo.url if configuracao.logo else static('_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg')
-    url = https_url(reverse('detalhe', args=[produto.pk]))
-    text = f'Olha esse produto 👇\n\n{title}\n{price}\n\n{url}'
-    return {
-        'title': title, 'description': description, 'text': text,
-        'native_text': f'{title} — {price}',
-        'url': url, 'image': https_url(image_path), 'site_name': request.tenant.name,
-        'whatsapp_url': 'https://api.whatsapp.com/send?' + urlencode({'text': text}),
-    }
+    # Compatibilidade com os consumidores existentes.
+    from core.product_metadata import product_metadata
+    return product_metadata(request, produto, imagens_galeria, config, configuracao)
 
 
 def store_share_data(request, tenant, config, configuracao):
