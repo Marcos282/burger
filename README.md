@@ -5,7 +5,9 @@
 A página pública usa a rota existente `/loja/datail/<id>` (grafia preservada).
 O produto é consultado pelo ID e pelo tenant identificado no subdomínio.
 Open Graph e Twitter Cards são renderizados no servidor, e o botão WhatsApp
-usa `wa.me` com texto e URL codificados, inclusive sem JavaScript.
+prioriza a Web Share API com título, texto e URL. Sem suporte ou em caso de
+erro, usa `api.whatsapp.com/send?text=...`, sem telefone de destinatário.
+Cancelar o menu nativo encerra o fluxo. Sem JavaScript, há um link de fallback.
 
 A imagem principal tem prioridade; na ausência dela são usadas galeria,
 imagem extra, foto/logo da loja, logo global ou a imagem estática existente.

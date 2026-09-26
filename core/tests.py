@@ -445,7 +445,14 @@ class ProductSharingTests(TestCase):
         self.assertEqual(tags['og:url'], [f'https://alpha.localhost/loja/datail/{self.product.pk}'])
         for field in ('title', 'description', 'image'):
             self.assertEqual(tags['twitter:' + field], tags['og:' + field])
-        message = parse_qs(urlsplit(parsed.links['shareProductWhatsApp']).query)['text'][0]
+        import json
+        import re
+        payload = json.loads(re.search(r'<script id="productShareData" type="application/json">(.*?)</script>', response.content.decode(), re.S).group(1))
+        fallback = urlsplit(payload['whatsapp_url'])
+        self.assertEqual(fallback.netloc, 'api.whatsapp.com')
+        self.assertEqual(fallback.path, '/send')
+        self.assertNotIn('phone', parse_qs(fallback.query))
+        message = parse_qs(fallback.query)['text'][0]
         self.assertEqual(message, f'Olha esse produto 👇\n\n{self.product.nome}\nR$ 1.234,50\n\n{tags["og:url"][0]}')
         self.assertContains(response, 'Compartilhar no WhatsApp')
 

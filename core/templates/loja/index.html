@@ -175,7 +175,7 @@
                         <div class="funcionamento">
                            <div class="aberto" style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                               <i class="lni lni-checkmark-circle"></i>
-                              <span>Estabelecimento {{ aberto|yesno:"aberto,fechado" }}</span>
+                              <span>Estabelecimento {{ loja_aberta|yesno:"aberto,fechado,fechado" }}</span>
                               <a href="/painel/home" title="Painel de Controle" style="color: inherit; text-decoration: none; font-size: 1.1rem; display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.2);"><i class="lni lni-cog" style="margin-right: 0;"></i></a>
                            </div>
                         </div>
@@ -598,9 +598,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://vaidezap.com/" target="_blank">
-                        <img src="{{ configuracao.logo_footer.url }}"/>
-                        </a>
+                        {% include "loja/includes/logo_rodape.html" %}
                      </div>
                   </div>
                </div>

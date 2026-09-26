@@ -22,12 +22,14 @@ def configuracao_context(request):
 
 
 def loja_aberta_context(request):
-    """Expõe se a loja do tenant logado está aberta ou fechada em todos os templates."""
+    """Expõe o mesmo estado de abertura no painel e na loja pública."""
     user = getattr(request, 'user', None)
-    tenant = getattr(user, 'tenant', None) if user and user.is_authenticated else None
+    tenant = getattr(request, 'tenant', None)
+    if tenant is None and user and user.is_authenticated:
+        tenant = getattr(user, 'tenant', None)
     if tenant is None:
         return {'loja_aberta': None}
-    return {'loja_aberta': TenantSettings.load(tenant).aberto}
+    return {'loja_aberta': bool(TenantSettings.objects.filter(tenant=tenant).values_list('aberto', flat=True).first())}
 
 
 def buscar_tenant_por_email(email):

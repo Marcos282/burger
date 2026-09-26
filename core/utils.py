@@ -311,8 +311,9 @@ def product_share_data(request, produto, imagens_galeria, config, configuracao):
     text = f'Olha esse produto 👇\n\n{title}\n{price}\n\n{url}'
     return {
         'title': title, 'description': description, 'text': text,
+        'native_text': f'{title} — {price}',
         'url': url, 'image': https_url(image_path), 'site_name': request.tenant.name,
-        'whatsapp_url': 'https://wa.me/?' + urlencode({'text': text}),
+        'whatsapp_url': 'https://api.whatsapp.com/send?' + urlencode({'text': text}),
     }
 
 

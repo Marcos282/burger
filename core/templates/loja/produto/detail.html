@@ -213,7 +213,7 @@
                         <div class="funcionamento">
                            <div class="aberto" style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                               <i class="lni lni-checkmark-circle"></i>
-                              <span>Estabelecimento aberto</span>
+                              <span>Estabelecimento {{ loja_aberta|yesno:"aberto,fechado,fechado" }}</span>
                               <a href="/painel/home" title="Painel de Controle" style="color: inherit; text-decoration: none; font-size: 1.1rem; display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.2);"><i class="lni lni-cog" style="margin-right: 0;"></i></a>
                            </div>
                         </div>
@@ -557,7 +557,8 @@
                                        <div class="row">
                                           <div class="col-md-12">
                                              <div class="ref">
-                                                <span><a id="shareProductWhatsApp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</a></span>
+                                                <span><button type="button" id="shareProductWhatsApp" onclick="compartilharProduto()" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</button></span>
+                                                <noscript><a href="{{ share_whatsapp_url }}">Compartilhar no WhatsApp</a></noscript>
                                              </div>
                                           </div>
                                        </div>
@@ -750,15 +751,7 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-12">
-                        <a class="watermark" href="https://viazap.net/conheca" target="_blank">
-                        {% if configuracao.logo_footer %}
-                           <img src="{{ configuracao.logo_footer.url }}"/>
-                        {% elif configuracao.logo %}
-                           <img src="{{ configuracao.logo.url }}"/>
-                        {% else %}
-                           <img src="{% static '_core/_cdn/img/logo.png' %}"/>
-                        {% endif %}
-                        </a>
+                        {% include "loja/includes/logo_rodape.html" %}
                      </div>
                   </div>
                </div>
@@ -936,6 +929,8 @@
 
 
 
+{{ product_share|json_script:"productShareData" }}
+<script src="{% static 'app/estabelecimento/js/product-share.js' %}"></script>
 </html>
 
 <div class="releaseclick"></div>
