@@ -389,3 +389,138 @@ class HandoffPhoneTests(SimpleTestCase):
         reply = whatsapp_handoff_reply({'store': {}, 'cliente': {'telefone': '47999991234'}})
         self.assertNotIn('deixe seu telefone', reply)
         self.assertIn('já está registrado', reply)
+
+
+class ProductSharingTests(TestCase):
+    def setUp(self):
+        from tenants.models import Tenant
+        from menu.models import Produto
+        self.a = Tenant.objects.create(name='Loja A', subdomain='alpha')
+        self.b = Tenant.objects.create(name='Loja B', subdomain='beta')
+        self.product = Produto.objects.create(tenant=self.a, nome='Capacete "A" & ação', price=1234.50,
+                                             description='<p>Confortável &amp; seguro</p>', image='produtos/capacete.jpg')
+        self.second = Produto.objects.create(tenant=self.a, nome='Segundo', price=0)
+        self.other = Produto.objects.create(tenant=self.b, nome='Outro', price=10)
+
+    def render_product(self, tenant, product):
+        from django.contrib.auth.models import AnonymousUser
+        from tenants.middleware import TenantMiddleware
+        from core.views import detalhe
+        from django.urls import reverse
+        request = RequestFactory().get(reverse('detalhe', args=[product.pk]) + '?tracking=1',
+                                       HTTP_HOST=f'{tenant.subdomain}.localhost')
+        request.session = {}
+        request.user = AnonymousUser()
+        return TenantMiddleware(lambda req: detalhe(req, product.pk))(request)
+
+    def metadata(self, response):
+        from html.parser import HTMLParser
+        class Parser(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.tags = {}
+                self.links = {}
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == 'meta':
+                    key = attrs.get('property', attrs.get('name'))
+                    self.tags.setdefault(key, []).append(attrs.get('content'))
+                if tag == 'a' and attrs.get('id'):
+                    self.links[attrs['id']] = attrs.get('href')
+        parser = Parser()
+        parser.feed(response.content.decode())
+        return parser
+
+    def test_server_html_and_encoded_whatsapp_message(self):
+        from urllib.parse import parse_qs, urlsplit
+        response = self.render_product(self.a, self.product)
+        self.assertEqual(response.status_code, 200)
+        parsed = self.metadata(response)
+        tags = parsed.tags
+        self.assertEqual(tags['og:title'], [self.product.nome])
+        self.assertEqual(tags['og:type'], ['product'])
+        self.assertEqual(tags['og:site_name'], ['Loja A'])
+        self.assertEqual(tags['og:description'], ['Confortável & seguro — R$ 1.234,50.'])
+        self.assertEqual(tags['og:image'], ['https://alpha.localhost/media/produtos/capacete.jpg'])
+        self.assertEqual(tags['og:url'], [f'https://alpha.localhost/loja/datail/{self.product.pk}'])
+        for field in ('title', 'description', 'image'):
+            self.assertEqual(tags['twitter:' + field], tags['og:' + field])
+        message = parse_qs(urlsplit(parsed.links['shareProductWhatsApp']).query)['text'][0]
+        self.assertEqual(message, f'Olha esse produto 👇\n\n{self.product.nome}\nR$ 1.234,50\n\n{tags["og:url"][0]}')
+        self.assertContains(response, 'Compartilhar no WhatsApp')
+
+    def test_other_products_no_image_and_no_description(self):
+        for tenant, product in [(self.a, self.second), (self.b, self.other)]:
+            with self.subTest(tenant=tenant.name):
+                tags = self.metadata(self.render_product(tenant, product)).tags
+                self.assertEqual(tags['og:title'], [product.nome])
+                self.assertTrue(tags['og:image'][0].startswith(f'https://{tenant.subdomain}.localhost/'))
+                self.assertIn('_thumb.jpg', tags['og:image'][0])
+                self.assertIn(product.nome, tags['og:description'][0])
+
+    def test_cross_tenant_product_is_not_found(self):
+        from django.http import Http404
+        for tenant, product in [(self.a, self.other), (self.b, self.product)]:
+            with self.subTest(tenant=tenant.name), self.assertRaises(Http404):
+                self.render_product(tenant, product)
+
+    def test_long_description_is_bounded_and_plain_text(self):
+        self.product.description = '<b>' + 'Descrição &amp; detalhes ' * 100 + '</b>'
+        self.product.save()
+        description = self.metadata(self.render_product(self.a, self.product)).tags['og:description'][0]
+        self.assertLessEqual(len(description), 210)
+        self.assertNotIn('<b>', description)
+        self.assertNotIn('&amp;', description)
+        self.assertIn('R$ 1.234,50', description)
+
+    def test_store_image_fallback_and_gallery_priority(self):
+        from tenants.models import TenantSettings
+        from menu.models import ProdutoImagem
+        TenantSettings.objects.create(tenant=self.a, foto_perfil='fotoperfil/loja.jpg')
+        tags = self.metadata(self.render_product(self.a, self.second)).tags
+        self.assertEqual(tags['og:image'], ['https://alpha.localhost/media/fotoperfil/loja.jpg'])
+        ProdutoImagem.objects.create(produto=self.second, imagem='produtos/galeria/foto.jpg')
+        tags = self.metadata(self.render_product(self.a, self.second)).tags
+        self.assertEqual(tags['og:image'], ['https://alpha.localhost/media/produtos/galeria/foto.jpg'])
+
+
+class StoreSharingTests(TestCase):
+    def test_tenant_store_preview_and_public_metadata(self):
+        from tenants.models import Tenant, TenantSettings, Configuracao
+        from core.utils import store_share_data
+        from django.template.loader import render_to_string
+        from urllib.parse import parse_qs, urlsplit
+        for subdomain in ('alpha', 'beta'):
+            tenant = Tenant.objects.create(name=f'Loja {subdomain}', subdomain=subdomain)
+            config = TenantSettings.objects.create(tenant=tenant, descricao_loja='<p>Moda &amp; novidades</p>',
+                                                  foto_perfil=f'fotoperfil/{subdomain}.jpg')
+            request = RequestFactory().get('/loja/', HTTP_HOST=f'{subdomain}.localhost')
+            request.tenant = tenant
+            share = store_share_data(request, tenant, config, Configuracao.load())
+            self.assertEqual(share['url'], f'https://{subdomain}.localhost/loja/')
+            self.assertEqual(share['image'], f'https://{subdomain}.localhost/media/fotoperfil/{subdomain}.jpg')
+            self.assertEqual(share['description'], 'Moda & novidades')
+            self.assertIn(share['url'], parse_qs(urlsplit(share['whatsapp_url']).query)['text'][0])
+            html = render_to_string('loja/index.html', {'store_share': share, 'config': config})
+            self.assertIn(f'<meta property="og:image" content="{share["image"]}">', html)
+            self.assertEqual(html.count('property="og:description"'), 1)
+
+    def test_panel_shares_user_store_and_rejects_other_tenant(self):
+        from tenants.models import Tenant, TenantSettings
+        from customers.models import User
+        from customers.views_auth import painel_qrcode
+        tenant = Tenant.objects.create(name='Minha loja', subdomain='alpha')
+        TenantSettings.objects.create(tenant=tenant, foto_perfil='fotoperfil/alpha.jpg', descricao_loja='Minha descrição')
+        user = User.objects.create(username='sharing', tenant=tenant)
+        request = RequestFactory().get('/painel/qrcode', HTTP_HOST='alpha.localhost')
+        request.user = user
+        request.tenant = tenant
+        request.session = {'tenant_subdomain': 'outro'}
+        response = painel_qrcode(request)
+        self.assertContains(response, 'Divulgação')
+        self.assertContains(response, 'Compartilhar loja no WhatsApp')
+        self.assertContains(response, 'https://alpha.localhost/media/fotoperfil/alpha.jpg')
+        self.assertContains(response, 'https://alpha.localhost/loja/')
+        self.assertContains(response, 'Minha descrição')
+        request.tenant = Tenant.objects.create(name='Outra', subdomain='beta')
+        self.assertEqual(painel_qrcode(request).status_code, 403)

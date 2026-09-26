@@ -17,7 +17,7 @@ from .forms import UserLoginForm, UserCreationForm, CategoryModelForm, PasswordR
 from orders.models import Ordem, OrdemItem
 from customers.models import EnderecoEntrega, Cliente
 from menu.models import Category, Produto, ProdutoImagem
-from core.utils import calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, build_public_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
+from core.utils import store_share_data, calcular_dias_restantes, formatar_brl, formatar_brl_to_float, build_full_url, build_public_url, get_tenant_url, build_tenant_url_for_user, verificar_loja_aberta
 from core.ai_chat import (
     get_ai_token_usage,
     add_chat_message,
@@ -1257,14 +1257,14 @@ def painel_qrcode(request):
         config = Configuracao.load()
         user = request.user
         tenant = user.tenant
-        settings = TenantSettings.load(tenant)
-        loja_url = dominio_full(request)
-        # Monta a URL direto do tenant do usuário logado (mais confiável que a sessão) e sempre com a rota /loja/ no final
-        subdomain = getattr(tenant, 'subdomain', None)
-        # Gera QR Code
-        #loja_url = session.get(tenant_subdomain) + '/loja/'
-        
-       
+        if tenant is None:
+            return redirect('login')
+        if getattr(request, 'tenant', None) not in (None, tenant):
+            return HttpResponse('Acesso negado.', status=403)
+        settings = TenantSettings.objects.filter(tenant=tenant).first()
+        store_share = store_share_data(request, tenant, settings, config)
+        loja_url = store_share['url']
+
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -1282,14 +1282,15 @@ def painel_qrcode(request):
         img_str = base64.b64encode(buffered.getvalue()).decode()
 
         localizacao = [
-            {"n1": "QR Code", "url": "painel_qrcode"}
+            {"n1": "Divulgação", "url": "painel_qrcode"}
         ]
 
         context = {
             'localizacao': localizacao,
             'user': user,
             'settings': settings,
-            'loja_url': dominio_full(request),
+            'loja_url': loja_url,
+            'store_share': store_share,
             'qr_code_base64': img_str,
             'qt_items_cliente': qt_items_cliente(request),
             'url_marketplace': loja_url,

@@ -18,11 +18,11 @@
     <link href="{% static 'assets/css/themes/layout/header/base/light.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/css/themes/layout/header/menu/light.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'assets/css/themes/layout/brand/dark.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'assets/css/themes/layout/aside/dark.css' %}" rel="stylesheet" type="text/css">
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static 'assets/imagens/logos/favicon.ico' %}{% endif %}">
     <link href="{% static 'app/painel/apexcharts-custom.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'app/painel/painel-footer-fix.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'app/painel/painel-layout.css' %}" rel="stylesheet" type="text/css">
     {% block extra_head %}
     <!-- CSS para configuração -->
     {% endblock %}
@@ -30,7 +30,7 @@
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable aside-minimize" style="">
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed painel-layout bg-white" style="">
     <!--begin::Main-->
     
     <div class="d-flex flex-column flex-root">
@@ -81,7 +81,7 @@
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
                         <!--begin::Container-->
-                        <div class=" container ">
+                        <div class="container-fluid painel-content">
                             <!--begin::Card_pedidos-->
 
 

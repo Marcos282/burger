@@ -9,12 +9,17 @@
       <title>{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}</title>
       <meta name="description" content="O {% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}">
       <meta name="keywords" content="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %} , loja viazap.net">
-      <meta property="og:title" content="{% if config %}{{ config.nome_loja }}{% elif settings %}{{ settings.nome_loja }}{% else %}Loja{% endif %}">
-      <meta property="og:description" content="O melhor hambúrguer de Itajaí ">
-      {% if config and config.logo_url %}
-      <meta property="og:image" content="{{ config.logo_url }}">
-      {% elif settings and settings.logo_url %}
-      <meta property="og:image" content="{{ settings.logo_url }}">
+      {% if store_share %}
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="{{ store_share.title }}">
+      <meta property="og:description" content="{{ store_share.description }}">
+      <meta property="og:image" content="{{ store_share.image }}">
+      <meta property="og:url" content="{{ store_share.url }}">
+      <meta property="og:site_name" content="{{ store_share.title }}">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="{{ store_share.title }}">
+      <meta name="twitter:description" content="{{ store_share.description }}">
+      <meta name="twitter:image" content="{{ store_share.image }}">
       {% endif %}
       <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
@@ -29,7 +34,6 @@
       <link rel="stylesheet" href="{% static '_core/_cdn/lineicons/css/LineIcons.min.css' %}">
       <link href="http://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
       <link rel="stylesheet" href="{% static '_core/_cdn/fonts/style.min.css' %}">
-      <link rel="stylesheet" href="{% static '_core/_cdn/sidr/css/jquery.sidr.light.min.css' %}">
       <link  href="{% static '_core/_cdn/fancybox/css/jquery.fancybox.min.css' %}" rel="stylesheet">
       <link rel="stylesheet" href="{% static 'app/estabelecimento/css/style5aaa.css' %}">
       <script src="{% static '_core/_cdn/jquery/js/jquery.min.js' %}"></script>
@@ -42,6 +46,27 @@
       <style>
          :root {
             --theme-color: {{ color_theme }};
+         }
+
+         .novalistagem {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+            gap: 12px;
+         }
+
+         .novalistagem > [class*="col-"] {
+            float: none;
+            width: auto;
+            max-width: none;
+            padding-left: 0;
+            padding-right: 0;
+         }
+
+         @media (min-width: 1200px) {
+            .middle > .container {
+               width: calc(100% - 48px);
+               max-width: 1440px;
+            }
          }
          
          /* Aplicação do tema dinâmico */
@@ -223,14 +248,10 @@
                      </div>
                   </div>
                   <div class="row align-middle-mobile visible-sm visible-xs">
-                     <div class="col-md-3 col-sm-3 col-xs-3">
-                        <div class="user-menu pull-left">
-                           <a href="#" class="sidrLeft" href="#sidebarLeft" title="Menu">
-                           <i class="lni lni-menu"></i>
-                           </a>
-                        </div>
-                     </div>
-                     <div class="col-md-6 col-sm-6 col-xs-6 nopadd">
+                     <div class="col-md-9 col-sm-9 col-xs-9">
+                        <a href="{% url 'loja' %}" style="color: inherit; font-weight: 700;">
+                           {% if settings %}{{ settings.nome_loja }}{% elif config %}{{ config.nome_loja }}{% else %}Loja{% endif %}
+                        </a>
                      </div>
                      <div class="col-md-3 col-sm-3 col-xs-3">
                         <div class="user-info pull-right">
@@ -267,7 +288,7 @@
                                  </ul>
                               </li>
                               <li><a href="categoriab4a6.html?filtro=4">Ofertas</a></li>
-                              <li><span class="sidrLeft">Fale conosco</span></li>
+                              <li>{% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer">Fale conosco</a>{% endif %}</li>
                               <!-- <li class="visible-sm visible-xs"><a href="#">Suporte</a></li> -->
                            </ul>
                         </nav>
@@ -279,67 +300,6 @@
                            </div>
                         </nav>
                         <div class="clear"></div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="sidebars">
-            <div id="sidebarLeft">
-               <div class="sidebar">
-                  <div class="sidebar-header">
-                     <i class="close-sidebar lni lni-close" onclick="$.sidr('close', 'sidrLeft');"></i>
-                     <div class="clear"></div>
-                  </div>
-                  <div class="sidebar-content">
-                     <div class="sidebar-info">
-                        <div class="title">
-                           <i class="lni lni-cart-full"></i>
-                           <span>Meus Pedidos</span>
-                        </div>
-                        <div class="content">
-                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Abertos [{{ ordens_pendentes }}]</a>
-                        </div>
-                        <div class="content">
-                           <a href="{% url 'loja' %}"><i class="lni lni-shift-right"></i> Finalizados</a>
-                        </div>
-                     </div>
-                     <div class="sidebar-info">
-                        <div class="title">
-                           <i class="lni lni-alarm-clock"></i>
-                           <span>Funcionamento</span>
-                        </div>
-                        <div class="content">
-                           {{ hora_fechamento }}					
-                        </div>
-                     </div>
-                     <div class="sidebar-info">
-                        <div class="title">
-                           <i class="lni lni-map-marker"></i>
-                           <span>Endereço</span>
-                        </div>
-                        <div class="content">
-                           {% if config %}{{ config.endereco }} <br/>Bairro: {{ config.bairro }}, CEP: {{ config.cep }}, {{ config.cidade }}/{{ config.estado }}<br/>{% else %}Endereço da loja não cadastrado.<br/>{% endif %}
-                        </div>
-                     </div>
-                     <div class="sidebar-info">
-                        <div class="title">
-                           <i class="lni lni-headphone-alt"></i>
-                           <span>Contato</span>
-                        </div>
-                        <div class="content">
-                           <div class="listitem">
-                              <i class="lni lni-whatsapp"></i>
-                              <span>{% if config %}{{ config.whatsapp }}{% else %}Não informado{% endif %}</span>
-                           </div>
-                           <div class="listitem">
-                              <i class="lni lni-envelope"></i>
-                          {% if config %}<span><a href="mailto:{{ config.support_email }}">{{ config.support_email }}</a></span>{% endif %}
-                           </div>
-                        </div>
-                        <div class="social">
-                           {% if config.whatsapp_numero %}<a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp da loja"><i class="lni lni-whatsapp"></i></a>{% endif %}
-                        </div>
                      </div>
                   </div>
                </div>
@@ -653,7 +613,6 @@
 
       <!--	<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script> -->
       <script src="{% static '_core/_cdn/bootstrap/js/bootstrap.min.js' %}"></script>
-      <script src="{% static '_core/_cdn/sidr/js/jquery.sidr.min.js' %}"></script>
       <script src="{% static '_core/_cdn/maskMoney/js/maskmoney.min.js' %}"></script>
       <script src="{% static '_core/_cdn/maskedInput/js/jquery.maskedinput.min.js' %}"></script>
       <script src="{% static '_core/_cdn/validate/js/jquery.validate.min.js' %}"></script>

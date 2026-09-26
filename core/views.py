@@ -6,7 +6,7 @@ from urllib import request
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.db.models import Prefetch
 from menu.models import Banners, Produto, Category
-from core.utils import formatar_brl, formatar_brl_noS, verificar_loja_aberta, get_tenant_url
+from core.utils import store_share_data, product_share_data, formatar_brl, formatar_brl_noS, verificar_loja_aberta, get_tenant_url
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -148,6 +148,7 @@ def loja(request):
 
 
    context = {
+       'store_share': store_share_data(request, request.tenant, configuracao, configuracao_extra) if request.tenant else None,
        'configuracao_extra': configuracao_extra,
        'configuracao': configuracao_extra,
        'settings': configuracao,
@@ -187,20 +188,12 @@ def detalhe(request,produto_id):
 
     categorias = get_categorias(request)
     imagens_galeria = list(produto.imagens.all().order_by('ordem'))
-    from urllib.parse import urlencode
-    share_url = request.build_absolute_uri(reverse('detalhe', args=[produto.pk]))
-    share_image = produto.image or (imagens_galeria[0].imagem if imagens_galeria else produto.imagem_extra)
-    share_image_url = request.build_absolute_uri(share_image.url) if share_image else ''
-    share_text = f'{produto.nome} — {valor_br}'
-    share_whatsapp_url = 'https://wa.me/?' + urlencode({
-        'text': share_text + '\n' + share_url + ('\nFoto: ' + share_image_url if share_image_url else ''),
-    })
-
     config = TenantSettings.objects.filter(tenant=request.tenant).first()
     configuracao = Configuracao.load()
+    share = product_share_data(request, produto, imagens_galeria, config, configuracao)
     context = {
-        'product_share': {'title': produto.nome, 'text': share_text, 'url': share_url, 'image': share_image_url},
-        'share_whatsapp_url': share_whatsapp_url,
+        'product_share': share,
+        'share_whatsapp_url': share['whatsapp_url'],
         'valor_sem_S': valor_br_semS,
         'valor_br': valor_br,
         'produto': produto,

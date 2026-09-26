@@ -4,19 +4,20 @@
    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
    <head>
       {% include "loja/includes/google_tag_head.html" %}
-      <meta property="og:title" content="{{ product_share.title }}">
-      <meta property="og:description" content="{{ product_share.text }}">
-      <meta property="og:url" content="{{ product_share.url }}">
-      {% if product_share.image %}<meta property="og:image" content="{{ product_share.image }}">{% endif %}
-
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-      <title>{{ configuracao_extra.nome }}</title>
-      <meta name="description" content="{{ configuracao_extra.descricao }}">
-      <meta name="keywords" content="Tiger Burger , lojazap">
-      <meta property="og:title" content="{{ configuracao_extra.nome }}">
-      <meta property="og:description" content="{{ configuracao_extra.descricao }}">
-      <meta property="og:image" content="{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}">
+      <title>{{ product_share.title }} | {{ product_share.site_name }}</title>
+      <meta name="description" content="{{ product_share.description }}">
+      <meta property="og:type" content="product">
+      <meta property="og:title" content="{{ product_share.title }}">
+      <meta property="og:description" content="{{ product_share.description }}">
+      <meta property="og:image" content="{{ product_share.image }}">
+      <meta property="og:url" content="{{ product_share.url }}">
+      <meta property="og:site_name" content="{{ product_share.site_name }}">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="{{ product_share.title }}">
+      <meta name="twitter:description" content="{{ product_share.description }}">
+      <meta name="twitter:image" content="{{ product_share.image }}">
       <link rel="shortcut icon" href="{% if configuracao.favicon %}{{ configuracao.favicon.url }}{% else %}{% static '_core/_uploads/cadastro/2023/02/20061802236e3jji4ffg_thumb.jpg' %}{% endif %}"/>
       <link rel="manifest" href="manifest.json">
       <link rel="stylesheet" href="{% static '_core/_cdn/bootstrap/css/bootstrap.min.css' %}">
@@ -556,7 +557,7 @@
                                        <div class="row">
                                           <div class="col-md-12">
                                              <div class="ref">
-                                                <span><a id="shareProductWhatsApp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhe no WhatsApp</a></span>
+                                                <span><a id="shareProductWhatsApp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</a></span>
                                              </div>
                                           </div>
                                        </div>
@@ -934,35 +935,7 @@
 
 
 
-{{ product_share|json_script:"productShareData" }}
-<script>
-(function () {
-    const button = document.getElementById('shareProductWhatsApp');
-    const data = JSON.parse(document.getElementById('productShareData').textContent);
-    let photo = null;
-    // Prepara a foto antes do clique para preservar a autorização de compartilhamento.
-    if (data.image && navigator.share && navigator.canShare) {
-        fetch(data.image).then(response => {
-            if (!response.ok) throw new Error('Foto indisponível');
-            return response.blob();
-        }).then(blob => {
-            if (!blob.type.startsWith('image/')) return;
-            const extension = blob.type.split('/')[1].replace(/[^a-z0-9]/gi, '') || 'jpg';
-            const file = new File([blob], 'produto.' + extension, {type: blob.type});
-            if (navigator.canShare({files: [file]})) photo = file;
-        }).catch(() => {});
-    }
-    button.addEventListener('click', function (event) {
-        if (!photo) return;
-        const payload = {files: [photo], title: data.title, text: data.text + '\n' + data.url};
-        if (!navigator.canShare(payload)) return;
-        event.preventDefault();
-        navigator.share(payload).catch(error => {
-            if (error.name !== 'AbortError') window.location.assign(button.href);
-        });
-    });
-})();
-</script>
+
 </html>
 
 <div class="releaseclick"></div>

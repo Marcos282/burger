@@ -1,13 +1,30 @@
 <div class="card card-custom gutter-b">
 	<div class="card-header">
 		<div class="card-title">
-			<h3 class="card-label">QR Code da Loja</h3>
+			<h3 class="card-label">Divulgação</h3>
 		</div>
 		<div class="card-toolbar">
-            <span class="badge badge-info">Compartilhe este QR code com seus clientes</span>
+            <span class="badge badge-info">Compartilhe sua loja com seus clientes</span>
         </div>
 	</div>
     <div class="card-body text-center">
+        <div class="mb-8 mx-auto" style="max-width: 480px;">
+            <div class="text-left mb-5 shadow-sm" style="border-radius: 20px; overflow: hidden; background: #00665e;">
+                <div style="background: #fff; aspect-ratio: 1 / 1;">
+                    <img src="{{ store_share.image }}" alt="Foto de perfil de {{ store_share.title }}" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div class="p-5">
+                    <h4 style="color: #fff; font-weight: 700; overflow-wrap: anywhere;">{{ store_share.title }}</h4>
+                    <p style="color: #e0f2ef; overflow-wrap: anywhere;">{{ store_share.description }}</p>
+                    <a href="{{ store_share.url }}" target="_blank" rel="noopener noreferrer" style="color: #fff; overflow-wrap: anywhere;">
+                        <i class="fas fa-link mr-2" style="color: inherit;" aria-hidden="true"></i>{{ store_share.url }}
+                    </a>
+                </div>
+            </div>
+            <a href="{{ store_share.whatsapp_url }}" class="btn btn-success" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i> Compartilhar loja no WhatsApp
+            </a>
+        </div>
         <!-- QR Code Display -->
         <div class="row justify-content-center">
             <div class="col-md-6">
