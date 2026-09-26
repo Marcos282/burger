@@ -445,10 +445,11 @@ class ProductSharingTests(TestCase):
         self.assertEqual(tags['og:url'], [f'https://alpha.localhost/loja/datail/{self.product.pk}'])
         for field in ('title', 'description', 'image'):
             self.assertEqual(tags['twitter:' + field], tags['og:' + field])
-        import json
-        import re
-        payload = json.loads(re.search(r'<script id="productShareData" type="application/json">(.*?)</script>', response.content.decode(), re.S).group(1))
-        fallback = urlsplit(payload['whatsapp_url'])
+        fallback = urlsplit(parsed.links['shareProductWhatsApp'])
+        self.assertContains(response, 'target="_blank" rel="noopener noreferrer"')
+        self.assertNotContains(response, 'onclick="compartilharProduto()"')
+        self.assertNotContains(response, 'product-share.js')
+        self.assertNotContains(response, 'productShareData')
         self.assertEqual(fallback.netloc, 'api.whatsapp.com')
         self.assertEqual(fallback.path, '/send')
         self.assertNotIn('phone', parse_qs(fallback.query))
@@ -531,3 +532,50 @@ class StoreSharingTests(TestCase):
         self.assertContains(response, 'Minha descrição')
         request.tenant = Tenant.objects.create(name='Outra', subdomain='beta')
         self.assertEqual(painel_qrcode(request).status_code, 403)
+
+
+class StoreCustomerIsolationTests(TestCase):
+    def setUp(self):
+        from tenants.models import Tenant
+        from customers.models import Cliente
+        self.a = Tenant.objects.create(name='A', subdomain='alpha')
+        self.b = Tenant.objects.create(name='B', subdomain='beta')
+        self.phone = '21990921092'
+        self.foreign = Cliente.objects.create(tenant=self.b, nome='Outro cliente', telefone=self.phone)
+
+    def context(self, phone):
+        from unittest.mock import patch
+        from django.contrib.auth.models import AnonymousUser
+        from core.views import loja
+        request = RequestFactory().get('/loja/')
+        request.tenant = self.a
+        request.user = AnonymousUser()
+        request.session = {}
+        if phone is not None:
+            request.COOKIES['telefone_cliente'] = phone
+        with patch('core.views.render') as render:
+            loja(request)
+        return render.call_args.kwargs['context']
+
+    def test_cookie_of_other_tenant_does_not_identify_customer(self):
+        context = self.context(self.phone)
+        self.assertIsNone(context['dados_cliente'])
+        self.assertEqual(context['ordens_pendentes'], 0)
+
+    def test_same_phone_selects_current_tenant_and_only_its_orders(self):
+        from customers.models import Cliente
+        from orders.models import Ordem
+        local = Cliente.objects.create(tenant=self.a, nome='Cliente local', telefone=self.phone)
+        Ordem.objects.create(tenant=self.a, cliente=local, completo=False)
+        Ordem.objects.create(tenant=self.a, cliente=local, completo=True)
+        Ordem.objects.create(tenant=self.b, cliente=local, completo=False)
+        context = self.context(self.phone)
+        self.assertEqual(context['dados_cliente'], local)
+        self.assertEqual(context['ordens_pendentes'], 1)
+
+    def test_missing_or_unknown_cookie_keeps_anonymous_greeting(self):
+        for phone in (None, '', '00000000000'):
+            with self.subTest(phone=phone):
+                context = self.context(phone)
+                self.assertIsNone(context['dados_cliente'])
+                self.assertEqual(context['ordens_pendentes'], 0)

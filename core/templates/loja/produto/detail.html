@@ -557,8 +557,7 @@
                                        <div class="row">
                                           <div class="col-md-12">
                                              <div class="ref">
-                                                <span><button type="button" id="shareProductWhatsApp" onclick="compartilharProduto()" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</button></span>
-                                                <noscript><a href="{{ share_whatsapp_url }}">Compartilhar no WhatsApp</a></noscript>
+                                                <span><a id="shareProductWhatsApp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</a></span>
                                              </div>
                                           </div>
                                        </div>
@@ -929,8 +928,6 @@
 
 
 
-{{ product_share|json_script:"productShareData" }}
-<script src="{% static 'app/estabelecimento/js/product-share.js' %}"></script>
 </html>
 
 <div class="releaseclick"></div>

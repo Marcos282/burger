@@ -100,26 +100,16 @@ def loja(request):
    cart_count = sum(cart.values())
     
    telefone_cookie = request.COOKIES.get('telefone_cliente', '')
-   nome_cliente = ''
+   cliente = None
    ordens_pendentes = 0
-
-    # Verifica se o cookie existe e tenta pegar o cliente
-   if telefone_cookie:
-       try:
-           if Cliente.objects.filter(telefone=telefone_cookie).exists():
-               cliente = Cliente.objects.filter(telefone=telefone_cookie).first()
-               ordens_pendentes = cliente.ordem_set.filter(completo=False).count()
-           else:                
-               ordens_pendentes = 0
-               cliente = None
-       except Cliente.DoesNotExist:            
-           ordens_pendentes = 0
-           cliente = None
-   else:            
-       ordens_pendentes = 0
-       cliente = None
-
-    
+   if telefone_cookie and request.tenant:
+       cliente = Cliente.objects.filter(
+           tenant=request.tenant, telefone=telefone_cookie,
+       ).first()
+       if cliente:
+           ordens_pendentes = cliente.ordem_set.filter(
+               tenant=request.tenant, completo=False,
+           ).count()
 
    # Verifica se existe TenantSettings para o tenant
    if TenantSettings.objects.filter(tenant=request.tenant).exists():
