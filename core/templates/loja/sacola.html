@@ -203,20 +203,7 @@
                      </div>
                      <div class="col-md-9">
                         <div class="row">
-                           <div class="col-md-9">
-                              <div class="search-bar">
-                                 <div class="clear"></div>
-                                 <form class="align-middle" method="GET" action="https://demo6.lojazap.com/categoria">
-                                    <input type="text" name="busca" placeholder="Digite sua busca..." value=""/>
-                                    <input type="hidden" name="categoria" value=""/>
-                                    <button>
-                                    <i class="lni lni-search-alt"></i>
-                                    </button>
-                                    <div class="clear"></div>
-                                 </form>
-                              </div>
-                           </div>
-                           <div class="col-md-3">
+                           <div class="col-md-3 col-md-offset-9">
                               <a class="holder-shop-bag pull-right" href="{% url 'sacola' %}" title="Minha sacola">
                                  <span class="cash">Minha sacola</span>
                                  <div>
@@ -275,7 +262,7 @@
                                  </ul>
                               </li>
                               <li><a href="">Ofertas</a></li>
-                              <li><span class="sidrLeft">Fale conosco</span></li>
+                              {% if config.whatsapp_numero %}<li><a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer">Fale conosco</a></li>{% endif %}
                               <!-- <li class="visible-sm visible-xs"><a href="#">Suporte</a></li> -->
                            </ul>
                         </nav>
@@ -523,12 +510,12 @@
                            </div>
                            {% if config.delivery %}
                            <div class="col-md-4 sacola-acao">
-                              <a class="botao-acao" href="{% url 'cadastro_form' %}"><i class="lni lni-cart-full"></i> <span>Comprar</span></a>
+                              <a class="botao-acao" href="{% url 'cadastro_form' %}" data-begin-checkout><i class="lni lni-cart-full"></i> <span>Comprar</span></a>
                            </div>
                            {% endif %}
                            {% if config.chamar_whatsapp %}
                            <div class="col-md-4 sacola-acao">
-                              <form id="whatsappForm" method="POST" action="{% url 'pedido_whatsapp' %}">
+                              <form id="whatsappForm" data-begin-checkout method="POST" action="{% url 'pedido_whatsapp' %}">
                                  {% csrf_token %}
                                  <label for="whatsappVendedor">Vendedor</label>
                                  <input name="vendedor" type="text" class="form-control" placeholder="Nome do vendedor" id="whatsappVendedor" required>
@@ -583,6 +570,7 @@
       <script src="{% static '_core/_cdn/sticky/js/jquery.sticky.min.js' %}"></script>
       <script src="{% static '_core/_cdn/app/js/template.js' %}"></script>
       <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"f8178609612d4a0fa8656f39eac0fd7b","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+   {{ checkout_analytics|json_script:"checkoutAnalyticsData" }}
    </body>
    <script>
 $(document).ready(function() {

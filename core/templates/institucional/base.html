@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block seo_title %}{{ seo.title|default:'ViaZap | Loja Online, Pedidos e Vendas pelo WhatsApp' }}{% endblock %}</title>
+    <meta name="description" content="{% block seo_description %}{{ seo.description|default:'Crie sua loja online, divulgue produtos e receba pedidos pelo WhatsApp com o ViaZap.' }}{% endblock %}">
+    <link rel="canonical" href="{% block seo_canonical %}{% if seo.canonical %}{{ seo.canonical }}{% else %}https://www.viazap.net{{ request.path|default:'/' }}{% endif %}{% endblock %}">
+    <meta name="robots" content="{% block seo_robots %}{{ seo.robots|default:'index,follow' }}{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="ViaZap">
+    <meta property="og:title" content="{% block og_title %}{{ seo.title|default:'ViaZap | Loja Online, Pedidos e Vendas pelo WhatsApp' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ seo.description|default:'Crie sua loja online, divulgue produtos e receba pedidos pelo WhatsApp com o ViaZap.' }}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{% if seo.canonical %}{{ seo.canonical }}{% else %}https://www.viazap.net{{ request.path|default:'/' }}{% endif %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% block seo_image %}{{ seo.image|default:'https://www.viazap.net/static/institucional/viazap-social.png' }}{% endblock %}{% endblock %}">
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ seo.title|default:'ViaZap | Loja Online, Pedidos e Vendas pelo WhatsApp' }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ seo.description|default:'Crie sua loja online, divulgue produtos e receba pedidos pelo WhatsApp com o ViaZap.' }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ seo.image|default:'https://www.viazap.net/static/institucional/viazap-social.png' }}{% endblock %}">
+    {% if configuracao.favicon %}<link rel="icon" href="{{ configuracao.favicon.url }}">{% endif %}
+    {% block structured_data %}{% endblock %}
+    <!-- Google tag institucional: única instância, independente das lojas. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4BWMDXFPQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-C4BWMDXFPQ');
+    </script>
+    <script defer src="{% static 'institucional/analytics.js' %}"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

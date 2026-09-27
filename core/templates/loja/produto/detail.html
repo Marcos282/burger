@@ -8,6 +8,8 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
       <title>{{ product_share.title }} | {{ product_share.site_name }}</title>
       <meta name="description" content="{{ product_share.description }}">
+      <link rel="canonical" href="{{ product_share.canonical_url }}">
+      <script type="application/ld+json">{{ product_share.schema_json|safe }}</script>
       <meta property="og:type" content="product">
       <meta property="og:title" content="{{ product_share.title }}">
       <meta property="og:description" content="{{ product_share.description }}">
@@ -312,7 +314,7 @@
                                  </ul>
                               </li>
                               <li><a href="../categoriab4a6.html?filtro=4">Ofertas</a></li>
-                              <li><span class="sidrLeft">Fale conosco</span></li>
+                              {% if config.whatsapp_numero %}<li><a href="https://wa.me/{{ config.whatsapp_numero }}" target="_blank" rel="noopener noreferrer">Fale conosco</a></li>{% endif %}
                               <li class="visible-sm visible-xs"><a href="#" data-toggle="modal" data-target="#modalSuporte">Suporte</a></li>
                            </ul>
                         </nav>
@@ -557,8 +559,13 @@
                                        <div class="row">
                                           <div class="col-md-12">
                                              <div class="ref">
-                                                <span><button type="button" id="shareProductWhatsApp" onclick="compartilharProduto()" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</button></span>
-                                                <noscript><a href="{{ share_whatsapp_url }}">Compartilhar no WhatsApp</a></noscript>
+                                                <span><a id="shareProductWhatsApp" data-share-method="whatsapp" href="{{ share_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm" style="color:#FFFFFF"><i class="lni lni-whatsapp"></i> Compartilhar no WhatsApp</a></span>
+                                                <a href="{{ product_share.facebook_url }}" data-share-method="facebook" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Compartilhar no Facebook</a>
+                                                <a href="{{ product_share.x_url }}" data-share-method="x" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm">Compartilhar no X</a>
+                                                <button type="button" data-copy-product-link="{{ product_share.url }}" class="btn btn-default btn-sm">Copiar link</button>
+                                                <span id="copyProductStatus" role="status"></span>
+                                                {{ product_share.analytics|json_script:"productAnalyticsData" }}
+
                                              </div>
                                           </div>
                                        </div>
@@ -929,8 +936,6 @@
 
 
 
-{{ product_share|json_script:"productShareData" }}
-<script src="{% static 'app/estabelecimento/js/product-share.js' %}"></script>
 </html>
 
 <div class="releaseclick"></div>

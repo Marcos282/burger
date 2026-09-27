@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1J1VWEBSE3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1J1VWEBSE3');
-</script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ViaZap — Catálogo Online, Bot com ChatGPT e Gestão Completa</title>
-    {% if configuracao.favicon %}<link rel="icon" href="{{ configuracao.favicon.url }}">{% endif %}
+{% extends 'institucional/base.html' %}
+{% block structured_data %}
+<script type="application/ld+json">{{ organization_json|safe }}</script>
+<script type="application/ld+json">{{ website_json|safe }}</script>
+{% endblock %}
+{% block extra_head %}
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
         :root { 
@@ -227,8 +217,9 @@
             .demo-banner { text-align: center; justify-content: center; }
         }
     </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+
 
 <header>
     <div class="container">
@@ -256,8 +247,8 @@
     <div class="container">
         <div>
             <div class="badge-ia">🤖 Atendimento Automático com IA ChatGPT & Relatórios</div>
-            <h1>Catálogo Online com <span class="destaque">Bot ChatGPT</span> e Venda pelo WhatsApp</h1>
-            <p>Seus clientes acessam sua loja, tiram dúvidas com o atendente de Inteligência Artificial e fecham pedidos direto no WhatsApp. Você acompanha todos os acessos e relatórios em tempo real.</p>
+            <h1>Venda online e receba pedidos pelo <span class="destaque">WhatsApp</span></h1>
+            <p>Crie sua loja online, divulgue seus produtos e receba pedidos pelo WhatsApp. O ViaZap reúne catálogo, atendimento com inteligência artificial e gestão de pedidos para delivery, varejo e pequenos negócios.</p>
             
             <div class="botoes-hero">
                 <a href="{% url 'register' %}" class="btn btn-principal">Começar 30 Dias Grátis →</a>
@@ -478,5 +469,5 @@
     </div>
 </footer>
 
-</body>
-</html>
+
+{% endblock %}
